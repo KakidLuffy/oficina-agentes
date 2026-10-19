@@ -19,7 +19,9 @@ import urllib.request
 from datetime import datetime, timezone
 
 START = 50.0          # euros ficticios por agente
-FEE = 0.0025          # comision 0,25 % por operacion
+FEE = 0.0025          # comision 0,25 % por operacion (revisa la de tu exchange: con ordenes a mercado puede ser mayor)
+SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
+PERDIDA_DIA = 2.0     # si un agente pierde esto (EUR) en un dia, no vuelve a comprar ese dia
 STOP = START * 0.7    # el responsable de riesgo apaga al agente que baja de aqui
 DATOS = "datos"
 ESTADO = os.path.join(DATOS, "estado.json")
@@ -113,8 +115,10 @@ def estado_nuevo(cerradas, precio):
         "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "ultima_vela": cerradas[-1][0],   # solo se actua sobre velas posteriores a esta
         "precio_inicio": precio,
-        "agentes": [{"nombre": n, "efectivo": START, "btc": 0.0, "apagado": False, "operaciones": 0}
-                    for n, _ in AGENTES],
+        "fee": FEE,
+        "slip": SLIP,
+        "agentes": [{"nombre": n, "efectivo": START, "btc": 0.0, "apagado": False, "operaciones": 0,
+                     "dia": None, "eq_dia": START} for n, _ in AGENTES],
     }
 
 
@@ -127,19 +131,36 @@ def anotar(archivo, cabecera, fila):
         w.writerow(fila)
 
 
+def parametros(estado):
+    """Usa los costes guardados en el estado. Un estado antiguo sin operaciones adopta los costes actuales."""
+    global FEE, SLIP
+    if "slip" not in estado:
+        if sum(a["operaciones"] for a in estado["agentes"]) == 0:
+            estado["fee"], estado["slip"] = FEE, SLIP
+            print("Estado antiguo sin operaciones: se aplican los costes nuevos (comision + deslizamiento).")
+        else:
+            estado["fee"], estado["slip"] = 0.0025, 0.0
+            print("Aviso: este estado ya tiene operaciones con los costes antiguos; se mantienen. "
+                  "Para aplicar los nuevos, borra la carpeta datos y empieza de nuevo.")
+    FEE, SLIP = estado["fee"], estado["slip"]
+
+
 def operar(a, tipo, precio, fecha):
+    """Compra/vende todo. El precio ejecutado incluye el deslizamiento; ademas se paga la comision."""
     if tipo == "COMPRA":
+        ejecutado = precio * (1 + SLIP)
         importe = a["efectivo"]
-        a["btc"] = importe * (1 - FEE) / precio
+        a["btc"] = importe * (1 - FEE) / ejecutado
         a["efectivo"] = 0.0
     else:
-        importe = a["btc"] * precio
+        ejecutado = precio * (1 - SLIP)
+        importe = a["btc"] * ejecutado
         a["efectivo"] = importe * (1 - FEE)
         a["btc"] = 0.0
     a["operaciones"] += 1
     anotar(OPERACIONES, ["fecha_utc", "agente", "tipo", "precio_eur", "importe_eur"],
-           [fecha, a["nombre"], tipo, round(precio, 2), round(importe, 2)])
-    print(f"{a['nombre']}: {tipo} a {precio:.0f} EUR")
+           [fecha, a["nombre"], tipo, round(ejecutado, 2), round(importe, 2)])
+    print(f"{a['nombre']}: {tipo} a {ejecutado:.0f} EUR")
 
 
 def equity(a, precio):
@@ -167,9 +188,15 @@ def paso(estado, velas):
         for a, (_, decidir) in zip(estado["agentes"], AGENTES):
             if a["apagado"]:
                 continue
+            dia = t // 86400
+            if a.get("dia") != dia:                      # nuevo dia: se anota con cuanto empieza
+                a["dia"], a["eq_dia"] = dia, equity(a, p)
             senal = decidir(cierres[:i + 1])
             if senal == "b" and a["efectivo"] > 1:
-                operar(a, "COMPRA", p, fecha)
+                if a["eq_dia"] - equity(a, p) >= PERDIDA_DIA:
+                    print(f"{a['nombre']}: compra bloqueada por el limite de perdida diaria")
+                else:
+                    operar(a, "COMPRA", p, fecha)
             elif senal == "s" and a["btc"] > 0:
                 operar(a, "VENTA", p, fecha)
             apagar_si_toca(a, p, fecha)
@@ -183,7 +210,7 @@ def paso(estado, velas):
 def guardar(estado, ahora, precio, fuente):
     os.makedirs(DATOS, exist_ok=True)
     eqs = [equity(a, precio) for a in estado["agentes"]]
-    mantener = START * precio / estado["precio_inicio"]
+    mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
     anotar(HISTORIAL, ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"],
            [ahora, round(precio, 2)] + [round(e, 2) for e in eqs] + [round(mantener, 2)])
     with open(ESTADO, "w") as f:
@@ -193,6 +220,8 @@ def guardar(estado, ahora, precio, fuente):
         "",
         f"Ultima actualizacion: {ahora} UTC · Precio BTC/EUR: {precio:.0f} ({fuente})",
         f"En marcha desde: {estado['inicio']} UTC",
+        f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % · "
+        f"limite de perdida diaria: {PERDIDA_DIA:.0f} EUR",
         "",
         "| Agente | Capital (EUR) | Resultado (EUR) | Operaciones | Estado |",
         "|---|---:|---:|---:|---|",
@@ -219,6 +248,7 @@ def main():
     else:
         estado = estado_nuevo(velas[:-1], precio)
         print("Primera ejecucion: los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
+    parametros(estado)
     ahora, precio = paso(estado, velas)
     guardar(estado, ahora, precio, fuente)
 

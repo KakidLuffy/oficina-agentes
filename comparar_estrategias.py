@@ -26,6 +26,7 @@ import urllib.request
 
 START = 50.0
 FEE = 0.0025
+SLIP = 0.0005   # deslizamiento por operacion, igual que en la simulacion en vivo
 STOP = START * 0.7
 WARM = 50   # velas de calentamiento antes de empezar a operar
 INTERVALOS = [(15, "15 minutos"), (60, "1 hora"), (240, "4 horas"), (1440, "1 día")]
@@ -95,13 +96,13 @@ def simular(c, ini, fin, s, fn):
             break
         senal = fn(c, i, s)
         if senal == "b" and cash > 1:
-            btc, cash, ops = cash * (1 - FEE) / p, 0.0, ops + 1
+            btc, cash, ops = cash * (1 - FEE) / (p * (1 + SLIP)), 0.0, ops + 1
         elif senal == "s" and btc > 0:
-            cash, btc, ops = btc * p * (1 - FEE), 0.0, ops + 1
+            cash, btc, ops = btc * p * (1 - SLIP) * (1 - FEE), 0.0, ops + 1
         if cash + btc * p < STOP:
-            cash, btc, apagado = btc * p * (1 - FEE) + cash, 0.0, True
+            cash, btc, apagado = btc * p * (1 - SLIP) * (1 - FEE) + cash, 0.0, True
     final = cash + btc * c[fin - 1]
-    mantener = START * (1 - FEE) * c[fin - 1] / c[ini]
+    mantener = START * (1 - FEE) * c[fin - 1] / (c[ini] * (1 + SLIP))
     return final - START, ops, mantener - START
 
 
@@ -160,7 +161,7 @@ def main():
     os.makedirs(out, exist_ok=True)
     md = ["# Comparación de estrategias sobre el historial real de BTC/EUR",
           "",
-          f"Dinero ficticio: {START:.0f} € por combinación, comisión {FEE * 100:.2f} % por operación. "
+          f"Dinero ficticio: {START:.0f} € por combinación, comisión {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % por operación. "
           "Las cifras son en euros. \"Dif.\" es la diferencia frente a comprar y mantener durante el mismo periodo "
           "(positivo = mejor que mantener).",
           ""]
@@ -185,7 +186,7 @@ def main():
             filas.append([nombre, nom, round(r, 2), ops, round(hold, 2), round(d, 2), round(d1, 2), round(d2, 2), ok])
             if ok:
                 buenas.append(f"{nom} con velas de {nombre}")
-        md +=[f"| *Comprar y mantener* | {f2(START * (1 - FEE) * c[-1] / c[WARM] - START)} | 1 | – | – | – |", ""]
+        md +=[f"| *Comprar y mantener* | {f2(START * (1 - FEE) * c[-1] / (c[WARM] * (1 + SLIP)) - START)} | 1 | – | – | – |", ""]
     md += ["## Veredicto", ""]
     if buenas:
         md.append("Combinaciones que ganan dinero y además superan a comprar y mantener, en el total y en las dos mitades (✔): "
