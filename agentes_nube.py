@@ -1,0 +1,227 @@
+#!/usr/bin/env python3
+"""
+Oficina de agentes en la nube (PAPER TRADING: dinero ficticio, no toca ningun exchange).
+
+Cada ejecucion hace UN paso: descarga precios reales de BTC/EUR, deja que cada agente
+decida con las velas de 1 hora ya cerradas y guarda todo en la carpeta "datos/".
+GitHub Actions lo ejecuta cada hora (ver agentes.yml). No necesita claves ni librerias extra.
+
+Uso:
+  python agentes_nube.py            -> un paso con precios reales
+  python agentes_nube.py --demo 120 -> prueba con precios inventados (120 velas), sin internet
+"""
+import csv
+import json
+import os
+import random
+import sys
+import urllib.request
+from datetime import datetime, timezone
+
+START = 50.0          # euros ficticios por agente
+FEE = 0.0025          # comision 0,25 % por operacion
+STOP = START * 0.7    # el responsable de riesgo apaga al agente que baja de aqui
+DATOS = "datos"
+ESTADO = os.path.join(DATOS, "estado.json")
+HISTORIAL = os.path.join(DATOS, "historial.csv")
+OPERACIONES = os.path.join(DATOS, "operaciones.csv")
+RESUMEN = os.path.join(DATOS, "resumen.md")
+
+
+# ---------------- estrategias ----------------
+def media(lista):
+    return sum(lista) / len(lista)
+
+
+def cruce(p, a, b):
+    if len(p) < b + 1:
+        return None
+    ca, cb = media(p[-a:]), media(p[-b:])
+    pa, pb = media(p[-a - 1:-1]), media(p[-b - 1:-1])
+    if pa <= pb and ca > cb:
+        return "b"
+    if pa >= pb and ca < cb:
+        return "s"
+    return None
+
+
+def momentum(p):
+    if len(p) < 14:
+        return None
+    r = p[-1] / p[-13] - 1
+    return "b" if r > 0.012 else ("s" if r < -0.012 else None)
+
+
+def rebote(p):
+    if len(p) < 21:
+        return None
+    m, x = media(p[-20:]), p[-1]
+    return "b" if x < m * 0.985 else ("s" if x > m else None)
+
+
+AGENTES = [
+    ("Cruce 10/30", lambda p: cruce(p, 10, 30)),
+    ("Cruce 5/20", lambda p: cruce(p, 5, 20)),
+    ("Momentum", momentum),
+    ("Rebote", rebote),
+]
+
+
+# ---------------- precios ----------------
+def get_json(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "oficina-agentes/1.0"})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        return json.loads(r.read().decode())
+
+
+def velas_kraken():
+    d = get_json("https://api.kraken.com/0/public/OHLC?pair=XBTEUR&interval=60")
+    if d.get("error"):
+        raise RuntimeError(d["error"])
+    clave = [k for k in d["result"] if k != "last"][0]
+    return [(int(v[0]), float(v[4])) for v in d["result"][clave]]
+
+
+def velas_coinbase():
+    d = get_json("https://api.exchange.coinbase.com/products/BTC-EUR/candles?granularity=3600")
+    return sorted((int(v[0]), float(v[4])) for v in d)
+
+
+def velas_demo(n):
+    random.seed(7)
+    precio, t, salida = 60000.0, 1_700_000_000, []
+    for _ in range(n):
+        precio *= 1 + random.gauss(0, 0.007)
+        salida.append((t, precio))
+        t += 3600
+    return salida
+
+
+def obtener_velas(demo):
+    if demo:
+        return velas_demo(demo), "demo"
+    try:
+        return velas_kraken(), "Kraken"
+    except Exception as e1:
+        print("Kraken fallo:", e1)
+        return velas_coinbase(), "Coinbase"
+
+
+# ---------------- estado ----------------
+def estado_nuevo(cerradas, precio):
+    return {
+        "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "ultima_vela": cerradas[-1][0],   # solo se actua sobre velas posteriores a esta
+        "precio_inicio": precio,
+        "agentes": [{"nombre": n, "efectivo": START, "btc": 0.0, "apagado": False, "operaciones": 0}
+                    for n, _ in AGENTES],
+    }
+
+
+def anotar(archivo, cabecera, fila):
+    nuevo = not os.path.exists(archivo)
+    with open(archivo, "a", newline="") as f:
+        w = csv.writer(f)
+        if nuevo:
+            w.writerow(cabecera)
+        w.writerow(fila)
+
+
+def operar(a, tipo, precio, fecha):
+    if tipo == "COMPRA":
+        importe = a["efectivo"]
+        a["btc"] = importe * (1 - FEE) / precio
+        a["efectivo"] = 0.0
+    else:
+        importe = a["btc"] * precio
+        a["efectivo"] = importe * (1 - FEE)
+        a["btc"] = 0.0
+    a["operaciones"] += 1
+    anotar(OPERACIONES, ["fecha_utc", "agente", "tipo", "precio_eur", "importe_eur"],
+           [fecha, a["nombre"], tipo, round(precio, 2), round(importe, 2)])
+    print(f"{a['nombre']}: {tipo} a {precio:.0f} EUR")
+
+
+def equity(a, precio):
+    return a["efectivo"] + a["btc"] * precio
+
+
+def apagar_si_toca(a, precio, fecha):
+    if not a["apagado"] and equity(a, precio) < STOP:
+        if a["btc"] > 0:
+            operar(a, "VENTA", precio, fecha)
+        a["apagado"] = True
+        print(f"RIESGO: {a['nombre']} apagado por superar el limite de perdida")
+
+
+def paso(estado, velas):
+    cerradas, precio = velas[:-1], velas[-1][1]   # la ultima vela aun esta en curso
+    cierres = [c for _, c in cerradas]
+    ahora = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    nuevas = [i for i, (t, _) in enumerate(cerradas) if t > estado["ultima_vela"]]
+    if len(nuevas) > 1:
+        print(f"Aviso: {len(nuevas)} velas nuevas (la ejecucion anterior se retraso); se procesan todas en orden.")
+    for i in nuevas:
+        t, p = cerradas[i]
+        fecha = datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes")
+        for a, (_, decidir) in zip(estado["agentes"], AGENTES):
+            if a["apagado"]:
+                continue
+            senal = decidir(cierres[:i + 1])
+            if senal == "b" and a["efectivo"] > 1:
+                operar(a, "COMPRA", p, fecha)
+            elif senal == "s" and a["btc"] > 0:
+                operar(a, "VENTA", p, fecha)
+            apagar_si_toca(a, p, fecha)
+    if nuevas:
+        estado["ultima_vela"] = cerradas[nuevas[-1]][0]
+    for a in estado["agentes"]:
+        apagar_si_toca(a, precio, ahora)
+    return ahora, precio
+
+
+def guardar(estado, ahora, precio, fuente):
+    os.makedirs(DATOS, exist_ok=True)
+    eqs = [equity(a, precio) for a in estado["agentes"]]
+    mantener = START * precio / estado["precio_inicio"]
+    anotar(HISTORIAL, ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"],
+           [ahora, round(precio, 2)] + [round(e, 2) for e in eqs] + [round(mantener, 2)])
+    with open(ESTADO, "w") as f:
+        json.dump(estado, f, indent=2)
+    lineas = [
+        "# Oficina de agentes (dinero ficticio)",
+        "",
+        f"Ultima actualizacion: {ahora} UTC · Precio BTC/EUR: {precio:.0f} ({fuente})",
+        f"En marcha desde: {estado['inicio']} UTC",
+        "",
+        "| Agente | Capital (EUR) | Resultado (EUR) | Operaciones | Estado |",
+        "|---|---:|---:|---:|---|",
+    ]
+    for a, e in zip(estado["agentes"], eqs):
+        est = "Apagado por riesgo" if a["apagado"] else ("Con BTC" if a["btc"] > 0 else "En efectivo")
+        lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {a['operaciones']} | {est} |")
+    lineas.append(f"| Comprar y mantener | {mantener:.2f} | {mantener - START:+.2f} | 1 | Referencia |")
+    lineas += ["", "Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.",
+               "Estos resultados no garantizan beneficios futuros."]
+    with open(RESUMEN, "w") as f:
+        f.write("\n".join(lineas) + "\n")
+    print("\n".join(lineas[4:]))
+
+
+def main():
+    demo = int(sys.argv[sys.argv.index("--demo") + 1]) if "--demo" in sys.argv else 0
+    velas, fuente = obtener_velas(demo)
+    os.makedirs(DATOS, exist_ok=True)
+    precio = velas[-1][1]
+    if os.path.exists(ESTADO):
+        with open(ESTADO) as f:
+            estado = json.load(f)
+    else:
+        estado = estado_nuevo(velas[:-1], precio)
+        print("Primera ejecucion: los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
+    ahora, precio = paso(estado, velas)
+    guardar(estado, ahora, precio, fuente)
+
+
+if __name__ == "__main__":
+    main()
