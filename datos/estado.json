@@ -1,6 +1,6 @@
 {
   "inicio": "2026-10-19T19:51:44+00:00",
-  "ultima_vela": 1792440000,
+  "ultima_vela": 1792443600,
   "precio_inicio": 72920.7,
   "agentes": [
     {
@@ -8,28 +8,38 @@
       "efectivo": 50.0,
       "btc": 0.0,
       "apagado": false,
-      "operaciones": 0
+      "operaciones": 0,
+      "dia": 20745,
+      "eq_dia": 50.0
     },
     {
       "nombre": "Cruce 5/20",
       "efectivo": 50.0,
       "btc": 0.0,
       "apagado": false,
-      "operaciones": 0
+      "operaciones": 0,
+      "dia": 20745,
+      "eq_dia": 50.0
     },
     {
       "nombre": "Momentum",
       "efectivo": 50.0,
       "btc": 0.0,
       "apagado": false,
-      "operaciones": 0
+      "operaciones": 0,
+      "dia": 20745,
+      "eq_dia": 50.0
     },
     {
       "nombre": "Rebote",
       "efectivo": 50.0,
       "btc": 0.0,
       "apagado": false,
-      "operaciones": 0
+      "operaciones": 0,
+      "dia": 20745,
+      "eq_dia": 50.0
     }
-  ]
+  ],
+  "fee": 0.0025,
+  "slip": 0.0005
 }
