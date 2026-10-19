@@ -1,0 +1,34 @@
+name: Comparar estrategias (historial)
+
+on:
+  workflow_dispatch:   # se lanza a mano desde la pestaña Actions
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agentes       # mismo grupo que la simulación horaria para que no se pisen
+  cancel-in-progress: false
+
+jobs:
+  comparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Comparar estrategias sobre el historial real
+        run: python comparar_estrategias.py --out comparacion
+
+      - name: Guardar resultados en el repositorio
+        run: |
+          git config user.name "agentes-bot"
+          git config user.email "agentes-bot@users.noreply.github.com"
+          git add comparacion
+          git diff --staged --quiet || git commit -m "Actualizar comparación de estrategias"
+          git pull --rebase
+          git push
