@@ -16,7 +16,9 @@
         "SUIEUR": 10.78772451039142,
         "LINKEUR": 0.9027261921041684,
         "ENAEUR": 56.04280490446178
-      }
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
     },
     {
       "nombre": "Cruce 5/20",
@@ -31,7 +33,9 @@
         "ENAEUR": 58.03268330910215,
         "XBTEUR": 0.0001346937106440802,
         "ETHEUR": 0.004536980656429466
-      }
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
     },
     {
       "nombre": "Momentum",
@@ -46,7 +50,9 @@
         "ZECEUR": 0.009466699006428943,
         "PUMPEUR": 2483.8104116850395,
         "SUIEUR": 11.070414160008607
-      }
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
     },
     {
       "nombre": "Rebote",
@@ -57,32 +63,56 @@
       "eq_dia": 50.0,
       "posiciones": {
         "ARBEUR": 59.239542439119134
-      }
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
+    },
+    {
+      "nombre": "Cruce 10/30 + filtro",
+      "efectivo": 50.0,
+      "posiciones": {},
+      "apagado": false,
+      "operaciones": 0,
+      "dia": null,
+      "eq_dia": 50.0,
+      "inicio": "2026-10-20T18:14:31+00:00",
+      "precio_inicio": 73512.8
+    },
+    {
+      "nombre": "Consenso 2 de 3",
+      "efectivo": 50.0,
+      "posiciones": {},
+      "apagado": false,
+      "operaciones": 0,
+      "dia": null,
+      "eq_dia": 50.0,
+      "inicio": "2026-10-20T18:14:31+00:00",
+      "precio_inicio": 73512.8
     }
   ],
   "fee": 0.0025,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 73577.5,
-    "ETHEUR": 2176.28,
-    "XRPEUR": 1.18115,
-    "ZECEUR": 1080.001,
-    "SOLEUR": 94.68,
-    "NEAREUR": 4.38,
-    "ARBEUR": 0.1692,
-    "PUMPEUR": 0.004114,
+    "XBTEUR": 73512.8,
+    "ETHEUR": 2175.66,
+    "XRPEUR": 1.17971,
+    "ZECEUR": 1082.948,
+    "SOLEUR": 94.64,
+    "NEAREUR": 4.4017,
+    "ARBEUR": 0.1698,
+    "PUMPEUR": 0.004125,
     "SUIEUR": 0.9052,
-    "ZROEUR": 1.76,
+    "ZROEUR": 1.755,
     "LINKEUR": 10.84758,
-    "INJEUR": 7.583,
-    "HYPEEUR": 71.19,
-    "TIAEUR": 0.5698,
-    "ADAEUR": 0.197113,
-    "TAOEUR": 243.6161,
-    "LTCEUR": 53.46,
+    "INJEUR": 7.616,
+    "HYPEEUR": 71.12,
+    "TIAEUR": 0.5699,
+    "ADAEUR": 0.197594,
+    "TAOEUR": 243.9746,
+    "LTCEUR": 53.57,
     "DOTEUR": 1.0132,
-    "COMPEUR": 22.87,
+    "COMPEUR": 22.73,
     "ENAEUR": 0.1741,
-    "BATEUR": 0.18232
+    "BATEUR": 0.18233
   }
 }
