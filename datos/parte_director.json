@@ -1,0 +1,57 @@
+{
+ "generado": "2026-10-20T22:31:10Z",
+ "titular": "Todo en orden.",
+ "lineas": [
+  "Capital total 305,34 € (+5,34 €, +1,78 %).",
+  "Mejor agente: Momentum (+2,65 €). Peor: Cruce 10/30 + filtro (+0,08 €).",
+  "3 de 6 agentes van por encima de «Comprar y mantener» (50,53 €).",
+  "6 con monedas, 0 en efectivo, 0 apagados.",
+  "Operaciones en las últimas 24 h: 26."
+ ],
+ "alertas": [],
+ "revision": {
+  "ok": true,
+  "problemas": []
+ },
+ "progreso": [
+  {
+   "nombre": "Cruce 10/30",
+   "dias": 1.1,
+   "cierres": 0,
+   "evaluable": false
+  },
+  {
+   "nombre": "Cruce 5/20",
+   "dias": 1.1,
+   "cierres": 0,
+   "evaluable": false
+  },
+  {
+   "nombre": "Momentum",
+   "dias": 1.1,
+   "cierres": 1,
+   "evaluable": false
+  },
+  {
+   "nombre": "Rebote",
+   "dias": 1.1,
+   "cierres": 2,
+   "evaluable": false
+  },
+  {
+   "nombre": "Cruce 10/30 + filtro",
+   "dias": 0.2,
+   "cierres": 0,
+   "evaluable": false
+  },
+  {
+   "nombre": "Consenso 2 de 3",
+   "dias": 0.2,
+   "cierres": 1,
+   "evaluable": false
+  }
+ ],
+ "laboratorio": "ninguna",
+ "min_dias": 21,
+ "min_cierres": 30
+}
