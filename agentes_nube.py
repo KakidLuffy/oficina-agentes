@@ -18,6 +18,8 @@ import sys
 import urllib.request
 from datetime import datetime, timezone
 
+import informe
+
 START = 50.0          # euros ficticios por agente
 FEE = 0.0025          # comision 0,25 % por operacion (revisa la de tu exchange: con ordenes a mercado puede ser mayor)
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
@@ -28,6 +30,7 @@ ESTADO = os.path.join(DATOS, "estado.json")
 HISTORIAL = os.path.join(DATOS, "historial.csv")
 OPERACIONES = os.path.join(DATOS, "operaciones.csv")
 RESUMEN = os.path.join(DATOS, "resumen.md")
+GRAFICO = os.path.join(DATOS, "grafico.svg")
 
 
 # ---------------- estrategias ----------------
@@ -239,6 +242,21 @@ def guardar(estado, ahora, precio, fuente):
         est = "Apagado por riesgo" if a["apagado"] else ("Con BTC" if a["btc"] > 0 else "En efectivo")
         lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - mantener:+.2f} | {a['operaciones']} | {est} |")
     lineas.append(f"| Comprar y mantener | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | Referencia |")
+    nombres = [n for n, _ in AGENTES]
+    try:
+        met = informe.metricas(HISTORIAL, OPERACIONES, nombres + ["Comprar y mantener"])
+        lineas += ["", "Riesgo (calculado con el historial guardado):", "",
+                   "| Agente | Caida maxima | Operaciones ganadoras | Operaciones perdedoras |",
+                   "|---|---:|---:|---:|"]
+        for n in nombres + ["Comprar y mantener"]:
+            cm, g, pe = met[n]
+            lineas.append(f"| {n} | {cm:.2f} % | {g} | {pe} |")
+        lineas += ["", "Caida maxima = lo que llego a perder cada agente desde su mejor momento. "
+                   "Una operacion cuenta cuando se cierra con su venta."]
+        if informe.grafico_svg(HISTORIAL, GRAFICO, nombres):
+            lineas += ["", "![Evolucion del capital](grafico.svg)"]
+    except Exception as e:                      # los extras nunca deben romper la simulacion
+        print("Aviso: no se pudieron calcular los extras del resumen:", e)
     if dias < 28:
         lineas += ["", f"Aviso: solo hay {dias:.1f} dias de datos; aun no hay base para concluir que una estrategia sea mejor."]
     lineas += ["", "Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.",
