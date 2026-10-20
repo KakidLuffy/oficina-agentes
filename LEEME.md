@@ -1,6 +1,6 @@
 # Oficina de agentes en la nube (gratis, sin tu PC)
 
-Seis agentes de trading con **dinero ficticio** (50 € cada uno) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
+Seis agentes de trading con **dinero ficticio** (10 € cada uno, 60 € en total) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
 
 **Es una simulación:** no opera en ningún exchange ni toca dinero real, y nada de esto garantiza beneficios.
 
@@ -75,8 +75,8 @@ A partir de ahí corre solo. Si cambias `agentes_nube.py`, se ejecuta de nuevo a
 ## Costes y límites simulados
 
 - Cada operación paga una **comisión del 0,25 %** y un **deslizamiento** del 0,05 % (0,3 % en monedas de poco volumen): comprar sale un poco más caro y vender un poco más barato. Los valores están al principio de `agentes_nube.py` (`FEE`, `SLIP`, `SLIP_POCO_VOLUMEN`).
-- **Reparto:** cada agente invierte 10 € por moneda y puede tener hasta 5 a la vez.
-- **Límite de pérdida diaria:** si un agente pierde 2 € en un día, no vuelve a comprar ese día. Si baja de 35 € (un 30 % de pérdida), se apaga.
+- **Reparto:** cada agente invierte 2 € por moneda y puede tener hasta 5 a la vez.
+- **Límite de pérdida diaria:** si un agente pierde 0,40 € (un 4 %) en un día, no vuelve a comprar ese día. Si baja de 7 € (un 30 % de pérdida), se apaga.
 - **Más monedas:** el número de monedas vigiladas se cambia con `TOP_MONEDAS`. Subirlo alarga la ejecución y aumenta la probabilidad de que alguna estrategia parezca buena solo por azar.
 
 ## Qué esperar (y cuándo fiarse)
@@ -92,7 +92,7 @@ A partir de ahí corre solo. Si cambias `agentes_nube.py`, se ejecuta de nuevo a
 - **Gratis con condiciones.** En repositorios públicos GitHub no cobra las ejecuciones. Comprueba las condiciones actuales en la documentación de GitHub.
 - **Tareas programadas desactivadas.** GitHub puede desactivarlas tras un periodo largo sin actividad en el repositorio. Si las ejecuciones dejan de aparecer, entra en **Actions** y reactiva el flujo con un clic.
 - **Para pararlo:** **Actions → Agentes de trading (simulación) → ⋯ → Disable workflow**.
-- **Reiniciar desde cero:** borra la carpeta `datos` y deja que se ejecute de nuevo. Los agentes empiezan otra vez con 50 €.
+- **Reiniciar desde cero:** borra la carpeta `datos` y deja que se ejecute de nuevo. Los agentes empiezan otra vez con 10 € (si cambias el capital en el código, la simulación anterior se archiva sola en `datos/archivo_…`).
 
 ## Probarlo en tu PC (opcional)
 

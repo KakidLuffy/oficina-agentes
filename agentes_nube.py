@@ -4,7 +4,7 @@ Oficina de agentes en la nube (PAPER TRADING: dinero ficticio, no toca ningun ex
 
 Cada ejecucion hace UN paso: pide a Kraken la lista de pares contra EUR, se queda con las TOP_MONEDAS de mayor
 volumen (sin stablecoins ni monedas fiat), descarga sus precios reales, deja que cada agente decida con las velas
-de 1 hora ya cerradas y guarda todo en la carpeta "datos/". Cada agente reparte sus 50 EUR ficticios en hasta
+de 1 hora ya cerradas y guarda todo en la carpeta "datos/". Cada agente reparte sus 10 EUR ficticios en hasta
 5 monedas a la vez. GitHub Actions lo ejecuta cada hora (ver agentes.yml). No necesita claves ni librerias extra.
 
 Uso:
@@ -17,15 +17,16 @@ import os
 import random
 import sys
 import time
+import shutil
 import urllib.request
 from datetime import datetime, timezone
 
 import informe
 
-START = 50.0          # euros ficticios por agente
+START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
 FEE = 0.0025          # comision 0,25 % por operacion (revisa la de tu exchange: con ordenes a mercado puede ser mayor)
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
-PERDIDA_DIA = 2.0     # si un agente pierde esto (EUR) en un dia, no vuelve a comprar ese dia
+PERDIDA_DIA = START * 0.04   # si un agente pierde esto (EUR, el 4 % de su capital) en un dia, no vuelve a comprar ese dia
 STOP = START * 0.7    # el responsable de riesgo apaga al agente que baja de aqui
 TOP_MONEDAS = 20      # cuantas monedas se vigilan: las de mayor volumen en 24 h (cambia este numero si quieres mas o menos)
 MAX_POS = 5           # maximo de monedas que un agente puede tener a la vez
@@ -240,6 +241,7 @@ def agente_nuevo(nombre, precio_btc):
 def estado_nuevo(velas, ahora_ts):
     cerradas = [c for c in velas[BTC] if c[0] + 3600 <= ahora_ts]
     return {
+        "capital_inicial": START,          # si se cambia START, la simulacion archiva la anterior y empieza de cero
         "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "ultima_vela": cerradas[-1][0],   # solo se actua sobre velas posteriores a esta
         "precio_inicio": velas[BTC][-1][1],
@@ -374,7 +376,7 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
             bloqueado = a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA
             for par in pares_t:                          # ...y luego se compra, por orden de volumen
                 if senales[par] == "b" and par not in a["posiciones"]:
-                    if len(a["posiciones"]) >= MAX_POS or a["efectivo"] < 1:
+                    if len(a["posiciones"]) >= MAX_POS or a["efectivo"] < SLOT * 0.5:
                         break
                     if bloqueado:
                         print(f"{a['nombre']}: compra bloqueada por el limite de perdida diaria")
@@ -412,9 +414,9 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"Ultima actualizacion: {ahora} UTC · Precio BTC/EUR: {precio:.0f} ({fuente})",
         f"En marcha desde: {estado['inicio']} UTC ({dias:.1f} dias)",
         f"Monedas vigiladas: las {n_monedas} de mayor volumen contra EUR (con datos en esta ejecucion: {n_con_datos}) · "
-        f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.0f} EUR en cada una",
+        f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una",
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
-        f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.0f} EUR",
+        f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",
         "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |",
         "|---|---:|---:|---:|---:|---:|---|---|",
@@ -464,6 +466,15 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     print("\n".join(lineas[4:]))
 
 
+def archivar(capital_antiguo):
+    """Guarda los archivos de la simulacion anterior en datos/archivo_<capital>eur_<fecha>/ y deja datos/ listo para empezar."""
+    destino = os.path.join(DATOS, f"archivo_{capital_antiguo:g}eur_{datetime.now(timezone.utc):%Y%m%d}")
+    os.makedirs(destino, exist_ok=True)
+    for ruta in (ESTADO, HISTORIAL, OPERACIONES, RESUMEN, GRAFICO):
+        if os.path.exists(ruta):
+            shutil.move(ruta, os.path.join(destino, os.path.basename(ruta)))
+
+
 def main():
     demo = int(sys.argv[sys.argv.index("--demo") + 1]) if "--demo" in sys.argv else 0
     velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
@@ -471,7 +482,12 @@ def main():
     if os.path.exists(ESTADO):
         with open(ESTADO) as f:
             estado = json.load(f)
-        migrar(estado, velas)
+        if estado.get("capital_inicial", 50.0) != START:      # cambio de capital: se archiva la simulacion anterior
+            archivar(estado.get("capital_inicial", 50.0))
+            estado = estado_nuevo(velas, ahora_ts)
+            print("Cambio de capital: simulacion anterior archivada; los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
+        else:
+            migrar(estado, velas)
     else:
         estado = estado_nuevo(velas, ahora_ts)
         print("Primera ejecucion: los agentes empiezan ahora con", START, "EUR ficticios cada uno.")

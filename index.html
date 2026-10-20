@@ -303,6 +303,7 @@ function cargar(){
 
 /* ===== cálculos ===== */
 function preparar(estado, hist, ops){
+  START = +estado.capital_inicial || 50;   /* capital ficticio por agente (lo guarda la simulación; las versiones antiguas usaban 50) */
   var fee = estado.fee, slip = estado.slip, precios = estado.precios || {};
   var btc = precios.XBTEUR || (hist.length ? parseFloat(hist[hist.length - 1].precio_eur) : 0);
   var ahoraMs = Date.now();
@@ -360,10 +361,10 @@ function spark(serie, color){
 
 /* ===== cabecera ===== */
 function pintarCabecera(){
-  var r = D.total - D.base, p = r / D.base * 100;
+  var r = D.total - D.base, p = r / D.base * 100, fondo = D.total, rf = r;
   $("kpis").innerHTML =
-    kpi("Capital total", D.total.toFixed(2).replace(".", ",") + " €") +
-    kpi("Resultado", '<span class="'+(r >= 0 ? "up" : "down")+'">' + eur(r, true) + ' (' + (p >= 0 ? "+" : "") + p.toFixed(2).replace(".", ",") + ' %)</span>') +
+    kpi("Fondo de " + D.base.toFixed(0) + " €", fondo.toFixed(2).replace(".", ",") + " €") +
+    kpi("Resultado del fondo", '<span class="'+(rf >= 0 ? "up" : "down")+'">' + eur(rf, true) + ' (' + (p >= 0 ? "+" : "") + p.toFixed(2).replace(".", ",") + ' %)</span>') +
     kpi("Con posición", D.enPos + " / " + D.agentes.length) +
     kpi("Caída máx.", D.peorDD.toFixed(2).replace(".", ",") + " %");
   var viejo = !isNaN(D.ultimaMs) && Date.now() - D.ultimaMs > 3 * 3600 * 1000;
@@ -389,7 +390,7 @@ function pintarRanking(){
       '<div style="min-width:0"><div class="nm"><span class="rank">'+(k + 1)+'</span>' + esc(a.nombre) + '</div>' + tag + '</div>' +
       spark(a.serie, col) +
       '<div class="res" style="color:'+col+'">' + eur(a.res, true) + '<small>vs mantener ' + eur(a.vsHold, true) + '</small></div></div>';
-  }).join("") + '<p class="note">«vs mantener» compara a cada agente con haber comprado solo BTC el día en que él empezó. Pulsa una fila o una mesa para resaltarla.</p>';
+  }).join("") + '<p class="note">«vs mantener» compara a cada agente con haber comprado solo BTC el día en que él empezó. Pulsa una fila o una mesa para resaltarla.</p><p class="note"><b>Fondo de ' + D.base.toFixed(0) + ' €:</b> cada uno de los ' + D.agentes.length + ' agentes maneja ' + START.toFixed(0) + ' € ficticios, así que el fondo total es la suma de todos ellos.</p>';
 }
 function horaLocal(f){                     /* las horas del archivo están en UTC; aquí se enseñan en tu hora */
   var t = Date.parse(String(f).length <= 16 ? f + ":00Z" : f);
@@ -422,7 +423,7 @@ function pintarControl(){
     '<span>Capital por agente</span><span>' + START + ' € (ficticios)</span>' +
     '<span>Comisión por operación</span><span>' + (D.fee * 100).toFixed(2).replace(".", ",") + ' %</span>' +
     '<span>Deslizamiento</span><span>' + (D.slip * 100).toFixed(2).replace(".", ",") + ' %</span>' +
-    '<span>Pérdida diaria máxima</span><span>2 €</span>' +
+    '<span>Pérdida diaria máxima</span><span>' + eur(START * 0.04).replace(",00", ",0") + '</span>' +
     '<span>Apagado de seguridad</span><span>bajo ' + (START * 0.7).toFixed(0) + ' € (−30 %)</span>' +
     '<span>En marcha desde</span><span>' + esc((e.inicio || "").slice(0, 10)) + '</span></div>' +
     '<div style="padding:0 14px"><button class="btn" id="recargar">Actualizar ahora</button></div>' +
@@ -677,14 +678,14 @@ function pintarSala(){
   s += R(150, 292, 24, 26, "#1d1a2b") + R(152, 294, 20, 24, "#4a7fd0") + R(168, 306, 2, 2, "#ffd24a");
   s += R(186, 294, 30, 18, "#1d1a2b") + R(188, 296, 26, 14, "#9ccaf0");
   s += R(226, 290, 134, 34, "#1d1a2b") + R(228, 292, 130, 30, "#1d1747") + R(228, 292, 130, 2, "#6a5cc0");
-  s += '<text x="293" y="302" text-anchor="middle" font-size="5.5" fill="#9aa0c8" ' + FONT + '>CAPITAL TOTAL</text>';
+  s += '<text x="293" y="302" text-anchor="middle" font-size="5.5" fill="#9aa0c8" ' + FONT + '>FONDO DE ' + D.base.toFixed(0) + ' €</text>';
   s += '<text x="293" y="314" text-anchor="middle" font-size="10" fill="#c6ff1a" ' + FONT + '>' + D.total.toFixed(2).replace(".", ",") + ' €</text>';
   s += '<text x="293" y="320.5" text-anchor="middle" font-size="4.5" fill="#9aa0c8" ' + FONT + '>' + (D.btc ? "BTC " + Math.round(D.btc).toLocaleString("es-ES") + " €" : "") + '</text>';
   s += '<g transform="translate(136,300) scale(2)">' + sprite("#e8e8f0", "espera", true) + '</g>';
   s += burbuja(150, 254, trab + " TRABAJANDO" + (pa ? " · " + pa + " APAGADO" : ""), "#ffb020", false);
   s += tx(150, 338, "DIRECTOR", 5.5, "#fdf6e3");
   /* vigilante de riesgo */
-  var cerca = D.agentes.filter(function(a){ return !a.apagado && a.eq < 40; });
+  var cerca = D.agentes.filter(function(a){ return !a.apagado && a.eq < START * 0.8; });
   var dmax = D.agentes.reduce(function(m, a){ return Math.max(m, a.dd); }, 0), vtxt, vcol;
   if (pa) { vtxt = "ALERTA " + pa + " APAGADO"; vcol = "#d9453a"; }
   else if (cerca.length) { vtxt = "CERCA DEL LIMITE"; vcol = "#d9453a"; }

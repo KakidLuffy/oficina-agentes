@@ -16,7 +16,7 @@ import os
 import sys
 from datetime import datetime, timedelta, timezone
 
-START = 50.0
+START = 50.0  # valor por defecto; se lee de estado.json (capital_inicial)
 MAX_POS = 5
 STOP = 35.0
 MIN_DIAS, MIN_CIERRES = 21, 30
@@ -27,7 +27,7 @@ REGLAS = [
     f"Un agente solo es evaluable con al menos {MIN_DIAS} días de simulación y {MIN_CIERRES} operaciones cerradas.",
     "Un agente solo tiene ventaja si supera a «Comprar y mantener» de forma sostenida, después de costes.",
     "Las candidatas del laboratorio no operan solas: se añaden como agente nuevo solo si el usuario las aprueba.",
-    f"Un agente se apaga si su capital baja de {STOP:.0f} € y no compra más ese día si pierde 2 € en un día.",
+    "Un agente se apaga si pierde el 30 % de su capital inicial y no compra más ese día si pierde el 4 % en un día.",
 ]
 
 
@@ -144,6 +144,12 @@ def main():
     os.makedirs(carpeta, exist_ok=True)
     ref = ahora()
     estado = leer_json(os.path.join(carpeta, "estado.json"))
+    global START, STOP
+    try:
+        START = float((estado or {}).get("capital_inicial") or START)
+    except (TypeError, ValueError):
+        pass
+    STOP = START * 0.7
     hist = leer_csv(os.path.join(carpeta, "historial_v2.csv")) or leer_csv(os.path.join(carpeta, "historial.csv"))
     ops = leer_csv(os.path.join(carpeta, "operaciones.csv"))
     lab = leer_json(os.path.join(carpeta, "laboratorio.json"))
@@ -194,6 +200,7 @@ def main():
     lineas, alertas = [], []
     if ag:
         mejor, peor = max(ag, key=lambda x: x["res"]), min(ag, key=lambda x: x["res"])
+        lineas.append("Fondo de " + euros(base) + " (" + euros(START) + " por agente): vale " + euros(total) + " (" + euros(res_total, True) + ").")
         lineas.append("Capital total " + euros(total) + " (" + euros(res_total, True) + ", " + f"{res_total / base * 100:+.2f}".replace(".", ",") + " %).")
         lineas.append(f"Mejor agente: {mejor['nombre']} ({euros(mejor['res'], True)}). Peor: {peor['nombre']} ({euros(peor['res'], True)}).")
         if hold is not None:
