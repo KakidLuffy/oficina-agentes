@@ -14,7 +14,10 @@ Seis agentes de trading con **dinero ficticio** (50 € cada uno) que se ejecuta
 | `comparar_estrategias.py` y `.github/workflows/comparar.yml` | Comparador manual de estrategias sobre el historial de BTC/EUR (se lanza a mano desde Actions). |
 | `laboratorio.py` y `.github/workflows/laboratorio.yml` | El laboratorio: cada lunes prueba ~80 variantes de estrategias y las examina (ver más abajo). |
 | `index.html` | El panel «Sala de trading», publicado con GitHub Pages. |
-| `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`, `laboratorio.json` y `laboratorio.md`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
+| `manifest.webmanifest`, `icon-192.png`, `icon-512.png` | Permiten instalar el panel en la pantalla de inicio del móvil. |
+| `director.py` y `.github/workflows/director.yml` | El director: tras cada ejecución de los agentes o del laboratorio revisa los datos y escribe el parte, la memoria y las propuestas. |
+| `EQUIPO.md` | Carta del equipo: quién hace qué, qué necesita tu aprobación y qué está prohibido. |
+| `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`, `laboratorio.json`, `laboratorio.md`, `parte_director.json` y `.md`, `memoria.jsonl` y `.md`, `propuestas.md` y `director_estado.json`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
 | `comparacion/` | Resultado del comparador (`comparacion.md` y `.csv`). |
 
 ## Los agentes
@@ -40,9 +43,20 @@ Un grupo de tres analistas (tendencia, filtros y rebote) prueba cada lunes unas 
 
 Modo «propone, no ejecuta»: las candidatas **no operan solas**. Si alguna se repite varias semanas, se puede añadir como agente nuevo en simulación y aplicarle el mismo criterio de 3 semanas y 30 operaciones. Se lanza a mano desde **Actions → Laboratorio de estrategias (semanal) → Run workflow**.
 
+## El director
+
+Después de cada ejecución de los agentes (y del laboratorio), el director, que **solo lee y resume**, hace cuatro cosas:
+
+1. **Revisa los datos:** comprueba que están al día, que las cuentas cuadran, que no hay precios raros y que se respetan los límites. Si algo falla, el parte lo dice antes de que te fíes de las cifras.
+2. **Escribe el parte del día** (`datos/parte_director.md`): capital, mejor y peor agente, avisos de riesgo y cuánto le falta a cada agente para ser evaluable (21 días y 30 cierres). Se ve en el panel, debajo de «De un vistazo».
+3. **Anota en la memoria compartida** (`datos/memoria.md`) las reglas y el registro de decisiones: agentes que se apagan, agentes que ya son evaluables, veredictos del laboratorio.
+4. **Prepara las propuestas** (`datos/propuestas.md`): las candidatas del laboratorio con cuántas semanas seguidas aparecen. Para aprobar o rechazar una, díselo a Claude o crea `datos/aprobaciones.txt` con líneas como `aprobar: Cruce 15/20`.
+
+Para activarlo hay que subir `director.py` y crear `.github/workflows/director.yml`. Se puede lanzar a mano desde **Actions → Director de la oficina → Run workflow**.
+
 ## Ver los resultados
 
-- **Panel web:** `https://kakidluffy.github.io/oficina-agentes/`. Oficina pixel-art con los agentes, laboratorio, ranking, mercado en vivo con gráficas de velas, operaciones, informe y control. Se puede guardar en marcadores y abrir desde el móvil.
+- **Panel web:** `https://kakidluffy.github.io/oficina-agentes/`. Aldea pixel-art con los agentes (con aviso «LISTO» cuando cierran una operación ganadora y su última operación), laboratorio, parte del director, ranking, mercado en vivo con gráficas de velas, operaciones, informe y control. Se puede guardar en marcadores o instalar en el móvil («Añadir a pantalla de inicio»).
 - **Resumen en texto:** abre `datos/resumen.md` en el repositorio.
 - **Informe diario:** una tarea programada lee estos datos cada mañana y te manda un resumen corto.
 
