@@ -1,73 +1,88 @@
 {
   "inicio": "2026-10-19T19:51:44+00:00",
-  "ultima_vela": 1792497600,
+  "ultima_vela": 1792515600,
   "precio_inicio": 72920.7,
   "agentes": [
     {
       "nombre": "Cruce 10/30",
-      "efectivo": 50.0,
+      "efectivo": 0.0,
       "apagado": false,
-      "operaciones": 0,
+      "operaciones": 5,
       "dia": 20746,
       "eq_dia": 50.0,
-      "posiciones": {}
+      "posiciones": {
+        "ZECEUR": 0.009466699006428943,
+        "PUMPEUR": 2356.9775395989955,
+        "SUIEUR": 10.78772451039142,
+        "LINKEUR": 0.9027261921041684,
+        "ENAEUR": 56.04280490446178
+      }
     },
     {
       "nombre": "Cruce 5/20",
-      "efectivo": 50.0,
+      "efectivo": 0.0,
       "apagado": false,
-      "operaciones": 0,
+      "operaciones": 5,
       "dia": 20746,
       "eq_dia": 50.0,
-      "posiciones": {}
+      "posiciones": {
+        "ZECEUR": 0.009466699006428943,
+        "SUIEUR": 11.070414160008607,
+        "ENAEUR": 58.03268330910215,
+        "XBTEUR": 0.0001346937106440802,
+        "ETHEUR": 0.004536980656429466
+      }
     },
     {
       "nombre": "Momentum",
-      "efectivo": 30.0,
+      "efectivo": 0.0,
       "apagado": false,
-      "operaciones": 2,
+      "operaciones": 5,
       "dia": 20746,
       "eq_dia": 50.0,
       "posiciones": {
         "TIAEUR": 17.49739380923789,
-        "COMPEUR": 0.49552758412046466
+        "COMPEUR": 0.49552758412046466,
+        "ZECEUR": 0.009466699006428943,
+        "PUMPEUR": 2483.8104116850395,
+        "SUIEUR": 11.070414160008607
       }
     },
     {
       "nombre": "Rebote",
-      "efectivo": 30.0,
+      "efectivo": 41.04874012132487,
       "apagado": false,
-      "operaciones": 2,
+      "operaciones": 5,
       "dia": 20746,
       "eq_dia": 50.0,
       "posiciones": {
-        "NEAREUR": 2.386141491157588,
-        "ARBEUR": 59.31002375076591
+        "ARBEUR": 59.239542439119134
       }
     }
   ],
   "fee": 0.0025,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 72397.0,
-    "ETHEUR": 2124.5,
-    "XRPEUR": 1.15438,
-    "ZECEUR": 1012.345,
-    "SOLEUR": 92.56,
-    "NEAREUR": 4.1538,
-    "ARBEUR": 0.1674,
-    "PUMPEUR": 0.003919,
-    "SUIEUR": 0.8826,
-    "ZROEUR": 1.591,
-    "LINKEUR": 10.60542,
-    "INJEUR": 7.547,
-    "HYPEEUR": 69.84,
-    "TIAEUR": 0.5628,
-    "ADAEUR": 0.192344,
-    "TAOEUR": 234.3201,
-    "LTCEUR": 52.23,
+    "XBTEUR": 73577.5,
+    "ETHEUR": 2176.28,
+    "XRPEUR": 1.18115,
+    "ZECEUR": 1080.001,
+    "SOLEUR": 94.68,
+    "NEAREUR": 4.38,
+    "ARBEUR": 0.1692,
+    "PUMPEUR": 0.004114,
+    "SUIEUR": 0.9052,
+    "ZROEUR": 1.76,
+    "LINKEUR": 10.84758,
+    "INJEUR": 7.583,
+    "HYPEEUR": 71.19,
+    "TIAEUR": 0.5698,
+    "ADAEUR": 0.197113,
+    "TAOEUR": 243.6161,
+    "LTCEUR": 53.46,
     "DOTEUR": 1.0132,
-    "COMPEUR": 20.8,
-    "ENAEUR": 0.1669
+    "COMPEUR": 22.87,
+    "ENAEUR": 0.1741,
+    "BATEUR": 0.18232
   }
 }
