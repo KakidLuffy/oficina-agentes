@@ -131,6 +131,13 @@ def anotar(archivo, cabecera, fila):
         w.writerow(fila)
 
 
+def asegurar_operaciones():
+    """Crea operaciones.csv con su cabecera aunque aun no haya operaciones (asi nunca falta el archivo)."""
+    if not os.path.exists(OPERACIONES):
+        with open(OPERACIONES, "w", newline="") as f:
+            csv.writer(f).writerow(["fecha_utc", "agente", "tipo", "precio_eur", "importe_eur"])
+
+
 def parametros(estado):
     """Usa los costes guardados en el estado. Un estado antiguo sin operaciones adopta los costes actuales."""
     global FEE, SLIP
@@ -209,27 +216,31 @@ def paso(estado, velas):
 
 def guardar(estado, ahora, precio, fuente):
     os.makedirs(DATOS, exist_ok=True)
+    asegurar_operaciones()
     eqs = [equity(a, precio) for a in estado["agentes"]]
     mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
     anotar(HISTORIAL, ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"],
            [ahora, round(precio, 2)] + [round(e, 2) for e in eqs] + [round(mantener, 2)])
     with open(ESTADO, "w") as f:
         json.dump(estado, f, indent=2)
+    dias = (datetime.fromisoformat(ahora) - datetime.fromisoformat(estado["inicio"])).total_seconds() / 86400
     lineas = [
         "# Oficina de agentes (dinero ficticio)",
         "",
         f"Ultima actualizacion: {ahora} UTC · Precio BTC/EUR: {precio:.0f} ({fuente})",
-        f"En marcha desde: {estado['inicio']} UTC",
+        f"En marcha desde: {estado['inicio']} UTC ({dias:.1f} dias)",
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % · "
         f"limite de perdida diaria: {PERDIDA_DIA:.0f} EUR",
         "",
-        "| Agente | Capital (EUR) | Resultado (EUR) | Operaciones | Estado |",
-        "|---|---:|---:|---:|---|",
+        "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR) | Operaciones | Estado |",
+        "|---|---:|---:|---:|---:|---:|---|",
     ]
     for a, e in zip(estado["agentes"], eqs):
         est = "Apagado por riesgo" if a["apagado"] else ("Con BTC" if a["btc"] > 0 else "En efectivo")
-        lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {a['operaciones']} | {est} |")
-    lineas.append(f"| Comprar y mantener | {mantener:.2f} | {mantener - START:+.2f} | 1 | Referencia |")
+        lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - mantener:+.2f} | {a['operaciones']} | {est} |")
+    lineas.append(f"| Comprar y mantener | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | Referencia |")
+    if dias < 28:
+        lineas += ["", f"Aviso: solo hay {dias:.1f} dias de datos; aun no hay base para concluir que una estrategia sea mejor."]
     lineas += ["", "Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.",
                "Estos resultados no garantizan beneficios futuros."]
     with open(RESUMEN, "w") as f:
