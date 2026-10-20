@@ -1,1 +1,5 @@
-fecha_utc,agente,tipo,precio_eur,importe_eur
+fecha_utc,agente,moneda,tipo,precio_eur,importe_eur
+2026-10-20T12:00+00:00,Momentum,TIAEUR,COMPRA,0.570085,10.0
+2026-10-20T12:00+00:00,Momentum,COMPEUR,COMPRA,20.13006,10.0
+2026-10-20T12:00+00:00,Rebote,NEAREUR,COMPRA,4.180389,10.0
+2026-10-20T12:00+00:00,Rebote,ARBEUR,COMPRA,0.168184,10.0

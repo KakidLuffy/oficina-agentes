@@ -1,45 +1,73 @@
 {
   "inicio": "2026-10-19T19:51:44+00:00",
-  "ultima_vela": 1792494000,
+  "ultima_vela": 1792497600,
   "precio_inicio": 72920.7,
   "agentes": [
     {
       "nombre": "Cruce 10/30",
       "efectivo": 50.0,
-      "btc": 0.0,
       "apagado": false,
       "operaciones": 0,
       "dia": 20746,
-      "eq_dia": 50.0
+      "eq_dia": 50.0,
+      "posiciones": {}
     },
     {
       "nombre": "Cruce 5/20",
       "efectivo": 50.0,
-      "btc": 0.0,
       "apagado": false,
       "operaciones": 0,
       "dia": 20746,
-      "eq_dia": 50.0
+      "eq_dia": 50.0,
+      "posiciones": {}
     },
     {
       "nombre": "Momentum",
-      "efectivo": 50.0,
-      "btc": 0.0,
+      "efectivo": 30.0,
       "apagado": false,
-      "operaciones": 0,
+      "operaciones": 2,
       "dia": 20746,
-      "eq_dia": 50.0
+      "eq_dia": 50.0,
+      "posiciones": {
+        "TIAEUR": 17.49739380923789,
+        "COMPEUR": 0.49552758412046466
+      }
     },
     {
       "nombre": "Rebote",
-      "efectivo": 50.0,
-      "btc": 0.0,
+      "efectivo": 30.0,
       "apagado": false,
-      "operaciones": 0,
+      "operaciones": 2,
       "dia": 20746,
-      "eq_dia": 50.0
+      "eq_dia": 50.0,
+      "posiciones": {
+        "NEAREUR": 2.386141491157588,
+        "ARBEUR": 59.31002375076591
+      }
     }
   ],
   "fee": 0.0025,
-  "slip": 0.0005
+  "slip": 0.0005,
+  "precios": {
+    "XBTEUR": 72505.5,
+    "ETHEUR": 2131.61,
+    "XRPEUR": 1.15571,
+    "ZECEUR": 1021.671,
+    "SOLEUR": 92.98,
+    "NEAREUR": 4.1745,
+    "ARBEUR": 0.1672,
+    "PUMPEUR": 0.003949,
+    "SUIEUR": 0.8855,
+    "ZROEUR": 1.595,
+    "LINKEUR": 10.6464,
+    "INJEUR": 7.574,
+    "HYPEEUR": 70.09,
+    "TIAEUR": 0.5656,
+    "ADAEUR": 0.192871,
+    "TAOEUR": 234.5431,
+    "LTCEUR": 52.37,
+    "DOTEUR": 1.0157,
+    "COMPEUR": 21.0,
+    "ENAEUR": 0.1677
+  }
 }
