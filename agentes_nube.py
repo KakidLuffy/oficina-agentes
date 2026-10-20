@@ -33,7 +33,9 @@ SLOT = START / MAX_POS                  # euros ficticios que se invierten en ca
 SLIP_POCO_VOLUMEN = 0.003               # deslizamiento (0,3 %) en monedas con poco volumen diario
 VOLUMEN_ALTO = 100_000                  # EUR de volumen en 24 h a partir del cual se usa el deslizamiento normal
 PAUSA_API = 1.1                         # segundos entre peticiones a Kraken (para no pasar su limite)
-HISTORIA_HORAS = 100                    # velas de 1 hora que se descargan por moneda
+HISTORIA_HORAS = 220                    # velas de 1 hora que se descargan por moneda (el filtro de tendencia necesita 200)
+MIN_CERRADAS = 30                       # criterio acordado: al menos 30 operaciones cerradas...
+MIN_DIAS = 21                           # ...y 3 semanas de simulacion antes de fiarse de un agente
 BTC = "XBTEUR"                          # moneda de referencia para 'Comprar y mantener' y la columna precio_eur
 # Stablecoins y monedas fiat: su precio casi no se mueve, asi que no tiene sentido operarlas
 EXCLUIR_BASES = {"USDT", "USDC", "DAI", "PYUSD", "TUSD", "EURT", "EURR", "EURQ", "USDG", "RLUSD", "USDD", "USDQ",
@@ -43,7 +45,7 @@ RESPALDO = ["XBTEUR", "ETHEUR", "SOLEUR", "XRPEUR", "ADAEUR", "DOGEEUR", "DOTEUR
             "TRXEUR", "ATOMEUR", "XLMEUR", "BCHEUR", "UNIEUR", "NEAREUR", "AAVEEUR", "ETCEUR", "ALGOEUR", "FILEUR"]
 DATOS = "datos"
 ESTADO = os.path.join(DATOS, "estado.json")
-HISTORIAL = os.path.join(DATOS, "historial.csv")
+HISTORIAL = os.path.join(DATOS, "historial_v2.csv")   # v2: 6 agentes. El historial.csv antiguo (4 agentes) se conserva sin tocar
 OPERACIONES = os.path.join(DATOS, "operaciones.csv")
 CAB_OPERACIONES = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur"]
 RESUMEN = os.path.join(DATOS, "resumen.md")
@@ -81,12 +83,42 @@ def rebote(p):
     return "b" if x < m * 0.985 else ("s" if x > m else None)
 
 
+def filtro(decidir, n=200):
+    """Filtro de mercado: solo deja pasar las COMPRAS si el precio esta por encima de su media de n velas."""
+    def f(p):
+        senal = decidir(p)
+        if senal == "b" and (len(p) < n or p[-1] <= media(p[-n:])):
+            return None
+        return senal
+    return f
+
+
+def _votos(p):
+    """Reglas de tendencia a favor de estar comprado: cruce 10/30, cruce 5/20 y momentum de 12 velas."""
+    return (media(p[-10:]) > media(p[-30:])) + (media(p[-5:]) > media(p[-20:])) + (p[-1] > p[-13])
+
+
+def consenso(p):
+    """Consenso 2 de 3: compra cuando al menos 2 de las 3 reglas de tendencia coinciden; vende cuando dejan de coincidir."""
+    if len(p) < 32:
+        return None
+    ahora, antes = _votos(p) >= 2, _votos(p[:-1]) >= 2
+    if ahora and not antes:
+        return "b"
+    if antes and not ahora:
+        return "s"
+    return None
+
+
 AGENTES = [
     ("Cruce 10/30", lambda p: cruce(p, 10, 30)),
     ("Cruce 5/20", lambda p: cruce(p, 5, 20)),
     ("Momentum", momentum),
     ("Rebote", rebote),
+    ("Cruce 10/30 + filtro", filtro(lambda p: cruce(p, 10, 30))),
+    ("Consenso 2 de 3", consenso),
 ]
+DECIDIR = dict(AGENTES)
 
 
 # ---------------- precios ----------------
@@ -199,6 +231,12 @@ def obtener_datos(demo):
 
 
 # ---------------- estado ----------------
+def agente_nuevo(nombre, precio_btc):
+    return {"nombre": nombre, "efectivo": START, "posiciones": {}, "apagado": False, "operaciones": 0,
+            "dia": None, "eq_dia": START,
+            "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"), "precio_inicio": precio_btc}
+
+
 def estado_nuevo(velas, ahora_ts):
     cerradas = [c for c in velas[BTC] if c[0] + 3600 <= ahora_ts]
     return {
@@ -208,8 +246,7 @@ def estado_nuevo(velas, ahora_ts):
         "fee": FEE,
         "slip": SLIP,
         "precios": {p: v[-1][1] for p, v in velas.items()},
-        "agentes": [{"nombre": n, "efectivo": START, "posiciones": {}, "apagado": False, "operaciones": 0,
-                     "dia": None, "eq_dia": START} for n, _ in AGENTES],
+        "agentes": [agente_nuevo(n, velas[BTC][-1][1]) for n, _ in AGENTES],
     }
 
 
@@ -221,6 +258,15 @@ def migrar(estado, velas):
             a.pop("btc", None)
     estado.setdefault("precios", {})
     estado["precios"].setdefault(BTC, estado.get("precio_inicio", velas[BTC][-1][1]))
+    # agentes nuevos: se anaden al final y empiezan ahora con START; los que ya existian conservan todo
+    existentes = {a["nombre"] for a in estado["agentes"]}
+    for n, _ in AGENTES:
+        if n not in existentes:
+            estado["agentes"].append(agente_nuevo(n, velas[BTC][-1][1]))
+            print(f"Agente nuevo incorporado: {n} (empieza ahora con {START} EUR ficticios).")
+    for a in estado["agentes"]:
+        a.setdefault("inicio", estado["inicio"])
+        a.setdefault("precio_inicio", estado["precio_inicio"])
 
 
 def anotar(archivo, cabecera, fila):
@@ -314,7 +360,8 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
         pares_t = sorted(cerr_por_t[t], key=lambda p: rango.get(p, 10 ** 6))
         for par in pares_t:
             precios[par] = cierres[par][indice[(par, t)]]
-        for a, (_, decidir) in zip(estado["agentes"], AGENTES):
+        for a in estado["agentes"]:
+            decidir = DECIDIR[a["nombre"]]
             if a["apagado"]:
                 continue
             dia = t // 86400
@@ -353,8 +400,9 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     precio = precios[BTC]
     eqs = [equity(a, precios) for a in estado["agentes"]]
     mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
+    eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
     anotar(HISTORIAL, ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"],
-           [ahora, round(precio, 2)] + [round(e, 2) for e in eqs] + [round(mantener, 2)])
+           [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)])
     with open(ESTADO, "w") as f:
         json.dump(estado, f, indent=2)
     dias = (datetime.fromisoformat(ahora) - datetime.fromisoformat(estado["inicio"])).total_seconds() / 86400
@@ -368,8 +416,8 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
         f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.0f} EUR",
         "",
-        "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR) | Operaciones | Estado |",
-        "|---|---:|---:|---:|---:|---:|---|",
+        "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |",
+        "|---|---:|---:|---:|---:|---:|---|---|",
     ]
     for a, e in zip(estado["agentes"], eqs):
         if a["apagado"]:
@@ -378,8 +426,10 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
             est = "Con " + ", ".join(nombre_corto(p) for p in sorted(a["posiciones"]))
         else:
             est = "En efectivo"
-        lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - mantener:+.2f} | {a['operaciones']} | {est} |")
-    lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | Referencia |")
+        hold_a = START * (1 - FEE) * precio / (a["precio_inicio"] * (1 + SLIP))   # mantener BTC desde que empezo ESTE agente
+        lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - hold_a:+.2f} | "
+                      f"{a['operaciones']} | {a['inicio'][:10]} | {est} |")
+    lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | {estado['inicio'][:10]} | Referencia |")
     nombres = [n for n, _ in AGENTES]
     try:
         met = informe.metricas(HISTORIAL, OPERACIONES, nombres + ["Comprar y mantener"])
@@ -391,7 +441,16 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
             lineas.append(f"| {n} | {cm:.2f} % | {g} | {pe} |")
         lineas += ["", "Caida maxima = lo que llego a perder cada agente desde su mejor momento. "
                    "Una operacion cuenta cuando se cierra con su venta."]
-        if informe.grafico_svg(HISTORIAL, GRAFICO, nombres):
+        pocos = []
+        for a in estado["agentes"]:
+            cerradas = met[a["nombre"]][1] + met[a["nombre"]][2]
+            dias_a = (datetime.fromisoformat(ahora) - datetime.fromisoformat(a["inicio"])).total_seconds() / 86400
+            if cerradas < MIN_CERRADAS or dias_a < MIN_DIAS:
+                pocos.append(f"{a['nombre']} ({cerradas} cerradas, {dias_a:.0f} dias)")
+        if pocos:
+            lineas += ["", f"⚠ Aun sin datos suficientes (se exigen {MIN_CERRADAS} operaciones cerradas y {MIN_DIAS} dias): "
+                       + "; ".join(pocos) + ". Antes de eso, el resultado puede ser pura suerte."]
+        if informe.grafico_svg(HISTORIAL, GRAFICO, [n for n, _ in AGENTES[:4]]):   # el grafico conserva sus 4 colores originales
             lineas += ["", "![Evolucion del capital](grafico.svg)"]
     except Exception as e:                      # los extras nunca deben romper la simulacion
         print("Aviso: no se pudieron calcular los extras del resumen:", e)
