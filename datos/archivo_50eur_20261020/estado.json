@@ -1,0 +1,125 @@
+{
+  "inicio": "2026-10-19T19:51:44+00:00",
+  "ultima_vela": 1792530000,
+  "precio_inicio": 72920.7,
+  "agentes": [
+    {
+      "nombre": "Cruce 10/30",
+      "efectivo": 0.0,
+      "apagado": false,
+      "operaciones": 5,
+      "dia": 20746,
+      "eq_dia": 50.0,
+      "posiciones": {
+        "ZECEUR": 0.009466699006428943,
+        "PUMPEUR": 2356.9775395989955,
+        "SUIEUR": 10.78772451039142,
+        "LINKEUR": 0.9027261921041684,
+        "ENAEUR": 56.04280490446178
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
+    },
+    {
+      "nombre": "Cruce 5/20",
+      "efectivo": 0.0,
+      "apagado": false,
+      "operaciones": 5,
+      "dia": 20746,
+      "eq_dia": 50.0,
+      "posiciones": {
+        "ZECEUR": 0.009466699006428943,
+        "SUIEUR": 11.070414160008607,
+        "ENAEUR": 58.03268330910215,
+        "XBTEUR": 0.0001346937106440802,
+        "ETHEUR": 0.004536980656429466
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
+    },
+    {
+      "nombre": "Momentum",
+      "efectivo": 0.0,
+      "apagado": false,
+      "operaciones": 7,
+      "dia": 20746,
+      "eq_dia": 50.0,
+      "posiciones": {
+        "COMPEUR": 0.49552758412046466,
+        "ZECEUR": 0.009466699006428943,
+        "PUMPEUR": 2483.8104116850395,
+        "SUIEUR": 11.070414160008607,
+        "XBTEUR": 0.0001309266738311965
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
+    },
+    {
+      "nombre": "Rebote",
+      "efectivo": 41.04874012132487,
+      "apagado": false,
+      "operaciones": 5,
+      "dia": 20746,
+      "eq_dia": 50.0,
+      "posiciones": {
+        "ARBEUR": 59.239542439119134
+      },
+      "inicio": "2026-10-19T19:51:44+00:00",
+      "precio_inicio": 72920.7
+    },
+    {
+      "nombre": "Cruce 10/30 + filtro",
+      "efectivo": 40.0,
+      "posiciones": {
+        "LTCEUR": 0.18486955298542093
+      },
+      "apagado": false,
+      "operaciones": 1,
+      "dia": 20746,
+      "eq_dia": 50.0,
+      "inicio": "2026-10-20T18:14:31+00:00",
+      "precio_inicio": 73512.8
+    },
+    {
+      "nombre": "Consenso 2 de 3",
+      "efectivo": 39.93834048523088,
+      "posiciones": {
+        "INJEUR": 1.3036107469277916
+      },
+      "apagado": false,
+      "operaciones": 3,
+      "dia": 20746,
+      "eq_dia": 50.0,
+      "inicio": "2026-10-20T18:14:31+00:00",
+      "precio_inicio": 73512.8
+    }
+  ],
+  "fee": 0.0025,
+  "slip": 0.0005,
+  "precios": {
+    "XBTEUR": 73917.2,
+    "ETHEUR": 2190.83,
+    "XRPEUR": 1.19027,
+    "ZECEUR": 1130.666,
+    "SOLEUR": 95.26,
+    "NEAREUR": 4.4354,
+    "ARBEUR": 0.1698,
+    "PUMPEUR": 0.004236,
+    "SUIEUR": 0.9191,
+    "ZROEUR": 1.819,
+    "LINKEUR": 10.97764,
+    "INJEUR": 7.991,
+    "HYPEEUR": 72.28,
+    "TIAEUR": 0.559,
+    "ADAEUR": 0.19924,
+    "TAOEUR": 246.4971,
+    "LTCEUR": 54.51,
+    "DOTEUR": 1.0132,
+    "COMPEUR": 23.35,
+    "ENAEUR": 0.1741,
+    "BATEUR": 0.18191,
+    "AAVEEUR": 135.73,
+    "PEPEEUR": 4.003e-06,
+    "AVAXEUR": 8.749
+  }
+}
