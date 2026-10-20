@@ -96,6 +96,14 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 .gl.trab em{color:var(--lime)}.gl.off em{color:var(--red)}
 .gl strong{grid-row:1/3;grid-column:3;font-family:var(--cond);font-size:16px}
 .gl.sel{border-color:var(--lime)}
+.lab{width:100%;padding:6px 10px;align-self:stretch}.lab[hidden]{display:none}
+#labsvg{width:100%;height:auto;max-height:calc(100vh - 420px);display:block;border:3px solid #2a2358;border-radius:10px;background:#17123a}
+.labv{margin:10px 0 4px;padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;gap:3px}
+.labv b{font-family:Silkscreen,monospace;font-size:12px}
+.labv.posible b{color:var(--lime)}.labv.ruido b{color:var(--amber)}.labv.ninguna b{color:var(--red)}
+.labt{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.labt th{font-family:var(--cond);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;color:var(--mute);text-align:left;padding:5px 8px;border-bottom:1px solid var(--line)}
+.labt td{padding:6px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
 .zone{font-family:var(--cond);font-weight:800;fill:#aab5be;opacity:.55;letter-spacing:.1em}
 .desk{cursor:pointer}
 .desk:hover .glow{opacity:1}
@@ -191,10 +199,11 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
   </aside>
   <main class="stage">
     <div class="top" id="top"><div class="ficha" id="ficha"></div>
-      <div class="vtabs" id="vtabs"><button data-v="sala" aria-pressed="true">Sala</button><button data-v="evo" aria-pressed="false">Evolución del capital</button></div></div>
+      <div class="vtabs" id="vtabs"><button data-v="sala" aria-pressed="true">Sala</button><button data-v="lab" aria-pressed="false">Laboratorio</button><button data-v="evo" aria-pressed="false">Evolución del capital</button></div></div>
     <div class="evo" id="evbox" hidden><svg id="evchart" viewBox="0 0 900 440" role="img" aria-label="Evolución del capital de cada agente"></svg><div class="leg" id="leg"></div><div class="mnote" id="evnote"></div></div>
     <svg id="floor" viewBox="0 0 480 340" shape-rendering="crispEdges" role="img" aria-label="Oficina de trading: una mesa por agente, sala de descanso y dirección"></svg>
     <div class="glance" id="glance"></div>
+    <div class="lab" id="labbox" hidden><svg id="labsvg" viewBox="0 0 480 220" shape-rendering="crispEdges" role="img" aria-label="Laboratorio con tres analistas de estrategias"></svg><div id="labtxt"></div></div>
     <div class="mkt" id="mktbox" hidden>
       <div class="mtop"><div class="mh" id="mhead"></div><div class="rng" id="rng"></div></div>
       <svg id="mchart" viewBox="0 0 900 460" role="img" aria-label="Gráfico de velas en tiempo real"></svg>
@@ -393,12 +402,64 @@ function pintarTab(){
   ["rank", "mkt", "ops", "inf", "ctl"].forEach(function(t){ $("p-" + t).hidden = (t !== TAB); });
   $("floor").style.display = $("glance").style.display = (TAB === "mkt" || VIEW !== "sala") ? "none" : "";
   $("evbox").hidden = (TAB === "mkt" || VIEW !== "evo");
+  $("labbox").hidden = (TAB === "mkt" || VIEW !== "lab");
+  if (VIEW === "lab" && TAB !== "mkt") pintarLab();
   $("top").hidden = TAB === "mkt";
   Array.prototype.forEach.call(document.querySelectorAll("#vtabs button"), function(b){ b.setAttribute("aria-pressed", b.dataset.v === VIEW ? "true" : "false"); });
   $("mktbox").hidden = TAB !== "mkt";
   if (D && TAB !== "mkt"){ pintarFicha(); if (VIEW === "evo") pintarEvolucion(); }
   mercadoActivar(TAB === "mkt");
   Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){ b.setAttribute("aria-selected", b.dataset.t === TAB ? "true" : "false"); });
+}
+
+/* ===== laboratorio de estrategias ===== */
+var LAB = null;
+function cargarLab(){
+  var b = BASE.replace(/\/?$/, "/");
+  return get(b + "laboratorio.json", "json").then(function(l){ LAB = l; }).catch(function(){ LAB = null; }).then(function(){ if (VIEW === "lab") pintarLab(); });
+}
+function pintarLab(){
+  var L = LAB, cols = {"Analista de tendencia": "#7aa2ff", "Analista de filtros": "#ffb020", "Analista de rebote": "#ff6bd6"};
+  var an = L ? L.analistas : [{nombre: "Analista de tendencia"}, {nombre: "Analista de filtros"}, {nombre: "Analista de rebote"}];
+  var s = '<defs><pattern id="lt" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#2c6f7a"/><rect width="8" height="8" fill="#317a86"/><rect x="8" y="8" width="8" height="8" fill="#317a86"/></pattern></defs>';
+  s += R(0, 0, 480, 220, "#17123a") + R(6, 6, 468, 208, "#0d0a24") + R(8, 8, 464, 204, "url(#lt)") + R(8, 8, 464, 14, "#3a2a6b") + R(8, 20, 464, 2, "#251a49");
+  s += '<text x="240" y="18" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>LABORATORIO DE ESTRATEGIAS</text>';
+  an.forEach(function(a, k){
+    var cx = 62 + k * 100, b = 28, c = cols[a.nombre] || "#c6ff1a", hay = !!L;
+    s += R(cx - 12, b + 58, 24, 8, "#2a1f4d") + R(cx - 15, b + 16, 30, 16, "#1c1530") + R(cx - 13, b + 18, 26, 11, hay ? c : "#2c2f46", hay ? ' class="scr"' : "");
+    if (hay) s += '<polyline fill="none" stroke="#0a0e11" stroke-width="1.2" points="' + (cx - 10) + ',' + (b + 25) + ' ' + (cx - 5) + ',' + (b + 21) + ' ' + cx + ',' + (b + 26) + ' ' + (cx + 5) + ',' + (b + 20) + ' ' + (cx + 10) + ',' + (b + 24) + '"/>';
+    s += R(cx - 3, b + 32, 6, 3, "#1c1530") + R(cx - 32, b + 33, 64, 16, "#d9a766") + R(cx - 32, b + 33, 64, 2, "#efc88f") + R(cx - 32, b + 47, 64, 2, "#8a5d2f") + R(cx - 8, b + 40, 16, 5, "#3a3358");
+    s += '<g transform="translate(' + (cx - 12) + ',' + (b + 38) + ')"><g transform="scale(2)">' + sprite(c, hay ? "trab" : "espera") + '</g></g>';
+    s += '<text x="' + cx + '" y="' + (b + 82) + '" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(a.nombre.replace("Analista de ", "ANALISTA ").toUpperCase()) + '</text>';
+    if (hay) {
+      s += burbuja(cx, b, "Probó " + a.probadas, c, true);
+      s += '<text x="' + cx + '" y="' + (b + 91) + '" text-anchor="middle" font-size="5.5" fill="' + (a.candidatas ? "#c6ff1a" : "#9aa0c8") + '" ' + FONT + '>' + a.candidatas + (a.candidatas === 1 ? " CANDIDATA" : " CANDIDATAS") + '</text>';
+    } else s += burbuja(cx, b, "Sin datos", "#9aa0c8", false);
+  });
+  /* mesa de examen y director */
+  var v = L ? L.veredicto : "", vc = v === "posible" ? "#c6ff1a" : v === "ruido" ? "#ffb020" : "#ff8a7d";
+  s += R(356, 74, 100, 46, "#120d2c") + R(358, 76, 96, 42, "#1d1747") + R(358, 76, 96, 2, "#6a5cc0");
+  s += '<text x="406" y="88" text-anchor="middle" font-size="5.5" fill="#9aa0c8" ' + FONT + '>EXAMEN</text>';
+  s += '<text x="406" y="104" text-anchor="middle" font-size="10" fill="' + (L ? vc : "#9aa0c8") + '" ' + FONT + '>' + (L ? v.toUpperCase() : "—") + '</text>';
+  s += '<text x="406" y="114" text-anchor="middle" font-size="5" fill="#9aa0c8" ' + FONT + '>' + (L ? "azar " + Math.round(L.tasa_azar * 100) + " %" : "sin datos") + '</text>';
+  s += '<g transform="translate(394,140) scale(2)">' + sprite("#e8e8f0", "trab", true) + '</g>';
+  s += '<text x="406" y="187" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>DIRECTOR</text>';
+  s += planta(12, 186) + planta(300, 186) + planta(452, 190);
+  $("labsvg").innerHTML = s;
+  var h = "";
+  if (!L) {
+    h = '<p class="note">El laboratorio aún no ha trabajado. En GitHub: pestaña <b>Actions → Laboratorio de estrategias (semanal) → Run workflow</b>. Después de un minuto aparecerán aquí sus resultados.</p>';
+  } else {
+    var f = new Date(L.generado);
+    h += '<div class="labv ' + v + '"><b>Veredicto: ' + esc(v.toUpperCase()) + '</b><span>' + esc(L.texto) + '</span></div>';
+    h += '<p class="note">Actualizado ' + f.toLocaleString("es-ES", {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"}) + ' · ' + L.probadas + ' variantes · ' + L.series.length + ' series (' + esc(L.fuente) + '). Criterio: ' + esc(L.criterio) + '.</p>';
+    h += '<table class="labt"><thead><tr><th>Variante (mejores en entrenamiento)</th><th>Entrena</th><th>Examen</th><th>Series</th><th></th></tr></thead><tbody>';
+    L.mejores_entreno.forEach(function(x){
+      h += '<tr><td>' + esc(x.nombre) + '</td><td class="' + (x.train_dif >= 0 ? "up" : "down") + '">' + eur(x.train_dif, true) + '</td><td class="' + (x.test_dif >= 0 ? "up" : "down") + '">' + eur(x.test_dif, true) + '</td><td>' + x.ok + '/' + x.total + '</td><td>' + (x.pasa ? "✔" : "✘") + '</td></tr>';
+    });
+    h += '</tbody></table><p class="note">«Entrena» y «Examen» son la diferencia media frente a comprar y mantener. Las candidatas (✔) <b>no operan solas</b>: solo se proponen. Con tantas variantes probadas, algunas salen bien por azar, por eso se compara con la tasa de azar.</p>';
+  }
+  $("labtxt").innerHTML = h;
 }
 
 /* ===== sala pixel-art (vista desde arriba) ===== */
@@ -762,7 +823,7 @@ function aviso(txt, err, boton){
   var b = $("reint"); if (b) b.onclick = recargar;
 }
 function recargar(){
-  return cargar().then(function(d){ D = d; DEMO = false; aviso(""); pintarTodo(); })
+  return cargar().then(function(d){ D = d; DEMO = false; aviso(""); pintarTodo(); cargarLab(); })
     .catch(function(e){
       if (!D) { D = ejemplo(); DEMO = true; pintarTodo(); }
       aviso("No se pudo leer la simulación de la nube (" + esc(e.message || e) + "). " + (DEMO ? "Se muestran datos de ejemplo para ver el diseño." : "Se muestran los últimos datos cargados.") +

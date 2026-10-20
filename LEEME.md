@@ -12,8 +12,9 @@ Seis agentes de trading con **dinero ficticio** (50 € cada uno) que se ejecuta
 | `informe.py` | Calcula la caída máxima, las operaciones ganadoras/perdedoras y el gráfico del resumen. |
 | `.github/workflows/agentes.yml` | La orden que ejecuta el programa cada hora (minutos 17 y 47, como respaldo). |
 | `comparar_estrategias.py` y `.github/workflows/comparar.yml` | Comparador manual de estrategias sobre el historial de BTC/EUR (se lanza a mano desde Actions). |
+| `laboratorio.py` y `.github/workflows/laboratorio.yml` | El laboratorio: cada lunes prueba ~80 variantes de estrategias y las examina (ver más abajo). |
 | `index.html` | El panel «Sala de trading», publicado con GitHub Pages. |
-| `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
+| `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`, `laboratorio.json` y `laboratorio.md`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
 | `comparacion/` | Resultado del comparador (`comparacion.md` y `.csv`). |
 
 ## Los agentes
@@ -28,9 +29,20 @@ Seis agentes de trading con **dinero ficticio** (50 € cada uno) que se ejecuta
 
 Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pasar horas sin ninguna operación.
 
+## El laboratorio (analistas de estrategias)
+
+Un grupo de tres analistas (tendencia, filtros y rebote) prueba cada lunes unas 80 variantes de estrategias sobre el historial de Kraken (6 monedas, velas de 4 horas y de 1 día). Funciona así:
+
+1. **Entrenamiento:** se eligen las 12 mejores variantes con el primer 60 % del historial.
+2. **Examen:** se las prueba en el último 40 %, que no se usó para elegir. Una variante aprueba si gana dinero y supera a comprar y mantener en al menos el 60 % de las series, con 4 operaciones o más.
+3. **Tasa de azar:** se calcula qué porcentaje de *todas* las variantes aprobaría el examen. Si las candidatas no destacan claramente sobre ese porcentaje, el veredicto es «ruido».
+4. **Director:** el veredicto (POSIBLE, RUIDO o NINGUNA) aparece en el panel, en la vista **Laboratorio**, y en el informe diario.
+
+Modo «propone, no ejecuta»: las candidatas **no operan solas**. Si alguna se repite varias semanas, se puede añadir como agente nuevo en simulación y aplicarle el mismo criterio de 3 semanas y 30 operaciones. Se lanza a mano desde **Actions → Laboratorio de estrategias (semanal) → Run workflow**.
+
 ## Ver los resultados
 
-- **Panel web:** `https://kakidluffy.github.io/oficina-agentes/`. Ranking, mercado en vivo con gráficas de velas, operaciones, informe y control. Se puede guardar en marcadores y abrir desde el móvil.
+- **Panel web:** `https://kakidluffy.github.io/oficina-agentes/`. Oficina pixel-art con los agentes, laboratorio, ranking, mercado en vivo con gráficas de velas, operaciones, informe y control. Se puede guardar en marcadores y abrir desde el móvil.
 - **Resumen en texto:** abre `datos/resumen.md` en el repositorio.
 - **Informe diario:** una tarea programada lee estos datos cada mañana y te manda un resumen corto.
 
@@ -39,8 +51,8 @@ Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pa
 No hace falta instalar nada ni usar la terminal.
 
 1. **Crea una cuenta en github.com** (gratis) y un repositorio llamado `oficina-agentes`.
-2. **Sube los archivos:** **Add file → Upload files** con `agentes_nube.py`, `informe.py`, `comparar_estrategias.py` e `index.html`.
-3. **Crea las órdenes de ejecución:** **Add file → Create new file**, con el nombre `.github/workflows/agentes.yml`, y pega el contenido de `agentes.yml`. Repite con `.github/workflows/comparar.yml`.
+2. **Sube los archivos:** **Add file → Upload files** con `agentes_nube.py`, `informe.py`, `comparar_estrategias.py`, `laboratorio.py` e `index.html`.
+3. **Crea las órdenes de ejecución:** **Add file → Create new file**, con el nombre `.github/workflows/agentes.yml`, y pega el contenido de `agentes.yml`. Repite con `.github/workflows/comparar.yml` y `.github/workflows/laboratorio.yml`.
 4. **Pruébalo a mano:** pestaña **Actions → Agentes de trading (simulación) → Run workflow**. Tras un minuto debe salir un círculo verde y aparecer la carpeta `datos`.
 5. **Activa el panel (opcional):** **Settings → Pages → Source: Deploy from a branch → main / (root) → Save**. En uno o dos minutos estará en `https://TU-USUARIO.github.io/oficina-agentes/`.
 
