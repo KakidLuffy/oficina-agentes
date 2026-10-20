@@ -1,64 +1,76 @@
 # Oficina de agentes en la nube (gratis, sin tu PC)
 
-Esto ejecuta tus 4 agentes **cada hora** en los servidores de GitHub, con precios reales de BTC/EUR y dinero **ficticio**. Los resultados se guardan solos en tu repositorio y los puedes ver desde el móvil o el ordenador.
+Seis agentes de trading con **dinero ficticio** (50 € cada uno) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
 
-No hace falta instalar nada ni usar la terminal. Todo se hace desde la web.
+**Es una simulación:** no opera en ningún exchange ni toca dinero real, y nada de esto garantiza beneficios.
 
-## Archivos que necesitas
+## Qué hay en el repositorio
 
-- `agentes_nube.py`: el programa (un paso por ejecución).
-- `agentes.yml`: la orden que le dice a GitHub que lo ejecute cada hora.
+| Archivo | Para qué sirve |
+|---|---|
+| `agentes_nube.py` | El programa: un paso por ejecución (descarga precios, decide, anota). |
+| `informe.py` | Calcula la caída máxima, las operaciones ganadoras/perdedoras y el gráfico del resumen. |
+| `.github/workflows/agentes.yml` | La orden que ejecuta el programa cada hora (minutos 17 y 47, como respaldo). |
+| `comparar_estrategias.py` y `.github/workflows/comparar.yml` | Comparador manual de estrategias sobre el historial de BTC/EUR (se lanza a mano desde Actions). |
+| `index.html` | El panel «Sala de trading», publicado con GitHub Pages. |
+| `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
+| `comparacion/` | Resultado del comparador (`comparacion.md` y `.csv`). |
 
-## Paso a paso
+## Los agentes
 
-**1. Crea una cuenta en github.com** (gratis). Si ya tienes, salta este paso.
+| Agente | Qué hace |
+|---|---|
+| Cruce 10/30 y Cruce 5/20 | Compran cuando la media corta cruza por encima de la larga y venden al revés. |
+| Momentum | Compra si el precio sube más de un 1,2 % en 12 horas y vende si baja otro tanto. |
+| Rebote | Compra cuando el precio cae un 1,5 % bajo su media de 20 horas y vende al recuperarla. |
+| Cruce 10/30 + filtro | Como el Cruce 10/30, pero solo compra si el precio está por encima de su media de 200 horas (tendencia alcista). |
+| Consenso 2 de 3 | Compra cuando al menos 2 de las 3 reglas de tendencia (Cruce 10/30, Cruce 5/20, Momentum) coinciden. |
 
-**2. Crea un repositorio.**
-- Arriba a la derecha pulsa **+ → New repository**.
-- Nombre: `oficina-agentes`.
-- Marca **Private** (privado) para que solo tú veas los resultados.
-- Marca **Add a README file** y pulsa **Create repository**.
+Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pasar horas sin ninguna operación.
 
-**3. Sube el programa.**
-- En el repositorio pulsa **Add file → Upload files**.
-- Arrastra `agentes_nube.py` y pulsa **Commit changes**.
+## Ver los resultados
 
-**4. Crea la orden de ejecución.**
-- Pulsa **Add file → Create new file**.
-- En el nombre escribe exactamente: `.github/workflows/agentes.yml` (al escribir las barras `/` se crean las carpetas solas).
-- Abre `agentes.yml` con el Bloc de notas, copia todo su contenido y pégalo en el cuadro grande.
-- Pulsa **Commit changes**.
+- **Panel web:** `https://kakidluffy.github.io/oficina-agentes/`. Ranking, mercado en vivo con gráficas de velas, operaciones, informe y control. Se puede guardar en marcadores y abrir desde el móvil.
+- **Resumen en texto:** abre `datos/resumen.md` en el repositorio.
+- **Informe diario:** una tarea programada lee estos datos cada mañana y te manda un resumen corto.
 
-**5. Pruébalo una vez a mano.**
-- Ve a la pestaña **Actions**.
-- Si te pide activar los workflows, acepta.
-- Elige **Agentes de trading (simulación)** en la lista de la izquierda y pulsa **Run workflow → Run workflow**.
-- Espera 1 minuto y recarga. Debe salir un círculo verde.
+## Montarlo desde cero (paso a paso)
 
-**6. Mira los resultados.**
-- Vuelve a la pestaña **Code**: ha aparecido una carpeta `datos`.
-- Abre `datos/resumen.md`: tiene la tabla de los agentes y la comparación con comprar y mantener.
-- `datos/historial.csv` guarda la evolución hora a hora y `datos/operaciones.csv` cada compra y venta.
+No hace falta instalar nada ni usar la terminal.
 
-A partir de ahí se ejecuta solo cada hora. Los agentes solo operan cuando se cierra una vela de 1 hora, así que pueden pasar horas sin ninguna operación.
+1. **Crea una cuenta en github.com** (gratis) y un repositorio llamado `oficina-agentes`.
+2. **Sube los archivos:** **Add file → Upload files** con `agentes_nube.py`, `informe.py`, `comparar_estrategias.py` e `index.html`.
+3. **Crea las órdenes de ejecución:** **Add file → Create new file**, con el nombre `.github/workflows/agentes.yml`, y pega el contenido de `agentes.yml`. Repite con `.github/workflows/comparar.yml`.
+4. **Pruébalo a mano:** pestaña **Actions → Agentes de trading (simulación) → Run workflow**. Tras un minuto debe salir un círculo verde y aparecer la carpeta `datos`.
+5. **Activa el panel (opcional):** **Settings → Pages → Source: Deploy from a branch → main / (root) → Save**. En uno o dos minutos estará en `https://TU-USUARIO.github.io/oficina-agentes/`.
 
-## Qué esperar
+A partir de ahí corre solo. Si cambias `agentes_nube.py`, se ejecuta de nuevo automáticamente.
 
-- **Dale semanas.** Con pocos días de datos no se puede distinguir una buena estrategia de la suerte.
-- **El criterio para seguir:** que un agente supere a "Comprar y mantener" de forma sostenida durante varias semanas, después de comisiones. Si ninguno lo hace, la conclusión válida es que esas estrategias no sirven, y no habrás perdido dinero real.
-- **Las ejecuciones de GitHub pueden retrasarse** unos minutos (o más en horas de mucha carga) y alguna puede saltarse. El programa lo tiene en cuenta: si se retrasa, procesa las velas pendientes en orden.
+## Costes y límites simulados
+
+- Cada operación paga una **comisión del 0,25 %** y un **deslizamiento** del 0,05 % (0,3 % en monedas de poco volumen): comprar sale un poco más caro y vender un poco más barato. Los valores están al principio de `agentes_nube.py` (`FEE`, `SLIP`, `SLIP_POCO_VOLUMEN`).
+- **Reparto:** cada agente invierte 10 € por moneda y puede tener hasta 5 a la vez.
+- **Límite de pérdida diaria:** si un agente pierde 2 € en un día, no vuelve a comprar ese día. Si baja de 35 € (un 30 % de pérdida), se apaga.
+- **Más monedas:** el número de monedas vigiladas se cambia con `TOP_MONEDAS`. Subirlo alarga la ejecución y aumenta la probabilidad de que alguna estrategia parezca buena solo por azar.
+
+## Qué esperar (y cuándo fiarse)
+
+- **Un agente solo es evaluable con al menos 30 operaciones cerradas y 3 semanas de simulación.** Hasta entonces el resumen y el panel muestran un aviso ⚠: el resultado puede ser pura suerte.
+- **El criterio para seguir:** que un agente supere a «Comprar y mantener» de forma sostenida, después de costes. Cada agente se compara con comprar BTC el día en que él empezó. Si ninguno lo consigue, la conclusión válida es que esas estrategias no sirven, y no habrás perdido dinero real.
+- **Cuantas más estrategias y monedas pruebas, más fácil es que alguna salga bien por casualidad.** Tómalo como candidato, no como prueba.
+- Las ejecuciones de GitHub pueden retrasarse o saltarse alguna vez; el programa procesa las velas pendientes en orden.
 
 ## Cosas que conviene saber
 
-- **Gratis con condiciones.** En repositorios públicos GitHub no cobra las ejecuciones. En privados hay una cuota mensual gratuita según tu plan, y esta simulación usa muy poco (una ejecución de menos de un minuto por hora). Comprueba tu cuota en *Settings → Billing* de tu cuenta de GitHub, porque las condiciones pueden cambiar.
-- **Tareas programadas desactivadas.** Según recuerdo, GitHub puede desactivar las tareas programadas de un repositorio tras un periodo largo sin actividad. Si las ejecuciones dejan de aparecer, entra en **Actions** y reactiva el workflow con un clic. Confírmalo en la documentación de GitHub.
+- **Repositorio público:** el informe diario y el panel lo leen sin claves. Por eso **nunca subas claves ni contraseñas de ningún exchange**; este programa no las usa ni las necesita.
+- **Gratis con condiciones.** En repositorios públicos GitHub no cobra las ejecuciones. Comprueba las condiciones actuales en la documentación de GitHub.
+- **Tareas programadas desactivadas.** GitHub puede desactivarlas tras un periodo largo sin actividad en el repositorio. Si las ejecuciones dejan de aparecer, entra en **Actions** y reactiva el flujo con un clic.
 - **Para pararlo:** **Actions → Agentes de trading (simulación) → ⋯ → Disable workflow**.
-- **Seguridad:** este programa no usa claves ni contraseñas, y no debe tenerlas nunca. No subas claves de ningún exchange al repositorio.
-- **Es una simulación.** No opera en ningún exchange ni toca dinero real.
+- **Reiniciar desde cero:** borra la carpeta `datos` y deja que se ejecute de nuevo. Los agentes empiezan otra vez con 50 €.
 
 ## Probarlo en tu PC (opcional)
 
-Con Python instalado, en una carpeta con `agentes_nube.py`:
+Con Python instalado, en una carpeta con `agentes_nube.py` e `informe.py`:
 
 ```
 python agentes_nube.py
