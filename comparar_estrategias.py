@@ -76,6 +76,34 @@ def ruptura(c, i, s):
     return None
 
 
+def filtro(fn, n=200):
+    """Filtro de mercado ("bear gate"): solo deja pasar las COMPRAS si el precio esta por encima de su media de n velas."""
+    def f(c, i, s):
+        senal = fn(c, i, s)
+        if senal == "b" and (i < n or c[i] <= media(c, i, n)):
+            return None
+        return senal
+    return f
+
+
+def _largo(c, i):
+    """Votos de tendencia a favor de estar comprado: cruce 10/30, cruce 5/20 y momentum de 12 velas."""
+    return (media(c, i, 10) > media(c, i, 30)) + (media(c, i, 5) > media(c, i, 20)) + (c[i] > c[i - 12])
+
+
+def consenso(c, i, s):
+    """Consenso 2 de 3: compra cuando al menos 2 de las 3 reglas de tendencia estan a favor; vende cuando dejan de estarlo.
+    (Rebote no vota: opera contra la tendencia.)"""
+    if i < 31:
+        return None
+    ahora, antes = _largo(c, i) >= 2, _largo(c, i - 1) >= 2
+    if ahora and not antes:
+        return "b"
+    if antes and not ahora:
+        return "s"
+    return None
+
+
 ESTRATEGIAS = [
     ("Cruce 5/20", cruce(5, 20)),
     ("Cruce 10/30", cruce(10, 30)),
@@ -83,13 +111,18 @@ ESTRATEGIAS = [
     ("Momentum", momentum),
     ("Rebote", rebote),
     ("Ruptura 20/10", ruptura),
+    ("Cruce 10/30 + filtro", filtro(cruce(10, 30))),
+    ("Cruce 5/20 + filtro", filtro(cruce(5, 20))),
+    ("Consenso 2 de 3", consenso),
+    ("Consenso 2 de 3 + filtro", filtro(consenso)),
 ]
 
 
 # ---------------- simulacion ----------------
 def simular(c, ini, fin, s, fn):
-    """Opera de la vela ini a la fin-1. Devuelve (resultado, operaciones, resultado de mantener)."""
+    """Opera de la vela ini a la fin-1. Devuelve (resultado, operaciones, resultado de mantener, caida maxima en %)."""
     cash, btc, ops, apagado = START, 0.0, 0, False
+    pico, caida = START, 0.0
     for i in range(ini, fin):
         p = c[i]
         if apagado:
@@ -99,11 +132,14 @@ def simular(c, ini, fin, s, fn):
             btc, cash, ops = cash * (1 - FEE) / (p * (1 + SLIP)), 0.0, ops + 1
         elif senal == "s" and btc > 0:
             cash, btc, ops = btc * p * (1 - SLIP) * (1 - FEE), 0.0, ops + 1
-        if cash + btc * p < STOP:
+        eq = cash + btc * p
+        pico = max(pico, eq)
+        caida = max(caida, (pico - eq) / pico * 100)
+        if eq < STOP:
             cash, btc, apagado = btc * p * (1 - SLIP) * (1 - FEE) + cash, 0.0, True
     final = cash + btc * c[fin - 1]
     mantener = START * (1 - FEE) * c[fin - 1] / (c[ini] * (1 + SLIP))
-    return final - START, ops, mantener - START
+    return final - START, ops, mantener - START, caida
 
 
 # ---------------- datos ----------------
@@ -165,7 +201,7 @@ def main():
           "Las cifras son en euros. \"Dif.\" es la diferencia frente a comprar y mantener durante el mismo periodo "
           "(positivo = mejor que mantener).",
           ""]
-    filas, buenas = [], []
+    filas, buenas, probadas = [], [], 0
     for minutos, nombre in INTERVALOS:
         c, fuente = obtener(minutos, demo)
         if not c or len(c) < WARM + 40:
@@ -174,16 +210,18 @@ def main():
         n, mid, s = len(c), (WARM + len(c)) // 2, math.sqrt(minutos / 60)
         dias = n * minutos / 1440
         md += [f"## Velas de {nombre} ({n} velas ≈ {dias:.0f} días, {fuente})", "",
-               "| Estrategia | Resultado (€) | Operaciones | Dif. total | Dif. 1ª mitad | Dif. 2ª mitad |",
-               "|---|---:|---:|---:|---:|---:|"]
+               "| Estrategia | Resultado (€) | Operaciones | Caída máx. (%) | Dif. total | Dif. 1ª mitad | Dif. 2ª mitad |",
+               "|---|---:|---:|---:|---:|---:|---:|"]
         for nom, fn in ESTRATEGIAS:
-            r, ops, hold = simular(c, WARM, n, s, fn)
-            r1, _, h1 = simular(c, WARM, mid, s, fn)
-            r2, _, h2 = simular(c, mid, n, s, fn)
+            r, ops, hold, dd = simular(c, WARM, n, s, fn)
+            r1, _, h1, _ = simular(c, WARM, mid, s, fn)
+            r2, _, h2, _ = simular(c, mid, n, s, fn)
             d, d1, d2 = r - hold, r1 - h1, r2 - h2
-            ok = r > 0 and d > 0 and d1 > 0 and d2 > 0   # gana dinero Y supera a mantener, en todo y en las dos mitades
-            md.append(f"| {nom}{' ✔' if ok else ''} | {f2(r)} | {ops} | {f2(d)} | {f2(d1)} | {f2(d2)} |")
-            filas.append([nombre, nom, round(r, 2), ops, round(hold, 2), round(d, 2), round(d1, 2), round(d2, 2), ok])
+            probadas += 1
+            # gana dinero, supera a mantener en el total y en las dos mitades, y tiene al menos 10 operaciones
+            ok = r > 0 and d > 0 and d1 > 0 and d2 > 0 and ops >= 10
+            md.append(f"| {nom}{' ✔' if ok else ''}{' (pocas op.)' if ops < 10 else ''} | {f2(r)} | {ops} | {dd:.1f} | {f2(d)} | {f2(d1)} | {f2(d2)} |")
+            filas.append([nombre, nom, round(r, 2), ops, round(dd, 1), round(hold, 2), round(d, 2), round(d1, 2), round(d2, 2), ok])
             if ok:
                 buenas.append(f"{nom} con velas de {nombre}")
         md +=[f"| *Comprar y mantener* | {f2(START * (1 - FEE) * c[-1] / (c[WARM] * (1 + SLIP)) - START)} | 1 | – | – | – |", ""]
@@ -192,12 +230,14 @@ def main():
         md.append("Combinaciones que ganan dinero y además superan a comprar y mantener, en el total y en las dos mitades (✔): "
                   + "; ".join(buenas) + ".")
         md.append("")
-        md.append("Cuidado: se han probado muchas combinaciones y algunas saldrán bien solo por azar. "
+        md.append(f"Cuidado: se han probado {probadas} combinaciones y algunas saldrán bien solo por azar "
+                  "(con muchas pruebas, es normal que unas pocas parezcan buenas). "
                   "Una candidata solo merece confianza si también aguanta semanas en la simulación en vivo.")
     else:
         md.append("Ninguna combinación gana dinero y supera a comprar y mantener a la vez en el total y en las dos mitades. "
                   "Con estos datos no hay una estrategia que justifique dinero real.")
-    md += ["", "Notas: los periodos de cada duración son distintos (las velas cortas cubren pocos días), "
+    md += ["", f"Combinaciones probadas: {probadas}. Las que tienen menos de 10 operaciones no pueden marcarse con ✔ porque la muestra es demasiado pequeña.",
+           "", "Notas: los periodos de cada duración son distintos (las velas cortas cubren pocos días), "
            "así que cada tabla se compara solo con comprar y mantener en su propio periodo. "
            "El historial pasado no garantiza resultados futuros."]
     texto = "\n".join(md) + "\n"
@@ -205,7 +245,7 @@ def main():
         f.write(texto)
     with open(os.path.join(out, "comparacion.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["vela", "estrategia", "resultado_eur", "operaciones", "mantener_eur",
+        w.writerow(["vela", "estrategia", "resultado_eur", "operaciones", "caida_max_pct", "mantener_eur",
                     "dif_total", "dif_mitad1", "dif_mitad2", "supera_en_todo"])
         w.writerows(filas)
     print(texto)
