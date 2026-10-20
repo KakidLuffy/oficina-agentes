@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sala de trading · Oficina de agentes</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap">
 <style>
 :root{--bg:#07090b;--panel:#0e1216;--panel2:#131a20;--line:#1f2830;--ink:#eef2f5;--mute:#8a97a3;--lime:#c6ff1a;--lime-d:#8fb812;--red:#ff5a4d;--amber:#ffb020;
 --cond:"Barlow Condensed","Arial Narrow",Impact,system-ui,sans-serif;--body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -76,7 +76,26 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 
 /* sala isométrica */
 .stage{position:relative;min-width:0;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden}
-#floor{width:100%;height:auto;max-height:calc(100vh - 110px);display:block}
+#floor{width:100%;height:auto;max-height:calc(100vh - 330px);display:block;border:3px solid #2a2358;border-radius:10px;background:#17123a;image-rendering:pixelated}
+.pj{transition:transform 1.8s steps(18);cursor:pointer}
+.pj.anda>g{animation:anda .3s steps(2) infinite}
+@keyframes anda{50%{transform:translateY(-1px)}}
+.ta{animation:tk .28s steps(2) infinite}.tb{animation:tk .28s steps(2) .14s infinite}
+@keyframes tk{50%{transform:translateY(1.2px)}}
+.barra{transform-box:fill-box;transform-origin:left;animation:bar 2.6s steps(10) infinite}
+@keyframes bar{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
+.bub{pointer-events:none}
+.glance{width:100%;padding:8px 10px 0}
+.gh{display:flex;justify-content:space-between;align-items:baseline;font-family:Silkscreen,monospace;font-size:11px;color:#f6e9c8;margin-bottom:6px}
+.gh span{color:var(--mute);font-size:10px}
+.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.gl{display:grid;grid-template-columns:12px 1fr auto;gap:2px 8px;align-items:center;text-align:left;background:#1d1747;border:2px solid #3a2a6b;border-radius:4px;padding:6px 9px;color:var(--ink)}
+.gl i{width:10px;height:10px;grid-row:1/3}
+.gl .gn{font-family:Silkscreen,monospace;font-size:10px}
+.gl em{font-style:normal;font-family:Silkscreen,monospace;font-size:8px;color:#9aa0c8;grid-column:2}
+.gl.trab em{color:var(--lime)}.gl.off em{color:var(--red)}
+.gl strong{grid-row:1/3;grid-column:3;font-family:var(--cond);font-size:16px}
+.gl.sel{border-color:var(--lime)}
 .zone{font-family:var(--cond);font-weight:800;fill:#aab5be;opacity:.55;letter-spacing:.1em}
 .desk{cursor:pointer}
 .desk:hover .glow{opacity:1}
@@ -86,7 +105,7 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 @keyframes bob{50%{transform:translateY(-3px)}}
 .scr{animation:scr 2.4s steps(3) infinite}
 @keyframes scr{50%{opacity:.55}}
-@media (prefers-reduced-motion:reduce){.bob,.scr{animation:none}}
+@media (prefers-reduced-motion:reduce){.bob,.scr,.ta,.tb,.barra,.pj.anda>g{animation:none}.pj{transition:none}}
 .tip{position:absolute;pointer-events:none;background:#0a0e11ee;border:1px solid var(--lime-d);border-radius:10px;padding:8px 11px;font-size:12.5px;display:none;max-width:240px;z-index:3}
 .tip b{font-family:var(--cond);font-size:17px;letter-spacing:.02em}
 
@@ -111,7 +130,7 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 .leg button i{width:10px;height:10px;border-radius:50%;display:inline-block}
 .leg button[aria-pressed="true"]{border-color:var(--lime)}
 .stage{flex-direction:column;justify-content:flex-start;gap:0}
-.stage #floor{margin-top:6px}
+.stage #floor{margin-top:6px;width:calc(100% - 20px)}
 .dotag{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:baseline}
 
 /* mercado */
@@ -174,7 +193,8 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
     <div class="top" id="top"><div class="ficha" id="ficha"></div>
       <div class="vtabs" id="vtabs"><button data-v="sala" aria-pressed="true">Sala</button><button data-v="evo" aria-pressed="false">Evolución del capital</button></div></div>
     <div class="evo" id="evbox" hidden><svg id="evchart" viewBox="0 0 900 440" role="img" aria-label="Evolución del capital de cada agente"></svg><div class="leg" id="leg"></div><div class="mnote" id="evnote"></div></div>
-    <svg id="floor" viewBox="0 0 760 500" role="img" aria-label="Sala de trading con una mesa por agente"></svg>
+    <svg id="floor" viewBox="0 0 480 340" shape-rendering="crispEdges" role="img" aria-label="Oficina de trading: una mesa por agente, sala de descanso y dirección"></svg>
+    <div class="glance" id="glance"></div>
     <div class="mkt" id="mktbox" hidden>
       <div class="mtop"><div class="mh" id="mhead"></div><div class="rng" id="rng"></div></div>
       <svg id="mchart" viewBox="0 0 900 460" role="img" aria-label="Gráfico de velas en tiempo real"></svg>
@@ -366,12 +386,12 @@ function pintarControl(){
     '<div style="padding:0 14px"><button class="btn" id="recargar">Actualizar ahora</button></div>' +
     '<div class="sec">Dónde está todo</div><p class="links"><a href="https://github.com/' + REPO + '/actions" target="_blank" rel="noopener">Ejecuciones (Actions)</a> · ' +
     '<a href="https://github.com/' + REPO + '/blob/main/datos/resumen.md" target="_blank" rel="noopener">Resumen</a></p>' +
-    '<p class="note">La simulación corre sola en GitHub cada hora, aunque tengas el ordenador apagado. Esta página solo la muestra: se actualiza sola cada 5 minutos mientras esté abierta. No opera en ningún exchange.</p>';
+    '<p class="note">La simulación corre sola en GitHub (aproximadamente cada hora; GitHub a veces se retrasa), aunque tengas el ordenador apagado. Esta página solo la muestra: se actualiza sola cada 5 minutos mientras esté abierta. No opera en ningún exchange.</p>';
   var b = $("recargar"); if (b) b.onclick = recargar;
 }
 function pintarTab(){
   ["rank", "mkt", "ops", "inf", "ctl"].forEach(function(t){ $("p-" + t).hidden = (t !== TAB); });
-  $("floor").style.display = (TAB === "mkt" || VIEW !== "sala") ? "none" : "";
+  $("floor").style.display = $("glance").style.display = (TAB === "mkt" || VIEW !== "sala") ? "none" : "";
   $("evbox").hidden = (TAB === "mkt" || VIEW !== "evo");
   $("top").hidden = TAB === "mkt";
   Array.prototype.forEach.call(document.querySelectorAll("#vtabs button"), function(b){ b.setAttribute("aria-pressed", b.dataset.v === VIEW ? "true" : "false"); });
@@ -381,41 +401,116 @@ function pintarTab(){
   Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){ b.setAttribute("aria-selected", b.dataset.t === TAB ? "true" : "false"); });
 }
 
-/* ===== sala isométrica ===== */
-var TW = 44, TH = 22, OX = 345, OY = 40;
-function P(x, y, z){ return [OX + (x - y) * TW, OY + (x + y) * TH - (z || 0)]; }
-function poly(pts, fill, extra){ return '<polygon points="' + pts.map(function(p){ return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ") + '" fill="' + fill + '" ' + (extra || "") + '/>'; }
-function caja(x, y, w, d, h, z0, top, left, right){
-  var z1 = z0 + h;
-  return poly([P(x, y, z1), P(x + w, y, z1), P(x + w, y + d, z1), P(x, y + d, z1)], top) +
-         poly([P(x, y + d, z1), P(x + w, y + d, z1), P(x + w, y + d, z0), P(x, y + d, z0)], left) +
-         poly([P(x + w, y, z1), P(x + w, y + d, z1), P(x + w, y + d, z0), P(x + w, y, z0)], right);
+/* ===== sala pixel-art (vista desde arriba) ===== */
+var FONT = 'font-family="Silkscreen,\'Press Start 2P\',monospace"';
+var PREV = {};
+function R(x, y, w, h, f, extra){ return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + f + '"' + (extra || "") + '/>'; }
+function oscuro(hex, k){
+  var n = parseInt(hex.slice(1), 16), c = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  return "#" + c.map(function(v){ v = Math.round(v * k); return (v < 16 ? "0" : "") + v.toString(16); }).join("");
 }
-var FW = 9, FD = 7.4;
+function sprite(c, estado, corona){
+  var cc = estado === "off" ? "#7a6a76" : c, d = oscuro(cc, .62), s = "";
+  s += R(5, 0, 2, 2, "#fff");
+  if (corona) s += R(3, 0, 6, 1, "#ffd24a") + R(3, -1, 1, 1, "#ffd24a") + R(5, -1, 2, 1, "#ffd24a") + R(8, -1, 1, 1, "#ffd24a");
+  s += R(2, 2, 8, 6, cc) + R(2, 7, 8, 1, d);
+  s += R(3, 4, 2, 2, "#0a0e11") + R(7, 4, 2, 2, "#0a0e11");
+  s += R(3, 8, 6, 5, d) + R(3, 8, 6, 1, cc);
+  s += '<g class="' + (estado === "trab" ? "ta" : "") + '">' + R(1, 9, 2, 3, cc) + '</g><g class="' + (estado === "trab" ? "tb" : "") + '">' + R(9, 9, 2, 3, cc) + '</g>';
+  s += R(3, 13, 2, 3, d) + R(7, 13, 2, 3, d);
+  return s;
+}
+function planta(x, y){
+  return R(x + 2, y + 10, 8, 6, "#8a4b2a") + R(x + 2, y + 10, 8, 1, "#b06a3c") +
+    R(x + 5, y + 2, 2, 9, "#1f7a3a") + R(x, y + 4, 5, 3, "#2fa04f") + R(x + 7, y + 3, 5, 3, "#2fa04f") + R(x + 2, y, 4, 3, "#3cc063") + R(x + 6, y + 1, 4, 3, "#3cc063");
+}
+function sofa(x, y, w, h, c){
+  var d = oscuro(c, .7);
+  return R(x, y, w, h, c) + R(x, y, w, 3, d) + R(x, y + h - 2, w, 2, d) + R(x, y + h, 2, 2, "#e8e0d0") + R(x + w - 2, y + h, 2, 2, "#e8e0d0");
+}
+function checker(x, y, w, h){ return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="url(#chk)"/>'; }
+function cortar(t, n){ t = String(t); return t.length > n ? t.slice(0, n - 1) + "…" : t; }
+function burbuja(cx, y, texto, color, barra){
+  var w = Math.max(30, texto.length * 5 + 10);
+  var o = R(cx - w / 2, y, w, 11, "#120d2c") + R(cx - w / 2, y, w, 1, color) + R(cx - w / 2, y + 10, w, 1, color) + R(cx - w / 2, y, 1, 11, color) + R(cx - w / 2 + w - 1, y, 1, 11, color);
+  o += '<text x="' + cx + '" y="' + (y + 7) + '" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(texto) + '</text>';
+  if (barra) o += R(cx - w / 2 + 2, y + 8, w - 4, 1.5, color, ' class="barra"');
+  return o;
+}
+function estadoDe(a){ return a.apagado ? "off" : a.pos.length ? "trab" : "espera"; }
+var SLOTS = [[340, 60], [384, 58], [436, 60], [338, 150], [384, 148], [436, 150]];
 function pintarSala(){
-  var s = "";
-  /* losa del suelo */
-  s += caja(0, 0, FW, FD, 10, -10, "#10171c", "#0b1014", "#0a0e11");
-  s += poly([P(0, 0, 0), P(FW, 0, 0), P(FW, FD, 0), P(0, FD, 0)], "#121a20");
-  /* cuadrícula */
-  var g = "";
-  for (var i = 0; i <= FW; i++) g += '<line x1="' + P(i, 0, 0)[0] + '" y1="' + P(i, 0, 0)[1] + '" x2="' + P(i, FD, 0)[0] + '" y2="' + P(i, FD, 0)[1] + '"/>';
-  for (var j = 0; j <= FD; j++) g += '<line x1="' + P(0, j, 0)[0] + '" y1="' + P(0, j, 0)[1] + '" x2="' + P(FW, j, 0)[0] + '" y2="' + P(FW, j, 0)[1] + '"/>';
-  s += '<g stroke="#1b252c" stroke-width="1">' + g + '</g>';
-  /* borde lima en los dos lados traseros */
-  s += '<polyline points="' + [P(0, FD, 0), P(0, 0, 0), P(FW, 0, 0)].map(function(p){ return p.join(","); }).join(" ") + '" fill="none" stroke="#c6ff1a" stroke-width="2.5" opacity=".85"/>';
-  /* rótulos tumbados en el suelo */
-  var t = "matrix(" + TW + "," + TH + "," + (-TW) + "," + TH + "," + OX + "," + OY + ")";
-  s += '<g transform="' + t + '"><text class="zone" x="0.35" y="0.62" font-size=".48">MESA DE ESTRATEGIAS</text></g>';
-  /* mesas: ordenadas de atrás hacia delante */
-  var pos = D.agentes.map(function(a, i){ return {a: a, x: 1.2 + (i % 3) * 2.7, y: 1.7 + Math.floor(i / 3) * 3.1}; });
-  pos.sort(function(p, q){ return (p.x + p.y) - (q.x + q.y); });
-  pos.forEach(function(p){ s += mesa(p.a, p.x, p.y); });
-  var et = "";                                   // etiquetas en una capa final, para que ninguna mesa las tape
-  pos.forEach(function(p){ et += etiqueta(p.a, p.x, p.y); });
-  s += '<g pointer-events="none">' + et + '</g>';
+  var s = '<defs><pattern id="wood" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#9a6a3c"/><rect y="7" width="16" height="1" fill="#7f5230"/><rect x="7" width="1" height="7" fill="#85572f"/><rect x="2" y="2" width="5" height="1" fill="#a97849"/></pattern>' +
+    '<pattern id="chk" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#cfd2d8"/><rect width="8" height="8" fill="#22232b"/><rect x="8" y="8" width="8" height="8" fill="#22232b"/></pattern>' +
+    '<pattern id="azul" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#3b3f9a"/><rect width="8" height="8" fill="#4044a3"/><rect x="8" y="8" width="8" height="8" fill="#4044a3"/></pattern></defs>';
+  s += R(0, 0, 480, 340, "#17123a");
+  /* salas */
+  s += R(6, 22, 308, 206, "#0d0a24") + R(8, 24, 304, 202, "url(#wood)") + R(8, 24, 304, 14, "#3a2a6b") + R(8, 36, 304, 2, "#251a49");
+  s += R(326, 22, 148, 206, "#0d0a24") + R(328, 24, 144, 202, "url(#azul)") + R(328, 24, 144, 14, "#3a2a6b") + R(328, 36, 144, 2, "#251a49");
+  s += R(6, 252, 468, 84, "#0d0a24") + R(8, 254, 464, 80, "#2a2358") + R(8, 254, 464, 14, "#3a2a6b") + R(8, 266, 464, 2, "#251a49");
+  s += checker(8, 228, 464, 24) + R(8, 228, 464, 1, "#0d0a24");
+  s += '<text x="160" y="33" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>SALA DE ESTRATEGIAS</text>';
+  s += '<text x="400" y="33" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>DESCANSO · EN EFECTIVO</text>';
+  s += '<text x="240" y="263" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>DIRECCIÓN</text>';
+  /* mobiliario del descanso */
+  s += sofa(372, 42, 56, 12, "#b8506e") + sofa(336, 100, 12, 40, "#b8506e") + sofa(452, 100, 12, 40, "#b8506e") + sofa(372, 210, 56, 12, "#9a3f60");
+  s += R(374, 114, 52, 26, "#d9b878") + R(376, 116, 48, 22, "#e9d29a") + R(376, 140, 3, 4, "#8a6a3a") + R(421, 140, 3, 4, "#8a6a3a");
+  s += planta(332, 206) + planta(456, 206) + planta(332, 42) + planta(458, 42);
+  s += planta(12, 205) + planta(296, 205);
+  /* estanterías en la sala de estrategias (decoración) */
+  /* mesas: una por agente */
+  var ocupa = {}, idle = 0, slotDe = {}, pj = "", mesas = "", info = "";
+  D.agentes.forEach(function(a, i){
+    var col = i % 3, row = Math.floor(i / 3), cx = 62 + col * 98, b = 34 + row * 98, est = estadoDe(a);
+    var c = a.apagado ? "#7a6a76" : a.color, sel = a.i === SEL;
+    var m = '<g class="desk' + (sel ? " sel" : "") + '" data-i="' + a.i + '" tabindex="0" role="button" aria-label="Mesa de ' + esc(a.nombre) + '">';
+    if (sel) m += '<rect x="' + (cx - 44) + '" y="' + (b - 2) + '" width="88" height="94" fill="' + a.color + '" fill-opacity=".14" stroke="' + a.color + '" stroke-width="1" stroke-dasharray="3 2"/>';
+    m += R(cx - 12, b + 58, 24, 8, "#2a1f4d") + R(cx - 12, b + 58, 24, 1, "#4a3a82");           // silla
+    m += R(cx - 15, b + 16, 30, 16, "#1c1530") + R(cx - 13, b + 18, 26, 11, est === "trab" ? c : "#2c2f46", est === "trab" ? ' class="scr"' : "");
+    if (est === "trab") m += '<polyline fill="none" stroke="#0a0e11" stroke-width="1.2" points="' + (cx - 10) + ',' + (b + 26) + ' ' + (cx - 5) + ',' + (b + 22) + ' ' + cx + ',' + (b + 25) + ' ' + (cx + 5) + ',' + (b + 20) + ' ' + (cx + 10) + ',' + (b + 23) + '"/>';
+    m += R(cx - 3, b + 32, 6, 3, "#1c1530");
+    m += R(cx - 32, b + 33, 64, 16, "#d9a766") + R(cx - 32, b + 33, 64, 2, "#efc88f") + R(cx - 32, b + 47, 64, 2, "#8a5d2f") + R(cx - 28, b + 49, 3, 5, "#6a4622") + R(cx + 25, b + 49, 3, 5, "#6a4622");
+    m += R(cx - 8, b + 40, 16, 5, "#3a3358") + R(cx - 7, b + 41, 14, 1, "#6a639a");
+    m += R(cx + 18, b + 36, 6, 6, "#f4eee0") + R(cx + 19, b + 37, 4, 2, "#6a4622");                // taza
+    mesas += m + '</g>';
+    var tx, ty;
+    if (est === "espera") { var sl = SLOTS[idle++ % SLOTS.length]; tx = sl[0]; ty = sl[1]; }
+    else { tx = cx - 12; ty = b + 38; }
+    var txt = est === "off" ? "APAGADO" : est === "trab" ? cortar("Con " + a.pos.join(","), 16) : "En espera";
+    var bc = est === "off" ? "#ff5a4d" : est === "trab" ? a.color : "#9aa0c8";
+    var by = est === "espera" ? ty - 14 : b;
+    var prev = PREV[a.i], ini = prev && (prev[0] !== tx || prev[1] !== ty) ? prev : [tx, ty];
+    var camina = ini !== undefined && (ini[0] !== tx || ini[1] !== ty);
+    PREV[a.i] = [tx, ty];
+    pj += '<g class="pj' + (sel ? " sel" : "") + (camina ? " anda" : "") + '" data-i="' + a.i + '" data-x="' + tx + '" data-y="' + ty + '" style="transform:translate(' + ini[0] + 'px,' + ini[1] + 'px)" tabindex="-1">' +
+      '<rect x="-3" y="-2" width="30" height="56" fill="#000" fill-opacity="0"/>' + (sel ? '<rect x="-3" y="30" width="30" height="4" fill="' + a.color + '" fill-opacity=".55"/>' : "") +
+      '<g transform="scale(2)">' + sprite(c, est) + '</g>' +
+      '<text x="12" y="43" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(cortar(a.nombre, 14).toUpperCase()) + '</text>' +
+      '<text x="12" y="51" text-anchor="middle" font-size="5.5" fill="' + (a.res >= 0 ? "#c6ff1a" : "#ff6a5d") + '" ' + FONT + '>' + eur(a.res, true) + '</text></g>';
+    info += '<g class="bub" style="transform:translate(' + (est === "espera" ? tx + 12 : cx) + 'px,0)">' + burbuja(0, by, txt, bc, est === "trab") + '</g>';
+  });
+  /* sala de dirección */
+  var trab = D.agentes.filter(function(a){ return estadoDe(a) === "trab"; }).length;
+  var pa = D.agentes.filter(function(a){ return a.apagado; }).length;
+  s += R(150, 272, 180, 44, "#120d2c") + R(152, 274, 176, 40, "#1d1747") + R(152, 274, 176, 2, "#6a5cc0");
+  s += '<text x="240" y="287" text-anchor="middle" font-size="6" fill="#9aa0c8" ' + FONT + '>CAPITAL TOTAL</text>';
+  s += '<text x="240" y="302" text-anchor="middle" font-size="11" fill="#c6ff1a" ' + FONT + '>' + D.total.toFixed(2).replace(".", ",") + ' €</text>';
+  s += '<text x="240" y="311" text-anchor="middle" font-size="5" fill="#9aa0c8" ' + FONT + '>' + (D.btc ? "BTC " + Math.round(D.btc).toLocaleString("es-ES") + " €" : "") + '</text>';
+  s += R(60, 296, 44, 24, "#d9a766") + R(60, 296, 44, 2, "#efc88f") + R(62, 320, 3, 5, "#6a4622") + R(99, 320, 3, 5, "#6a4622");
+  s += R(74, 286, 16, 11, "#1c1530") + R(76, 288, 12, 7, "#c6ff1a", ' class="scr"');
+  s += '<g transform="translate(110,290) scale(2)">' + sprite("#e8e8f0", "trab", true) + '</g>';
+  s += burbuja(122, 272, trab + " TRABAJANDO" + (pa ? " · " + pa + " APAGADO" : ""), "#ffd24a", false);
+  s += '<text x="122" y="331" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>DIRECTOR</text>';
+  s += planta(20, 280) + planta(440, 280) + planta(20, 308) + planta(440, 308);
+  s += R(350, 290, 70, 6, "#3a3358") + R(350, 290, 70, 1, "#6a639a");
+  s += mesas + pj + info;
   $("floor").innerHTML = s;
-  Array.prototype.forEach.call(document.querySelectorAll(".desk"), function(el){
+  var viejo = Array.prototype.slice.call(document.querySelectorAll(".pj"));
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    viejo.forEach(function(el){ el.style.transform = "translate(" + el.dataset.x + "px," + el.dataset.y + "px)"; });
+  }); });
+  setTimeout(function(){ Array.prototype.forEach.call(document.querySelectorAll(".pj.anda"), function(el){ el.classList.remove("anda"); }); }, 2000);
+  Array.prototype.forEach.call(document.querySelectorAll(".desk,.pj"), function(el){
     var i = +el.dataset.i;
     el.onclick = function(){ seleccionar(i); };
     el.onmouseenter = function(ev){ tip(i, ev); };
@@ -423,42 +518,23 @@ function pintarSala(){
     el.onmouseleave = function(){ $("tip").style.display = "none"; };
     el.onkeydown = function(ev){ if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); seleccionar(i); } };
   });
+  pintarVistazo();
 }
-function mesa(a, x, y){
-  var w = 1.7, d = 1.0, activo = a.pos.length > 0 && !a.apagado;
-  var c = a.apagado ? "#5a2a28" : a.color;
-  var topC = "#26323b", lC = "#1a232a", rC = "#151c22";
-  var out = '<g class="desk' + (a.i === SEL ? " sel" : "") + '" data-i="' + a.i + '" tabindex="0" role="button" aria-label="Mesa de ' + esc(a.nombre) + '">';
-  /* resplandor en el suelo */
-  var gl = [P(x - .35, y - .35, 0), P(x + w + .35, y - .35, 0), P(x + w + .35, y + d + .9, 0), P(x - .35, y + d + .9, 0)];
-  out += poly(gl, a.color, 'class="glow" fill-opacity=".14" stroke="' + a.color + '" stroke-width="1.5"');
-  if (activo) out += poly(gl, a.color, 'fill-opacity=".10"');
-  /* patas + sobre */
-  out += caja(x + .1, y + .1, .12, .12, 14, 0, "#2c3a44", "#1a232a", "#151c22") + caja(x + w - .22, y + .1, .12, .12, 14, 0, "#2c3a44", "#1a232a", "#151c22");
-  out += caja(x, y, w, d, 5, 14, topC, lC, rC);
-  /* monitor */
-  var mx = x + w / 2 - .45, my = y + .12;
-  out += caja(mx, my, .9, .1, 15, 19, "#0b1014", "#0b1014", "#0b1014");
-  var sc = [P(mx + .06, my + .1, 31), P(mx + .84, my + .1, 31), P(mx + .84, my + .1, 22), P(mx + .06, my + .1, 22)];
-  out += poly(sc, activo ? c : "#243038", activo ? 'class="scr" opacity=".95"' : 'opacity=".9"');
-  /* líneas de gráfico en la pantalla */
-  if (activo) out += '<polyline fill="none" stroke="#07090b" stroke-width="1.6" points="' + [[.14, 5], [.3, 7.5], [.45, 6], [.6, 10], [.76, 8.5]].map(function(q){ var p = P(mx + q[0], my + .1, 21 + q[1]); return p.join(","); }).join(" ") + '"/>';
-  /* robot sentado delante de la mesa */
-  var rp = P(x + w / 2, y + d + .75, 0);
-  out += '<g transform="translate(' + (rp[0] - 17) + ',' + (rp[1] - 34) + ')"><g class="' + (activo ? "bob" : "") + '" style="opacity:' + (a.apagado ? .4 : 1) + '">' + robot(c, 34).replace("<svg ", '<svg x="0" y="0" ') + '</g></g>';
-  return out + '</g>';
-}
-function etiqueta(a, x, y){
-  var w = 1.7, d = 1.0, out = "";
-  var lp = P(x + w / 2, y + d + 1.35, 0);
-  out += '<text x="' + lp[0].toFixed(1) + '" y="' + (lp[1] + 6).toFixed(1) + '" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="700" font-size="14" letter-spacing=".06em" fill="#dfe6eb">' + esc(a.nombre.toUpperCase()) + '</text>';
-  out += '<text x="' + lp[0].toFixed(1) + '" y="' + (lp[1] + 21).toFixed(1) + '" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="700" font-size="15" fill="' + (a.res >= 0 ? "#c6ff1a" : "#ff5a4d") + '">' + eur(a.res, true) + '</text>';
-  return out;
+function pintarVistazo(){
+  var g = $("glance"); if (!g) return;
+  var trab = D.agentes.filter(function(a){ return estadoDe(a) === "trab"; }).length;
+  var h = '<div class="gh"><b>DE UN VISTAZO</b><span>' + trab + ' de ' + D.agentes.length + ' trabajando</span></div><div class="gg">';
+  D.agentes.forEach(function(a){
+    var e = estadoDe(a), t = e === "off" ? "APAGADO" : e === "trab" ? "TRABAJANDO" : "EN ESPERA";
+    h += '<button class="gl ' + e + (a.i === SEL ? " sel" : "") + '" data-i="' + a.i + '"><i style="background:' + a.color + '"></i><span class="gn">' + esc(a.nombre) + '</span><em>' + t + '</em><strong class="' + (a.res >= 0 ? "up" : "down") + '">' + eur(a.res, true) + '</strong></button>';
+  });
+  g.innerHTML = h + '</div>';
+  Array.prototype.forEach.call(g.querySelectorAll(".gl"), function(b){ b.onclick = function(){ seleccionar(+b.dataset.i); }; });
 }
 function tip(i, ev){
   var a = D.agentes[i], el = $("tip"), st = el.parentNode.getBoundingClientRect();
   el.innerHTML = '<b>' + esc(a.nombre) + '</b><br>Capital ' + a.eq.toFixed(2).replace(".", ",") + ' € · ' + eur(a.res, true) + '<br>' +
-    (a.apagado ? "Apagado por riesgo" : a.pos.length ? "Con " + esc(a.pos.join(", ")) : "En efectivo") + '<br>' + a.ops + ' operaciones · ' + a.cerradas + ' cerradas';
+    (a.apagado ? "Apagado por riesgo" : a.pos.length ? "Con " + esc(a.pos.join(", ")) : "En efectivo") + '<br>' + a.ops + ' operaciones · ' + a.cerradas + ' cerradas<br><small style="color:#8a97a3">Click para ver su ficha</small>';
   el.style.display = "block";
   el.style.left = Math.min(st.width - 250, Math.max(6, ev.clientX - st.left + 14)) + "px";
   el.style.top = Math.max(6, ev.clientY - st.top + 14) + "px";
