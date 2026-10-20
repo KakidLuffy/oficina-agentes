@@ -76,15 +76,16 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 
 /* sala isométrica */
 .stage{position:relative;min-width:0;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden}
-#floor{width:100%;height:auto;max-height:calc(100vh - 330px);display:block;border:3px solid #2a2358;border-radius:10px;background:#17123a;image-rendering:pixelated}
+#floor{width:100%;height:auto;max-height:calc(100vh - 330px);display:block;border:3px solid #2f6a46;border-radius:10px;background:#6ec17f;image-rendering:pixelated}
 .pj{transition:transform 1.8s steps(18);cursor:pointer}
 .pj.anda>g{animation:anda .3s steps(2) infinite}
 @keyframes anda{50%{transform:translateY(-1px)}}
-.ta{animation:tk .28s steps(2) infinite}.tb{animation:tk .28s steps(2) .14s infinite}
+.tb{animation:tk .5s steps(2) infinite}
 @keyframes tk{50%{transform:translateY(1.2px)}}
 .barra{transform-box:fill-box;transform-origin:left;animation:bar 2.6s steps(10) infinite}
 @keyframes bar{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
 .bub{pointer-events:none}
+.tx{paint-order:stroke;stroke:#14301f;stroke-width:1.8px;stroke-linejoin:round}
 .glance{width:100%;padding:8px 10px 0}
 .gh{display:flex;justify-content:space-between;align-items:baseline;font-family:Silkscreen,monospace;font-size:11px;color:#f6e9c8;margin-bottom:6px}
 .gh span{color:var(--mute);font-size:10px}
@@ -97,7 +98,7 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 .gl strong{grid-row:1/3;grid-column:3;font-family:var(--cond);font-size:16px}
 .gl.sel{border-color:var(--lime)}
 .lab{width:100%;padding:6px 10px;align-self:stretch}.lab[hidden]{display:none}
-#labsvg{width:100%;height:auto;max-height:calc(100vh - 420px);display:block;border:3px solid #2a2358;border-radius:10px;background:#17123a}
+#labsvg{width:100%;height:auto;max-height:calc(100vh - 420px);display:block;border:3px solid #2f6a46;border-radius:10px;background:#6ec17f}
 .labv{margin:10px 0 4px;padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;gap:3px}
 .labv b{font-family:Silkscreen,monospace;font-size:12px}
 .labv.posible b{color:var(--lime)}.labv.ruido b{color:var(--amber)}.labv.ninguna b{color:var(--red)}
@@ -113,7 +114,7 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 @keyframes bob{50%{transform:translateY(-3px)}}
 .scr{animation:scr 2.4s steps(3) infinite}
 @keyframes scr{50%{opacity:.55}}
-@media (prefers-reduced-motion:reduce){.bob,.scr,.ta,.tb,.barra,.pj.anda>g{animation:none}.pj{transition:none}}
+@media (prefers-reduced-motion:reduce){.bob,.scr,.tb,.barra,.pj.anda>g{animation:none}.pj{transition:none}}
 .tip{position:absolute;pointer-events:none;background:#0a0e11ee;border:1px solid var(--lime-d);border-radius:10px;padding:8px 11px;font-size:12.5px;display:none;max-width:240px;z-index:3}
 .tip b{font-family:var(--cond);font-size:17px;letter-spacing:.02em}
 
@@ -201,9 +202,9 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
     <div class="top" id="top"><div class="ficha" id="ficha"></div>
       <div class="vtabs" id="vtabs"><button data-v="sala" aria-pressed="true">Sala</button><button data-v="lab" aria-pressed="false">Laboratorio</button><button data-v="evo" aria-pressed="false">Evolución del capital</button></div></div>
     <div class="evo" id="evbox" hidden><svg id="evchart" viewBox="0 0 900 440" role="img" aria-label="Evolución del capital de cada agente"></svg><div class="leg" id="leg"></div><div class="mnote" id="evnote"></div></div>
-    <svg id="floor" viewBox="0 0 480 340" shape-rendering="crispEdges" role="img" aria-label="Oficina de trading: una mesa por agente, sala de descanso y dirección"></svg>
+    <svg id="floor" viewBox="0 0 480 340" shape-rendering="crispEdges" role="img" aria-label="Aldea de trading: un puesto por agente, estanque de descanso, casa de dirección y vigilante de riesgo"></svg>
     <div class="glance" id="glance"></div>
-    <div class="lab" id="labbox" hidden><svg id="labsvg" viewBox="0 0 480 220" shape-rendering="crispEdges" role="img" aria-label="Laboratorio con tres analistas de estrategias"></svg><div id="labtxt"></div></div>
+    <div class="lab" id="labbox" hidden><svg id="labsvg" viewBox="0 0 480 236" shape-rendering="crispEdges" role="img" aria-label="Laboratorio con tres analistas de estrategias"></svg><div id="labtxt"></div></div>
     <div class="mkt" id="mktbox" hidden>
       <div class="mtop"><div class="mh" id="mhead"></div><div class="rng" id="rng"></div></div>
       <svg id="mchart" viewBox="0 0 900 460" role="img" aria-label="Gráfico de velas en tiempo real"></svg>
@@ -418,33 +419,122 @@ function cargarLab(){
   var b = BASE.replace(/\/?$/, "/");
   return get(b + "laboratorio.json", "json").then(function(l){ LAB = l; }).catch(function(){ LAB = null; }).then(function(){ if (VIEW === "lab") pintarLab(); });
 }
+/* ===== aldea pixel-art (vista de tres cuartos, estilo GBA; diseños propios) ===== */
+var FONT = 'font-family="Silkscreen,\'Press Start 2P\',monospace"';
+var PREV = {};
+function R(x, y, w, h, f, extra){ return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + f + '"' + (extra || "") + '/>'; }
+function oscuro(hex, k){
+  var n = parseInt(hex.slice(1), 16), c = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  return "#" + c.map(function(v){ v = Math.round(v * k); return (v < 16 ? "0" : "") + v.toString(16); }).join("");
+}
+var SPR = ["oooooo", "occcccccco", "occcccccccco", "occcccccccco", "oCCCCCCCCCCCCo",
+  "ohssssssssho", "osesssssseso", "osssssssssso", "osssssssso", "oowwwwwwoo",
+  "osWwwwwwwWso", "osWwccccwWso", "oosWwwwwWsoo", "oPPPPPPPPo", "oppppppppo",
+  "opppoopppo", "obbboobbbo", "oooo..oooo"];
+/* personaje 14x18 (se dibuja a escala 2). estado: trab (de espaldas, mirando su puesto) | espera (de frente) | off (gris) */
+function sprite(c, estado, corona){
+  var gris = estado === "off", cc = gris ? "#7a6a76" : c;
+  var pal = {o: "#1d1a2b", c: cc, C: oscuro(cc, .66), s: gris ? "#b8a99c" : "#f2c9a0", h: "#6b3f26", e: "#1d1a2b",
+    w: corona ? "#4a3a8a" : gris ? "#aaa" : "#f4eee0", W: corona ? "#33286a" : gris ? "#888" : "#c9c1b0", P: "#2c4682", p: "#3b5ba9", b: "#5a3a22"};
+  var out = "";
+  SPR.forEach(function(row, y){
+    var pad = (14 - row.length) / 2, line = new Array(pad + 1).join(".") + row + new Array(pad + 1).join(".");
+    if (estado === "trab" && y >= 5 && y <= 8) line = line.replace(/[se]/g, "h");
+    var x = 0;
+    while (x < 14) {
+      var ch = line[x], k = x;
+      while (k < 14 && line[k] === ch) k++;
+      if (ch !== ".") out += R(x, y, k - x, 1, pal[ch]);
+      x = k;
+    }
+  });
+  if (corona) out += R(4, -2, 6, 2, "#ffd24a") + R(4, -3, 1, 1, "#ffd24a") + R(6, -3, 2, 1, "#ffd24a") + R(9, -3, 1, 1, "#ffd24a");
+  return out;
+}
+function arbol(x, y){
+  var s = R(x + 10, y + 38, 5, 6, "#6a4622");
+  [[8, 0], [14, 8], [20, 16], [26, 24]].forEach(function(l){
+    var w = l[0], yy = y + l[1], x0 = x + 12 - w / 2;
+    s += R(x0 - 1, yy - 1, w + 2, 11, "#1f5a34") + R(x0, yy, w / 2, 10, "#62c96b") + R(x0 + w / 2, yy, w / 2, 10, "#3f9f4f");
+  });
+  return s;
+}
+function flor(x, y, c){ return R(x + 2, y + 3, 1, 3, "#2f8a4a") + R(x, y, 2, 2, c) + R(x + 3, y, 2, 2, c) + R(x + 1, y + 1, 3, 2, c) + R(x + 2, y + 1, 1, 1, "#ffe07a"); }
+function planta(x, y){ return flor(x, y, "#ff6b8a") + flor(x + 7, y + 3, "#ffb020") + flor(x + 3, y + 8, "#ff6b8a"); }
+function valla(x1, y1, x2, y2){
+  var s = "";
+  if (y1 === y2) { s += R(x1, y1 + 3, x2 - x1, 2, "#a56f43"); for (var x = x1; x <= x2 - 4; x += 8) s += R(x, y1, 4, 8, "#b07a4a") + R(x, y1, 4, 2, "#e0b07a") + R(x, y1 + 7, 4, 1, "#5a3a22"); }
+  else { s += R(x1 + 1, y1, 2, y2 - y1, "#a56f43"); for (var y = y1; y <= y2 - 8; y += 8) s += R(x1, y, 4, 8, "#b07a4a") + R(x1, y, 4, 2, "#e0b07a") + R(x1, y + 7, 4, 1, "#5a3a22"); }
+  return s;
+}
+function cartel(cx, y, texto, w){
+  w = w || (texto.length * 6 + 16);
+  return R(cx - w / 2 - 1, y - 1, w + 2, 14, "#3a2412") + R(cx - w / 2, y, w, 12, "#9a6a3c") + R(cx - w / 2, y, w, 2, "#c99660") +
+    '<text x="' + cx + '" y="' + (y + 9) + '" text-anchor="middle" font-size="6.5" fill="#fdf1d4" ' + FONT + '>' + esc(texto) + '</text>';
+}
+function casa(x, y, w, c1, c2){
+  var s = R(x - 1, y - 1, w + 2, 29, "#1d1a2b");
+  for (var i = 0; i < w; i += 8) s += R(x + i, y, Math.min(8, w - i), 26, (i / 8) % 2 ? c2 : c1);
+  s += R(x, y, w, 3, oscuro(c1, 1.25) === "#NaN" ? c1 : "#ffffff22") + R(x, y + 24, w, 2, oscuro(c1, .6));
+  s += R(x + 4, y + 26, w - 8, 44, "#1d1a2b") + R(x + 5, y + 27, w - 10, 42, "#f0e7cf") + R(x + 5, y + 27, w - 10, 3, "#d8cba8");
+  return s;
+}
+function puesto(cx, b, c, act, estado){
+  var s = R(cx - 36, b + 44, 72, 42, "url(#arena)", ' opacity=".85"');
+  s += R(cx - 29, b + 21, 2, 24, "#6a4622") + R(cx + 27, b + 21, 2, 24, "#6a4622");
+  s += R(cx - 30, b + 34, 60, 11, "#1d1a2b") + R(cx - 29, b + 35, 58, 9, "#b0804c") + R(cx - 29, b + 35, 58, 2, "#d9a96e");
+  s += R(cx - 14, b + 20, 28, 15, "#1d1a2b") + R(cx - 12, b + 22, 24, 11, act ? c : "#2c2f46", act ? ' class="scr"' : "");
+  if (act) s += '<polyline fill="none" stroke="#0a0e11" stroke-width="1.3" points="' + (cx - 9) + ',' + (b + 29) + ' ' + (cx - 4) + ',' + (b + 25) + ' ' + (cx + 1) + ',' + (b + 28) + ' ' + (cx + 5) + ',' + (b + 24) + ' ' + (cx + 9) + ',' + (b + 27) + '"/>';
+  for (var i = 0; i < 60; i += 10) s += R(cx - 30 + i, b + 12, 10, 9, (i / 10) % 2 ? "#f4eee0" : (estado === "off" ? "#7a6a76" : c)) + R(cx - 30 + i, b + 20, 10, 2, "#1d1a2b", ' opacity=".35"');
+  s += R(cx - 31, b + 11, 62, 2, "#1d1a2b");
+  return s;
+}
+function cortar(t, n){ t = String(t); return t.length > n ? t.slice(0, n - 1) + "…" : t; }
+function burbuja(cx, y, texto, color, barra){
+  var w = Math.max(30, texto.length * 5 + 10);
+  var o = R(cx - w / 2 - 1, y - 1, w + 2, 13, "#120d2c") + R(cx - w / 2, y, w, 11, "#fdf6e3") + R(cx - w / 2, y + 10, w, 1, color) + R(cx - w / 2, y, w, 1, color);
+  o += R(cx - 2, y + 12, 4, 2, "#120d2c") + R(cx - 1, y + 11, 2, 2, "#fdf6e3");
+  o += '<text x="' + cx + '" y="' + (y + 7.5) + '" text-anchor="middle" font-size="5.5" fill="#1d1a2b" ' + FONT + '>' + esc(texto) + '</text>';
+  if (barra) o += R(cx - w / 2 + 2, y + 8.5, w - 4, 1.5, color, ' class="barra"');
+  return o;
+}
+function tx(x, y, t, size, fill, extra){ return '<text class="tx" x="' + x + '" y="' + y + '" text-anchor="middle" font-size="' + size + '" fill="' + fill + '" ' + FONT + (extra || "") + '>' + esc(t) + '</text>'; }
+function defsAldea(){
+  return '<defs><pattern id="pasto" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#6ec17f"/><rect x="4" y="5" width="3" height="1" fill="#5aab6c"/><rect x="5" y="4" width="1" height="1" fill="#5aab6c"/><rect x="15" y="14" width="3" height="1" fill="#5aab6c"/><rect x="16" y="13" width="1" height="1" fill="#5aab6c"/><rect x="18" y="4" width="2" height="1" fill="#86d596"/><rect x="7" y="18" width="2" height="1" fill="#86d596"/></pattern>' +
+    '<pattern id="arena" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#ead9a5"/><rect x="2" y="3" width="1" height="1" fill="#d8c58b"/><rect x="8" y="8" width="2" height="1" fill="#d8c58b"/><rect x="9" y="2" width="1" height="1" fill="#f4e8c0"/></pattern></defs>';
+}
+var SLOTS = [[338, 52], [386, 52], [434, 52], [338, 170], [386, 170], [434, 170]];
+function estadoDe(a){ return a.apagado ? "off" : a.pos.length ? "trab" : "espera"; }
+
+/* ----- vista Laboratorio ----- */
 function pintarLab(){
   var L = LAB, cols = {"Analista de tendencia": "#7aa2ff", "Analista de filtros": "#ffb020", "Analista de rebote": "#ff6bd6"};
   var an = L ? L.analistas : [{nombre: "Analista de tendencia"}, {nombre: "Analista de filtros"}, {nombre: "Analista de rebote"}];
-  var s = '<defs><pattern id="lt" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#2c6f7a"/><rect width="8" height="8" fill="#317a86"/><rect x="8" y="8" width="8" height="8" fill="#317a86"/></pattern></defs>';
-  s += R(0, 0, 480, 220, "#17123a") + R(6, 6, 468, 208, "#0d0a24") + R(8, 8, 464, 204, "url(#lt)") + R(8, 8, 464, 14, "#3a2a6b") + R(8, 20, 464, 2, "#251a49");
-  s += '<text x="240" y="18" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>LABORATORIO DE ESTRATEGIAS</text>';
+  var s = defsAldea() + R(0, 0, 480, 236, "url(#pasto)");
+  s += arbol(6, 70) + arbol(6, 120) + arbol(6, 170) + arbol(452, 190);
+  s += casa(140, 12, 200, "#3a7bd5", "#2f67b8");
+  s += R(148, 36, 184, 2, "#1d1a2b", ' opacity=".4"') + cartel(240, 16, "LABORATORIO", 112);
+  s += R(228, 56, 24, 26, "#1d1a2b") + R(230, 58, 20, 24, "#4a7fd0") + R(246, 70, 2, 2, "#ffd24a");
+  s += R(160, 56, 36, 18, "#1d1a2b") + R(162, 58, 32, 14, "#9ccaf0") + R(284, 56, 36, 18, "#1d1a2b") + R(286, 58, 32, 14, "#9ccaf0");
+  var fila = "", pj = "", info = "";
   an.forEach(function(a, k){
-    var cx = 62 + k * 100, b = 28, c = cols[a.nombre] || "#c6ff1a", hay = !!L;
-    s += R(cx - 12, b + 58, 24, 8, "#2a1f4d") + R(cx - 15, b + 16, 30, 16, "#1c1530") + R(cx - 13, b + 18, 26, 11, hay ? c : "#2c2f46", hay ? ' class="scr"' : "");
-    if (hay) s += '<polyline fill="none" stroke="#0a0e11" stroke-width="1.2" points="' + (cx - 10) + ',' + (b + 25) + ' ' + (cx - 5) + ',' + (b + 21) + ' ' + cx + ',' + (b + 26) + ' ' + (cx + 5) + ',' + (b + 20) + ' ' + (cx + 10) + ',' + (b + 24) + '"/>';
-    s += R(cx - 3, b + 32, 6, 3, "#1c1530") + R(cx - 32, b + 33, 64, 16, "#d9a766") + R(cx - 32, b + 33, 64, 2, "#efc88f") + R(cx - 32, b + 47, 64, 2, "#8a5d2f") + R(cx - 8, b + 40, 16, 5, "#3a3358");
-    s += '<g transform="translate(' + (cx - 12) + ',' + (b + 38) + ')"><g transform="scale(2)">' + sprite(c, hay ? "trab" : "espera") + '</g></g>';
-    s += '<text x="' + cx + '" y="' + (b + 82) + '" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(a.nombre.replace("Analista de ", "ANALISTA ").toUpperCase()) + '</text>';
+    var cx = 62 + k * 100, b = 100, c = cols[a.nombre] || "#c6ff1a", hay = !!L;
+    fila += puesto(cx, b, c, hay, hay ? "trab" : "espera");
+    pj += '<g transform="translate(' + (cx - 14) + ',' + (b + 44) + ')"><g class="' + (hay ? "tb" : "") + '"><g transform="scale(2)">' + sprite(c, hay ? "trab" : "espera") + '</g></g></g>';
+    pj += tx(cx, b + 90, a.nombre.replace("Analista de ", "").toUpperCase(), 5.5, "#fdf6e3");
     if (hay) {
-      s += burbuja(cx, b, "Probó " + a.probadas, c, true);
-      s += '<text x="' + cx + '" y="' + (b + 91) + '" text-anchor="middle" font-size="5.5" fill="' + (a.candidatas ? "#c6ff1a" : "#9aa0c8") + '" ' + FONT + '>' + a.candidatas + (a.candidatas === 1 ? " CANDIDATA" : " CANDIDATAS") + '</text>';
-    } else s += burbuja(cx, b, "Sin datos", "#9aa0c8", false);
+      info += burbuja(cx, b - 2, "Probó " + a.probadas, c, true);
+      pj += tx(cx, b + 98, a.candidatas + (a.candidatas === 1 ? " CANDIDATA" : " CANDIDATAS"), 5.5, a.candidatas ? "#e8ff8a" : "#d6dcf5");
+    } else info += burbuja(cx, b - 2, "Sin datos", "#9aa0c8", false);
   });
-  /* mesa de examen y director */
-  var v = L ? L.veredicto : "", vc = v === "posible" ? "#c6ff1a" : v === "ruido" ? "#ffb020" : "#ff8a7d";
-  s += R(356, 74, 100, 46, "#120d2c") + R(358, 76, 96, 42, "#1d1747") + R(358, 76, 96, 2, "#6a5cc0");
-  s += '<text x="406" y="88" text-anchor="middle" font-size="5.5" fill="#9aa0c8" ' + FONT + '>EXAMEN</text>';
-  s += '<text x="406" y="104" text-anchor="middle" font-size="10" fill="' + (L ? vc : "#9aa0c8") + '" ' + FONT + '>' + (L ? v.toUpperCase() : "—") + '</text>';
-  s += '<text x="406" y="114" text-anchor="middle" font-size="5" fill="#9aa0c8" ' + FONT + '>' + (L ? "azar " + Math.round(L.tasa_azar * 100) + " %" : "sin datos") + '</text>';
-  s += '<g transform="translate(394,140) scale(2)">' + sprite("#e8e8f0", "trab", true) + '</g>';
-  s += '<text x="406" y="187" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>DIRECTOR</text>';
-  s += planta(12, 186) + planta(300, 186) + planta(452, 190);
+  var v = L ? L.veredicto : "", vc = v === "posible" ? "#2fa04f" : v === "ruido" ? "#d98a00" : "#d9453a";
+  var ex = R(396, 126, 4, 40, "#6a4622") + R(440, 126, 4, 40, "#6a4622") + R(356, 100, 104, 50, "#1d1a2b") + R(358, 102, 100, 46, "#fdf6e3") + R(358, 102, 100, 4, "#c9b98a");
+  ex += tx(408, 116, "EXAMEN", 6, "#4a4260").replace('class="tx"', '');
+  ex += '<text x="408" y="136" text-anchor="middle" font-size="10" fill="' + (L ? vc : "#8a8aa8") + '" ' + FONT + '>' + (L ? v.toUpperCase() : "—") + '</text>';
+  ex += '<text x="408" y="145" text-anchor="middle" font-size="5" fill="#4a4260" ' + FONT + '>' + (L ? "azar " + Math.round(L.tasa_azar * 100) + " %" : "sin datos") + '</text>';
+  s += fila + ex + planta(330, 190) + planta(470, 208);
+  s += '<g transform="translate(394,168) scale(2)">' + sprite("#e8e8f0", "espera", true) + '</g>' + tx(408, 214, "DIRECTOR", 5.5, "#fdf6e3");
+  s += pj + info;
   $("labsvg").innerHTML = s;
   var h = "";
   if (!L) {
@@ -462,120 +552,73 @@ function pintarLab(){
   $("labtxt").innerHTML = h;
 }
 
-/* ===== sala pixel-art (vista desde arriba) ===== */
-var FONT = 'font-family="Silkscreen,\'Press Start 2P\',monospace"';
-var PREV = {};
-function R(x, y, w, h, f, extra){ return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + f + '"' + (extra || "") + '/>'; }
-function oscuro(hex, k){
-  var n = parseInt(hex.slice(1), 16), c = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-  return "#" + c.map(function(v){ v = Math.round(v * k); return (v < 16 ? "0" : "") + v.toString(16); }).join("");
-}
-function sprite(c, estado, corona){
-  var cc = estado === "off" ? "#7a6a76" : c, d = oscuro(cc, .62), s = "";
-  s += R(5, 0, 2, 2, "#fff");
-  if (corona) s += R(3, 0, 6, 1, "#ffd24a") + R(3, -1, 1, 1, "#ffd24a") + R(5, -1, 2, 1, "#ffd24a") + R(8, -1, 1, 1, "#ffd24a");
-  s += R(2, 2, 8, 6, cc) + R(2, 7, 8, 1, d);
-  s += R(3, 4, 2, 2, "#0a0e11") + R(7, 4, 2, 2, "#0a0e11");
-  s += R(3, 8, 6, 5, d) + R(3, 8, 6, 1, cc);
-  s += '<g class="' + (estado === "trab" ? "ta" : "") + '">' + R(1, 9, 2, 3, cc) + '</g><g class="' + (estado === "trab" ? "tb" : "") + '">' + R(9, 9, 2, 3, cc) + '</g>';
-  s += R(3, 13, 2, 3, d) + R(7, 13, 2, 3, d);
-  return s;
-}
-function planta(x, y){
-  return R(x + 2, y + 10, 8, 6, "#8a4b2a") + R(x + 2, y + 10, 8, 1, "#b06a3c") +
-    R(x + 5, y + 2, 2, 9, "#1f7a3a") + R(x, y + 4, 5, 3, "#2fa04f") + R(x + 7, y + 3, 5, 3, "#2fa04f") + R(x + 2, y, 4, 3, "#3cc063") + R(x + 6, y + 1, 4, 3, "#3cc063");
-}
-function sofa(x, y, w, h, c){
-  var d = oscuro(c, .7);
-  return R(x, y, w, h, c) + R(x, y, w, 3, d) + R(x, y + h - 2, w, 2, d) + R(x, y + h, 2, 2, "#e8e0d0") + R(x + w - 2, y + h, 2, 2, "#e8e0d0");
-}
-function checker(x, y, w, h){ return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="url(#chk)"/>'; }
-function cortar(t, n){ t = String(t); return t.length > n ? t.slice(0, n - 1) + "…" : t; }
-function burbuja(cx, y, texto, color, barra){
-  var w = Math.max(30, texto.length * 5 + 10);
-  var o = R(cx - w / 2, y, w, 11, "#120d2c") + R(cx - w / 2, y, w, 1, color) + R(cx - w / 2, y + 10, w, 1, color) + R(cx - w / 2, y, 1, 11, color) + R(cx - w / 2 + w - 1, y, 1, 11, color);
-  o += '<text x="' + cx + '" y="' + (y + 7) + '" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(texto) + '</text>';
-  if (barra) o += R(cx - w / 2 + 2, y + 8, w - 4, 1.5, color, ' class="barra"');
-  return o;
-}
-function estadoDe(a){ return a.apagado ? "off" : a.pos.length ? "trab" : "espera"; }
-var SLOTS = [[338, 60], [386, 58], [434, 60], [338, 152], [386, 150], [434, 152]];
+/* ----- vista Sala ----- */
 function pintarSala(){
-  var s = '<defs><pattern id="wood" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#9a6a3c"/><rect y="7" width="16" height="1" fill="#7f5230"/><rect x="7" width="1" height="7" fill="#85572f"/><rect x="2" y="2" width="5" height="1" fill="#a97849"/></pattern>' +
-    '<pattern id="chk" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#cfd2d8"/><rect width="8" height="8" fill="#22232b"/><rect x="8" y="8" width="8" height="8" fill="#22232b"/></pattern>' +
-    '<pattern id="azul" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#3b3f9a"/><rect width="8" height="8" fill="#4044a3"/><rect x="8" y="8" width="8" height="8" fill="#4044a3"/></pattern></defs>';
-  s += R(0, 0, 480, 340, "#17123a");
-  /* salas */
-  s += R(6, 22, 308, 206, "#0d0a24") + R(8, 24, 304, 202, "url(#wood)") + R(8, 24, 304, 14, "#3a2a6b") + R(8, 36, 304, 2, "#251a49");
-  s += R(326, 22, 148, 206, "#0d0a24") + R(328, 24, 144, 202, "url(#azul)") + R(328, 24, 144, 14, "#3a2a6b") + R(328, 36, 144, 2, "#251a49");
-  s += R(6, 252, 468, 84, "#0d0a24") + R(8, 254, 464, 80, "#2a2358") + R(8, 254, 464, 14, "#3a2a6b") + R(8, 266, 464, 2, "#251a49");
-  s += checker(8, 228, 464, 24) + R(8, 228, 464, 1, "#0d0a24");
-  s += '<text x="160" y="33" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>SALA DE ESTRATEGIAS</text>';
-  s += '<text x="400" y="33" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>DESCANSO · EN EFECTIVO</text>';
-  s += '<text x="240" y="263" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>DIRECCIÓN</text>';
-  /* mobiliario del descanso */
-  s += sofa(372, 42, 56, 12, "#b8506e") + sofa(372, 212, 56, 12, "#9a3f60");
-  s += R(374, 114, 52, 26, "#d9b878") + R(376, 116, 48, 22, "#e9d29a") + R(376, 140, 3, 4, "#8a6a3a") + R(421, 140, 3, 4, "#8a6a3a");
-  s += planta(332, 206) + planta(456, 206) + planta(332, 42) + planta(458, 42);
-  s += planta(12, 205) + planta(296, 205);
-  /* estanterías en la sala de estrategias (decoración) */
-  /* mesas: una por agente */
-  var ocupa = {}, idle = 0, slotDe = {}, pj = "", mesas = "", info = "";
+  var s = defsAldea() + R(0, 0, 480, 340, "url(#pasto)");
+  /* borde de árboles */
+  for (var t = -6; t < 480; t += 22) s += arbol(t, -22);
+  /* caminos */
+  s += R(8, 230, 464, 22, "url(#arena)") + R(8, 230, 464, 1, "#b9a56a") + R(8, 251, 464, 1, "#b9a56a");
+  /* vallas */
+  s += valla(8, 26, 312, 26) + valla(8, 220, 312, 220) + valla(6, 26, 6, 222) + valla(310, 26, 310, 222);
+  s += valla(324, 26, 472, 26) + valla(324, 220, 472, 220) + valla(322, 26, 322, 222) + valla(470, 26, 470, 222);
+  s += cartel(160, 19, "SALA DE ESTRATEGIAS", 142) + cartel(398, 19, "DESCANSO", 72);
+  /* estanque del descanso */
+  s += R(351, 118, 106, 38, "#1d1a2b") + R(353, 120, 102, 34, "#5aa0e0") + R(353, 120, 102, 4, "#8ac4f0") +
+    R(366, 132, 10, 1, "#c8e6fb", ' class="scr"') + R(412, 141, 12, 1, "#c8e6fb", ' class="scr"') + R(386, 148, 8, 1, "#c8e6fb") +
+    R(372, 138, 8, 5, "#2f8a4a") + R(374, 136, 4, 2, "#ff9ac0") + R(430, 126, 8, 5, "#2f8a4a") + R(442, 142, 6, 4, "#3cae5e");
+  s += flor(336, 116, "#ff6b8a") + flor(462, 114, "#ffd24a") + flor(340, 154, "#ffd24a") + flor(460, 152, "#ff6b8a") + flor(334, 134, "#ff6b8a") + flor(465, 132, "#ffd24a");
+  /* decoración suelta */
+  s += planta(12, 200) + planta(292, 202) + planta(330, 204) + planta(458, 204);
+  var mesas = "", pj = "", info = "", idle = 0;
   D.agentes.forEach(function(a, i){
-    var col = i % 3, row = Math.floor(i / 3), cx = 62 + col * 98, b = 34 + row * 98, est = estadoDe(a);
+    var col = i % 3, row = Math.floor(i / 3), cx = 62 + col * 100, b = 32 + row * 98, est = estadoDe(a);
     var c = a.apagado ? "#7a6a76" : a.color, sel = a.i === SEL;
-    var m = '<g class="desk' + (sel ? " sel" : "") + '" data-i="' + a.i + '" tabindex="0" role="button" aria-label="Mesa de ' + esc(a.nombre) + '">';
-    if (sel) m += '<rect x="' + (cx - 44) + '" y="' + (b - 2) + '" width="88" height="94" fill="' + a.color + '" fill-opacity=".14" stroke="' + a.color + '" stroke-width="1" stroke-dasharray="3 2"/>';
-    m += R(cx - 12, b + 58, 24, 8, "#2a1f4d") + R(cx - 12, b + 58, 24, 1, "#4a3a82");           // silla
-    m += R(cx - 15, b + 16, 30, 16, "#1c1530") + R(cx - 13, b + 18, 26, 11, est === "trab" ? c : "#2c2f46", est === "trab" ? ' class="scr"' : "");
-    if (est === "trab") m += '<polyline fill="none" stroke="#0a0e11" stroke-width="1.2" points="' + (cx - 10) + ',' + (b + 26) + ' ' + (cx - 5) + ',' + (b + 22) + ' ' + cx + ',' + (b + 25) + ' ' + (cx + 5) + ',' + (b + 20) + ' ' + (cx + 10) + ',' + (b + 23) + '"/>';
-    m += R(cx - 3, b + 32, 6, 3, "#1c1530");
-    m += R(cx - 32, b + 33, 64, 16, "#d9a766") + R(cx - 32, b + 33, 64, 2, "#efc88f") + R(cx - 32, b + 47, 64, 2, "#8a5d2f") + R(cx - 28, b + 49, 3, 5, "#6a4622") + R(cx + 25, b + 49, 3, 5, "#6a4622");
-    m += R(cx - 8, b + 40, 16, 5, "#3a3358") + R(cx - 7, b + 41, 14, 1, "#6a639a");
-    m += R(cx + 18, b + 36, 6, 6, "#f4eee0") + R(cx + 19, b + 37, 4, 2, "#6a4622");                // taza
-    mesas += m + '</g>';
-    var tx, ty;
-    if (est === "espera") { var sl = SLOTS[idle++ % SLOTS.length]; tx = sl[0]; ty = sl[1]; }
-    else { tx = cx - 12; ty = b + 38; }
+    var m = '<g class="desk' + (sel ? " sel" : "") + '" data-i="' + a.i + '" tabindex="0" role="button" aria-label="Puesto de ' + esc(a.nombre) + '">';
+    if (sel) m += '<rect x="' + (cx - 42) + '" y="' + (b - 2) + '" width="84" height="94" fill="' + a.color + '" fill-opacity=".16" stroke="' + a.color + '" stroke-width="1" stroke-dasharray="3 2"/>';
+    mesas += m + puesto(cx, b, c, est === "trab", est) + '</g>';
+    var tx_, ty_;
+    if (est === "espera") { var sl = SLOTS[idle++ % SLOTS.length]; tx_ = sl[0]; ty_ = sl[1]; }
+    else { tx_ = cx - 14; ty_ = b + 46; }
     var txt = est === "off" ? "APAGADO" : est === "trab" ? cortar("Con " + a.pos.join(","), 16) : "Espera";
-    var bc = est === "off" ? "#ff5a4d" : est === "trab" ? a.color : "#9aa0c8";
-    var by = est === "espera" ? ty - 14 : b;
-    var prev = PREV[a.i], ini = prev && (prev[0] !== tx || prev[1] !== ty) ? prev : [tx, ty];
-    var camina = ini !== undefined && (ini[0] !== tx || ini[1] !== ty);
-    PREV[a.i] = [tx, ty];
-    pj += '<g class="pj' + (sel ? " sel" : "") + (camina ? " anda" : "") + '" data-i="' + a.i + '" data-x="' + tx + '" data-y="' + ty + '" style="transform:translate(' + ini[0] + 'px,' + ini[1] + 'px)" tabindex="-1">' +
-      '<rect x="-3" y="-2" width="30" height="56" fill="#000" fill-opacity="0"/>' + (sel ? '<rect x="-3" y="30" width="30" height="4" fill="' + a.color + '" fill-opacity=".55"/>' : "") +
-      '<g transform="scale(2)">' + sprite(c, est) + '</g>' +
-      '<text x="12" y="43" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(cortar(a.nombre, est === "espera" ? 9 : 14).toUpperCase()) + '</text>' +
-      '<text x="12" y="51" text-anchor="middle" font-size="5.5" fill="' + (a.res >= 0 ? "#c6ff1a" : "#ff6a5d") + '" ' + FONT + '>' + eur(a.res, true) + '</text></g>';
-    info += '<g class="bub" style="transform:translate(' + (est === "espera" ? tx + 12 : cx) + 'px,0)">' + burbuja(0, by, txt, bc, est === "trab") + '</g>';
+    var bc = est === "off" ? "#d9453a" : est === "trab" ? a.color : "#9aa0c8";
+    var by = est === "espera" ? ty_ - 15 : b - 2;
+    var prev = PREV[a.i], ini = prev ? prev : [tx_, ty_];
+    var camina = ini[0] !== tx_ || ini[1] !== ty_;
+    PREV[a.i] = [tx_, ty_];
+    pj += '<g class="pj' + (sel ? " sel" : "") + (camina ? " anda" : "") + '" data-i="' + a.i + '" data-x="' + tx_ + '" data-y="' + ty_ + '" style="transform:translate(' + ini[0] + 'px,' + ini[1] + 'px)" tabindex="-1">' +
+      '<rect x="-3" y="-2" width="34" height="62" fill="#000" fill-opacity="0"/>' +
+      (sel ? '<ellipse cx="14" cy="37" rx="16" ry="4" fill="' + a.color + '" fill-opacity=".55"/>' : '<ellipse cx="14" cy="37" rx="12" ry="3" fill="#000" fill-opacity=".22"/>') +
+      '<g class="' + (est === "trab" ? "tb" : "") + '"><g transform="scale(2)">' + sprite(c, est) + '</g></g>' +
+      tx(14, 45, cortar(a.nombre, est === "espera" ? 9 : 14).toUpperCase(), 5.5, "#fdf6e3") +
+      tx(14, 53, eur(a.res, true), 5.5, a.res >= 0 ? "#e8ff8a" : "#ffb3aa") + '</g>';
+    info += '<g class="bub" style="transform:translate(' + (est === "espera" ? tx_ + 14 : cx) + 'px,0)">' + burbuja(0, by, txt, bc, est === "trab") + '</g>';
   });
-  /* sala de dirección */
+  /* casa de dirección */
   var trab = D.agentes.filter(function(a){ return estadoDe(a) === "trab"; }).length;
   var pa = D.agentes.filter(function(a){ return a.apagado; }).length;
-  s += R(150, 272, 180, 44, "#120d2c") + R(152, 274, 176, 40, "#1d1747") + R(152, 274, 176, 2, "#6a5cc0");
-  s += '<text x="240" y="287" text-anchor="middle" font-size="6" fill="#9aa0c8" ' + FONT + '>CAPITAL TOTAL</text>';
-  s += '<text x="240" y="302" text-anchor="middle" font-size="11" fill="#c6ff1a" ' + FONT + '>' + D.total.toFixed(2).replace(".", ",") + ' €</text>';
-  s += '<text x="240" y="311" text-anchor="middle" font-size="5" fill="#9aa0c8" ' + FONT + '>' + (D.btc ? "BTC " + Math.round(D.btc).toLocaleString("es-ES") + " €" : "") + '</text>';
-  s += R(60, 296, 44, 24, "#d9a766") + R(60, 296, 44, 2, "#efc88f") + R(62, 320, 3, 5, "#6a4622") + R(99, 320, 3, 5, "#6a4622");
-  s += R(74, 286, 16, 11, "#1c1530") + R(76, 288, 12, 7, "#c6ff1a", ' class="scr"');
-  s += '<g transform="translate(110,290) scale(2)">' + sprite("#e8e8f0", "trab", true) + '</g>';
-  s += burbuja(122, 272, trab + " TRABAJANDO" + (pa ? " · " + pa + " APAGADO" : ""), "#ffd24a", false);
-  s += '<text x="122" y="331" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>DIRECTOR</text>';
-  s += planta(20, 280) + planta(448, 280) + planta(20, 308) + planta(448, 308);
-  /* vigilante de riesgo: solo lee los datos (el límite real ya está en el programa de la nube) */
-  var STOPV = 35, cerca = D.agentes.filter(function(a){ return !a.apagado && a.eq < STOPV + 5; });
-  var dmax = D.agentes.reduce(function(m, a){ return Math.max(m, a.dd); }, 0);
-  var vtxt, vcol;
-  if (pa) { vtxt = "ALERTA " + pa + " APAGADO"; vcol = "#ff5a4d"; }
-  else if (cerca.length) { vtxt = "CERCA DEL LIMITE"; vcol = "#ff5a4d"; }
-  else if (dmax >= 10) { vtxt = "CAIDA " + dmax.toFixed(0) + " %"; vcol = "#ffb020"; }
-  else { vtxt = "TODO EN ORDEN"; vcol = "#3cc063"; }
-  s += R(352, 296, 44, 24, "#d9a766") + R(352, 296, 44, 2, "#efc88f") + R(354, 320, 3, 5, "#6a4622") + R(391, 320, 3, 5, "#6a4622");
-  s += R(366, 285, 16, 11, "#1c1530") + R(368, 287, 12, 7, vcol, ' class="scr"');
-  s += '<g transform="translate(402,290) scale(2)">' + sprite("#46d9c8", "trab") + '</g>';
-  s += burbuja(414, 272, vtxt, vcol, false);
-  s += '<text x="414" y="331" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>VIGILANTE DE RIESGO</text>';
+  s += arbol(14, 262) + arbol(46, 272) + arbol(452, 288);
+  s += casa(112, 262, 256, "#e0702e", "#c95e22");
+  s += cartel(240, 266, "DIRECCIÓN", 80);
+  s += R(150, 292, 24, 26, "#1d1a2b") + R(152, 294, 20, 24, "#4a7fd0") + R(168, 306, 2, 2, "#ffd24a");
+  s += R(186, 294, 30, 18, "#1d1a2b") + R(188, 296, 26, 14, "#9ccaf0");
+  s += R(226, 290, 134, 34, "#1d1a2b") + R(228, 292, 130, 30, "#1d1747") + R(228, 292, 130, 2, "#6a5cc0");
+  s += '<text x="293" y="302" text-anchor="middle" font-size="5.5" fill="#9aa0c8" ' + FONT + '>CAPITAL TOTAL</text>';
+  s += '<text x="293" y="314" text-anchor="middle" font-size="10" fill="#c6ff1a" ' + FONT + '>' + D.total.toFixed(2).replace(".", ",") + ' €</text>';
+  s += '<text x="293" y="320.5" text-anchor="middle" font-size="4.5" fill="#9aa0c8" ' + FONT + '>' + (D.btc ? "BTC " + Math.round(D.btc).toLocaleString("es-ES") + " €" : "") + '</text>';
+  s += '<g transform="translate(136,300) scale(2)">' + sprite("#e8e8f0", "espera", true) + '</g>';
+  s += burbuja(150, 254, trab + " TRABAJANDO" + (pa ? " · " + pa + " APAGADO" : ""), "#ffb020", false);
+  s += tx(150, 338, "DIRECTOR", 5.5, "#fdf6e3");
+  /* vigilante de riesgo */
+  var cerca = D.agentes.filter(function(a){ return !a.apagado && a.eq < 40; });
+  var dmax = D.agentes.reduce(function(m, a){ return Math.max(m, a.dd); }, 0), vtxt, vcol;
+  if (pa) { vtxt = "ALERTA " + pa + " APAGADO"; vcol = "#d9453a"; }
+  else if (cerca.length) { vtxt = "CERCA DEL LIMITE"; vcol = "#d9453a"; }
+  else if (dmax >= 10) { vtxt = "CAIDA " + dmax.toFixed(0) + " %"; vcol = "#d98a00"; }
+  else { vtxt = "TODO EN ORDEN"; vcol = "#2fa04f"; }
+  s += R(392, 282, 4, 46, "#6a4622") + R(384, 276, 20, 12, "#1d1a2b") + R(386, 278, 16, 8, vcol, ' class="scr"');
+  s += '<g transform="translate(410,296) scale(2)">' + sprite("#46d9c8", "trab") + '</g>';
+  s += burbuja(424, 266, vtxt, vcol, false) + tx(424, 338, "VIGILANTE DE RIESGO", 5.5, "#fdf6e3");
   s += mesas + pj + info;
   $("floor").innerHTML = s;
   var viejo = Array.prototype.slice.call(document.querySelectorAll(".pj"));
