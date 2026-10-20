@@ -1,6 +1,6 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-10-20T22:47:24+00:00 UTC · Precio BTC/EUR: 73857 (Kraken)
+Ultima actualizacion: 2026-10-20T23:06:59+00:00 UTC · Precio BTC/EUR: 73865 (Kraken)
 En marcha desde: 2026-10-20T22:47:24+00:00 UTC (0.0 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.25 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
@@ -9,11 +9,14 @@ Costes simulados por operacion: comision 0.25 % + deslizamiento 0.05 % (0.3 % en
 |---|---:|---:|---:|---:|---:|---|---|
 | Cruce 10/30 | 10.00 | +0.00 | +0.00 % | +0.03 | 0 | 2026-10-20 | En efectivo |
 | Cruce 5/20 | 10.00 | +0.00 | +0.00 % | +0.03 | 0 | 2026-10-20 | En efectivo |
-| Momentum | 10.00 | +0.00 | +0.00 % | +0.03 | 0 | 2026-10-20 | En efectivo |
-| Rebote | 10.00 | +0.00 | +0.00 % | +0.03 | 0 | 2026-10-20 | En efectivo |
+| Momentum | 9.95 | -0.05 | -0.49 % | -0.02 | 5 | 2026-10-20 | Con ETH, SOL, XBT, XRP, ZEC |
+| Rebote | 10.00 | -0.00 | -0.05 % | +0.02 | 2 | 2026-10-20 | Con ARB, TIA |
 | Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +0.03 | 0 | 2026-10-20 | En efectivo |
 | Consenso 2 de 3 | 10.00 | +0.00 | +0.00 % | +0.03 | 0 | 2026-10-20 | En efectivo |
-| Comprar y mantener (solo BTC) | 9.97 | -0.03 | -0.30 % | 0.00 | 1 | 2026-10-20 | Referencia |
+| Cruce 3/8 rapido | 9.95 | -0.05 | -0.52 % | -0.02 | 5 | 2026-10-20 | Con ARB, ETH, NEAR, SOL, XBT |
+| Momentum rapido | 9.95 | -0.05 | -0.49 % | -0.02 | 5 | 2026-10-20 | Con ETH, SOL, XBT, XRP, ZEC |
+| Rebote rapido | 10.01 | +0.01 | +0.06 % | +0.04 | 1 | 2026-10-20 | Con TIA |
+| Comprar y mantener (solo BTC) | 9.97 | -0.03 | -0.29 % | 0.00 | 1 | 2026-10-20 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
@@ -21,15 +24,20 @@ Riesgo (calculado con el historial guardado):
 |---|---:|---:|---:|
 | Cruce 10/30 | 0.00 % | 0 | 0 |
 | Cruce 5/20 | 0.00 % | 0 | 0 |
-| Momentum | 0.00 % | 0 | 0 |
+| Momentum | -0.50 % | 0 | 0 |
 | Rebote | 0.00 % | 0 | 0 |
 | Cruce 10/30 + filtro | 0.00 % | 0 | 0 |
 | Consenso 2 de 3 | 0.00 % | 0 | 0 |
+| Cruce 3/8 rapido | -0.50 % | 0 | 0 |
+| Momentum rapido | -0.50 % | 0 | 0 |
+| Rebote rapido | 0.00 % | 0 | 0 |
 | Comprar y mantener | 0.00 % | 0 | 0 |
 
 Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una operacion cuenta cuando se cierra con su venta.
 
-⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (0 cerradas, 0 dias); Cruce 5/20 (0 cerradas, 0 dias); Momentum (0 cerradas, 0 dias); Rebote (0 cerradas, 0 dias); Cruce 10/30 + filtro (0 cerradas, 0 dias); Consenso 2 de 3 (0 cerradas, 0 dias). Antes de eso, el resultado puede ser pura suerte.
+⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (0 cerradas, 0 dias); Cruce 5/20 (0 cerradas, 0 dias); Momentum (0 cerradas, 0 dias); Rebote (0 cerradas, 0 dias); Cruce 10/30 + filtro (0 cerradas, 0 dias); Consenso 2 de 3 (0 cerradas, 0 dias); Cruce 3/8 rapido (0 cerradas, 0 dias); Momentum rapido (0 cerradas, 0 dias); Rebote rapido (0 cerradas, 0 dias). Antes de eso, el resultado puede ser pura suerte.
+
+![Evolucion del capital](grafico.svg)
 
 Aviso: solo hay 0.0 dias de datos; aun no hay base para concluir que una estrategia sea mejor.
 
