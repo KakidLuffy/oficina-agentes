@@ -90,6 +90,30 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 .tip{position:absolute;pointer-events:none;background:#0a0e11ee;border:1px solid var(--lime-d);border-radius:10px;padding:8px 11px;font-size:12.5px;display:none;max-width:240px;z-index:3}
 .tip b{font-family:var(--cond);font-size:17px;letter-spacing:.02em}
 
+/* ficha y vistas de la zona derecha */
+.top{width:100%;padding:4px 10px 0}
+.top[hidden]{display:none}
+.ficha{display:flex;flex-wrap:wrap;gap:8px 26px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.ficha .who{display:flex;align-items:center;gap:12px;min-width:200px}
+.ficha .who .av{width:48px;height:48px}
+.ficha .who b{font-family:var(--cond);font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;display:block;line-height:1}
+.ficha .who span{color:var(--mute);font-size:12.5px}
+.ficha .st small{display:block;font-family:var(--cond);font-weight:600;font-size:11.5px;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+.ficha .st b{font-family:var(--cond);font-weight:700;font-size:21px;font-variant-numeric:tabular-nums}
+.vtabs{display:flex;gap:6px;margin-top:10px}
+.vtabs button{background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 14px;color:var(--mute);font-weight:600}
+.vtabs button[aria-pressed="true"]{background:var(--lime);border-color:var(--lime);color:#0a0d05}
+.evo{width:100%;padding:6px 10px;display:flex;flex-direction:column;gap:8px}
+.evo[hidden]{display:none}
+#evchart{width:100%;height:auto;max-height:calc(100vh - 300px);background:#0a0e11;border:1px solid var(--line);border-radius:14px;display:block}
+.leg{display:flex;flex-wrap:wrap;gap:6px}
+.leg button{display:flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--ink)}
+.leg button i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.leg button[aria-pressed="true"]{border-color:var(--lime)}
+.stage{flex-direction:column;justify-content:flex-start;gap:0}
+.stage #floor{margin-top:6px}
+.dotag{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:baseline}
+
 /* mercado */
 .mkt{width:100%;padding:6px 10px;display:flex;flex-direction:column;gap:8px;align-self:stretch}
 .mkt[hidden]{display:none}
@@ -147,6 +171,9 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
     <section class="pane" id="p-ctl" role="tabpanel" hidden></section>
   </aside>
   <main class="stage">
+    <div class="top" id="top"><div class="ficha" id="ficha"></div>
+      <div class="vtabs" id="vtabs"><button data-v="sala" aria-pressed="true">Sala</button><button data-v="evo" aria-pressed="false">Evolución del capital</button></div></div>
+    <div class="evo" id="evbox" hidden><svg id="evchart" viewBox="0 0 900 440" role="img" aria-label="Evolución del capital de cada agente"></svg><div class="leg" id="leg"></div><div class="mnote" id="evnote"></div></div>
     <svg id="floor" viewBox="0 0 760 500" role="img" aria-label="Sala de trading con una mesa por agente"></svg>
     <div class="mkt" id="mktbox" hidden>
       <div class="mtop"><div class="mh" id="mhead"></div><div class="rng" id="rng"></div></div>
@@ -172,6 +199,7 @@ var D = null;          // datos cargados
 var SEL = 0;           // agente seleccionado
 var TAB = "rank";
 var DEMO = false;
+var VIEW = "sala";
 
 function $(id){ return document.getElementById(id); }
 function eur(v, signo){ var s = (signo && v >= 0 ? "+" : "") + v.toFixed(2).replace(".", ","); return s + " €"; }
@@ -305,7 +333,8 @@ function pintarOps(){
   var l = D.ops.slice(-40).reverse();
   $("p-ops").innerHTML = l.length ? l.map(function(o){
     var c = o.tipo === "COMPRA" ? "buy" : "sell";
-    return '<div class="item"><time>' + esc((o.fecha_utc || "").replace("T", " ").slice(5, 16)) + '</time><span><span class="'+c+'">' + esc(o.tipo) + '</span> ' +
+    var ag = D.agentes.filter(function(a){ return a.nombre === o.agente; })[0];
+    return '<div class="item"><time>' + esc((o.fecha_utc || "").replace("T", " ").slice(5, 16)) + '</time><span><span class="dotag" style="background:' + (ag ? ag.color : "#8a97a3") + '"></span><span class="'+c+'">' + esc(o.tipo) + '</span> ' +
            esc(corto(o.moneda)) + ' · ' + esc(o.agente) + ' · ' + parseFloat(o.importe_eur).toFixed(2).replace(".", ",") + ' €</span></div>';
   }).join("") : '<p class="note">Aún no hay operaciones. Los agentes solo compran cuando su regla se cumple.</p>';
 }
@@ -338,8 +367,12 @@ function pintarControl(){
 }
 function pintarTab(){
   ["rank", "mkt", "ops", "inf", "ctl"].forEach(function(t){ $("p-" + t).hidden = (t !== TAB); });
-  $("floor").style.display = TAB === "mkt" ? "none" : "";
+  $("floor").style.display = (TAB === "mkt" || VIEW !== "sala") ? "none" : "";
+  $("evbox").hidden = (TAB === "mkt" || VIEW !== "evo");
+  $("top").hidden = TAB === "mkt";
+  Array.prototype.forEach.call(document.querySelectorAll("#vtabs button"), function(b){ b.setAttribute("aria-pressed", b.dataset.v === VIEW ? "true" : "false"); });
   $("mktbox").hidden = TAB !== "mkt";
+  if (D && TAB !== "mkt"){ pintarFicha(); if (VIEW === "evo") pintarEvolucion(); }
   mercadoActivar(TAB === "mkt");
   Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){ b.setAttribute("aria-selected", b.dataset.t === TAB ? "true" : "false"); });
 }
@@ -427,7 +460,7 @@ function tip(i, ev){
   el.style.top = Math.max(6, ev.clientY - st.top + 14) + "px";
 }
 function seleccionar(i){
-  SEL = i; pintarRanking(); pintarSala(); ligarRanking();
+  SEL = i; pintarRanking(); pintarSala(); ligarRanking(); pintarFicha(); if (VIEW === "evo") pintarEvolucion();
 }
 function ligarRanking(){
   Array.prototype.forEach.call(document.querySelectorAll(".row"), function(r){
@@ -574,6 +607,72 @@ function dibujarVelas(){
   cap.onmousemove = hov; cap.onmouseleave = function(){ $("mhov").innerHTML = ""; };
 }
 
+/* ===== ficha del agente y evolución del capital ===== */
+function pintarFicha(){
+  var a = D.agentes[SEL]; if (!a) return;
+  var estado = a.apagado ? "Apagado por riesgo" : a.pos.length ? "Con " + a.pos.join(", ") : "En efectivo";
+  var c = a.res >= 0 ? "up" : "down", cv = a.vsHold >= 0 ? "up" : "down";
+  $("ficha").innerHTML = '<div class="who"><div class="av">' + robot(a.color, 34) + '</div><div><b>' + esc(a.nombre) + '</b><span>' + esc(estado) + ' · desde ' + esc(a.inicio.slice(0, 10)) + '</span></div></div>' +
+    st("Capital", a.eq.toFixed(2).replace(".", ",") + " €") +
+    st("Resultado", '<span class="' + c + '">' + eur(a.res, true) + '</span>') +
+    st("vs mantener", '<span class="' + cv + '">' + eur(a.vsHold, true) + '</span>') +
+    st("Operaciones", a.ops + ' <span style="color:var(--mute);font-size:14px">(' + a.cerradas + ' cerradas, ' + a.gan + ' ganadoras)</span>') +
+    st("Caída máx.", a.dd.toFixed(1).replace(".", ",") + " %");
+}
+function st(l, v){ return '<div class="st"><small>' + l + '</small><b>' + v + '</b></div>'; }
+function pintarEvolucion(){
+  var svg = $("evchart"), H = D.hist;
+  var nombres = D.agentes.map(function(a){ return a.nombre; }).concat(["Comprar y mantener"]);
+  var col = {}; D.agentes.forEach(function(a){ col[a.nombre] = a.color; }); col["Comprar y mantener"] = "#8a97a3";
+  $("leg").innerHTML = D.agentes.map(function(a){ return '<button data-i="' + a.i + '" aria-pressed="' + (a.i === SEL) + '"><i style="background:' + a.color + '"></i>' + esc(a.nombre) + '</button>'; }).join("") +
+    '<button disabled><i style="background:#8a97a3"></i>Comprar y mantener (BTC, línea de puntos)</button>';
+  Array.prototype.forEach.call(document.querySelectorAll("#leg button[data-i]"), function(b){ b.onclick = function(){ seleccionar(+b.dataset.i); }; });
+  var ts = H.map(function(r){ return Date.parse(r.fecha_utc); });
+  if (H.length < 2){
+    svg.innerHTML = '<text x="450" y="220" text-anchor="middle" fill="#8a97a3" font-size="16" font-family="Inter,sans-serif">Todavía hay muy pocas horas de datos: la gráfica se irá llenando sola.</text>';
+    $("evnote").textContent = ""; return;
+  }
+  var W = 900, Ht = 440, L = 12, R = 185, T = 16, B = 30, cw = W - L - R, ch = Ht - T - B;
+  var vals = [];
+  nombres.forEach(function(n){ H.forEach(function(r){ var v = parseFloat(r[n]); if (isFinite(v)) vals.push(v); }); });
+  vals.push(START);
+  var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals), pad = (mx - mn) * .1 || 1; mn -= pad; mx += pad;
+  var t0 = ts[0], t1 = ts[ts.length - 1] || t0 + 1;
+  function X(t){ return L + (t - t0) / ((t1 - t0) || 1) * cw; }
+  function Y(v){ return T + (mx - v) / (mx - mn) * ch; }
+  var s = "";
+  for (var i = 0; i <= 4; i++){
+    var v = mn + (mx - mn) * i / 4, y = Y(v);
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) + '" stroke="#1b252c"/><text x="' + (L + 4) + '" y="' + (y - 4).toFixed(1) + '" fill="#5d6a75" font-size="11" font-family="Inter,sans-serif">' + v.toFixed(1).replace(".", ",") + ' €</text>';
+  }
+  s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(START).toFixed(1) + '" y2="' + Y(START).toFixed(1) + '" stroke="#8a97a3" stroke-dasharray="2 5" opacity=".6"/>' +
+       '<text x="' + (L + 4) + '" y="' + (Y(START) - 5).toFixed(1) + '" fill="#8a97a3" font-size="11" font-family="Inter,sans-serif">50 € (capital inicial)</text>';
+  /* eje de tiempo */
+  var span = t1 - t0;
+  for (var k = 0; k <= 4; k++){
+    var tt = t0 + span * k / 4, d = new Date(tt);
+    var tx = span > 36 * 3600e3 ? d.toLocaleDateString("es-ES", {day: "2-digit", month: "2-digit"}) : d.toLocaleTimeString("es-ES", {hour: "2-digit", minute: "2-digit"});
+    s += '<text x="' + X(tt).toFixed(1) + '" y="' + (Ht - 8) + '" text-anchor="' + (k === 0 ? "start" : k === 4 ? "end" : "middle") + '" fill="#8a97a3" font-size="11.5" font-family="Inter,sans-serif">' + tx + '</text>';
+  }
+  var fin = [];
+  nombres.forEach(function(n){
+    var pts = [], last = null;
+    H.forEach(function(r, j){ var v = parseFloat(r[n]); if (isFinite(v)){ pts.push(X(ts[j]).toFixed(1) + "," + Y(v).toFixed(1)); last = v; } });
+    if (pts.length < 2) return;
+    var esSel = (D.agentes[SEL] && D.agentes[SEL].nombre === n), hold = n === "Comprar y mantener";
+    s += '<polyline points="' + pts.join(" ") + '" fill="none" stroke="' + col[n] + '" stroke-width="' + (esSel ? 3.2 : 1.6) + '" opacity="' + (esSel || hold ? 1 : .55) + '" ' + (hold ? 'stroke-dasharray="3 5"' : "") + ' stroke-linejoin="round" stroke-linecap="round"/>';
+    fin.push({n: n, v: last, y: Y(last), sel: esSel});
+  });
+  /* etiquetas al final, separadas para que no se pisen */
+  fin.sort(function(a, b){ return a.y - b.y; });
+  for (var q = 1; q < fin.length; q++) if (fin[q].y - fin[q - 1].y < 15) fin[q].y = fin[q - 1].y + 15;
+  fin.forEach(function(f){
+    s += '<text x="' + (W - R + 8) + '" y="' + (f.y + 4).toFixed(1) + '" fill="' + col[f.n] + '" font-size="12" font-weight="' + (f.sel ? 700 : 500) + '" font-family="Inter,sans-serif">' + esc(f.n === "Comprar y mantener" ? "Mantener BTC" : f.n.length > 19 ? f.n.slice(0, 18) + "…" : f.n) + ' ' + f.v.toFixed(2).replace(".", ",") + '</text>';
+  });
+  svg.innerHTML = s;
+  $("evnote").textContent = "Capital de cada agente hora a hora (desde que se guarda el historial nuevo). Los dos agentes nuevos empezaron el 20 de octubre. Pulsa un nombre para resaltarlo.";
+}
+
 /* ===== ciclo ===== */
 function pintarTodo(){
   pintarCabecera(); pintarRanking(); pintarOps(); pintarInforme(); pintarControl(); pintarTab(); pintarSala(); ligarRanking();
@@ -609,6 +708,9 @@ function ejemplo(){
   return preparar(estado, hist, ops);
 }
 
+document.getElementById("vtabs").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if (!b) return; VIEW = b.dataset.v; pintarTab();
+});
 document.getElementById("tabs").addEventListener("click", function(e){
   var b = e.target.closest(".tab"); if (!b) return; TAB = b.dataset.t; pintarTab();
 });
