@@ -1,6 +1,6 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-10-20T01:51:06+00:00 UTC · Precio BTC/EUR: 72804 (Kraken)
+Ultima actualizacion: 2026-10-20T06:41:11+00:00 UTC · Precio BTC/EUR: 72822 (Kraken)
 En marcha desde: 2026-10-19T19:51:44+00:00 UTC
 Costes simulados por operacion: comision 0.25 % + deslizamiento 0.05 % · limite de perdida diaria: 2 EUR
 
@@ -10,7 +10,7 @@ Costes simulados por operacion: comision 0.25 % + deslizamiento 0.05 % · limite
 | Cruce 5/20 | 50.00 | +0.00 | 0 | En efectivo |
 | Momentum | 50.00 | +0.00 | 0 | En efectivo |
 | Rebote | 50.00 | +0.00 | 0 | En efectivo |
-| Comprar y mantener | 49.77 | -0.23 | 1 | Referencia |
+| Comprar y mantener | 49.78 | -0.22 | 1 | Referencia |
 
 Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.
 Estos resultados no garantizan beneficios futuros.
