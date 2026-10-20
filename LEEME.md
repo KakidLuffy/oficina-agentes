@@ -1,6 +1,6 @@
 # Oficina de agentes en la nube (gratis, sin tu PC)
 
-Seis agentes de trading con **dinero ficticio** (10 € cada uno, 60 € en total) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
+Nueve agentes de trading con **dinero ficticio** (10 € cada uno, 90 € en total) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
 
 **Es una simulación:** no opera en ningún exchange ni toca dinero real, y nada de esto garantiza beneficios.
 
@@ -29,6 +29,9 @@ Seis agentes de trading con **dinero ficticio** (10 € cada uno, 60 € en tota
 | Rebote | Compra cuando el precio cae un 1,5 % bajo su media de 20 horas y vende al recuperarla. |
 | Cruce 10/30 + filtro | Como el Cruce 10/30, pero solo compra si el precio está por encima de su media de 200 horas (tendencia alcista). |
 | Consenso 2 de 3 | Compra cuando al menos 2 de las 3 reglas de tendencia (Cruce 10/30, Cruce 5/20, Momentum) coinciden. |
+| Cruce 3/8 rapido | Como el cruce de medias, pero con medias de 3 y 8 horas: reacciona en pocas horas y opera mucho más. |
+| Momentum rapido | Compra si el precio sube un 0,6 % en 4 horas; vende si baja un 0,6 %. |
+| Rebote rapido | Compra si el precio cae un 0,8 % bajo su media de 8 horas; vende al volver a la media. |
 
 Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pasar horas sin ninguna operación.
 

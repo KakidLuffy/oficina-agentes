@@ -111,6 +111,22 @@ def consenso(p):
     return None
 
 
+def momentum_rapido(p):
+    """Momentum de corto plazo: mira solo las ultimas 4 velas (4 horas) y reacciona a movimientos del 0,6 %."""
+    if len(p) < 6:
+        return None
+    r = p[-1] / p[-5] - 1
+    return "b" if r > 0.006 else ("s" if r < -0.006 else None)
+
+
+def rebote_rapido(p):
+    """Rebote de corto plazo: compra si el precio cae un 0,8 % bajo su media de 8 velas; vende al volver a la media."""
+    if len(p) < 9:
+        return None
+    m, x = media(p[-8:]), p[-1]
+    return "b" if x < m * 0.992 else ("s" if x > m else None)
+
+
 AGENTES = [
     ("Cruce 10/30", lambda p: cruce(p, 10, 30)),
     ("Cruce 5/20", lambda p: cruce(p, 5, 20)),
@@ -118,6 +134,10 @@ AGENTES = [
     ("Rebote", rebote),
     ("Cruce 10/30 + filtro", filtro(lambda p: cruce(p, 10, 30))),
     ("Consenso 2 de 3", consenso),
+    # agentes rapidos: senales de pocas horas, para que operen varias veces al dia
+    ("Cruce 3/8 rapido", lambda p: cruce(p, 3, 8)),
+    ("Momentum rapido", momentum_rapido),
+    ("Rebote rapido", rebote_rapido),
 ]
 DECIDIR = dict(AGENTES)
 
@@ -396,6 +416,26 @@ def nombre_corto(par):
     return par[:-3] if par.endswith("EUR") else par
 
 
+def ajustar_historial(cabecera):
+    """Si se anadieron agentes, reescribe el historial con las columnas nuevas (las filas viejas las rellenan con START)."""
+    if not os.path.exists(HISTORIAL):
+        return
+    with open(HISTORIAL, newline="") as f:
+        filas = list(csv.reader(f))
+    if not filas or filas[0] == cabecera:
+        return
+    viejas = filas[0]
+    nuevas = []
+    for fila in filas[1:]:
+        d = dict(zip(viejas, fila))
+        nuevas.append([d.get(c, str(START)) for c in cabecera])
+    with open(HISTORIAL, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(cabecera)
+        w.writerows(nuevas)
+    print("Historial ampliado con las columnas de los agentes nuevos.")
+
+
 def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     os.makedirs(DATOS, exist_ok=True)
     asegurar_operaciones()
@@ -403,7 +443,9 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     eqs = [equity(a, precios) for a in estado["agentes"]]
     mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
     eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
-    anotar(HISTORIAL, ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"],
+    cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"]
+    ajustar_historial(cab_hist)
+    anotar(HISTORIAL, cab_hist,
            [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)])
     with open(ESTADO, "w") as f:
         json.dump(estado, f, indent=2)
