@@ -499,7 +499,7 @@ function burbuja(cx, y, texto, color, barra){
   return o;
 }
 function estadoDe(a){ return a.apagado ? "off" : a.pos.length ? "trab" : "espera"; }
-var SLOTS = [[340, 60], [384, 58], [436, 60], [338, 150], [384, 148], [436, 150]];
+var SLOTS = [[338, 60], [386, 58], [434, 60], [338, 152], [386, 150], [434, 152]];
 function pintarSala(){
   var s = '<defs><pattern id="wood" width="16" height="8" patternUnits="userSpaceOnUse"><rect width="16" height="8" fill="#9a6a3c"/><rect y="7" width="16" height="1" fill="#7f5230"/><rect x="7" width="1" height="7" fill="#85572f"/><rect x="2" y="2" width="5" height="1" fill="#a97849"/></pattern>' +
     '<pattern id="chk" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#cfd2d8"/><rect width="8" height="8" fill="#22232b"/><rect x="8" y="8" width="8" height="8" fill="#22232b"/></pattern>' +
@@ -514,7 +514,7 @@ function pintarSala(){
   s += '<text x="400" y="33" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>DESCANSO · EN EFECTIVO</text>';
   s += '<text x="240" y="263" text-anchor="middle" font-size="7" fill="#f6e9c8" ' + FONT + '>DIRECCIÓN</text>';
   /* mobiliario del descanso */
-  s += sofa(372, 42, 56, 12, "#b8506e") + sofa(336, 100, 12, 40, "#b8506e") + sofa(452, 100, 12, 40, "#b8506e") + sofa(372, 210, 56, 12, "#9a3f60");
+  s += sofa(372, 42, 56, 12, "#b8506e") + sofa(372, 212, 56, 12, "#9a3f60");
   s += R(374, 114, 52, 26, "#d9b878") + R(376, 116, 48, 22, "#e9d29a") + R(376, 140, 3, 4, "#8a6a3a") + R(421, 140, 3, 4, "#8a6a3a");
   s += planta(332, 206) + planta(456, 206) + planta(332, 42) + planta(458, 42);
   s += planta(12, 205) + planta(296, 205);
@@ -537,7 +537,7 @@ function pintarSala(){
     var tx, ty;
     if (est === "espera") { var sl = SLOTS[idle++ % SLOTS.length]; tx = sl[0]; ty = sl[1]; }
     else { tx = cx - 12; ty = b + 38; }
-    var txt = est === "off" ? "APAGADO" : est === "trab" ? cortar("Con " + a.pos.join(","), 16) : "En espera";
+    var txt = est === "off" ? "APAGADO" : est === "trab" ? cortar("Con " + a.pos.join(","), 16) : "Espera";
     var bc = est === "off" ? "#ff5a4d" : est === "trab" ? a.color : "#9aa0c8";
     var by = est === "espera" ? ty - 14 : b;
     var prev = PREV[a.i], ini = prev && (prev[0] !== tx || prev[1] !== ty) ? prev : [tx, ty];
@@ -546,7 +546,7 @@ function pintarSala(){
     pj += '<g class="pj' + (sel ? " sel" : "") + (camina ? " anda" : "") + '" data-i="' + a.i + '" data-x="' + tx + '" data-y="' + ty + '" style="transform:translate(' + ini[0] + 'px,' + ini[1] + 'px)" tabindex="-1">' +
       '<rect x="-3" y="-2" width="30" height="56" fill="#000" fill-opacity="0"/>' + (sel ? '<rect x="-3" y="30" width="30" height="4" fill="' + a.color + '" fill-opacity=".55"/>' : "") +
       '<g transform="scale(2)">' + sprite(c, est) + '</g>' +
-      '<text x="12" y="43" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(cortar(a.nombre, 14).toUpperCase()) + '</text>' +
+      '<text x="12" y="43" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>' + esc(cortar(a.nombre, est === "espera" ? 9 : 14).toUpperCase()) + '</text>' +
       '<text x="12" y="51" text-anchor="middle" font-size="5.5" fill="' + (a.res >= 0 ? "#c6ff1a" : "#ff6a5d") + '" ' + FONT + '>' + eur(a.res, true) + '</text></g>';
     info += '<g class="bub" style="transform:translate(' + (est === "espera" ? tx + 12 : cx) + 'px,0)">' + burbuja(0, by, txt, bc, est === "trab") + '</g>';
   });
