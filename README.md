@@ -1,13 +1,13 @@
 # Oficina de agentes (simulación con dinero ficticio)
 
 Este proyecto **no usa dinero real ni se conecta a ningún exchange**. Cuatro "agentes" empiezan con 50 € ficticios cada uno
-y deciden comprar o vender BTC/EUR con precios reales de Kraken (o Coinbase si Kraken falla). Sirve para ver, sin riesgo,
+y deciden comprar o vender las 20 monedas de mayor volumen contra EUR en Kraken (sin stablecoins ni monedas fiat), con precios reales. La lista se actualiza sola en cada ejecución. Sirve para ver, sin riesgo,
 si alguna estrategia automática se comporta mejor que simplemente comprar y mantener.
 
 ## Cómo funciona
 GitHub Actions ejecuta `agentes_nube.py` cada hora (a veces con retraso: GitHub no garantiza la hora exacta).
 Cada paso mira las velas de 1 hora ya cerradas, deja decidir a cada agente y guarda todo en la carpeta `datos/`.
-Se restan una comisión del 0,25 % y un deslizamiento del 0,05 % en cada operación.
+Cada agente puede tener hasta 5 monedas a la vez, con 10 € en cada una. Se restan una comisión del 0,25 % y un deslizamiento del 0,05 % en cada operación (0,3 % en monedas de poco volumen). "Comprar y mantener" sigue siendo solo BTC.
 
 ## Los agentes
 - **Cruce 10/30 y Cruce 5/20:** compran cuando el precio medio reciente supera al de un periodo más largo (señal de subida) y venden cuando lo pierde.
