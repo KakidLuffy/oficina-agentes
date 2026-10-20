@@ -1,6 +1,6 @@
 {
   "inicio": "2026-10-19T19:51:44+00:00",
-  "ultima_vela": 1792443600,
+  "ultima_vela": 1792454400,
   "precio_inicio": 72920.7,
   "agentes": [
     {
@@ -9,7 +9,7 @@
       "btc": 0.0,
       "apagado": false,
       "operaciones": 0,
-      "dia": 20745,
+      "dia": 20746,
       "eq_dia": 50.0
     },
     {
@@ -18,7 +18,7 @@
       "btc": 0.0,
       "apagado": false,
       "operaciones": 0,
-      "dia": 20745,
+      "dia": 20746,
       "eq_dia": 50.0
     },
     {
@@ -27,7 +27,7 @@
       "btc": 0.0,
       "apagado": false,
       "operaciones": 0,
-      "dia": 20745,
+      "dia": 20746,
       "eq_dia": 50.0
     },
     {
@@ -36,7 +36,7 @@
       "btc": 0.0,
       "apagado": false,
       "operaciones": 0,
-      "dia": 20745,
+      "dia": 20746,
       "eq_dia": 50.0
     }
   ],
