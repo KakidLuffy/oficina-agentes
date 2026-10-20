@@ -329,12 +329,16 @@ function pintarRanking(){
       '<div class="res" style="color:'+col+'">' + eur(a.res, true) + '<small>vs mantener ' + eur(a.vsHold, true) + '</small></div></div>';
   }).join("") + '<p class="note">«vs mantener» compara a cada agente con haber comprado solo BTC el día en que él empezó. Pulsa una fila o una mesa para resaltarla.</p>';
 }
+function horaLocal(f){                     /* las horas del archivo están en UTC; aquí se enseñan en tu hora */
+  var t = Date.parse(String(f).length <= 16 ? f + ":00Z" : f);
+  return isNaN(t) ? String(f).replace("T", " ").slice(5, 16) : new Date(t).toLocaleString("es-ES", {day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"}).replace(",", "");
+}
 function pintarOps(){
   var l = D.ops.slice(-40).reverse();
   $("p-ops").innerHTML = l.length ? l.map(function(o){
     var c = o.tipo === "COMPRA" ? "buy" : "sell";
     var ag = D.agentes.filter(function(a){ return a.nombre === o.agente; })[0];
-    return '<div class="item"><time>' + esc((o.fecha_utc || "").replace("T", " ").slice(5, 16)) + '</time><span><span class="dotag" style="background:' + (ag ? ag.color : "#8a97a3") + '"></span><span class="'+c+'">' + esc(o.tipo) + '</span> ' +
+    return '<div class="item"><time>' + esc(horaLocal(o.fecha_utc)) + '</time><span><span class="dotag" style="background:' + (ag ? ag.color : "#8a97a3") + '"></span><span class="'+c+'">' + esc(o.tipo) + '</span> ' +
            esc(corto(o.moneda)) + ' · ' + esc(o.agente) + ' · ' + parseFloat(o.importe_eur).toFixed(2).replace(".", ",") + ' €</span></div>';
   }).join("") : '<p class="note">Aún no hay operaciones. Los agentes solo compran cuando su regla se cumple.</p>';
 }
