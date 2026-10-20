@@ -1,0 +1,187 @@
+{
+ "generado": "2026-10-20T20:57:02Z",
+ "fuente": "Kraken",
+ "series": [
+  "BTC 4 h",
+  "BTC 1 día",
+  "ETH 4 h",
+  "ETH 1 día",
+  "SOL 4 h",
+  "SOL 1 día",
+  "XRP 4 h",
+  "XRP 1 día",
+  "ADA 4 h",
+  "ADA 1 día",
+  "DOGE 4 h",
+  "DOGE 1 día"
+ ],
+ "probadas": 79,
+ "tasa_azar": 0.0,
+ "veredicto": "ninguna",
+ "texto": "Ninguna de las mejores variantes del entrenamiento aprueba el examen. No hay candidatas esta semana.",
+ "criterio": "examen en el último 40 % del historial, ≥4 operaciones, gana dinero y supera a comprar y mantener en ≥60 % de las series",
+ "analistas": [
+  {
+   "nombre": "Analista de tendencia",
+   "probadas": 35,
+   "candidatas": 0
+  },
+  {
+   "nombre": "Analista de filtros",
+   "probadas": 35,
+   "candidatas": 0
+  },
+  {
+   "nombre": "Analista de rebote",
+   "probadas": 9,
+   "candidatas": 0
+  }
+ ],
+ "candidatas": [],
+ "mejores_entreno": [
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Momentum 24 velas ±2.0 % + filtro",
+   "train_dif": 12.96,
+   "test_dif": -4.66,
+   "test_res": -0.66,
+   "ops": 3.42,
+   "dd": 28.6,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 20/30 + filtro",
+   "train_dif": 10.18,
+   "test_dif": -5.03,
+   "test_res": -1.03,
+   "ops": 5.08,
+   "dd": 27.77,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 15/50 + filtro",
+   "train_dif": 9.68,
+   "test_dif": -3.8,
+   "test_res": 0.2,
+   "ops": 3.17,
+   "dd": 24.37,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Momentum 24 velas ±1.2 % + filtro",
+   "train_dif": 9.42,
+   "test_dif": -3.58,
+   "test_res": 0.42,
+   "ops": 3.92,
+   "dd": 25.46,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 15/30",
+   "train_dif": 9.07,
+   "test_dif": -4.65,
+   "test_res": -0.65,
+   "ops": 7.08,
+   "dd": 30.8,
+   "ok": 1,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 15/20",
+   "train_dif": 8.81,
+   "test_dif": 0.11,
+   "test_res": 4.11,
+   "ops": 13.58,
+   "dd": 28.19,
+   "ok": 3,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 20/50 + filtro",
+   "train_dif": 8.8,
+   "test_dif": -3.93,
+   "test_res": 0.07,
+   "ops": 2.67,
+   "dd": 19.54,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Ruptura 20/10 + filtro",
+   "train_dif": 8.72,
+   "test_dif": -5.85,
+   "test_res": -1.85,
+   "ops": 6.92,
+   "dd": 20.31,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 15/30 + filtro",
+   "train_dif": 8.61,
+   "test_dif": -3.83,
+   "test_res": 0.17,
+   "ops": 4.33,
+   "dd": 25.62,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 20/30",
+   "train_dif": 8.55,
+   "test_dif": -6.19,
+   "test_res": -2.19,
+   "ops": 8.58,
+   "dd": 35.86,
+   "ok": 0,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Momentum 24 velas ±0.8 % + filtro",
+   "train_dif": 8.25,
+   "test_dif": -4.11,
+   "test_res": -0.11,
+   "ops": 5.17,
+   "dd": 24.82,
+   "ok": 1,
+   "total": 12,
+   "pasa": false
+  },
+  {
+   "analista": "Analista de rebote",
+   "nombre": "Rebote 10 velas 2.5 %",
+   "train_dif": 8.24,
+   "test_dif": -4.18,
+   "test_res": -0.18,
+   "ops": 1.83,
+   "dd": 21.45,
+   "ok": 1,
+   "total": 12,
+   "pasa": false
+  }
+ ]
+}
