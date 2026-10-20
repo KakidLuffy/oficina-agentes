@@ -562,8 +562,20 @@ function pintarSala(){
   s += '<g transform="translate(110,290) scale(2)">' + sprite("#e8e8f0", "trab", true) + '</g>';
   s += burbuja(122, 272, trab + " TRABAJANDO" + (pa ? " · " + pa + " APAGADO" : ""), "#ffd24a", false);
   s += '<text x="122" y="331" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>DIRECTOR</text>';
-  s += planta(20, 280) + planta(440, 280) + planta(20, 308) + planta(440, 308);
-  s += R(350, 290, 70, 6, "#3a3358") + R(350, 290, 70, 1, "#6a639a");
+  s += planta(20, 280) + planta(448, 280) + planta(20, 308) + planta(448, 308);
+  /* vigilante de riesgo: solo lee los datos (el límite real ya está en el programa de la nube) */
+  var STOPV = 35, cerca = D.agentes.filter(function(a){ return !a.apagado && a.eq < STOPV + 5; });
+  var dmax = D.agentes.reduce(function(m, a){ return Math.max(m, a.dd); }, 0);
+  var vtxt, vcol;
+  if (pa) { vtxt = "ALERTA " + pa + " APAGADO"; vcol = "#ff5a4d"; }
+  else if (cerca.length) { vtxt = "CERCA DEL LIMITE"; vcol = "#ff5a4d"; }
+  else if (dmax >= 10) { vtxt = "CAIDA " + dmax.toFixed(0) + " %"; vcol = "#ffb020"; }
+  else { vtxt = "TODO EN ORDEN"; vcol = "#3cc063"; }
+  s += R(352, 296, 44, 24, "#d9a766") + R(352, 296, 44, 2, "#efc88f") + R(354, 320, 3, 5, "#6a4622") + R(391, 320, 3, 5, "#6a4622");
+  s += R(366, 285, 16, 11, "#1c1530") + R(368, 287, 12, 7, vcol, ' class="scr"');
+  s += '<g transform="translate(402,290) scale(2)">' + sprite("#46d9c8", "trab") + '</g>';
+  s += burbuja(414, 272, vtxt, vcol, false);
+  s += '<text x="414" y="331" text-anchor="middle" font-size="5.5" fill="#f4eee0" ' + FONT + '>VIGILANTE DE RIESGO</text>';
   s += mesas + pj + info;
   $("floor").innerHTML = s;
   var viejo = Array.prototype.slice.call(document.querySelectorAll(".pj"));
