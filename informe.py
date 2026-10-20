@@ -32,16 +32,17 @@ def metricas(historial_csv, operaciones_csv, nombres):
     for n in nombres:
         serie = [float(f[n]) for f in hist if f.get(n)]
         gan = per = 0
-        compra = None
+        compras = {}                                   # importe de la ultima compra abierta de cada moneda
         for o in sorted((o for o in ops if o["agente"] == n), key=lambda o: o["fecha_utc"]):
+            moneda = o.get("moneda", "BTC")
             if o["tipo"] == "COMPRA":
-                compra = float(o["importe_eur"])
-            elif o["tipo"] == "VENTA" and compra:
-                if float(o["importe_eur"]) > compra:
+                compras[moneda] = float(o["importe_eur"])
+            elif o["tipo"] == "VENTA" and compras.get(moneda):
+                if float(o["importe_eur"]) > compras[moneda]:
                     gan += 1
                 else:
                     per += 1
-                compra = None
+                compras.pop(moneda)
         salida[n] = (caida_maxima(serie) if serie else 0.0, gan, per)
     return salida
 
