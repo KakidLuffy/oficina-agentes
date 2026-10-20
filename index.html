@@ -254,7 +254,7 @@ var BASE = (new URLSearchParams(location.search).get("base")) ||
            "https://raw.githubusercontent.com/" + REPO + "/main/datos/";
 var REFRESH_MS = 5 * 60 * 1000;
 var MIN_CERRADAS = 30, MIN_DIAS = 21, START = 50;
-var COLORES = ["#c6ff1a", "#3ddcff", "#ffb020", "#ff6bd6", "#7aa2ff", "#ff7a45"];
+var COLORES = ["#c6ff1a", "#3ddcff", "#ffb020", "#ff6bd6", "#7aa2ff", "#ff7a45", "#2ee6a6", "#ff5a7a", "#e0c080"];
 
 /* ===== estado de la página ===== */
 var D = null;          // datos cargados
@@ -574,6 +574,7 @@ function defsAldea(){
     '<pattern id="arena" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#ead9a5"/><rect x="2" y="3" width="1" height="1" fill="#d8c58b"/><rect x="8" y="8" width="2" height="1" fill="#d8c58b"/><rect x="9" y="2" width="1" height="1" fill="#f4e8c0"/></pattern></defs>';
 }
 var SLOTS = [[338, 52], [386, 52], [434, 52], [338, 170], [386, 170], [434, 170]];
+var SLOTS9 = [[338, 52], [386, 52], [434, 52], [338, 146], [386, 146], [434, 146], [338, 240], [386, 240], [434, 240]];
 function estadoDe(a){ return a.apagado ? "off" : a.pos.length ? "trab" : "espera"; }
 
 /* ----- vista Laboratorio ----- */
@@ -624,22 +625,25 @@ function pintarLab(){
 
 /* ----- vista Sala ----- */
 function pintarSala(){
-  var s = defsAldea() + R(0, 0, 480, 340, "url(#pasto)");
+  var NA = D.agentes.length, EX = NA > 6 ? 98 : 0, SL = NA > 6 ? SLOTS9 : SLOTS;
+  $("floor").setAttribute("viewBox", "0 0 480 " + (340 + EX));
+  var s = defsAldea() + R(0, 0, 480, 340 + EX, "url(#pasto)");
   /* borde de árboles */
   for (var t = -6; t < 480; t += 22) s += arbol(t, -22);
   /* caminos */
-  s += R(8, 230, 464, 22, "url(#arena)") + R(8, 230, 464, 1, "#b9a56a") + R(8, 251, 464, 1, "#b9a56a");
+  s += R(8, 230 + EX, 464, 22, "url(#arena)") + R(8, 230 + EX, 464, 1, "#b9a56a") + R(8, 251 + EX, 464, 1, "#b9a56a");
   /* vallas */
-  s += valla(8, 26, 312, 26) + valla(8, 220, 312, 220) + valla(6, 26, 6, 222) + valla(310, 26, 310, 222);
-  s += valla(324, 26, 472, 26) + valla(324, 220, 472, 220) + valla(322, 26, 322, 222) + valla(470, 26, 470, 222);
+  s += valla(8, 26, 312, 26) + valla(8, 220 + EX, 312, 220 + EX) + valla(6, 26, 6, 222 + EX) + valla(310, 26, 310, 222 + EX);
+  s += valla(324, 26, 472, 26) + valla(324, 220 + EX, 472, 220 + EX) + valla(322, 26, 322, 222 + EX) + valla(470, 26, 470, 222 + EX);
   s += cartel(160, 19, "SALA DE ESTRATEGIAS", 142) + cartel(398, 19, "DESCANSO", 72);
   /* estanque del descanso */
-  s += R(351, 118, 106, 38, "#1d1a2b") + R(353, 120, 102, 34, "#5aa0e0") + R(353, 120, 102, 4, "#8ac4f0") +
+  if (!EX) s += R(351, 118, 106, 38, "#1d1a2b") + R(353, 120, 102, 34, "#5aa0e0") + R(353, 120, 102, 4, "#8ac4f0") +
     R(366, 132, 10, 1, "#c8e6fb", ' class="scr"') + R(412, 141, 12, 1, "#c8e6fb", ' class="scr"') + R(386, 148, 8, 1, "#c8e6fb") +
     R(372, 138, 8, 5, "#2f8a4a") + R(374, 136, 4, 2, "#ff9ac0") + R(430, 126, 8, 5, "#2f8a4a") + R(442, 142, 6, 4, "#3cae5e");
-  s += flor(336, 116, "#ff6b8a") + flor(462, 114, "#ffd24a") + flor(340, 154, "#ffd24a") + flor(460, 152, "#ff6b8a") + flor(334, 134, "#ff6b8a") + flor(465, 132, "#ffd24a");
+  if (!EX) s += flor(336, 116, "#ff6b8a") + flor(462, 114, "#ffd24a") + flor(340, 154, "#ffd24a") + flor(460, 152, "#ff6b8a") + flor(334, 134, "#ff6b8a") + flor(465, 132, "#ffd24a");
+  else s += flor(332, 112, "#ff6b8a") + flor(466, 110, "#ffd24a") + flor(332, 208, "#ffd24a") + flor(466, 206, "#ff6b8a");
   /* decoración suelta */
-  s += planta(12, 200) + planta(292, 202) + planta(330, 204) + planta(458, 204);
+  s += planta(12, 200 + EX) + planta(292, 202 + EX) + planta(330, 204 + EX) + planta(458, 204 + EX);
   var mesas = "", pj = "", info = "", idle = 0;
   D.agentes.forEach(function(a, i){
     var col = i % 3, row = Math.floor(i / 3), cx = 62 + col * 100, b = 32 + row * 98, est = estadoDe(a);
@@ -648,7 +652,7 @@ function pintarSala(){
     if (sel) m += '<rect x="' + (cx - 42) + '" y="' + (b - 2) + '" width="84" height="94" fill="' + a.color + '" fill-opacity=".16" stroke="' + a.color + '" stroke-width="1" stroke-dasharray="3 2"/>';
     mesas += m + puesto(cx, b, c, est === "trab", est) + '</g>';
     var tx_, ty_;
-    if (est === "espera") { var sl = SLOTS[idle++ % SLOTS.length]; tx_ = sl[0]; ty_ = sl[1]; }
+    if (est === "espera") { var sl = SL[idle++ % SL.length]; tx_ = sl[0]; ty_ = sl[1]; }
     else { tx_ = cx - 14; ty_ = b + 46; }
     var txt = est === "off" ? "APAGADO" : est === "trab" ? cortar("Con " + a.pos.join(","), 16) : "Espera";
     var bc = est === "off" ? "#d9453a" : est === "trab" ? a.color : "#9aa0c8";
@@ -670,6 +674,7 @@ function pintarSala(){
     }
   });
   /* casa de dirección */
+  s += '<g transform="translate(0,' + EX + ')">';
   var trab = D.agentes.filter(function(a){ return estadoDe(a) === "trab"; }).length;
   var pa = D.agentes.filter(function(a){ return a.apagado; }).length;
   s += arbol(14, 262) + arbol(46, 272) + arbol(452, 288);
@@ -694,6 +699,7 @@ function pintarSala(){
   s += R(392, 282, 4, 46, "#6a4622") + R(384, 276, 20, 12, "#1d1a2b") + R(386, 278, 16, 8, vcol, ' class="scr"');
   s += '<g transform="translate(410,296) scale(2)">' + sprite("#46d9c8", "trab") + '</g>';
   s += burbuja(424, 266, vtxt, vcol, false) + tx(424, 338, "VIGILANTE DE RIESGO", 5.5, "#fdf6e3");
+  s += '</g>';
   s += mesas + pj + info;
   $("floor").innerHTML = s;
   var viejo = Array.prototype.slice.call(document.querySelectorAll(".pj"));
@@ -975,7 +981,7 @@ function ejemplo(){
     hist.push(r);
   }
   var estado = {inicio: fin[0], precio_inicio: 72000, fee: .0025, slip: .0005, precios: {XBTEUR: 72600},
-    agentes: nombres.map(function(n, i){ return {nombre: n, efectivo: 20, apagado: false, operaciones: [5, 4, 6, 2, 0, 0][i],
+    agentes: nombres.map(function(n, i){ return {nombre: n, efectivo: 20, apagado: false, operaciones: [5, 4, 6, 2, 0, 0, 3, 7, 4][i] || 0,
       posiciones: i === 0 ? {ENAEUR: 1, SUIEUR: 1} : i === 2 ? {COMPEUR: 1} : i === 3 ? {ARBEUR: 1} : {}, inicio: fin[0], precio_inicio: 72000}; })};
   var ops = [{fecha_utc: "2026-10-20T10:00", agente: "Rebote", moneda: "ARBEUR", tipo: "COMPRA", precio_eur: .16, importe_eur: 10}];
   return preparar(estado, hist, ops);
