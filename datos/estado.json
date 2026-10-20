@@ -1,6 +1,6 @@
 {
   "inicio": "2026-10-19T19:51:44+00:00",
-  "ultima_vela": 1792522800,
+  "ultima_vela": 1792530000,
   "precio_inicio": 72920.7,
   "agentes": [
     {
@@ -82,10 +82,12 @@
     },
     {
       "nombre": "Consenso 2 de 3",
-      "efectivo": 50.0,
-      "posiciones": {},
+      "efectivo": 39.93834048523088,
+      "posiciones": {
+        "INJEUR": 1.3036107469277916
+      },
       "apagado": false,
-      "operaciones": 0,
+      "operaciones": 3,
       "dia": 20746,
       "eq_dia": 50.0,
       "inicio": "2026-10-20T18:14:31+00:00",
@@ -95,29 +97,29 @@
   "fee": 0.0025,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 73603.0,
-    "ETHEUR": 2174.47,
-    "XRPEUR": 1.18593,
-    "ZECEUR": 1102.931,
-    "SOLEUR": 94.77,
-    "NEAREUR": 4.4023,
-    "ARBEUR": 0.169,
-    "PUMPEUR": 0.004248,
-    "SUIEUR": 0.917,
-    "ZROEUR": 1.715,
-    "LINKEUR": 10.91914,
-    "INJEUR": 7.645,
-    "HYPEEUR": 71.76,
-    "TIAEUR": 0.5575,
-    "ADAEUR": 0.198686,
-    "TAOEUR": 244.553,
-    "LTCEUR": 54.3,
+    "XBTEUR": 73917.2,
+    "ETHEUR": 2190.83,
+    "XRPEUR": 1.19027,
+    "ZECEUR": 1130.666,
+    "SOLEUR": 95.26,
+    "NEAREUR": 4.4354,
+    "ARBEUR": 0.1698,
+    "PUMPEUR": 0.004236,
+    "SUIEUR": 0.9191,
+    "ZROEUR": 1.819,
+    "LINKEUR": 10.97764,
+    "INJEUR": 7.991,
+    "HYPEEUR": 72.28,
+    "TIAEUR": 0.559,
+    "ADAEUR": 0.19924,
+    "TAOEUR": 246.4971,
+    "LTCEUR": 54.51,
     "DOTEUR": 1.0132,
-    "COMPEUR": 23.33,
+    "COMPEUR": 23.35,
     "ENAEUR": 0.1741,
     "BATEUR": 0.18191,
     "AAVEEUR": 135.73,
-    "PEPEEUR": 4.081e-06,
-    "AVAXEUR": 8.664
+    "PEPEEUR": 4.003e-06,
+    "AVAXEUR": 8.749
   }
 }

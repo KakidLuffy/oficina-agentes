@@ -3,29 +3,29 @@
 <line x1="60" x2="610" y1="320.0" y2="320.0" stroke="#e5e7eb"/>
 <text x="54" y="324.0" text-anchor="end" fill="#374151">49.03</text>
 <line x1="60" x2="610" y1="245.0" y2="245.0" stroke="#e5e7eb"/>
-<text x="54" y="249.0" text-anchor="end" fill="#374151">49.86</text>
+<text x="54" y="249.0" text-anchor="end" fill="#374151">49.94</text>
 <line x1="60" x2="610" y1="170.0" y2="170.0" stroke="#e5e7eb"/>
-<text x="54" y="174.0" text-anchor="end" fill="#374151">50.69</text>
+<text x="54" y="174.0" text-anchor="end" fill="#374151">50.84</text>
 <line x1="60" x2="610" y1="95.0" y2="95.0" stroke="#e5e7eb"/>
-<text x="54" y="99.0" text-anchor="end" fill="#374151">51.51</text>
+<text x="54" y="99.0" text-anchor="end" fill="#374151">51.74</text>
 <line x1="60" x2="610" y1="20.0" y2="20.0" stroke="#e5e7eb"/>
-<text x="54" y="24.0" text-anchor="end" fill="#374151">52.34</text>
+<text x="54" y="24.0" text-anchor="end" fill="#374151">52.65</text>
 <text x="60" y="350" fill="#374151">2026-10-20T18:14</text>
-<text x="610" y="350" text-anchor="end" fill="#374151">2026-10-20T20:55</text>
+<text x="610" y="350" text-anchor="end" fill="#374151">2026-10-20T22:19</text>
 <text x="60" y="14" fill="#111827" font-weight="bold">Capital en EUR (dinero ficticio)</text>
-<polyline points="60.0,296.4 335.0,320.0 610.0,235.7" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polyline points="60.0,298.5 243.3,320.0 426.7,242.9 610.0,217.2" fill="none" stroke="#2563eb" stroke-width="2"/>
 <line x1="624" x2="644" y1="30" y2="30" stroke="#2563eb" stroke-width="2"/>
 <text x="650" y="34" fill="#111827">Cruce 10/30</text>
-<polyline points="60.0,218.5 335.0,235.7 610.0,188.6" fill="none" stroke="#16a34a" stroke-width="2"/>
+<polyline points="60.0,227.2 243.3,242.9 426.7,199.8 610.0,166.7" fill="none" stroke="#16a34a" stroke-width="2"/>
 <line x1="624" x2="644" y1="48" y2="48" stroke="#16a34a" stroke-width="2"/>
 <text x="650" y="52" fill="#111827">Cruce 5/20</text>
-<polyline points="60.0,73.5 335.0,87.1 610.0,20.0" fill="none" stroke="#f59e0b" stroke-width="2"/>
+<polyline points="60.0,94.6 243.3,107.0 426.7,45.7 610.0,20.0" fill="none" stroke="#f59e0b" stroke-width="2"/>
 <line x1="624" x2="644" y1="66" y2="66" stroke="#f59e0b" stroke-width="2"/>
 <text x="650" y="70" fill="#111827">Momentum</text>
-<polyline points="60.0,131.5 335.0,126.0 610.0,136.0" fill="none" stroke="#a855f7" stroke-width="2"/>
+<polyline points="60.0,147.6 243.3,142.7 426.7,151.8 610.0,147.6" fill="none" stroke="#a855f7" stroke-width="2"/>
 <line x1="624" x2="644" y1="84" y2="84" stroke="#a855f7" stroke-width="2"/>
 <text x="650" y="88" fill="#111827">Rebote</text>
-<polyline points="60.0,209.4 335.0,216.7 610.0,203.1" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="5 4"/>
+<polyline points="60.0,218.9 243.3,225.5 426.7,213.1 610.0,195.7" fill="none" stroke="#6b7280" stroke-width="2" stroke-dasharray="5 4"/>
 <line x1="624" x2="644" y1="102" y2="102" stroke="#6b7280" stroke-width="2" stroke-dasharray="5 4"/>
 <text x="650" y="106" fill="#111827">Comprar y mantener</text>
 </svg>
