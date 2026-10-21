@@ -24,7 +24,8 @@ from datetime import datetime, timezone
 import informe
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
-FEE = 0.0025          # comision 0,25 % por operacion (revisa la de tu exchange: con ordenes a mercado puede ser mayor)
+VERSION = 3           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
+FEE = 0.004           # comision 0,40 % por operacion: tarifa "maker" de Kraken Pro en el nivel mas bajo (con ordenes a mercado seria "taker", 0,80 %)
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
 PERDIDA_DIA = START * 0.04   # si un agente pierde esto (EUR, el 4 % de su capital) en un dia, no vuelve a comprar ese dia
 STOP = START * 0.7    # el responsable de riesgo apaga al agente que baja de aqui
@@ -48,7 +49,7 @@ DATOS = "datos"
 ESTADO = os.path.join(DATOS, "estado.json")
 HISTORIAL = os.path.join(DATOS, "historial_v2.csv")   # v2: 6 agentes. El historial.csv antiguo (4 agentes) se conserva sin tocar
 OPERACIONES = os.path.join(DATOS, "operaciones.csv")
-CAB_OPERACIONES = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur"]
+CAB_OPERACIONES = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur", "motivo", "coste_eur"]
 RESUMEN = os.path.join(DATOS, "resumen.md")
 GRAFICO = os.path.join(DATOS, "grafico.svg")
 
@@ -58,12 +59,13 @@ def media(lista):
     return sum(lista) / len(lista)
 
 
-def cruce(p, a, b):
+def cruce(p, a, b, hueco=0.0):
+    """Cruce de medias. 'hueco' exige una senal de compra mas fuerte: la media rapida debe superar a la lenta en ese %."""
     if len(p) < b + 1:
         return None
     ca, cb = media(p[-a:]), media(p[-b:])
     pa, pb = media(p[-a - 1:-1]), media(p[-b - 1:-1])
-    if pa <= pb and ca > cb:
+    if pa <= pb and ca > cb * (1 + hueco):
         return "b"
     if pa >= pb and ca < cb:
         return "s"
@@ -112,19 +114,19 @@ def consenso(p):
 
 
 def momentum_rapido(p):
-    """Momentum de corto plazo: mira solo las ultimas 4 velas (4 horas) y reacciona a movimientos del 0,6 %."""
-    if len(p) < 6:
+    """Momentum de corto plazo: mira las ultimas 6 horas y solo reacciona a movimientos del 1 %."""
+    if len(p) < 8:
         return None
-    r = p[-1] / p[-5] - 1
-    return "b" if r > 0.006 else ("s" if r < -0.006 else None)
+    r = p[-1] / p[-7] - 1
+    return "b" if r > 0.010 else ("s" if r < -0.010 else None)
 
 
 def rebote_rapido(p):
-    """Rebote de corto plazo: compra si el precio cae un 0,8 % bajo su media de 8 velas; vende al volver a la media."""
+    """Rebote de corto plazo: compra si el precio cae un 1,2 % bajo su media de 8 velas; vende al volver a la media."""
     if len(p) < 9:
         return None
     m, x = media(p[-8:]), p[-1]
-    return "b" if x < m * 0.992 else ("s" if x > m else None)
+    return "b" if x < m * 0.988 else ("s" if x > m else None)
 
 
 AGENTES = [
@@ -135,11 +137,16 @@ AGENTES = [
     ("Cruce 10/30 + filtro", filtro(lambda p: cruce(p, 10, 30))),
     ("Consenso 2 de 3", consenso),
     # agentes rapidos: senales de pocas horas, para que operen varias veces al dia
-    ("Cruce 3/8 rapido", lambda p: cruce(p, 3, 8)),
+    ("Cruce 3/8 rapido", filtro(lambda p: cruce(p, 3, 8, 0.002), 48)),
     ("Momentum rapido", momentum_rapido),
     ("Rebote rapido", rebote_rapido),
 ]
 DECIDIR = dict(AGENTES)
+# Reglas de salida y de entrada propias de los agentes rapidos (los 6 originales no llevan ninguna: se mantienen tal cual):
+#   espera_h: horas sin volver a comprar una moneda tras venderla · stop / objetivo: venta automatica al perder / ganar ese %
+#   solo_liquidas: no compra monedas de poco volumen (donde el deslizamiento real es mayor)
+OPCIONES = {n: {"espera_h": 6, "stop": 0.015, "objetivo": 0.03, "solo_liquidas": True}
+            for n in ("Cruce 3/8 rapido", "Momentum rapido", "Rebote rapido")}
 
 
 # ---------------- precios ----------------
@@ -261,6 +268,7 @@ def agente_nuevo(nombre, precio_btc):
 def estado_nuevo(velas, ahora_ts):
     cerradas = [c for c in velas[BTC] if c[0] + 3600 <= ahora_ts]
     return {
+        "version": VERSION,
         "capital_inicial": START,          # si se cambia START, la simulacion archiva la anterior y empieza de cero
         "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "ultima_vela": cerradas[-1][0],   # solo se actua sobre velas posteriores a esta
@@ -332,7 +340,7 @@ def deslizamiento(par, volumenes):
     return SLIP if volumenes.get(par, 0) >= VOLUMEN_ALTO or par == BTC else max(SLIP, SLIP_POCO_VOLUMEN)
 
 
-def operar(a, tipo, par, precio, fecha, volumenes):
+def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
     """Compra un 'slot' o vende toda la moneda. El precio ejecutado incluye el deslizamiento y se paga la comision."""
     slip = deslizamiento(par, volumenes)
     if tipo == "COMPRA":
@@ -340,14 +348,20 @@ def operar(a, tipo, par, precio, fecha, volumenes):
         importe = min(a["efectivo"], SLOT)
         a["posiciones"][par] = importe * (1 - FEE) / ejecutado
         a["efectivo"] -= importe
+        a.setdefault("entradas", {})[par] = ejecutado
+        coste = importe - a["posiciones"][par] * precio                 # comision + deslizamiento pagados al comprar
     else:
+        unidades = a["posiciones"].pop(par)
         ejecutado = precio * (1 - slip)
-        importe = a["posiciones"].pop(par) * ejecutado * (1 - FEE)    # lo que realmente se cobra, ya sin comision
+        importe = unidades * ejecutado * (1 - FEE)    # lo que realmente se cobra, ya sin comision
         a["efectivo"] += importe
+        a.setdefault("entradas", {}).pop(par, None)
+        a.setdefault("ultima_venta", {})[par] = fecha
+        coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
     a["operaciones"] += 1
     anotar(OPERACIONES, CAB_OPERACIONES,
-           [fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2)])
-    print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR")
+           [fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4)])
+    print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR ({motivo})")
 
 
 def equity(a, precios):
@@ -357,7 +371,7 @@ def equity(a, precios):
 def apagar_si_toca(a, precios, fecha, volumenes):
     if not a["apagado"] and equity(a, precios) < STOP:
         for par in list(a["posiciones"]):
-            operar(a, "VENTA", par, precios[par], fecha, volumenes)
+            operar(a, "VENTA", par, precios[par], fecha, volumenes, "apagado por riesgo")
         a["apagado"] = True
         print(f"RIESGO: {a['nombre']} apagado por superar el limite de perdida")
 
@@ -389,10 +403,19 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
             dia = t // 86400
             if a.get("dia") != dia:                      # nuevo dia: se anota con cuanto empieza
                 a["dia"], a["eq_dia"] = dia, equity(a, precios)
+            op = OPCIONES.get(a["nombre"], {})
             senales = {par: decidir(cierres[par][:indice[(par, t)] + 1]) for par in pares_t}
-            for par in pares_t:                          # primero se vende...
-                if senales[par] == "s" and par in a["posiciones"]:
-                    operar(a, "VENTA", par, precios[par], fecha, volumenes)
+            for par in pares_t:                          # primero se vende (stop y objetivo, y luego la senal vendedora)...
+                if par not in a["posiciones"]:
+                    continue
+                entrada = a.get("entradas", {}).get(par)
+                cambio = precios[par] / entrada - 1 if entrada else 0.0
+                if op.get("stop") and entrada and cambio <= -op["stop"]:
+                    operar(a, "VENTA", par, precios[par], fecha, volumenes, f"stop de perdida ({cambio * 100:.1f} %)")
+                elif op.get("objetivo") and entrada and cambio >= op["objetivo"]:
+                    operar(a, "VENTA", par, precios[par], fecha, volumenes, f"objetivo de ganancia ({cambio * 100:+.1f} %)")
+                elif senales[par] == "s":
+                    operar(a, "VENTA", par, precios[par], fecha, volumenes, "senal vendedora")
             bloqueado = a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA
             for par in pares_t:                          # ...y luego se compra, por orden de volumen
                 if senales[par] == "b" and par not in a["posiciones"]:
@@ -401,7 +424,12 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                     if bloqueado:
                         print(f"{a['nombre']}: compra bloqueada por el limite de perdida diaria")
                         break
-                    operar(a, "COMPRA", par, precios[par], fecha, volumenes)
+                    if op.get("solo_liquidas") and par != BTC and volumenes.get(par, 0) < VOLUMEN_ALTO:
+                        continue                         # moneda de poco volumen: no se opera
+                    uv = a.get("ultima_venta", {}).get(par)
+                    if op.get("espera_h") and uv and (datetime.fromisoformat(fecha) - datetime.fromisoformat(uv)).total_seconds() < op["espera_h"] * 3600:
+                        continue                         # vendida hace poco: se espera antes de volver a entrar
+                    operar(a, "COMPRA", par, precios[par], fecha, volumenes, "senal compradora")
             apagar_si_toca(a, precios, fecha, volumenes)
     if tiempos:
         estado["ultima_vela"] = tiempos[-1]
@@ -508,9 +536,9 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     print("\n".join(lineas[4:]))
 
 
-def archivar(capital_antiguo):
-    """Guarda los archivos de la simulacion anterior en datos/archivo_<capital>eur_<fecha>/ y deja datos/ listo para empezar."""
-    destino = os.path.join(DATOS, f"archivo_{capital_antiguo:g}eur_{datetime.now(timezone.utc):%Y%m%d}")
+def archivar(etiqueta):
+    """Guarda los archivos de la simulacion anterior en datos/archivo_<etiqueta>_<fecha>/ y deja datos/ listo para empezar."""
+    destino = os.path.join(DATOS, f"archivo_{etiqueta}_{datetime.now(timezone.utc):%Y%m%d}")
     os.makedirs(destino, exist_ok=True)
     for ruta in (ESTADO, HISTORIAL, OPERACIONES, RESUMEN, GRAFICO):
         if os.path.exists(ruta):
@@ -524,10 +552,11 @@ def main():
     if os.path.exists(ESTADO):
         with open(ESTADO) as f:
             estado = json.load(f)
-        if estado.get("capital_inicial", 50.0) != START:      # cambio de capital: se archiva la simulacion anterior
-            archivar(estado.get("capital_inicial", 50.0))
+        cap_ant, ver_ant = estado.get("capital_inicial", 50.0), estado.get("version", 1)
+        if cap_ant != START or ver_ant != VERSION:
+            archivar(f"{cap_ant:g}eur" if cap_ant != START else f"{cap_ant:g}eur_v{ver_ant}")
             estado = estado_nuevo(velas, ahora_ts)
-            print("Cambio de capital: simulacion anterior archivada; los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
+            print("Cambio de capital o de reglas: simulacion anterior archivada; los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
         else:
             migrar(estado, velas)
     else:
