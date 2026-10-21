@@ -1,6 +1,6 @@
 # Informe final de implementación — 20 mejoras de la auditoría
 
-Fecha: 2026-10-22 · Rama: `mejoras-crypto` (23 commits propios sobre `main` f383ff8; **no subida a GitHub y sin fusionar**) · Todo es **simulación con dinero ficticio**.
+Fecha: 2026-10-22 · Rama: `mejoras-crypto` (21 commits propios sobre `main` f383ff8; **no subida a GitHub y sin fusionar**) · Todo es **simulación con dinero ficticio**.
 
 ## A. Resumen ejecutivo
 
@@ -62,7 +62,7 @@ Detalle por mejora (cambio, pruebas, riesgos): `IMPLEMENTACION_MEJORAS_CRYPTO.md
 | Las posiciones de monedas que salían del ranking dejaban de vigilarse | El universo incluye las monedas en cartera | `test_fuera_universo` |
 | Órdenes por debajo de los mínimos del exchange se «ejecutaban» | Redondeo y mínimos por moneda; se rechazan y se anotan (mejora 10) | `test_reglas_mercado`, esc. 3 |
 | Los rechazos solo se imprimían y se perdían | Registro persistente y deduplicado en la misma transacción (mejora 18) | `test_rechazos_alertas` |
-| **Las compras que no cumplían mínimos se descartaban sin anotarse** (hallado en la validación global) | Ahora se anotan en `RECHAZOS` antes de descartar | esc. 3 (falló mentalmente en el diseño; corregido y cubierto) |
+| **Las compras que no cumplían mínimos se descartaban sin anotarse** (hallado en la validación global) | Ahora se anotan en `RECHAZOS` antes de descartar | esc. 3 (parte «flujo real»): la prueba falló antes de la corrección y pasa después |
 | Historial de agentes nuevos rellenado con el capital inicial (línea plana inventada) | Columnas vacías; gráfico tolerante (mejora 14) | `test_simulacion`, `test_panel_navegador` |
 | Empates de importes contados como ganancia o pérdida por coma flotante | Aritmética `Decimal`; las igualdades son «neutras» (mejora 13) | `test_informe_lab` |
 | Escritura no atómica: un corte dejaba estado, historial y operaciones desincronizados | Transacción con diario y recuperación al arrancar (mejora 2) | esc. 12: cortes en 11 puntos, siempre todo-o-nada |
