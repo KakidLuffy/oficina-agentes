@@ -36,3 +36,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-21T18:00+00:00,Cruce 10/30 + filtro,XMREUR,COMPRA,542.71122,2.0,senal compradora,0.009
 2026-10-21T18:00+00:00,Consenso 2 de 3,TIAEUR,VENTA,0.552124,1.96,senal vendedora,0.0089
 2026-10-21T18:00+00:00,Cruce 3/8 rapido,TIAEUR,VENTA,0.552124,1.94,stop de perdida (-2.1 %),0.0088
+2026-10-21T19:00+00:00,Rebote rapido,ZROEUR,COMPRA,1.8019,2.0,senal compradora,0.009
+2026-10-21T20:00+00:00,Rebote,ZROEUR,COMPRA,1.78089,2.0,senal compradora,0.009
+2026-10-21T20:00+00:00,Cruce 3/8 rapido,QNTEUR,VENTA,186.44673,2.04,objetivo de ganancia (+3.0 %),0.0092
+2026-10-21T21:00+00:00,Rebote rapido,ZROEUR,VENTA,1.769115,1.95,stop de perdida (-1.8 %),0.0088
