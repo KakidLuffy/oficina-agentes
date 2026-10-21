@@ -37,3 +37,41 @@ class Laboratorio(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AlineacionTemporal(unittest.TestCase):
+    H = 3600
+    T = 1_700_000_000 - (1_700_000_000 % 3600)
+
+    def serie(self, cierres, desde):
+        return laboratorio.Serie(cierres, [self.T + (desde + k) * self.H for k in range(len(cierres))])
+
+    def test_alinear_por_marca_temporal_y_no_por_posicion(self):
+        btc = self.serie([100.0 + k for k in range(50)], 0)
+        moneda = self.serie([10.0] * 40, 10)               # empieza 10 horas despues
+        idx = laboratorio.alinear(moneda, btc)
+        self.assertEqual(idx[0], 10)
+        self.assertEqual(idx[-1], 49)
+        sin_par = self.serie([1.0] * 3, 80)
+        self.assertEqual(laboratorio.alinear(sin_par, btc), [None, None, None])
+
+    def test_relativa_usa_el_btc_de_la_misma_hora(self):
+        # BTC sube 1 por vela; la moneda empieza mas tarde. Con alineacion por posicion se compararia con el BTC equivocado.
+        btc = self.serie([100.0 + k for k in range(60)], 0)
+        moneda = self.serie([10.0 * (1.03 ** k) for k in range(40)], 20)
+        moneda.ref, moneda.ref_idx = btc, laboratorio.alinear(moneda, btc)
+        f = laboratorio.relativa(6, 0.0)
+        self.assertEqual(f(moneda, 20, 1.0), "b")           # sube 19 % vs BTC ~6 %
+        moneda.ref_idx = [None] * len(moneda)
+        self.assertIsNone(f(moneda, 20, 1.0))                # sin hora comun: no hay senal
+
+    def test_solo_cerradas_quita_la_vela_abierta_por_marca_temporal(self):
+        import velas as vl
+        v = [vl.Vela(self.T + k * self.H, 1, 1, 1, 1, 1) for k in range(5)]
+        ahora = self.T + 4 * self.H + 100                     # la ultima aun no ha cerrado
+        self.assertEqual(len(laboratorio.solo_cerradas(v, 60, ahora)), 4)
+        self.assertEqual(len(laboratorio.solo_cerradas(v, 60, self.T + 5 * self.H)), 5)   # todas cerradas: no se pierde ninguna
+
+    def test_demo_produce_marcas_alineadas_entre_monedas(self):
+        a, b = laboratorio.demo("BTC", 240), laboratorio.demo("ETH", 240)
+        self.assertEqual([x.ts for x in a], [x.ts for x in b])

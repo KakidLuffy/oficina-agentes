@@ -28,6 +28,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 import comparar_estrategias as ce
+import velas as vl
 import persistencia as ps
 
 ce.FEE = 0.004                  # mismos costes que la simulacion en vivo (comision Kraken Pro 0,40 % + deslizamiento 0,05 %)
@@ -44,10 +45,12 @@ VELAS = [(240, "4 h"), (1440, "1 día")]
 
 class Serie(list):
     """Lista de cierres con medias móviles precalculadas (para que el laboratorio sea rápido)."""
-    def __init__(self, v):
+    def __init__(self, v, ts=None):
         super().__init__(v)
         self._sma = {}
+        self.ts = list(ts) if ts is not None else list(range(len(v)))   # marca temporal (s) de cada vela
         self.ref = None          # serie de BTC con la misma duracion de vela (para la fuerza relativa)
+        self.ref_idx = None      # para cada vela: indice de la vela de BTC con la MISMA marca temporal (o None)
 
     def sma(self, n):
         if n not in self._sma:
@@ -128,13 +131,23 @@ def con_volatilidad(fn, k, n=14):
     return f
 
 
+def alinear(serie, ref):
+    """Para cada vela de 'serie', el indice de la vela de 'ref' con la misma marca temporal (None si no existe)."""
+    pos = {t: k for k, t in enumerate(ref.ts)}
+    return [pos.get(t) for t in serie.ts]
+
+
 def relativa(n, margen):
-    """Fuerza relativa: compra si la moneda sube mas que BTC (margen) en n velas y sube de por si; vende si rinde menos que BTC."""
+    """Fuerza relativa: compra si la moneda sube mas que BTC (margen) en n velas y sube de por si; vende si rinde menos que BTC.
+    BTC se busca por MARCA TEMPORAL (no por posicion en la lista): dos series pueden empezar o acabar en momentos distintos."""
     def f(c, i, s):
         r = c.ref
-        if r is None or i < n or len(r) <= i:
+        if r is None or c.ref_idx is None or i < n:
             return None
-        rc, rb = c[i] / c[i - n] - 1, r[i] / r[i - n] - 1
+        ia, ib = c.ref_idx[i], c.ref_idx[i - n]
+        if ia is None or ib is None:
+            return None
+        rc, rb = c[i] / c[i - n] - 1, r[ia] / r[ib] - 1
         if rc > rb + margen * s and rc > 0:
             return "b"
         if rc < rb:
@@ -220,20 +233,39 @@ def simular2(c, ini, fin, s, fn, opc):
 
 
 # ---------------- datos ----------------
+def solo_cerradas(velas_, minutos, ahora_ts):
+    """Quita la vela que aun no ha cerrado (por su marca temporal, no por 'la ultima de la lista')."""
+    return [x for x in velas_ if x.ts + minutos * 60 <= ahora_ts]
+
+
+def preparar(velas_, minutos, ahora_ts):
+    """Valida y se queda con las velas cerradas. Devuelve (velas, incidencias)."""
+    util, inc = vl.validar(velas_, minutos * 60, ahora_ts)
+    return solo_cerradas(util, minutos, ahora_ts), inc
+
+
 def descargar(par, minutos):
+    """Devuelve las velas CERRADAS y validadas (lista de Vela) con sus marcas temporales."""
     d = ce.get_json(f"https://api.kraken.com/0/public/OHLC?pair={par}&interval={minutos}")
     if d.get("error"):
         raise RuntimeError(d["error"])
     k = [x for x in d["result"] if x != "last"][0]
-    return [float(x[4]) for x in d["result"][k][:-1]]
+    crudas = [vl.desde_kraken(x) for x in d["result"][k]]
+    util, inc = preparar(crudas, minutos, int(time.time()))
+    if inc:
+        tipos = sorted({i["tipo"] for i in inc})
+        print(f"  {par} {minutos} min: incidencias en los datos ({', '.join(tipos)})")
+    return util
 
 
 def demo(par, minutos):
     random.seed(hash((par, minutos)) % 100000)
     p, out = 100.0, []
-    for _ in range(720):
+    t0 = 1_700_000_000 - (1_700_000_000 % (minutos * 60))
+    for k in range(720):
+        antes = p
         p *= 1 + random.gauss(0.0001, 0.012 * math.sqrt(minutos / 60) ** 0.7)
-        out.append(p)
+        out.append(vl.Vela(t0 + k * minutos * 60, antes, max(antes, p), min(antes, p), p, 1.0))
     return out
 
 
@@ -242,17 +274,19 @@ def cargar_series(es_demo):
     for sym, par in PARES:
         for minutos, nom in VELAS:
             try:
-                c = demo(sym, minutos) if es_demo else descargar(par, minutos)
+                velas_ = demo(sym, minutos) if es_demo else descargar(par, minutos)
+                c = [x.c for x in velas_]
                 if not es_demo:
                     time.sleep(1.2)
             except Exception as e:
                 print(f"  sin datos de {sym} {nom}: {e}")
                 continue
             if len(c) >= WARM + 150:
-                series.append({"moneda": sym, "vela": nom, "minutos": minutos, "c": Serie(c)})
+                series.append({"moneda": sym, "vela": nom, "minutos": minutos, "c": Serie(c, [x.ts for x in velas_])})
     for s in series:                                    # BTC de la misma duracion de vela, como referencia
         ref = [x for x in series if x["moneda"] == "BTC" and x["minutos"] == s["minutos"]]
         s["c"].ref = ref[0]["c"] if ref else None
+        s["c"].ref_idx = alinear(s["c"], s["c"].ref) if ref else None
     return series
 
 

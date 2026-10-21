@@ -6,7 +6,7 @@ import json
 import os
 import sys
 
-CAB_OPS = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur", "motivo", "coste_eur"]
+CAB_OPS = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur", "motivo", "coste_eur", "vela_inicio_utc", "decision_utc"]
 
 
 def comprobar(datos="datos"):

@@ -15,11 +15,12 @@ import csv
 import json
 import os
 import random
+import re
 import sys
 import time
 import io
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import archivado
 import informe
@@ -52,7 +53,11 @@ DATOS = "datos"
 ESTADO = os.path.join(DATOS, "estado.json")
 HISTORIAL = os.path.join(DATOS, "historial_v2.csv")   # v2: 6 agentes. El historial.csv antiguo (4 agentes) se conserva sin tocar
 OPERACIONES = os.path.join(DATOS, "operaciones.csv")
-CAB_OPERACIONES = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur", "motivo", "coste_eur"]
+# fecha_utc = INICIO de la vela sobre la que se decidio (se conserva por compatibilidad con el panel y los informes).
+# vela_inicio_utc = lo mismo, explicito. decision_utc = momento en que esa vela cerro y la senal pudo conocerse
+# (para una venta por apagado de riesgo, el momento real de la ejecucion).
+CAB_OPERACIONES_V1 = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur", "motivo", "coste_eur"]
+CAB_OPERACIONES = CAB_OPERACIONES_V1 + ["vela_inicio_utc", "decision_utc"]
 RESUMEN = os.path.join(DATOS, "resumen.md")
 GRAFICO = os.path.join(DATOS, "grafico.svg")
 
@@ -354,14 +359,44 @@ def leer_texto(ruta):
         return f.read()
 
 
+def iso_vela(t):
+    return datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes")
+
+
+def fin_de_vela(fecha):
+    """Momento en que cierra la vela que empieza en 'fecha' (texto ISO a minutos)."""
+    return (datetime.fromisoformat(fecha) + timedelta(hours=1)).isoformat(timespec="minutes")
+
+
+def migrar_operaciones(filas):
+    """Pasa las filas del formato de 8 columnas al de 10. Solo se rellena lo que se puede DERIVAR con certeza:
+    las operaciones normales llevan como fecha el inicio de su vela; las de 'apagado por riesgo' llevan la hora real
+    de ejecucion (con segundos), asi que de ellas se desconoce la vela y su decision es esa hora."""
+    nuevas = [CAB_OPERACIONES]
+    for f in filas[1:]:
+        f = list(f) + [""] * (len(CAB_OPERACIONES_V1) - len(f))
+        fecha = f[0]
+        if not re.search(r"T\d\d:\d\d:\d\d", fecha):                 # sin segundos: inicio de vela
+            try:
+                nuevas.append(f[:8] + [fecha, fin_de_vela(fecha)])
+                continue
+            except ValueError:
+                pass
+        nuevas.append(f[:8] + ["", fecha])
+    return nuevas
+
+
 def asegurar_operaciones():
-    """Crea operaciones.csv con su cabecera aunque aun no haya operaciones. Si el archivo es de la version
-    antigua (sin columna 'moneda') y solo tiene la cabecera, se renueva con la cabecera nueva."""
+    """Crea operaciones.csv con su cabecera aunque aun no haya operaciones. Si el archivo es de una version
+    anterior: sin operaciones se renueva; con operaciones se amplian las columnas conservando todas las filas."""
     if os.path.exists(OPERACIONES):
-        with open(OPERACIONES, newline="") as f:
+        with open(OPERACIONES, newline="", encoding="utf-8") as f:
             filas = list(csv.reader(f))
         if len(filas) <= 1 and (not filas or filas[0] != CAB_OPERACIONES):
             os.remove(OPERACIONES)
+        elif filas and filas[0] == CAB_OPERACIONES_V1:
+            ps.escribir_atomico(OPERACIONES, texto_csv(migrar_operaciones(filas)))
+            print("operaciones.csv ampliado con las columnas vela_inicio_utc y decision_utc.")
     if not os.path.exists(OPERACIONES):
         ps.escribir_atomico(OPERACIONES, texto_csv([CAB_OPERACIONES]))
 
@@ -385,7 +420,7 @@ def deslizamiento(par, volumenes):
     return SLIP if volumenes.get(par, 0) >= VOLUMEN_ALTO or par == BTC else max(SLIP, SLIP_POCO_VOLUMEN)
 
 
-def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
+def operar(a, tipo, par, precio, fecha, volumenes, motivo="", vela_inicio=None, decision=None):
     """Compra un 'slot' o vende toda la moneda. El precio ejecutado incluye el deslizamiento y se paga la comision."""
     slip = deslizamiento(par, volumenes)
     if tipo == "COMPRA":
@@ -404,7 +439,12 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
         a.setdefault("ultima_venta", {})[par] = fecha
         coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
     a["operaciones"] += 1
-    COLA_OPS.append([fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4)])
+    if vela_inicio is None:                                           # caso normal: 'fecha' es el inicio de la vela decisoria
+        vela_inicio = fecha
+    if decision is None:
+        decision = fin_de_vela(fecha)
+    COLA_OPS.append([fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4),
+                     vela_inicio, decision])
     print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR ({motivo})")
 
 
@@ -412,10 +452,15 @@ def equity(a, precios):
     return a["efectivo"] + sum(u * precios.get(p, 0.0) for p, u in a["posiciones"].items())
 
 
-def apagar_si_toca(a, precios, fecha, volumenes):
+def apagar_si_toca(a, precios, fecha, volumenes, ultima=None):
+    """'ultima' {par: inicio de la ultima vela} se usa cuando 'fecha' es la hora real de ejecucion y no el inicio de una vela."""
     if not a["apagado"] and equity(a, precios) < STOP:
         for par in list(a["posiciones"]):
-            operar(a, "VENTA", par, precios[par], fecha, volumenes, "apagado por riesgo")
+            if ultima is None:
+                operar(a, "VENTA", par, precios[par], fecha, volumenes, "apagado por riesgo")
+            else:
+                operar(a, "VENTA", par, precios[par], fecha, volumenes, "apagado por riesgo",
+                       vela_inicio=ultima.get(par, ""), decision=fecha)
         a["apagado"] = True
         print(f"RIESGO: {a['nombre']} apagado por superar el limite de perdida")
 
@@ -482,8 +527,9 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
         estado["ultima_vela"] = tiempos[-1]
     for par, v in velas.items():                        # precio actual (la ultima vela puede seguir abierta)
         precios[par] = v[-1].c
+    ultima = {par: iso_vela(v[-1].ts) for par, v in velas.items()}
     for a in estado["agentes"]:
-        apagar_si_toca(a, precios, ahora, volumenes)
+        apagar_si_toca(a, precios, ahora, volumenes, ultima)
     return ahora, precios
 
 

@@ -6,6 +6,9 @@ import velas as vl_
 from tests.base import an, BaseDatos, velas, T0
 
 
+FECHA = "2026-10-20T10:00+00:00"
+
+
 def filas_ops():
     """Operaciones ya guardadas en disco + las pendientes de esta ejecucion."""
     with open(an.OPERACIONES, newline="") as f:
@@ -15,9 +18,9 @@ def filas_ops():
 class Operar(BaseDatos):
     def test_ida_y_vuelta_cuesta_comisiones_y_nunca_crea_dinero(self):
         a = self.agente()
-        an.operar(a, "COMPRA", an.BTC, 100.0, "f", {an.BTC: 1e6})
+        an.operar(a, "COMPRA", an.BTC, 100.0, FECHA, {an.BTC: 1e6})
         self.assertAlmostEqual(a["efectivo"], an.START - an.SLOT)
-        an.operar(a, "VENTA", an.BTC, 100.0, "f", {an.BTC: 1e6})
+        an.operar(a, "VENTA", an.BTC, 100.0, FECHA, {an.BTC: 1e6})
         self.assertEqual(a["posiciones"], {})
         self.assertLess(a["efectivo"], an.START)           # pierde comision y deslizamiento
         perdido = an.START - a["efectivo"]
@@ -26,8 +29,8 @@ class Operar(BaseDatos):
 
     def test_coste_registrado_coincide_con_lo_perdido(self):
         a = self.agente()
-        an.operar(a, "COMPRA", an.BTC, 50.0, "f", {an.BTC: 1e6})
-        an.operar(a, "VENTA", an.BTC, 50.0, "f", {an.BTC: 1e6})
+        an.operar(a, "COMPRA", an.BTC, 50.0, FECHA, {an.BTC: 1e6})
+        an.operar(a, "VENTA", an.BTC, 50.0, FECHA, {an.BTC: 1e6})
         total = sum(float(r["coste_eur"]) for r in filas_ops())
         self.assertAlmostEqual(total, an.START - a["efectivo"], places=3)
 
@@ -40,7 +43,7 @@ class Operar(BaseDatos):
     def test_compra_no_supera_efectivo(self):
         a = self.agente()
         a["efectivo"] = 0.5
-        an.operar(a, "COMPRA", an.BTC, 100.0, "f", {an.BTC: 1e6})
+        an.operar(a, "COMPRA", an.BTC, 100.0, FECHA, {an.BTC: 1e6})
         self.assertGreaterEqual(a["efectivo"], 0)
 
     def test_equity(self):
@@ -54,13 +57,13 @@ class Apagado(BaseDatos):
     def test_apaga_y_vende_por_debajo_del_stop(self):
         a = self.agente()
         a["efectivo"], a["posiciones"] = 0.0, {an.BTC: 0.1}
-        an.apagar_si_toca(a, {an.BTC: 10.0}, "f", {an.BTC: 1e6})   # equity 1 < 7
+        an.apagar_si_toca(a, {an.BTC: 10.0}, FECHA, {an.BTC: 1e6})   # equity 1 < 7
         self.assertTrue(a["apagado"])
         self.assertEqual(a["posiciones"], {})
 
     def test_no_apaga_si_esta_por_encima(self):
         a = self.agente()
-        an.apagar_si_toca(a, {an.BTC: 10.0}, "f", {})
+        an.apagar_si_toca(a, {an.BTC: 10.0}, FECHA, {})
         self.assertFalse(a["apagado"])
 
 
@@ -173,6 +176,44 @@ class Persistencia(BaseDatos):
         json.load(open(an.ESTADO, encoding="utf-8"))
         for a in est["agentes"]:
             self.assertGreaterEqual(a["efectivo"], -1e-9)
+
+
+class MarcasTemporales(BaseDatos):
+    def test_operacion_normal_lleva_vela_y_decision(self):
+        a = self.agente()
+        an.operar(a, "COMPRA", an.BTC, 100.0, "2026-10-20T10:00+00:00", {an.BTC: 1e6})
+        fila = dict(zip(an.CAB_OPERACIONES, an.COLA_OPS[-1]))
+        self.assertEqual(fila["vela_inicio_utc"], "2026-10-20T10:00+00:00")
+        self.assertEqual(fila["decision_utc"], "2026-10-20T11:00+00:00")     # la vela cierra una hora despues
+        self.assertEqual(fila["fecha_utc"], fila["vela_inicio_utc"])          # compatibilidad
+
+    def test_apagado_por_riesgo_usa_la_hora_real_de_ejecucion(self):
+        a = self.agente()
+        a["efectivo"], a["posiciones"] = 0.0, {an.BTC: 0.1}
+        an.apagar_si_toca(a, {an.BTC: 10.0}, "2026-10-20T10:07:33+00:00", {an.BTC: 1e6}, {an.BTC: "2026-10-20T10:00+00:00"})
+        fila = dict(zip(an.CAB_OPERACIONES, an.COLA_OPS[-1]))
+        self.assertEqual(fila["vela_inicio_utc"], "2026-10-20T10:00+00:00")
+        self.assertEqual(fila["decision_utc"], "2026-10-20T10:07:33+00:00")
+
+    def test_migracion_de_operaciones_antiguas_solo_deriva_lo_cierto(self):
+        os.remove(an.OPERACIONES)
+        viejo = (",".join(an.CAB_OPERACIONES_V1) + "\n"
+                 "2026-10-20T10:00+00:00,A,BTCEUR,COMPRA,1,2,senal compradora,0.01\n"
+                 "2026-10-20T10:07:33+00:00,A,BTCEUR,VENTA,1,2,apagado por riesgo,0.01\n")
+        open(an.OPERACIONES, "w", newline="").write(viejo)
+        an.asegurar_operaciones()
+        with open(an.OPERACIONES, newline="") as f:
+            filas = list(csv.DictReader(f))
+        self.assertEqual(len(filas), 2)
+        self.assertEqual(filas[0]["vela_inicio_utc"], "2026-10-20T10:00+00:00")
+        self.assertEqual(filas[0]["decision_utc"], "2026-10-20T11:00+00:00")
+        self.assertEqual(filas[1]["vela_inicio_utc"], "")                       # desconocida: no se inventa
+        self.assertEqual(filas[1]["decision_utc"], "2026-10-20T10:07:33+00:00")
+        self.assertEqual(filas[0]["precio_eur"], "1")                          # el resto no cambia
+
+    def test_cabecera_del_verificador_coincide(self):
+        import verificar_salida
+        self.assertEqual(verificar_salida.CAB_OPS, an.CAB_OPERACIONES)
 
 
 class CortesDeEjecucion(BaseDatos):

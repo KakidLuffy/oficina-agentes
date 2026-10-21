@@ -11,8 +11,8 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 3 | CRYPTO-011 | Archivo completo con manifiesto | VALIDADA |
 | 4 | CRYPTO-017 | Robustez de GitHub Actions | IMPLEMENTADA (falta ver una ejecución real en GitHub) |
 | 5 | CRYPTO-008 | Validación de velas | VALIDADA (datos reales de Kraken sin probar: la API no es accesible desde aquí) |
-| 6 | CRYPTO-009 | Alineación de marcas temporales | PENDIENTE |
-| 7 | CRYPTO-005 | Columnas vela_inicio / decision_utc | PENDIENTE |
+| 6 | CRYPTO-009 | Alineación de marcas temporales | VALIDADA |
+| 7 | CRYPTO-005 | Columnas vela_inicio / decision_utc | VALIDADA |
 | 8 | CRYPTO-013 | Módulo único de estrategias | PENDIENTE |
 | 9 | CRYPTO-002 | Ejecución en la vela siguiente | PENDIENTE |
 | 10 | CRYPTO-006 | Mínimos y precisión del exchange | PENDIENTE |
@@ -70,3 +70,17 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Cambio:** las velas pasan de `(ts, cierre)` a `Vela(ts, o, h, l, c, v)` (necesario también para la mejora 9). `validar()` aplica una política explícita: **descarta** NaN/inf, precios ≤ 0, volumen negativo, OHLC incoherente y marcas no alineadas; **duplicadas** → gana la última; **desordenadas** → se ordenan; **huecos** → nunca se rellenan y las señales usan solo la cola contigua posterior; **salto anómalo** (>40 % entre cierres) → se conserva el dato pero se bloquean compras nuevas en ese par en esa ejecución (las posiciones abiertas siguen valoradas y las ventas permitidas); **vela abierta** → no es error. Incidencias registradas (sin repetirse cada hora) en `datos/incidencias_datos.csv` dentro de la transacción. Un par sin ninguna vela utilizable se ignora y se avisa.
 - **Pruebas:** 12 de `velas.py` + 3 de integración (bloqueo de compras, registro único, par inutilizable). Total 67 correctas; ejecución demo de extremo a extremo y `verificar_salida.py` correcto.
 - **Riesgos:** (1) en Kraken los pares poco líquidos omiten velas sin operaciones; esos huecos reales recortan la serie utilizable (conservador; es el comportamiento deseado). (2) No se pudo probar con respuestas reales de Kraken (sin acceso), solo con el formato documentado `[time, open, high, low, close, vwap, volume, count]`; la primera ejecución real debe revisarse. (3) El umbral del 40 % es una decisión de diseño, ajustable en `velas.SALTO_MAX`.
+
+## Mejora 6 — CRYPTO-009 Alineación de marcas temporales (laboratorio)
+- **Archivos:** `laboratorio.py`, `tests/test_informe_lab.py`.
+- **Problema:** `descargar()` devolvía solo cierres y quitaba "la última vela" a ciegas; la fuerza relativa comparaba cada moneda con BTC **por posición en la lista**, de modo que si una serie empezaba/terminaba en otra hora se comparaba con el BTC equivocado.
+- **Cambio:** `descargar()` devuelve velas con marca temporal, ya validadas (mejora 5) y solo las **cerradas por su marca** (`solo_cerradas`); `Serie` guarda `ts`; `alinear()` calcula para cada vela el índice de BTC con la **misma marca temporal** (`ref_idx`); `relativa()` no emite señal si falta la hora común. El modo demo genera marcas alineadas.
+- **Pruebas:** 4 nuevas (alineación con desfase, relativa con BTC de la misma hora y sin hora común, vela abierta, demo). Ejecución completa del laboratorio demo correcta.
+- **Efecto esperado:** el veredicto del laboratorio puede cambiar en la familia de fuerza relativa al recalcularse con la alineación correcta (no se ha ejecutado con datos reales: sin acceso a Kraken desde aquí).
+
+## Mejora 7 — CRYPTO-005 Columnas `vela_inicio_utc` y `decision_utc`
+- **Archivos:** `agentes_nube.py`, `verificar_salida.py`, `tests/test_simulacion.py`, `.gitignore`.
+- **Problema:** `fecha_utc` era el inicio de la vela, pero la decisión solo puede conocerse al cierre (una hora después): la hora anotada parecía anterior a la decisión. Las ventas por apagado de riesgo llevaban la hora real, mezclando dos significados.
+- **Cambio:** se añaden dos columnas al final (`vela_inicio_utc`, `decision_utc`); `fecha_utc` se conserva con su significado para no romper el panel, director e informes (todos leen por nombre de columna). Las ventas por apagado registran la vela cuyo precio se usó y la hora real como decisión. Migración automática y atómica de `operaciones.csv` de 8 columnas a 10: se **deriva solo lo cierto** (operaciones normales: vela = fecha, decisión = +1 h); en las antiguas de apagado la vela queda vacía (desconocida) y no se inventa. Probado sobre una copia de las 37 operaciones reales actuales: se conservan todas.
+- **Higiene:** había colado `__pycache__` en dos commits míos; se quita del índice y se añade `.gitignore`.
+- **Pruebas:** 4 nuevas (normal, apagado, migración que no inventa, cabecera del verificador). Total 75 correctas.
