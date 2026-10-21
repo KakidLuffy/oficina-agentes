@@ -23,7 +23,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 15 | CRYPTO-004 | Sesgo de supervivencia | IMPLEMENTADA (reduce, no elimina) |
 | 16 | CRYPTO-003 | Walk-forward y regímenes | VALIDADA |
 | 17 | CRYPTO-014 | Métricas avanzadas | VALIDADA |
-| 18 | CRYPTO-016 | Decisiones rechazadas + alertas | PENDIENTE |
+| 18 | CRYPTO-016 | Decisiones rechazadas + alertas | VALIDADA (la alerta real solo se puede probar dentro de GitHub) |
 | 19 | CRYPTO-019 | Seguridad del panel | PENDIENTE |
 | 20 | CRYPTO-020 | Analista de IA (solo propuestas) | PENDIENTE |
 
@@ -156,3 +156,10 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Pruebas (+14, 170 en total):** valores conocidos, series constantes, muestras pequeñas, sin pérdidas, reproducibilidad del bootstrap, intervalo más estrecho con más datos, ruido puro incluye 0, integración en el laboratorio.
 - **Comprobación:** ejecución sintética de 149 h: antes de tener 30 horas todo sale NO ESTIMABLE; después aparecen cifras con IC que casi siempre incluyen 0.
 - **Riesgo:** Sharpe/Sortino con pocas semanas son muy inestables (el propio informe lo avisa); el IC supone estacionariedad.
+
+## Mejora 18 — CRYPTO-016 Decisiones rechazadas y alertas de fallo
+- **Archivos:** `agentes_nube.py` (`rechazos_nuevos`, `categoria_rechazo`, `CAB_RECHAZOS`, transacción y archivado), `scripts/alerta_fallo.sh` (nuevo), los 4 workflows (trabajo `alerta`), `tests/test_rechazos_alertas.py`.
+- **Problema:** las órdenes rechazadas (efectivo, mínimos del exchange, caducadas…) solo se imprimían en el registro de la ejecución y se perdían; un fallo del workflow pasaba desapercibido hasta mirar la pestaña Actions.
+- **Cambio:** `datos/decisiones_rechazadas.csv` (fecha de la vela, registro, agente, moneda, tipo, motivo de la decisión, categoría estable, razón), escrito **en la misma transacción atómica** que el estado, sin repetir la misma decisión aunque se reintente cada hora; se archiva con la simulación al cambiar de versión. Alertas: cada workflow tiene un trabajo `alerta` (único con permiso `issues: write`) que abre **un solo Issue** por workflow si falla (si ya hay uno abierto no crea otro) y lo **cierra solo** cuando una ejecución posterior termina bien. No se inventa ninguna configuración de correo: GitHub avisa por su propio sistema de notificaciones a quien vigile el repositorio.
+- **Pruebas (+11, 181 en total):** categorías, deduplicación entre horas y dentro de una pasada, archivado, y el script con un `gh` simulado (abrir, no duplicar, título distinto, cerrar, cerrar sin alerta, comillas en el título), permisos mínimos en los 4 workflows. Comprobación de integración: `guardar` escribe el CSV.
+- **Límite:** el envío real del Issue solo se puede probar ejecutando el workflow en GitHub (la rama no se ha subido). Si el fallo es del propio GitHub Actions (no arranca), no hay alerta.

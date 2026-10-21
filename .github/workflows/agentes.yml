@@ -44,3 +44,25 @@ jobs:
 
       - name: Guardar resultados en el repositorio (reintenta, nunca fuerza)
         run: bash scripts/guardar_datos.sh "Actualizar simulación" datos
+
+  alerta:
+    needs: paso
+    if: ${{ always() && needs.paso.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write        # solo este trabajo puede abrir o cerrar la alerta
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Avisar del fallo (sin duplicados) o cerrar la alerta si ya se recuperó
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if [ "${{ needs.paso.result }}" = "success" ]; then
+            bash scripts/alerta_fallo.sh cerrar "Fallo del workflow: simulación de agentes" "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          else
+            bash scripts/alerta_fallo.sh abrir "Fallo del workflow: simulación de agentes" "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi

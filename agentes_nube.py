@@ -625,6 +625,42 @@ def incidencias_nuevas(ahora):
     return filas
 
 
+CAB_RECHAZOS = ["fecha_utc", "registrado_utc", "agente", "par", "tipo", "motivo_decision", "categoria", "razon"]
+CATEGORIAS_RECHAZO = [("caducada", "caducada"), ("apagado", "agente_apagado"), ("ya hay posicion", "posicion_duplicada"),
+                      ("maximo de posiciones", "maximo_posiciones"), ("efectivo insuficiente", "efectivo_insuficiente"),
+                      ("datos anomalos", "datos_anomalos"), ("ya no hay posicion", "sin_posicion"),
+                      ("volumen minimo", "minimo_volumen"), ("coste minimo", "minimo_coste"), ("no es positiva", "cantidad_invalida")]
+
+
+def categoria_rechazo(razon):
+    """Etiqueta estable (para contar y filtrar) a partir del texto de la razon; lo desconocido queda como 'otro'."""
+    for clave, cat in CATEGORIAS_RECHAZO:
+        if clave in razon:
+            return cat
+    return "otro"
+
+
+def ruta_rechazos():
+    return os.path.join(DATOS, "decisiones_rechazadas.csv")
+
+
+def rechazos_nuevos(ahora):
+    """Filas de decisiones rechazadas aun no registradas. Una decision (vela, agente, moneda, tipo) se anota una sola vez
+    aunque la orden se reintente en horas sucesivas."""
+    vistas = set()
+    if os.path.exists(ruta_rechazos()):
+        with open(ruta_rechazos(), newline="", encoding="utf-8") as f:
+            vistas = {(r["fecha_utc"], r["agente"], r["par"], r["tipo"]) for r in csv.DictReader(f)}
+    filas = []
+    for fecha, agente, par, tipo, motivo, razon in RECHAZOS:
+        clave = (fecha, agente, par, tipo)
+        if clave in vistas:
+            continue
+        vistas.add(clave)
+        filas.append([fecha, ahora, agente, par, tipo, motivo, categoria_rechazo(razon), razon])
+    return filas
+
+
 def historial_con_fila(cabecera, fila):
     """Texto completo del historial con la fila nueva. Si se anadieron agentes, sus columnas quedan VACIAS en las filas anteriores
     (un agente nuevo no tiene pasado: antes se rellenaban con el capital inicial, que dibujaba una linea plana inventada)."""
@@ -661,6 +697,10 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     if nuevas:
         previo = leer_texto(ruta_incidencias()) or texto_csv([CAB_INCIDENCIAS])
         tx.poner(ruta_incidencias(), previo + texto_csv(nuevas))
+    rech = rechazos_nuevos(ahora)
+    if rech:
+        previo = leer_texto(ruta_rechazos()) or texto_csv([CAB_RECHAZOS])
+        tx.poner(ruta_rechazos(), previo + texto_csv(rech))
     tx.confirmar()
     COLA_OPS.clear()
     dias = (datetime.fromisoformat(ahora) - datetime.fromisoformat(estado["inicio"])).total_seconds() / 86400
@@ -749,7 +789,7 @@ CONTEXTO = ("director_estado.json", "parte_director.json", "laboratorio.json", "
 def archivar(etiqueta, meta=None):
     """Archivo verificable (con manifiesto y huellas) de la simulacion anterior en datos/archivo_<etiqueta>_<fecha>/.
     Los archivos del director y del laboratorio se COPIAN como contexto; los de la simulacion se borran solo tras verificar."""
-    mover = [ESTADO, HISTORIAL, OPERACIONES, RESUMEN, GRAFICO]
+    mover = [ESTADO, HISTORIAL, OPERACIONES, RESUMEN, GRAFICO, ruta_rechazos()]
     contexto = [os.path.join(DATOS, c) for c in CONTEXTO]
     return archivado.archivar(DATOS, etiqueta, mover, contexto, meta)
 
