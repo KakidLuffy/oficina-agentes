@@ -69,6 +69,25 @@ def metricas(historial_csv, operaciones_csv, nombres):
     return salida
 
 
+def detalle(historial_csv, operaciones_csv, nombres):
+    """Devuelve {nombre: (curva_de_capital, ganancias_por_operacion_cerrada_en_EUR)} para las metricas avanzadas (metricas.py)."""
+    hist, ops = leer_csv(historial_csv), leer_csv(operaciones_csv)
+    salida = {}
+    for n in nombres:
+        curva = [float(f[n]) for f in hist if (f.get(n) or "").strip()]
+        pnl, compras = [], {}
+        for o in sorted((o for o in ops if o["agente"] == n), key=lambda o: o["fecha_utc"]):
+            moneda, importe = o.get("moneda", "BTC"), dec(o.get("importe_eur"))
+            if importe is None:
+                continue
+            if o["tipo"] == "COMPRA":
+                compras[moneda] = importe
+            elif o["tipo"] == "VENTA" and compras.get(moneda):
+                pnl.append(float(importe - compras.pop(moneda)))
+        salida[n] = (curva, pnl)
+    return salida
+
+
 def grafico_svg(historial_csv, ruta_svg, nombres):
     """Dibuja la evolucion del capital de cada agente y de 'Comprar y mantener'."""
     hist = leer_csv(historial_csv)

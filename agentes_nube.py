@@ -28,6 +28,7 @@ import costes
 import ejecucion
 import estrategias
 import informe
+import metricas
 import velas as vl
 import persistencia as ps
 import reglas_mercado as rm
@@ -705,7 +706,20 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         for n in nombres + ["Comprar y mantener"]:
             m = met[n]
             lineas.append(f"| {n} | {m.caida:.2f} % | {m.ganadoras} | {m.perdedoras} |")
-        lineas += ["", "Caida maxima = lo que llego a perder cada agente desde su mejor momento. "
+        det = informe.detalle(HISTORIAL, OPERACIONES, nombres + ["Comprar y mantener"])
+        lineas += ["", "Metricas avanzadas (por hora; 'NO ESTIMABLE' = muestra insuficiente para que la cifra signifique algo):", "",
+                   "| Agente | Volatilidad anual | Sharpe | Sortino | Factor de beneficio | Expectativa (EUR/op.) | IC 95 % retorno medio por hora (%) |",
+                   "|---|---:|---:|---:|---:|---:|---:|"]
+        for n in nombres + ["Comprar y mantener"]:
+            s = metricas.resumen(*det[n], periodos_anio=24 * 365)
+            vol = s["volatilidad"]
+            vol = vol if vol == metricas.NO_ESTIMABLE else f"{vol * 100:.0f} %"
+            lineas.append(f"| {n} | {vol} | "
+                          f"{metricas.fmt(s['sharpe'])} | {metricas.fmt(s['sortino'])} | {metricas.fmt(s['factor_beneficio'])} | "
+                          f"{metricas.fmt(s['expectativa'], 3)} | {metricas.fmt(s['ic_retorno_medio'], 3, pct=True)} |")
+        lineas += ["", "Si el intervalo de confianza del retorno medio incluye el 0, no se distingue de la casualidad. "
+                   "Sharpe y Sortino se anualizan con 8760 horas y tasa libre de riesgo 0; con pocas semanas son muy inestables.",
+                   "", "Caida maxima = lo que llego a perder cada agente desde su mejor momento. "
                    "Una operacion cuenta cuando se cierra con su venta; si compra y venta tienen exactamente el mismo importe cuenta como cerrada pero ni ganadora ni perdedora."]
         pocos = []
         for a in estado["agentes"]:

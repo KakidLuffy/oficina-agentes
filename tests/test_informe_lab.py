@@ -1,6 +1,7 @@
 import csv
 import os
 import tempfile
+import math
 import unittest
 from tests.base import RAIZ  # noqa: F401
 import informe
@@ -174,6 +175,15 @@ class WalkForwardEnLaboratorio(unittest.TestCase):
         for f in self.calc["elegidas"]:
             self.assertEqual(set(f["regimenes"]), set(laboratorio.wf.REGIMENES))
             self.assertGreater(sum(d["velas"] for d in f["regimenes"].values()), 0)
+
+    def test_metricas_de_riesgo_de_las_elegidas(self):
+        import metricas
+        for f in self.calc["elegidas"]:
+            self.assertGreater(f["retornos_oos"], 0)
+            for k in ("sharpe", "sortino"):
+                self.assertTrue(f[k] == metricas.NO_ESTIMABLE or math.isfinite(f[k]))
+            ic = f["ic_retorno"]
+            self.assertTrue(ic == metricas.NO_ESTIMABLE or ic[0] <= ic[1])
 
     def test_tasa_azar_y_veredicto_validos(self):
         self.assertTrue(0 <= self.calc["azar"] <= 1)

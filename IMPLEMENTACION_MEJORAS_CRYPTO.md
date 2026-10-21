@@ -22,7 +22,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 14 | CRYPTO-010 | Sin historial inventado | VALIDADA (panel: comprobación visual pendiente en etapa 6) |
 | 15 | CRYPTO-004 | Sesgo de supervivencia | IMPLEMENTADA (reduce, no elimina) |
 | 16 | CRYPTO-003 | Walk-forward y regímenes | VALIDADA |
-| 17 | CRYPTO-014 | Métricas avanzadas | PENDIENTE |
+| 17 | CRYPTO-014 | Métricas avanzadas | VALIDADA |
 | 18 | CRYPTO-016 | Decisiones rechazadas + alertas | PENDIENTE |
 | 19 | CRYPTO-019 | Seguridad del panel | PENDIENTE |
 | 20 | CRYPTO-020 | Analista de IA (solo propuestas) | PENDIENTE |
@@ -149,3 +149,10 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Pruebas (+16, 156 en total):** pliegues contiguos y sin solapar el entrenamiento, errores de parámetros, régimen sin mirar el futuro, atribución de retornos por régimen, y en el laboratorio: una fila por variante, elegidas×pliegues coherente, tres regímenes presentes, azar y veredicto válidos.
 - **Resultado demo:** `python3 laboratorio.py --demo` (14 s): veredicto NINGUNA; ventaja de elegir +0,07 € (≈ ruido), como cabe esperar en datos aleatorios.
 - **Riesgo:** con pocos pliegues la estimación es ruidosa; los regímenes futuros pueden no parecerse a los pasados. Con datos reales el nº de velas disponible limita los pliegues.
+
+## Mejora 17 — CRYPTO-014 Métricas avanzadas
+- **Archivos:** `metricas.py` (nuevo), `informe.py` (`detalle`), `agentes_nube.py` (resumen), `laboratorio.py` (tabla de riesgo), `tests/test_metricas.py`, `tests/test_informe_lab.py`.
+- **Cambio:** volatilidad, Sharpe, Sortino (tasa libre 0), caída máxima, factor de beneficio, expectativa por operación, % de acierto e intervalos de confianza al 95 % por **bootstrap de bloques** con semilla fija (reproducible). Mínimos: 30 periodos para volatilidad/Sharpe/Sortino/IC y 10 operaciones cerradas para el resto; por debajo, o si no hay varianza/pérdidas, se escribe **«NO ESTIMABLE»** en vez de una cifra engañosa. El resumen de la simulación añade la tabla (anualizada con 8760 h); el laboratorio añade «Riesgo fuera de muestra de las elegidas» (retornos agrupados por vela, sin anualizar).
+- **Pruebas (+14, 170 en total):** valores conocidos, series constantes, muestras pequeñas, sin pérdidas, reproducibilidad del bootstrap, intervalo más estrecho con más datos, ruido puro incluye 0, integración en el laboratorio.
+- **Comprobación:** ejecución sintética de 149 h: antes de tener 30 horas todo sale NO ESTIMABLE; después aparecen cifras con IC que casi siempre incluyen 0.
+- **Riesgo:** Sharpe/Sortino con pocas semanas son muy inestables (el propio informe lo avisa); el IC supone estacionariedad.

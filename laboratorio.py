@@ -31,6 +31,7 @@ import comparar_estrategias as ce
 import costes as costes_mod
 import ejecucion as ej
 import estrategias
+import metricas
 import universo_historico as uh
 import velas as vl
 import walkforward as wf
@@ -223,6 +224,7 @@ def por_regimen_fuera_de_muestra(series, fn, opc, pit=True):
     (desde el inicio de la primera prueba hasta el final), promediada por serie. Tambien devuelve el reparto de velas por regimen."""
     acum = {r: {"velas": 0, "dif": 0.0, "hold": 0.0} for r in wf.REGIMENES}
     usadas = 0
+    rets = []
     for s in series:
         c, n, esc = s["c"], len(s["c"]), math.sqrt(s["minutos"] / 60)
         pl = wf.pliegues(n, WARM, ENTRENO_VELAS, PRUEBA_VELAS)
@@ -232,6 +234,7 @@ def por_regimen_fuera_de_muestra(series, fn, opc, pit=True):
         perm = (lambda i, m=s["miembro"]: m[i]) if pit and s.get("miembro") else None
         curva = []
         ej.simular(c, c.o, ini, fin, esc, fn, opc, FEE, SLIP, ej.SPREAD, START, None, perm, curva)
+        rets.extend(metricas.retornos(curva))
         regs = s.setdefault("regimenes", wf.regimenes(list(c)))
         r = wf.por_regimen(curva, c, ini, regs)
         usadas += 1
@@ -239,8 +242,9 @@ def por_regimen_fuera_de_muestra(series, fn, opc, pit=True):
             acum[nombre]["velas"] += d["velas"]
             acum[nombre]["dif"] += (d["estrategia"] - d["hold"]) * START
             acum[nombre]["hold"] += d["hold"] * START
-    return {nombre: {"velas": d["velas"], "dif": d["dif"] / usadas if usadas else 0.0, "hold": d["hold"] / usadas if usadas else 0.0}
-            for nombre, d in acum.items()}
+    reg = {nombre: {"velas": d["velas"], "dif": d["dif"] / usadas if usadas else 0.0, "hold": d["hold"] / usadas if usadas else 0.0}
+           for nombre, d in acum.items()}
+    return reg, rets
 
 
 def calcular(series, todas):
@@ -277,7 +281,9 @@ def calcular(series, todas):
         rs = resumir(evaluar_pliegues(series, fn, opc, costes_mod.ESTRES))      # estres: comision taker 0,80 % y horquilla/deslizamiento x2
         f["test_dif_estres"] = rs["test_dif"]
         f["aguanta_estres"] = rs["test_dif"] > 0
-        f["regimenes"] = por_regimen_fuera_de_muestra(series, fn, opc)
+        f["regimenes"], rets = por_regimen_fuera_de_muestra(series, fn, opc)
+        f["sharpe"], f["sortino"], f["ic_retorno"] = metricas.sharpe(rets), metricas.sortino(rets), metricas.ic_retorno_medio(rets)
+        f["retornos_oos"] = len(rets)
     return {"filas": filas, "elegidas": elegidas, "probadas": probadas, "azar": azar, "sesgo": sesgo, "metodo": metodo}
 
 
@@ -318,7 +324,7 @@ def main():
         d["dif"] += f["test_dif"]
         d["ops"] += f["ops"]
         d["pasan"] += 1 if f["pasa"] else 0
-    plano = lambda f: {k: (round(v, 2) if isinstance(v, float) else v) for k, v in f.items() if k not in ("fold_train", "fold_test", "regimenes")}
+    plano = lambda f: {k: (round(v, 2) if isinstance(v, float) else v) for k, v in f.items() if k not in ("fold_train", "fold_test", "regimenes", "sharpe", "sortino", "ic_retorno")}
     datos = {
         "generado": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "fuente": "demo" if es_demo else "Kraken",
@@ -333,6 +339,7 @@ def main():
         "familias": {n: {"variantes": d["n"], "dif_media_examen": round(d["dif"] / d["n"], 2), "aprueban": d["pasan"]} for n, d in fam.items()},
         "candidatas": [plano(f) for f in candidatas],
         "mejores_entreno": [plano(f) for f in elegidas],
+        "metricas_oos": {f["nombre"]: {"sharpe": f["sharpe"], "sortino": f["sortino"], "ic_retorno_medio": f["ic_retorno"], "retornos": f["retornos_oos"]} for f in elegidas},
         "regimenes": {f["nombre"]: {r: {k: round(v, 3) for k, v in d.items()} for r, d in f["regimenes"].items()} for f in elegidas},
     }
     ps.escribir_json(os.path.join(out, "laboratorio.json"), datos, indent=1)
@@ -353,6 +360,12 @@ def main():
            "| Pliegue | Elegidas (€) | Todas las variantes (€) |", "|---:|---:|---:|"]
     for k, (a, b) in enumerate(zip(metodo["por_pliegue_seleccion"], metodo["por_pliegue_todas"]), 1):
         md.append(f"| {k} | {a:+.2f} | {b:+.2f} |")
+    md += ["", "## Riesgo fuera de muestra de las elegidas", "",
+           "Retornos por vela (todas las series y pliegues juntos, sin anualizar porque mezclan velas de 4 h y 1 día). «NO ESTIMABLE» = muestra insuficiente. "
+           "El intervalo es un bootstrap por bloques al 95 %: si incluye 0, el retorno medio no se distingue de la casualidad.", "",
+           "| Variante | Retornos | Sharpe | Sortino | IC 95 % retorno medio por vela (%) |", "|---|---:|---:|---:|---:|"]
+    for f in elegidas:
+        md.append(f"| {f['nombre']} | {f['retornos_oos']} | {metricas.fmt(f['sharpe'], 3)} | {metricas.fmt(f['sortino'], 3)} | {metricas.fmt(f['ic_retorno'], 3, pct=True)} |")
     md += ["", "## Resultados por régimen de mercado (fuera de muestra)", "",
            "Régimen = tendencia de las últimas 60 velas medida en unidades de su propia volatilidad (alcista, bajista o lateral). "
            "Cada celda: diferencia frente a comprar y mantener en € (media por serie) y, entre paréntesis, nº de velas de ese régimen.", "",
