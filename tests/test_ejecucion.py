@@ -75,7 +75,7 @@ class EscenariosDeCostes(unittest.TestCase):
             r = random.Random(semilla)
             c = [100.0]
             for _ in range(400):
-                c.append(c[-1] * (1 + r.gauss(0.0002, 0.012)))
+                c.append(c[-1] * (1 + r.gauss(0.0002, 0.004)))        # poca volatilidad: sin apagado por riesgo, mismas operaciones
             o = [c[0]] + c[:-1]
             base = ej.simular(c, o, 50, 400, 1.0, es.cruce(5, 20), costes=co.BASE)
             duro = ej.simular(c, o, 50, 400, 1.0, es.cruce(5, 20), costes=co.ESTRES)
