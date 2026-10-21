@@ -18,8 +18,8 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 10 | CRYPTO-006 | Mínimos y precisión del exchange | IMPLEMENTADA (valores reales de Kraken sin verificar desde aquí) |
 | 11 | CRYPTO-001 | Posiciones fuera del universo | VALIDADA |
 | 12 | CRYPTO-007 | Modelo de costes compartido | VALIDADA (horquilla y deslizamiento son supuestos, no medidos) |
-| 13 | CRYPTO-012 | Precisión decimal | PENDIENTE |
-| 14 | CRYPTO-010 | Sin historial inventado | PENDIENTE |
+| 13 | CRYPTO-012 | Precisión decimal | VALIDADA |
+| 14 | CRYPTO-010 | Sin historial inventado | VALIDADA (panel: comprobación visual pendiente en etapa 6) |
 | 15 | CRYPTO-004 | Sesgo de supervivencia | PENDIENTE |
 | 16 | CRYPTO-003 | Walk-forward y regímenes | PENDIENTE |
 | 17 | CRYPTO-014 | Métricas avanzadas | PENDIENTE |
@@ -120,3 +120,17 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Cambio:** un único objeto `Costes(fee, slip, spread)` validado (rechaza negativos, NaN, valores absurdos) con `precio_compra/venta` y `coste_ida_y_vuelta`. Escenario **BASE** (lo acordado: comisión 0,40 %, deslizamiento 0,05 %, horquilla 0,08 % en monedas líquidas) y **ESTRÉS** (comisión *taker* 0,80 %, horquilla y deslizamiento ×2). Horquilla y deslizamiento **variables por liquidez** (volumen 24 h): alta ≥ 1 M €, media ≥ 100 k €, baja < 100 k € o desconocido (horquilla ×1 / ×2,5 / ×6,25; deslizamiento ×1 / ×2 / ×6); BTC siempre líquido. La simulación en vivo usa `costes_par()` en cada orden y el estado guarda los parámetros base; el laboratorio repite el examen de las 12 variantes elegidas con el escenario de estrés y lo muestra en una columna nueva («Dif. examen con costes duros»), así se ve qué variantes solo ganan con costes optimistas.
 - **Honestidad sobre los supuestos:** la horquilla y el deslizamiento **no están medidos** (no hay libro de órdenes en las velas); son hipótesis prudentes. La comisión del 0,40 % es la de órdenes *maker*; como la simulación entra "a mercado" a la apertura siguiente, la real sería *taker* (0,80 %) → por eso existe el escenario de estrés. La base se deja en 0,40 % porque es lo que acordaste; **te recomiendo mirar siempre la columna de costes duros**.
 - **Pruebas (+12, 121 en total):** valores base/estrés, escalado por liquidez, volumen desconocido, BTC, umbrales, precios de ejecución, coste de ida y vuelta = fórmula exacta, validación de parámetros; los costes duros nunca mejoran el resultado (6 series sin apagado por riesgo, mismas operaciones; con apagado las rutas pueden divergir y no se comparan); `costes` suelto y objeto equivalentes. Laboratorio demo completo con la columna nueva.
+
+## Mejora 13 — CRYPTO-012 Precisión decimal
+- **Archivos:** `agentes_nube.py`, `informe.py`, `index.html`, `tests/test_simulacion.py`, `tests/test_informe_lab.py`.
+- **Problema:** `importe_eur` se guardaba redondeado a **2 decimales** y las operaciones ganadoras/perdedoras se clasificaban comparando esos importes: con trozos de 2 €, un redondeo de 0,01 € es el 0,5 % del importe, del tamaño de los costes. Además, una igualdad (empate) contaba como **perdedora**.
+- **Cambio:** importe y coste se guardan con **8 decimales** y el precio con 10 cifras significativas; el historial con 6 decimales (antes 2). `informe.metricas` compara con **`Decimal` exacto** leído del texto del CSV (sin error de coma flotante) y devuelve `Metrica(caida, ganadoras, perdedoras, neutras)`; igualdad exacta = **neutra** (cerrada, ni ganadora ni perdedora). Importes ilegibles se ignoran sin romper. El panel (`index.html`) aplica la misma regla (ganadora / perdedora / neutra). Los CSV antiguos con 2 decimales siguen leyéndose (sus empates aparentes ahora salen neutros en vez de perdedores).
+- **Pruebas (+7):** importe y coste con >2 decimales; una ganancia diminuta se clasifica como ganadora y coincide con la contabilidad; historial con 6 decimales; diferencia de 0,003 € bien clasificada; igualdad exacta neutra; importe ilegible; `0,1 + 0,2 = 0,3` con Decimal. Sintaxis JS del panel validada con `node --check`.
+- **Límite:** el estado interno sigue en coma flotante de 64 bits (error ~1e-16, irrelevante a este tamaño); lo que se corrige es el redondeo *visible* y la clasificación.
+
+## Mejora 14 — CRYPTO-010 Sin historial inventado para agentes nuevos
+- **Archivos:** `agentes_nube.py`, `informe.py`, `index.html`, `tests/test_simulacion.py`, `tests/test_informe_lab.py`.
+- **Problema:** al añadir un agente, `ajustar_historial` rellenaba sus columnas en las filas anteriores con el capital inicial: una **línea plana de 10 € inventada** durante semanas en las que el agente no existía (con efecto en gráficos, caída máxima y comparaciones).
+- **Cambio:** las columnas del agente nuevo quedan **vacías** en las filas anteriores. `informe.grafico_svg` dibuja solo los puntos reales (sin romper si una serie tiene huecos), `informe.metricas` ya ignoraba vacíos, el director ya trataba los vacíos como "sin dato", y el panel ya filtraba valores no numéricos (`isFinite`). Corregido de paso un texto fijo del gráfico del panel ("50 € (capital inicial)") que ahora usa el capital real del estado.
+- **Pruebas:** historial con columna nueva vacía (no `START`); gráfico y métricas con columnas vacías sin NaN. Total 129 correctas.
+- **Pendiente:** verificar visualmente el panel con una columna vacía (se hará en la etapa 6 junto a la seguridad del panel).

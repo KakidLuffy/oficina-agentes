@@ -4,6 +4,8 @@ Lee datos/historial.csv y datos/operaciones.csv; no modifica el estado de la sim
 """
 import csv
 import os
+from collections import namedtuple
+from decimal import Decimal, InvalidOperation
 
 import persistencia as ps
 
@@ -27,25 +29,43 @@ def caida_maxima(valores):
     return peor * 100
 
 
+Metrica = namedtuple("Metrica", "caida ganadoras perdedoras neutras")
+Metrica.cerradas = property(lambda self: self.ganadoras + self.perdedoras + self.neutras)
+
+
+def dec(x):
+    """Importe como Decimal exacto a partir del texto del CSV (sin pasar por coma flotante)."""
+    try:
+        return Decimal(str(x).strip())
+    except (InvalidOperation, ValueError):
+        return None
+
+
 def metricas(historial_csv, operaciones_csv, nombres):
-    """Devuelve {nombre: (caida_maxima_pct, ganadoras, perdedoras)}."""
+    """Devuelve {nombre: Metrica(caida_maxima_pct, ganadoras, perdedoras, neutras)}.
+    Cada operacion cerrada compara el importe de su venta con el de su compra con aritmetica decimal exacta; igualdad exacta = neutra."""
     hist, ops = leer_csv(historial_csv), leer_csv(operaciones_csv)
     salida = {}
     for n in nombres:
         serie = [float(f[n]) for f in hist if f.get(n)]
-        gan = per = 0
+        gan = per = neu = 0
         compras = {}                                   # importe de la ultima compra abierta de cada moneda
         for o in sorted((o for o in ops if o["agente"] == n), key=lambda o: o["fecha_utc"]):
             moneda = o.get("moneda", "BTC")
+            importe = dec(o.get("importe_eur"))
+            if importe is None:
+                continue
             if o["tipo"] == "COMPRA":
-                compras[moneda] = float(o["importe_eur"])
+                compras[moneda] = importe
             elif o["tipo"] == "VENTA" and compras.get(moneda):
-                if float(o["importe_eur"]) > compras[moneda]:
+                if importe > compras[moneda]:
                     gan += 1
-                else:
+                elif importe < compras[moneda]:
                     per += 1
+                else:
+                    neu += 1
                 compras.pop(moneda)
-        salida[n] = (caida_maxima(serie) if serie else 0.0, gan, per)
+        salida[n] = Metrica(caida_maxima(serie) if serie else 0.0, gan, per, neu)
     return salida
 
 
@@ -55,8 +75,10 @@ def grafico_svg(historial_csv, ruta_svg, nombres):
     if len(hist) < 2:
         return False
     cols = list(nombres) + ["Comprar y mantener"]
-    series = {c: [float(f[c]) for f in hist] for c in cols}
-    todos = [v for s in series.values() for v in s]
+    series = {c: [float(f[c]) if (f.get(c) or "").strip() else None for f in hist] for c in cols}     # vacio = el agente aun no existia
+    todos = [v for s in series.values() for v in s if v is not None]
+    if not todos:
+        return False
     lo, hi = min(todos), max(todos)
     if hi - lo < 0.5:                       # evita un eje plano si casi no hay movimiento
         centro = (hi + lo) / 2
@@ -81,7 +103,7 @@ def grafico_svg(historial_csv, ruta_svg, nombres):
     p.append(f'<text x="{ancho - md}" y="{alto - 10}" text-anchor="end" fill="#374151">{hist[-1]["fecha_utc"][:16]}</text>')
     p.append(f'<text x="{mi}" y="14" fill="#111827" font-weight="bold">Capital en EUR (dinero ficticio)</text>')
     for k, c in enumerate(cols):
-        pts = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in enumerate(series[c]))
+        pts = " ".join(f"{x(i):.1f},{y(v):.1f}" for i, v in enumerate(series[c]) if v is not None)
         dash = ' stroke-dasharray="5 4"' if c == "Comprar y mantener" else ""
         p.append(f'<polyline points="{pts}" fill="none" stroke="{COLORES[k]}" stroke-width="2"{dash}/>')
         ly = ms + 18 * k + 10

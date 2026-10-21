@@ -193,13 +193,13 @@ class Persistencia(BaseDatos):
         self.assertTrue(os.path.exists(os.path.join(an.DATOS, carpetas[0], "estado.json")))
         self.assertTrue(os.path.exists(os.path.join(an.DATOS, carpetas[0], "MANIFIESTO.json")))
 
-    def test_ajustar_historial_rellena_columnas_nuevas(self):
+    def test_agente_nuevo_no_tiene_historial_inventado(self):
         with open(an.HISTORIAL, "w", newline="") as f:
             f.write("fecha_utc,precio_eur,A\n2026-01-01,100,9.5\n")
         import io
         txt = an.historial_con_fila(["fecha_utc", "precio_eur", "A", "B"], ["2026-01-02", "101", "9.6", "10"])
         filas = list(csv.reader(io.StringIO(txt, newline="")))
-        self.assertEqual(filas[1], ["2026-01-01", "100", "9.5", str(an.START)])
+        self.assertEqual(filas[1], ["2026-01-01", "100", "9.5", ""])          # el agente B no existia: sin dato, no START
         self.assertEqual(filas[2], ["2026-01-02", "101", "9.6", "10"])
 
     def test_migrar_estado_antiguo_y_agentes_nuevos(self):
@@ -230,6 +230,33 @@ class Persistencia(BaseDatos):
         json.load(open(an.ESTADO, encoding="utf-8"))
         for a in est["agentes"]:
             self.assertGreaterEqual(a["efectivo"], -1e-9)
+
+
+class Precision(BaseDatos):
+    def test_importe_y_coste_se_guardan_sin_redondear_a_2_decimales(self):
+        a = self.agente()
+        an.operar(a, "COMPRA", an.BTC, 100.0, FECHA, {an.BTC: 1e6})
+        fila = dict(zip(an.CAB_OPERACIONES, an.COLA_OPS[-1]))
+        self.assertNotEqual(fila["importe_eur"], round(fila["importe_eur"], 2))     # tiene mas de 2 decimales
+        self.assertGreater(fila["coste_eur"], 0)
+        self.assertEqual(fila["importe_eur"], round(fila["importe_eur"], 8))
+
+    def test_un_ciclo_con_ganancia_diminuta_se_ve_como_ganadora(self):
+        a = self.agente()
+        an.operar(a, "COMPRA", an.BTC, 100.0, FECHA, {an.BTC: 1e6})
+        an.operar(a, "VENTA", an.BTC, 100.5, FECHA, {an.BTC: 1e6})                 # sube un 0,5 % (algo mas que los costes)
+        compra, venta = an.COLA_OPS[-2][5], an.COLA_OPS[-1][5]
+        self.assertNotEqual(round(compra, 2), compra)
+        self.assertEqual(venta > compra, a["efectivo"] > an.START)                  # la clasificacion coincide con la contabilidad real
+
+    def test_historial_con_seis_decimales(self):
+        v, vol, orden, fuente, ts = an.obtener_datos(150)
+        est = an.estado_nuevo({p: x[:100] for p, x in v.items()}, v[an.BTC][99].ts + 3600)
+        ahora, precios = an.paso(est, v, vol, orden, ts)
+        an.guardar(est, ahora, precios, fuente, len(orden), len(v))
+        with open(an.HISTORIAL, newline="") as f:
+            ult = list(csv.reader(f))[-1]
+        self.assertTrue(any(len(x.split(".")[-1]) > 2 for x in ult[2:]))
 
 
 class MarcasTemporales(BaseDatos):

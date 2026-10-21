@@ -315,15 +315,15 @@ function preparar(estado, hist, ops){
     serie.forEach(function(v){ pico = Math.max(pico, v); if (pico) dd = Math.max(dd, (pico - v) / pico * 100); });
     var hold = START * (1 - fee) * btc / (a.precio_inicio * (1 + slip));
     var mias = ops.filter(function(o){ return o.agente === a.nombre; });
-    var abiertas = {}, gan = 0, per = 0;
+    var abiertas = {}, gan = 0, per = 0, neu = 0;
     mias.forEach(function(o){
       if (o.tipo === "COMPRA") abiertas[o.moneda] = parseFloat(o.importe_eur);
-      else if (o.moneda in abiertas){ if (parseFloat(o.importe_eur) > abiertas[o.moneda]) gan++; else per++; delete abiertas[o.moneda]; }
+      else if (o.moneda in abiertas){ var imp = parseFloat(o.importe_eur); if (imp > abiertas[o.moneda]) gan++; else if (imp < abiertas[o.moneda]) per++; else neu++; delete abiertas[o.moneda]; }
     });
     var dias = (ahoraMs - Date.parse(a.inicio)) / 86400000;
     return {
       i: i, nombre: a.nombre, color: COLORES[i % COLORES.length], eq: eq, res: eq - START, pct: (eq / START - 1) * 100,
-      vsHold: eq - hold, ops: a.operaciones, cerradas: gan + per, gan: gan, per: per, dd: dd, dias: dias,
+      vsHold: eq - hold, ops: a.operaciones, cerradas: gan + per + neu, gan: gan, per: per, dd: dd, dias: dias,
       pos: Object.keys(a.posiciones || {}).map(corto), apagado: !!a.apagado, serie: serie, inicio: a.inicio
     };
   });
@@ -927,7 +927,7 @@ function pintarEvolucion(){
     s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) + '" stroke="#1b252c"/><text x="' + (L + 4) + '" y="' + (y - 4).toFixed(1) + '" fill="#5d6a75" font-size="11" font-family="Inter,sans-serif">' + v.toFixed(1).replace(".", ",") + ' €</text>';
   }
   s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(START).toFixed(1) + '" y2="' + Y(START).toFixed(1) + '" stroke="#8a97a3" stroke-dasharray="2 5" opacity=".6"/>' +
-       '<text x="' + (L + 4) + '" y="' + (Y(START) - 5).toFixed(1) + '" fill="#8a97a3" font-size="11" font-family="Inter,sans-serif">50 € (capital inicial)</text>';
+       '<text x="' + (L + 4) + '" y="' + (Y(START) - 5).toFixed(1) + '" fill="#8a97a3" font-size="11" font-family="Inter,sans-serif">' + START.toFixed(0) + ' € (capital inicial)</text>';
   /* eje de tiempo */
   var span = t1 - t0;
   for (var k = 0; k <= 4; k++){

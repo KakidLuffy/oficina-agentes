@@ -409,8 +409,10 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo="", vela_inicio=None, 
         vela_inicio = fecha
     if decision is None:
         decision = fin_de_vela(fecha)
-    COLA_OPS.append([fecha, a["nombre"], par, tipo, round(ejecutado, regla(par).pair_decimals if regla(par).fuente == "kraken" else 6),
-                     round(importe, 2), motivo, round(coste, 4), vela_inicio, decision])
+    # Sin redondeos prematuros: el importe (y el coste) se guardan con 8 decimales para poder clasificar bien cada operacion
+    # como ganadora o perdedora (antes se redondeaba a 2 decimales y trozos de 2 EUR perdian el 0,5 % por redondeo).
+    COLA_OPS.append([fecha, a["nombre"], par, tipo, float(f"{ejecutado:.10g}"), round(importe, 8), motivo, round(coste, 8),
+                     vela_inicio, decision])
     print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR ({motivo})")
     return True
 
@@ -623,14 +625,15 @@ def incidencias_nuevas(ahora):
 
 
 def historial_con_fila(cabecera, fila):
-    """Texto completo del historial con la fila nueva. Si se anadieron agentes, las filas viejas se rellenan con START."""
+    """Texto completo del historial con la fila nueva. Si se anadieron agentes, sus columnas quedan VACIAS en las filas anteriores
+    (un agente nuevo no tiene pasado: antes se rellenaban con el capital inicial, que dibujaba una linea plana inventada)."""
     filas = list(csv.reader(io.StringIO(leer_texto(HISTORIAL), newline="")))
     if not filas:
         filas = [cabecera]
     elif filas[0] != cabecera:
         viejas = filas[0]
-        filas = [cabecera] + [[dict(zip(viejas, f)).get(c, str(START)) for c in cabecera] for f in filas[1:]]
-        print("Historial ampliado con las columnas de los agentes nuevos.")
+        filas = [cabecera] + [[dict(zip(viejas, f)).get(c, "") for c in cabecera] for f in filas[1:]]    # vacio = ese agente aun no existia
+        print("Historial ampliado con las columnas de los agentes nuevos (las filas anteriores quedan vacias: no se inventa historial).")
     filas.append(fila)
     return texto_csv(filas)
 
@@ -644,7 +647,7 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     mantener = START * (1 - FEE) * precio / base_liquida.precio_compra(estado["precio_inicio"])
     eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
     cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"]
-    fila = [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)]
+    fila = [ahora, round(precio, 6)] + [round(eq_por_nombre[n], 6) for n, _ in AGENTES] + [round(mantener, 6)]
     tx = ps.Transaccion(DATOS)                    # estado + historial + operaciones cambian juntos o no cambian
     ops = leer_texto(OPERACIONES) or texto_csv([CAB_OPERACIONES])
     tx.poner(OPERACIONES, ops + texto_csv(COLA_OPS))
@@ -700,13 +703,13 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
                    "| Agente | Caida maxima | Operaciones ganadoras | Operaciones perdedoras |",
                    "|---|---:|---:|---:|"]
         for n in nombres + ["Comprar y mantener"]:
-            cm, g, pe = met[n]
-            lineas.append(f"| {n} | {cm:.2f} % | {g} | {pe} |")
+            m = met[n]
+            lineas.append(f"| {n} | {m.caida:.2f} % | {m.ganadoras} | {m.perdedoras} |")
         lineas += ["", "Caida maxima = lo que llego a perder cada agente desde su mejor momento. "
-                   "Una operacion cuenta cuando se cierra con su venta."]
+                   "Una operacion cuenta cuando se cierra con su venta; si compra y venta tienen exactamente el mismo importe cuenta como cerrada pero ni ganadora ni perdedora."]
         pocos = []
         for a in estado["agentes"]:
-            cerradas = met[a["nombre"]][1] + met[a["nombre"]][2]
+            cerradas = met[a["nombre"]].cerradas
             dias_a = (datetime.fromisoformat(ahora) - datetime.fromisoformat(a["inicio"])).total_seconds() / 86400
             if cerradas < MIN_CERRADAS or dias_a < MIN_DIAS:
                 pocos.append(f"{a['nombre']} ({cerradas} cerradas, {dias_a:.0f} dias)")
