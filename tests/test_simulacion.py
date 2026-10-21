@@ -1,0 +1,175 @@
+import csv
+import json
+import os
+import unittest
+from tests.base import an, BaseDatos, velas, T0
+
+
+def filas_ops():
+    with open(an.OPERACIONES, newline="") as f:
+        return list(csv.DictReader(f))
+
+
+class Operar(BaseDatos):
+    def test_ida_y_vuelta_cuesta_comisiones_y_nunca_crea_dinero(self):
+        a = self.agente()
+        an.operar(a, "COMPRA", an.BTC, 100.0, "f", {an.BTC: 1e6})
+        self.assertAlmostEqual(a["efectivo"], an.START - an.SLOT)
+        an.operar(a, "VENTA", an.BTC, 100.0, "f", {an.BTC: 1e6})
+        self.assertEqual(a["posiciones"], {})
+        self.assertLess(a["efectivo"], an.START)           # pierde comision y deslizamiento
+        perdido = an.START - a["efectivo"]
+        esperado = an.SLOT * (1 - (1 - an.FEE) ** 2 * (1 - an.SLIP) / (1 + an.SLIP))
+        self.assertAlmostEqual(perdido, esperado, places=9)
+
+    def test_coste_registrado_coincide_con_lo_perdido(self):
+        a = self.agente()
+        an.operar(a, "COMPRA", an.BTC, 50.0, "f", {an.BTC: 1e6})
+        an.operar(a, "VENTA", an.BTC, 50.0, "f", {an.BTC: 1e6})
+        total = sum(float(r["coste_eur"]) for r in filas_ops())
+        self.assertAlmostEqual(total, an.START - a["efectivo"], places=3)
+
+    def test_poco_volumen_desliza_mas(self):
+        self.assertEqual(an.deslizamiento("XEUR", {"XEUR": 10}), an.SLIP_POCO_VOLUMEN)
+        self.assertEqual(an.deslizamiento("XEUR", {"XEUR": 1e6}), an.SLIP)
+        self.assertEqual(an.deslizamiento(an.BTC, {}), an.SLIP)
+        self.assertEqual(an.deslizamiento("XEUR", {}), an.SLIP_POCO_VOLUMEN)
+
+    def test_compra_no_supera_efectivo(self):
+        a = self.agente()
+        a["efectivo"] = 0.5
+        an.operar(a, "COMPRA", an.BTC, 100.0, "f", {an.BTC: 1e6})
+        self.assertGreaterEqual(a["efectivo"], 0)
+
+    def test_equity(self):
+        a = self.agente()
+        a["efectivo"], a["posiciones"] = 3.0, {"AEUR": 2.0}
+        self.assertEqual(an.equity(a, {"AEUR": 4.0}), 11.0)
+        self.assertEqual(an.equity(a, {}), 3.0)   # sin precio: valora a 0 (se corrige en CRYPTO-001)
+
+
+class Apagado(BaseDatos):
+    def test_apaga_y_vende_por_debajo_del_stop(self):
+        a = self.agente()
+        a["efectivo"], a["posiciones"] = 0.0, {an.BTC: 0.1}
+        an.apagar_si_toca(a, {an.BTC: 10.0}, "f", {an.BTC: 1e6})   # equity 1 < 7
+        self.assertTrue(a["apagado"])
+        self.assertEqual(a["posiciones"], {})
+
+    def test_no_apaga_si_esta_por_encima(self):
+        a = self.agente()
+        an.apagar_si_toca(a, {an.BTC: 10.0}, "f", {})
+        self.assertFalse(a["apagado"])
+
+
+class Paso(BaseDatos):
+    def estado(self, v):
+        return an.estado_nuevo(v, T0 + 3600 * 40)
+
+    def test_no_actua_sobre_vela_abierta(self):
+        precios = [100.0] * 40
+        v = {an.BTC: velas(precios)}
+        est = self.estado(v)
+        # aparece una vela nueva pero aun no ha cerrado (ahora_ts dentro de ella)
+        v[an.BTC].append((T0 + 3600 * 40, 500.0))
+        ahora_ts = T0 + 3600 * 40 + 100
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], ahora_ts)
+        self.assertEqual(est["ultima_vela"], T0 + 3600 * 39)
+        self.assertEqual(sum(a["operaciones"] for a in est["agentes"]), 0)
+
+    def test_procesa_velas_pendientes_en_orden(self):
+        precios = [100.0] * 40
+        v = {an.BTC: velas(precios)}
+        est = self.estado(v)
+        for k in range(40, 45):
+            v[an.BTC].append((T0 + 3600 * k, 100.0))
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 45)
+        self.assertEqual(est["ultima_vela"], T0 + 3600 * 44)
+
+    def test_idempotente_si_no_hay_velas_nuevas(self):
+        v = {an.BTC: velas([100.0] * 40)}
+        est = self.estado(v)
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40)
+        antes = json.dumps(est, sort_keys=True)
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40)
+        self.assertEqual(antes, json.dumps(est, sort_keys=True))
+
+    def test_momentum_compra_tras_subida_y_registra_operacion(self):
+        precios = [100.0] * 39 + [103.0]
+        v = {an.BTC: velas(precios)}
+        est = an.estado_nuevo({an.BTC: v[an.BTC][:39]}, T0 + 3600 * 39)
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40)
+        por = {a["nombre"]: a for a in est["agentes"]}
+        self.assertIn(an.BTC, por["Momentum"]["posiciones"])
+        self.assertTrue(any(r["agente"] == "Momentum" and r["tipo"] == "COMPRA" for r in filas_ops()))
+
+    def test_stop_de_perdida_en_agente_rapido(self):
+        a = next(x for x in [an.agente_nuevo("Momentum rapido", 100.0)])
+        est = {"ultima_vela": T0, "precios": {}, "agentes": [a]}
+        a["posiciones"], a["entradas"], a["efectivo"] = {an.BTC: 0.02}, {an.BTC: 100.0}, 8.0
+        v = {an.BTC: velas([100.0] * 10 + [98.0])}      # -2 % desde la entrada
+        est["ultima_vela"] = v[an.BTC][9][0]
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 11)
+        self.assertEqual(a["posiciones"], {})
+        self.assertTrue(any("stop de perdida" in r["motivo"] for r in filas_ops()))
+
+    def test_limite_de_posiciones(self):
+        a = self.agente("Momentum")
+        for i in range(an.MAX_POS):
+            a["posiciones"][f"M{i}EUR"] = 1.0
+        self.assertEqual(len(a["posiciones"]), an.MAX_POS)
+
+
+class Persistencia(BaseDatos):
+    def test_archivar_mueve_solo_archivos_de_la_simulacion(self):
+        for r in (an.ESTADO, an.HISTORIAL, an.RESUMEN, an.GRAFICO):
+            open(r, "w").write("x")
+        otro = os.path.join(an.DATOS, "laboratorio.json")
+        open(otro, "w").write("{}")
+        an.archivar("prueba")
+        self.assertTrue(os.path.exists(otro))
+        self.assertFalse(os.path.exists(an.ESTADO))
+        carpetas = [d for d in os.listdir(an.DATOS) if d.startswith("archivo_prueba")]
+        self.assertEqual(len(carpetas), 1)
+        self.assertTrue(os.path.exists(os.path.join(an.DATOS, carpetas[0], "estado.json")))
+
+    def test_ajustar_historial_rellena_columnas_nuevas(self):
+        with open(an.HISTORIAL, "w", newline="") as f:
+            f.write("fecha_utc,precio_eur,A\n2026-01-01,100,9.5\n")
+        an.ajustar_historial(["fecha_utc", "precio_eur", "A", "B"])
+        with open(an.HISTORIAL, newline="") as f:
+            filas = list(csv.reader(f))
+        self.assertEqual(filas[1], ["2026-01-01", "100", "9.5", str(an.START)])
+
+    def test_migrar_estado_antiguo_y_agentes_nuevos(self):
+        v = {an.BTC: velas([100.0] * 40)}
+        est = an.estado_nuevo(v, T0 + 3600 * 40)
+        est["agentes"] = est["agentes"][:2]
+        est["agentes"][0]["btc"] = 0.5
+        del est["agentes"][0]["posiciones"]
+        an.migrar(est, v)
+        self.assertEqual(est["agentes"][0]["posiciones"], {an.BTC: 0.5})
+        self.assertEqual(len(est["agentes"]), len(an.AGENTES))
+
+    def test_parametros_estado_antiguo(self):
+        v = {an.BTC: velas([100.0] * 40)}
+        est = an.estado_nuevo(v, T0 + 3600 * 40)
+        del est["slip"]
+        est["agentes"][0]["operaciones"] = 3
+        an.parametros(est)
+        self.assertEqual((est["fee"], est["slip"]), (0.0025, 0.0))
+
+    def test_ciclo_completo_en_demo(self):
+        v, vol, orden, fuente, ts = an.obtener_datos(150)
+        est = an.estado_nuevo({p: x[:100] for p, x in v.items()}, v[an.BTC][99][0] + 3600)
+        ahora, precios = an.paso(est, v, vol, orden, ts)
+        an.guardar(est, ahora, precios, fuente, len(orden), len(v))
+        for r in (an.ESTADO, an.HISTORIAL, an.OPERACIONES, an.RESUMEN):
+            self.assertTrue(os.path.exists(r), r)
+        json.load(open(an.ESTADO, encoding="utf-8"))
+        for a in est["agentes"]:
+            self.assertGreaterEqual(a["efectivo"], -1e-9)
+
+
+if __name__ == "__main__":
+    unittest.main()
