@@ -68,17 +68,16 @@ class Simulador(unittest.TestCase):
 
 class EscenariosDeCostes(unittest.TestCase):
     def test_los_costes_duros_nunca_mejoran_el_resultado(self):
-        import random
+        import math
         import costes as co
         import estrategias as es
-        for semilla in range(6):
-            r = random.Random(semilla)
-            c = [100.0]
-            for _ in range(400):
-                c.append(c[-1] * (1 + r.gauss(0.0002, 0.004)))        # poca volatilidad: sin apagado por riesgo, mismas operaciones
+        for periodo in (12, 15, 20, 30):                            # ondas lentas: pocas operaciones, sin apagado por riesgo
+            c = [100.0 * (1 + 0.08 * math.sin(i / periodo)) for i in range(400)]
             o = [c[0]] + c[:-1]
             base = ej.simular(c, o, 50, 400, 1.0, es.cruce(5, 20), costes=co.BASE)
             duro = ej.simular(c, o, 50, 400, 1.0, es.cruce(5, 20), costes=co.ESTRES)
+            self.assertGreater(base[1], 1)
+            self.assertLess(base[1], 40)
             self.assertEqual(base[1], duro[1])                      # mismas operaciones
             self.assertLessEqual(duro[0], base[0] + 1e-9)
             self.assertLessEqual(duro[2], base[2] + 1e-9)           # y tambien "mantener" sale peor
