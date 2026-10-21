@@ -35,11 +35,12 @@ class Operar(BaseDatos):
         total = sum(float(r["coste_eur"]) for r in filas_ops())
         self.assertAlmostEqual(total, an.START - a["efectivo"], places=3)
 
-    def test_poco_volumen_desliza_mas(self):
-        self.assertEqual(an.deslizamiento("XEUR", {"XEUR": 10}), an.SLIP_POCO_VOLUMEN)
-        self.assertEqual(an.deslizamiento("XEUR", {"XEUR": 1e6}), an.SLIP)
-        self.assertEqual(an.deslizamiento(an.BTC, {}), an.SLIP)
-        self.assertEqual(an.deslizamiento("XEUR", {}), an.SLIP_POCO_VOLUMEN)
+    def test_poco_volumen_cuesta_mas(self):
+        poco, mucho = an.costes_par("XEUR", {"XEUR": 10}), an.costes_par("XEUR", {"XEUR": 1e7})
+        self.assertGreater(poco.slip, mucho.slip)
+        self.assertGreater(poco.spread, mucho.spread)
+        self.assertEqual(an.costes_par(an.BTC, {}), an.costes_par("XEUR", {"XEUR": 1e7}))          # BTC siempre liquido
+        self.assertEqual(an.costes_par("XEUR", {}), an.costes_par("XEUR", {"XEUR": 10}))            # desconocido = poco liquido
 
     def test_compra_no_supera_efectivo(self):
         a = self.agente()
@@ -115,7 +116,7 @@ class Paso(BaseDatos):
         self.assertEqual(por["Momentum"]["pendientes"], [])
         self.assertIn(an.BTC, por["Momentum"]["posiciones"])
         fila = [f for f in filas_ops() if f["agente"] == "Momentum"][0]
-        self.assertAlmostEqual(float(fila["precio_eur"]), round(an.ejecucion.precio_compra(105.0, an.SLIP, an.SPREAD), 6), places=5)
+        self.assertAlmostEqual(float(fila["precio_eur"]), round(an.costes_par(an.BTC, {an.BTC: 1e6}).precio_compra(105.0), 6), places=5)
         self.assertEqual(fila["vela_inicio_utc"], an.iso_vela(T0 + 3600 * 39))      # decidida con la vela 39...
         self.assertEqual(fila["decision_utc"], an.iso_vela(T0 + 3600 * 40))         # ...que cierra cuando abre la 40
 
@@ -128,7 +129,7 @@ class Paso(BaseDatos):
         self.assertIn(an.BTC, mom["posiciones"])
         self.assertEqual(mom["pendientes"], [])
         px = float([f for f in filas_ops() if f["agente"] == "Momentum"][0]["precio_eur"])
-        self.assertAlmostEqual(px, an.ejecucion.precio_compra(104.0, an.SLIP, an.SPREAD), places=4)
+        self.assertAlmostEqual(px, an.costes_par(an.BTC, {an.BTC: 1e6}).precio_compra(104.0), places=4)
 
     def test_orden_pendiente_se_rechaza_si_ya_no_cabe(self):
         est = an.estado_nuevo({an.BTC: velas([100.0] * 39)}, T0 + 3600 * 39)
@@ -169,7 +170,7 @@ class Paso(BaseDatos):
         an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 11 + 300)
         self.assertEqual(a["posiciones"], {})
         fila = [f for f in filas_ops() if "stop de perdida" in f["motivo"]][0]
-        self.assertAlmostEqual(float(fila["precio_eur"]), an.ejecucion.precio_venta(97.0, an.SLIP, an.SPREAD), places=4)
+        self.assertAlmostEqual(float(fila["precio_eur"]), an.costes_par(an.BTC, {an.BTC: 1e6}).precio_venta(97.0), places=4)
 
     def test_limite_de_posiciones(self):
         a = self.agente("Momentum")

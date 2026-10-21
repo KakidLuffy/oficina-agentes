@@ -12,9 +12,9 @@ Limitaciones conocidas (se documentan en el informe): en un mercado 24/7 la aper
 que el cambio de regla corrige sobre todo el "operar al precio con el que se decide, sin horquilla"; el retraso real entre
 la decision y la orden (minutos) no se modela como movimiento adverso porque no es predecible a partir de velas de 1 hora.
 """
-FEE = 0.004            # comision 0,40 % (Kraken Pro, nivel mas bajo, ordenes "maker")
-SLIP = 0.0005          # deslizamiento 0,05 % en monedas liquidas
-SPREAD = 0.0008        # horquilla compra-venta total 0,08 % (0,04 % a cada lado) en monedas liquidas
+import costes as _co
+
+FEE, SLIP, SPREAD = _co.BASE.fee, _co.BASE.slip, _co.BASE.spread   # ver costes.py (modelo unico de costes)
 START = 10.0
 STOP_FRAC = 0.7
 
@@ -27,10 +27,12 @@ def precio_venta(apertura, slip=SLIP, spread=SPREAD):
     return apertura * (1 - spread / 2 - slip)
 
 
-def simular(c, o, ini, fin, s, fn, opc=None, fee=FEE, slip=SLIP, spread=SPREAD, start=START):
+def simular(c, o, ini, fin, s, fn, opc=None, fee=FEE, slip=SLIP, spread=SPREAD, start=START, costes=None):
     """Opera las velas ini..fin-1 con una posicion como maximo.
     c: cierres, o: aperturas (misma longitud), fn(c, i, s) -> 'b'|'s'|None, opc: {stop, objetivo, espera} o None.
     Devuelve (resultado_eur, operaciones, resultado_de_mantener_eur, caida_maxima_pct)."""
+    if costes is not None:                                         # un objeto Costes (costes.py) manda sobre fee/slip/spread sueltos
+        fee, slip, spread = costes.fee, costes.slip, costes.spread
     stop_nivel = start * STOP_FRAC
     cash, unidades, ops, apagado = start, 0.0, 0, False
     entrada, libre, pend = 0.0, ini, None

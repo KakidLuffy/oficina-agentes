@@ -28,6 +28,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 import comparar_estrategias as ce
+import costes as costes_mod
 import ejecucion as ej
 import estrategias
 import velas as vl
@@ -96,9 +97,10 @@ def _base():
 
 
 # ---------------- simulador con stop, objetivo y espera ----------------
-def simular2(c, ini, fin, s, fn, opc):
-    """Simulador unico (ejecucion.py): senal con el cierre de la vela i, orden a la apertura de i+1, con comision, horquilla y deslizamiento."""
-    return ej.simular(c, c.o, ini, fin, s, fn, opc, FEE, SLIP, ej.SPREAD, START)
+def simular2(c, ini, fin, s, fn, opc, costes=None):
+    """Simulador unico (ejecucion.py): senal con el cierre de la vela i, orden a la apertura de i+1, con comision, horquilla y deslizamiento.
+    'costes' (costes.py) permite repetir la prueba con otro escenario (por defecto, el base)."""
+    return ej.simular(c, c.o, ini, fin, s, fn, opc, FEE, SLIP, ej.SPREAD, START, costes)
 
 
 # ---------------- datos ----------------
@@ -160,14 +162,14 @@ def cargar_series(es_demo):
 
 
 # ---------------- examen ----------------
-def evaluar(series, fn, opc=None):
-    """Para cada serie: entrenamiento y examen. Devuelve lista de dicts."""
+def evaluar(series, fn, opc=None, costes=None):
+    """Para cada serie: entrenamiento y examen (con los costes base o con el escenario 'costes'). Devuelve lista de dicts."""
     res = []
     for s in series:
         c, n, esc = s["c"], len(s["c"]), math.sqrt(s["minutos"] / 60)
         corte = WARM + int((n - WARM) * PARTE_ENTRENO)
-        r1, o1, h1, _ = simular2(c, WARM, corte, esc, fn, opc)
-        r2, o2, h2, dd = simular2(c, corte, n, esc, fn, opc)
+        r1, o1, h1, _ = simular2(c, WARM, corte, esc, fn, opc, costes)
+        r2, o2, h2, dd = simular2(c, corte, n, esc, fn, opc, costes)
         res.append({"train_dif": r1 - h1, "test_res": r2, "test_dif": r2 - h2, "test_ops": o2, "dd": dd})
     return res
 
@@ -202,6 +204,12 @@ def main():
     probadas = len(filas)
     azar = sum(1 for f in filas if f["pasa"]) / probadas                      # aprobaría cualquiera, elegida al azar
     elegidas = sorted(filas, key=lambda f: f["train_dif"], reverse=True)[:N_CANDIDATAS]
+    por_nombre = {nombre: (fn, opc) for _, nombre, fn, opc in todas}
+    for f in elegidas:                              # prueba de estres: mismo examen con comision taker 0,80 % y horquilla/deslizamiento x2
+        fn, opc = por_nombre[f["nombre"]]
+        rs = evaluar(series, fn, opc, costes_mod.ESTRES)
+        f["test_dif_estres"] = sum(x["test_dif"] for x in rs) / len(rs)
+        f["aguanta_estres"] = f["test_dif_estres"] > 0
     candidatas = [f for f in elegidas if f["pasa"]]
     tasa_cand = len(candidatas) / len(elegidas)
     if not candidatas:
@@ -245,11 +253,12 @@ def main():
           f"Actualizado: {datos['generado']} · datos: {datos['fuente']} · {len(series)} series ({', '.join(datos['series'])})", "",
           f"**Veredicto: {veredicto.upper()}.** {txt}", "",
           f"Variantes probadas: {probadas}. Criterio: {datos['criterio']}.", "",
-          "| Variante | Analista | Dif. entrenamiento (€) | Dif. examen (€) | Series aprobadas | Aprueba |",
-          "|---|---|---:|---:|---:|:-:|"]
+          "| Variante | Analista | Dif. entrenamiento (€) | Dif. examen (€) | Dif. examen con costes duros (€) | Series aprobadas | Aprueba |",
+          "|---|---|---:|---:|---:|---:|:-:|"]
     for f in elegidas:
-        md.append(f"| {f['nombre']} | {f['analista']} | {f['train_dif']:+.2f} | {f['test_dif']:+.2f} | {f['ok']}/{f['total']} | {'✔' if f['pasa'] else '✘'} |")
-    md += ["", "Resultado medio por familia en el examen (frente a comprar y mantener, tras costes):", "",
+        md.append(f"| {f['nombre']} | {f['analista']} | {f['train_dif']:+.2f} | {f['test_dif']:+.2f} | {f['test_dif_estres']:+.2f} | {f['ok']}/{f['total']} | {'✔' if f['pasa'] else '✘'} |")
+    md += ["", "«Costes duros» = comisión taker 0,80 % (órdenes a mercado) y horquilla y deslizamiento duplicados. Una variante que solo gana con los costes base es frágil.", "",
+           "Resultado medio por familia en el examen (frente a comprar y mantener, tras costes):", "",
            "| Familia | Variantes | Dif. media examen (€) | Operaciones medias | Aprueban |", "|---|---:|---:|---:|---:|"]
     for nom, d in fam.items():
         md.append(f"| {nom} | {d['n']} | {d['dif'] / d['n']:+.2f} | {d['ops'] / d['n']:.0f} | {d['pasan']} |")

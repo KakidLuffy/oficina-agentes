@@ -24,6 +24,7 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 
 import archivado
+import costes
 import ejecucion
 import estrategias
 import informe
@@ -34,15 +35,14 @@ import reglas_mercado as rm
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
 VERSION = 4           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
 FEE = 0.004           # comision 0,40 % por operacion: tarifa "maker" de Kraken Pro en el nivel mas bajo (con ordenes a mercado seria "taker", 0,80 %)
-SPREAD = ejecucion.SPREAD   # horquilla compra-venta total (0,08 %): cada orden paga la mitad por su lado
-SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
+SPREAD = costes.BASE.spread   # horquilla compra-venta total (0,08 % en monedas liquidas): cada orden paga la mitad por su lado
+SLIP = costes.BASE.slip       # deslizamiento (0,05 % en monedas liquidas); en monedas con menos volumen sube (ver costes.py)
 PERDIDA_DIA = START * 0.04   # si un agente pierde esto (EUR, el 4 % de su capital) en un dia, no vuelve a comprar ese dia
 STOP = START * 0.7    # el responsable de riesgo apaga al agente que baja de aqui
 TOP_MONEDAS = 20      # cuantas monedas se vigilan: las de mayor volumen en 24 h (cambia este numero si quieres mas o menos)
 MAX_POS = 5           # maximo de monedas que un agente puede tener a la vez
 SLOT = START / MAX_POS                  # euros ficticios que se invierten en cada compra
-SLIP_POCO_VOLUMEN = 0.003               # deslizamiento (0,3 %) en monedas con poco volumen diario
-VOLUMEN_ALTO = 100_000                  # EUR de volumen en 24 h a partir del cual se usa el deslizamiento normal
+VOLUMEN_LIQUIDO = costes.VOLUMEN_MEDIO  # EUR de volumen en 24 h por debajo del cual una moneda se considera poco liquida
 PAUSA_API = 1.1                         # segundos entre peticiones a Kraken (para no pasar su limite)
 HISTORIA_HORAS = 220                    # velas de 1 hora que se descargan por moneda (el filtro de tendencia necesita 200)
 MIN_CERRADAS = 30                       # criterio acordado: al menos 30 operaciones cerradas...
@@ -355,9 +355,9 @@ def parametros(estado):
     FEE, SLIP, SPREAD = estado["fee"], estado["slip"], estado["spread"]
 
 
-def deslizamiento(par, volumenes):
-    """0,05 % en monedas con volumen alto; 0,3 % en las de poco volumen o con volumen desconocido."""
-    return SLIP if volumenes.get(par, 0) >= VOLUMEN_ALTO or par == BTC else max(SLIP, SLIP_POCO_VOLUMEN)
+def costes_par(par, volumenes):
+    """Costes (comision + horquilla + deslizamiento) de una moneda segun su liquidez. Modelo unico: costes.py."""
+    return costes.por_liquidez(volumenes.get(par), costes.Costes(FEE, SLIP, SPREAD), es_btc=(par == BTC))
 
 
 RECHAZOS = []        # decisiones que no llegaron a ejecutarse en esta ejecucion: (fecha, agente, par, tipo, motivo, razon)
@@ -366,10 +366,10 @@ RECHAZOS = []        # decisiones que no llegaron a ejecutarse en esta ejecucion
 def preparar_orden(a, tipo, par, precio, volumenes):
     """Calcula la orden con costes, redondeo y minimos del exchange. Devuelve (datos, None) o (None, motivo_de_rechazo).
     'precio' es el precio de referencia (apertura de la vela de ejecucion)."""
-    slip = deslizamiento(par, volumenes)
+    cs = costes_par(par, volumenes)
     r = regla(par)
     if tipo == "COMPRA":
-        ejecutado = ejecucion.precio_compra(precio, slip, SPREAD)
+        ejecutado = cs.precio_compra(precio)
         importe = min(a["efectivo"], SLOT)
         q = rm.redondear_abajo(importe * (1 - FEE) / ejecutado, r.lot_decimals)     # el exchange solo admite ciertos decimales
         motivo = rm.motivo_invalida(r, q, ejecutado)
@@ -377,7 +377,7 @@ def preparar_orden(a, tipo, par, precio, volumenes):
             return None, motivo
         return {"ejecutado": ejecutado, "unidades": q, "importe": q * ejecutado / (1 - FEE)}, None   # lo no gastado por el redondeo queda en efectivo
     unidades = a["posiciones"][par]
-    ejecutado = ejecucion.precio_venta(precio, slip, SPREAD)
+    ejecutado = cs.precio_venta(precio)
     motivo = rm.motivo_invalida(r, unidades, ejecutado)
     if motivo:
         return None, motivo
@@ -573,7 +573,7 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                     if bloqueado:
                         print(f"{a['nombre']}: compra bloqueada por el limite de perdida diaria")
                         break
-                    if op.get("solo_liquidas") and par != BTC and volumenes.get(par, 0) < VOLUMEN_ALTO:
+                    if op.get("solo_liquidas") and par != BTC and volumenes.get(par, 0) < VOLUMEN_LIQUIDO:
                         continue                         # moneda de poco volumen: no se opera
                     uv = a.get("ultima_venta", {}).get(par)
                     if op.get("espera_h") and uv and (datetime.fromisoformat(fecha) - datetime.fromisoformat(uv)).total_seconds() < op["espera_h"] * 3600:
@@ -640,7 +640,8 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     asegurar_operaciones()
     precio = precios[BTC]
     eqs = [equity(a, precios) for a in estado["agentes"]]
-    mantener = START * (1 - FEE) * precio / ejecucion.precio_compra(estado["precio_inicio"], SLIP, SPREAD)
+    base_liquida = costes.Costes(FEE, SLIP, SPREAD)
+    mantener = START * (1 - FEE) * precio / base_liquida.precio_compra(estado["precio_inicio"])
     eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
     cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"]
     fila = [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)]
@@ -666,8 +667,9 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"En marcha desde: {estado['inicio']} UTC ({dias:.1f} dias)",
         f"Monedas vigiladas: las {n_monedas} de mayor volumen contra EUR (con datos en esta ejecucion: {n_con_datos}) · "
         f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una",
-        f"Costes simulados por operacion: comision {FEE * 100:.2f} % + horquilla {SPREAD * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
-        f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
+        f"Costes simulados por operacion (monedas liquidas): comision {FEE * 100:.2f} % + horquilla {SPREAD * 100:.2f} % + deslizamiento {SLIP * 100:.2f} %; "
+        f"en monedas con menos volumen, horquilla x{costes.FACTOR_SPREAD['baja']:g} y deslizamiento x{costes.FACTOR_SLIP['baja']:g} "
+        f"· limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",
         "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |",
         "|---|---:|---:|---:|---:|---:|---|---|",
@@ -679,7 +681,7 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
             est = "Con " + ", ".join(nombre_corto(p) for p in sorted(a["posiciones"]))
         else:
             est = "En efectivo"
-        hold_a = START * (1 - FEE) * precio / ejecucion.precio_compra(a["precio_inicio"], SLIP, SPREAD)   # mantener BTC desde que empezo ESTE agente
+        hold_a = START * (1 - FEE) * precio / base_liquida.precio_compra(a["precio_inicio"])   # mantener BTC desde que empezo ESTE agente
         lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - hold_a:+.2f} | "
                       f"{a['operaciones']} | {a['inicio'][:10]} | {est} |")
     lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | {estado['inicio'][:10]} | Referencia |")
