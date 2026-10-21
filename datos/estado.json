@@ -2,35 +2,36 @@
   "version": 3,
   "capital_inicial": 10.0,
   "inicio": "2026-10-21T11:37:53+00:00",
-  "ultima_vela": 1792594800,
+  "ultima_vela": 1792602000,
   "precio_inicio": 74221.2,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 75330.1,
-    "ETHEUR": 2237.06,
-    "XRPEUR": 1.23168,
-    "ZECEUR": 1190.747,
-    "SOLEUR": 96.54,
-    "NEAREUR": 4.7351,
-    "LTCEUR": 55.31,
-    "SUIEUR": 0.9338,
-    "PUMPEUR": 0.004374,
-    "HYPEEUR": 72.36,
-    "XMREUR": 536.89,
-    "UNIEUR": 6.7651,
+    "XBTEUR": 75403.4,
+    "ETHEUR": 2238.34,
+    "XRPEUR": 1.24046,
+    "ZECEUR": 1213.461,
+    "SOLEUR": 96.97,
+    "NEAREUR": 4.7669,
+    "LTCEUR": 55.37,
+    "SUIEUR": 0.9382,
+    "PUMPEUR": 0.004507,
+    "HYPEEUR": 73.2,
+    "XMREUR": 542.44,
+    "UNIEUR": 6.8511,
     "ZROEUR": 1.799,
-    "ADAEUR": 0.203492,
+    "ADAEUR": 0.204776,
     "COMPEUR": 22.8,
-    "LINKEUR": 11.29164,
-    "PEPEEUR": 4.164e-06,
-    "TIAEUR": 0.5755,
+    "LINKEUR": 11.37783,
+    "PEPEEUR": 4.171e-06,
+    "TIAEUR": 0.5649,
     "INJEUR": 7.821,
     "XLMEUR": 0.164283,
-    "ENAEUR": 0.196,
-    "TAOEUR": 246.3338,
+    "ENAEUR": 0.1982,
+    "TAOEUR": 249.4547,
     "AVAXEUR": 8.821,
-    "ARBEUR": 0.1741
+    "ARBEUR": 0.1752,
+    "QNTEUR": 187.75
   },
   "agentes": [
     {
@@ -148,22 +149,27 @@
     },
     {
       "nombre": "Cruce 3/8 rapido",
-      "efectivo": 4.0,
+      "efectivo": 1.9506874253506163,
       "posiciones": {
-        "PUMPEUR": 450.04622462728855,
         "UNIEUR": 0.2928766122521182,
-        "TIAEUR": 3.5288984362834537
+        "TIAEUR": 3.5288984362834537,
+        "HYPEEUR": 0.02758388054518044,
+        "QNTEUR": 0.011000024849453727
       },
       "apagado": false,
-      "operaciones": 3,
+      "operaciones": 6,
       "dia": 20747,
       "eq_dia": 10.0,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
       "entradas": {
-        "PUMPEUR": 0.004426212,
         "UNIEUR": 6.801499049999999,
-        "TIAEUR": 0.5644821
+        "TIAEUR": 0.5644821,
+        "HYPEEUR": 72.21609000000001,
+        "QNTEUR": 181.0905
+      },
+      "ultima_venta": {
+        "PUMPEUR": "2026-10-21T16:00+00:00"
       }
     },
     {

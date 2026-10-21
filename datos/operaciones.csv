@@ -29,3 +29,6 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-21T15:00+00:00,Cruce 3/8 rapido,TIAEUR,COMPRA,0.564482,2.0,senal compradora,0.009
 2026-10-21T15:00+00:00,Momentum rapido,NEAREUR,VENTA,4.795201,2.07,objetivo de ganancia (+4.2 %),0.0093
 2026-10-21T15:00+00:00,Momentum rapido,SUIEUR,COMPRA,0.935367,2.0,senal compradora,0.009
+2026-10-21T16:00+00:00,Cruce 3/8 rapido,PUMPEUR,VENTA,0.004352,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-21T16:00+00:00,Cruce 3/8 rapido,HYPEEUR,COMPRA,72.21609,2.0,senal compradora,0.009
+2026-10-21T17:00+00:00,Cruce 3/8 rapido,QNTEUR,COMPRA,181.0905,2.0,senal compradora,0.009
