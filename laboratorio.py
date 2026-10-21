@@ -28,6 +28,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 import comparar_estrategias as ce
+import estrategias
 import velas as vl
 import persistencia as ps
 
@@ -43,117 +44,9 @@ PARES = [("BTC", "XBTEUR"), ("ETH", "ETHEUR"), ("SOL", "SOLEUR"), ("XRP", "XRPEU
 VELAS = [(240, "4 h"), (1440, "1 día")]
 
 
-class Serie(list):
-    """Lista de cierres con medias móviles precalculadas (para que el laboratorio sea rápido)."""
-    def __init__(self, v, ts=None):
-        super().__init__(v)
-        self._sma = {}
-        self.ts = list(ts) if ts is not None else list(range(len(v)))   # marca temporal (s) de cada vela
-        self.ref = None          # serie de BTC con la misma duracion de vela (para la fuerza relativa)
-        self.ref_idx = None      # para cada vela: indice de la vela de BTC con la MISMA marca temporal (o None)
-
-    def sma(self, n):
-        if n not in self._sma:
-            acum, out, t = [0.0], [], 0.0
-            for i, x in enumerate(self):
-                t += x
-                acum.append(t)
-                k = max(0, i - n + 1)
-                out.append((acum[i + 1] - acum[k]) / (i + 1 - k))
-            self._sma[n] = out
-        return self._sma[n]
-
-
-# ---------------- familias de estrategias parametrizadas ----------------
-def cruce(a, b):
-    def f(c, i, s):
-        sa, sb = c.sma(a), c.sma(b)
-        if i < b:
-            return None
-        if sa[i - 1] <= sb[i - 1] and sa[i] > sb[i]:
-            return "b"
-        if sa[i - 1] >= sb[i - 1] and sa[i] < sb[i]:
-            return "s"
-        return None
-    return f
-
-
-def momentum(n, t):
-    def f(c, i, s):
-        if i < n:
-            return None
-        r, u = c[i] / c[i - n] - 1, t * s
-        return "b" if r > u else ("s" if r < -u else None)
-    return f
-
-
-def rebote(n, t):
-    def f(c, i, s):
-        if i < n:
-            return None
-        m = c.sma(n)[i]
-        return "b" if c[i] < m * (1 - t * s) else ("s" if c[i] > m else None)
-    return f
-
-
-def ruptura(n, m):
-    def f(c, i, s):
-        if i < n:
-            return None
-        if c[i] > max(c[i - n:i]):
-            return "b"
-        if c[i] < min(c[i - m:i]):
-            return "s"
-        return None
-    return f
-
-
-def con_filtro(fn, n=200):
-    def f(c, i, s):
-        senal = fn(c, i, s)
-        if senal == "b" and (i < n or c[i] <= c.sma(n)[i]):
-            return None
-        return senal
-    return f
-
-
-def con_volatilidad(fn, k, n=14):
-    """Solo deja pasar las COMPRAS si el mercado se mueve lo bastante: movimiento medio por vela >= k x 0,4 % (escalado a la vela)."""
-    def f(c, i, s):
-        senal = fn(c, i, s)
-        if senal == "b":
-            if i < n + 1:
-                return None
-            mov = sum(abs(c[j] / c[j - 1] - 1) for j in range(i - n + 1, i + 1)) / n
-            if mov < k * 0.004 * s:
-                return None
-        return senal
-    return f
-
-
-def alinear(serie, ref):
-    """Para cada vela de 'serie', el indice de la vela de 'ref' con la misma marca temporal (None si no existe)."""
-    pos = {t: k for k, t in enumerate(ref.ts)}
-    return [pos.get(t) for t in serie.ts]
-
-
-def relativa(n, margen):
-    """Fuerza relativa: compra si la moneda sube mas que BTC (margen) en n velas y sube de por si; vende si rinde menos que BTC.
-    BTC se busca por MARCA TEMPORAL (no por posicion en la lista): dos series pueden empezar o acabar en momentos distintos."""
-    def f(c, i, s):
-        r = c.ref
-        if r is None or c.ref_idx is None or i < n:
-            return None
-        ia, ib = c.ref_idx[i], c.ref_idx[i - n]
-        if ia is None or ib is None:
-            return None
-        rc, rb = c[i] / c[i - n] - 1, r[ia] / r[ib] - 1
-        if rc > rb + margen * s and rc > 0:
-            return "b"
-        if rc < rb:
-            return "s"
-        return None
-    return f
+Serie, alinear = estrategias.Serie, estrategias.alinear
+cruce, momentum, rebote, ruptura = estrategias.cruce, estrategias.momentum, estrategias.rebote, estrategias.ruptura
+con_filtro, con_volatilidad, relativa = estrategias.con_filtro, estrategias.con_volatilidad, estrategias.relativa
 
 
 # salidas con stop y objetivo: (stop, objetivo, velas de espera tras vender), todo escalado a la duracion de la vela

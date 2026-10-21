@@ -24,6 +24,7 @@ import random
 import sys
 import urllib.request
 
+import estrategias
 import persistencia as ps
 
 START = 50.0
@@ -34,77 +35,11 @@ WARM = 50   # velas de calentamiento antes de empezar a operar
 INTERVALOS = [(15, "15 minutos"), (60, "1 hora"), (240, "4 horas"), (1440, "1 día")]
 
 
-# ---------------- estrategias: f(cierres, i, escala) -> "b" | "s" | None ----------------
-def media(c, i, n):
-    w = c[max(0, i - n + 1):i + 1]
-    return sum(w) / len(w)
-
-
-def cruce(a, b):
-    def f(c, i, s):
-        if i < b:
-            return None
-        ca, cb, pa, pb = media(c, i, a), media(c, i, b), media(c, i - 1, a), media(c, i - 1, b)
-        if pa <= pb and ca > cb:
-            return "b"
-        if pa >= pb and ca < cb:
-            return "s"
-        return None
-    return f
-
-
-def momentum(c, i, s):
-    if i < 12:
-        return None
-    r, t = c[i] / c[i - 12] - 1, 0.012 * s
-    return "b" if r > t else ("s" if r < -t else None)
-
-
-def rebote(c, i, s):
-    if i < 20:
-        return None
-    m = media(c, i, 20)
-    return "b" if c[i] < m * (1 - 0.015 * s) else ("s" if c[i] > m else None)
-
-
-def ruptura(c, i, s):
-    """Compra al superar el maximo de las ultimas 20 velas, vende al perder el minimo de las ultimas 10."""
-    if i < 20:
-        return None
-    if c[i] > max(c[i - 20:i]):
-        return "b"
-    if c[i] < min(c[i - 10:i]):
-        return "s"
-    return None
-
-
-def filtro(fn, n=200):
-    """Filtro de mercado ("bear gate"): solo deja pasar las COMPRAS si el precio esta por encima de su media de n velas."""
-    def f(c, i, s):
-        senal = fn(c, i, s)
-        if senal == "b" and (i < n or c[i] <= media(c, i, n)):
-            return None
-        return senal
-    return f
-
-
-def _largo(c, i):
-    """Votos de tendencia a favor de estar comprado: cruce 10/30, cruce 5/20 y momentum de 12 velas."""
-    return (media(c, i, 10) > media(c, i, 30)) + (media(c, i, 5) > media(c, i, 20)) + (c[i] > c[i - 12])
-
-
-def consenso(c, i, s):
-    """Consenso 2 de 3: compra cuando al menos 2 de las 3 reglas de tendencia estan a favor; vende cuando dejan de estarlo.
-    (Rebote no vota: opera contra la tendencia.)"""
-    if i < 31:
-        return None
-    ahora, antes = _largo(c, i) >= 2, _largo(c, i - 1) >= 2
-    if ahora and not antes:
-        return "b"
-    if antes and not ahora:
-        return "s"
-    return None
-
+# ---------------- estrategias: modulo unico (estrategias.py), compartido con la simulacion en vivo ----------------
+media, cruce, ruptura, filtro, consenso = estrategias.media, estrategias.cruce, estrategias.ruptura, estrategias.con_filtro, estrategias.consenso
+momentum = estrategias.momentum(12, 0.012)
+rebote = estrategias.rebote(20, 0.015)
+ruptura = estrategias.ruptura(20, 10)
 
 ESTRATEGIAS = [
     ("Cruce 5/20", cruce(5, 20)),

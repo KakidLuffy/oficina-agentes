@@ -13,7 +13,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 5 | CRYPTO-008 | Validación de velas | VALIDADA (datos reales de Kraken sin probar: la API no es accesible desde aquí) |
 | 6 | CRYPTO-009 | Alineación de marcas temporales | VALIDADA |
 | 7 | CRYPTO-005 | Columnas vela_inicio / decision_utc | VALIDADA |
-| 8 | CRYPTO-013 | Módulo único de estrategias | PENDIENTE |
+| 8 | CRYPTO-013 | Módulo único de estrategias | VALIDADA |
 | 9 | CRYPTO-002 | Ejecución en la vela siguiente | PENDIENTE |
 | 10 | CRYPTO-006 | Mínimos y precisión del exchange | PENDIENTE |
 | 11 | CRYPTO-001 | Posiciones fuera del universo | PENDIENTE |
@@ -84,3 +84,10 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Cambio:** se añaden dos columnas al final (`vela_inicio_utc`, `decision_utc`); `fecha_utc` se conserva con su significado para no romper el panel, director e informes (todos leen por nombre de columna). Las ventas por apagado registran la vela cuyo precio se usó y la hora real como decisión. Migración automática y atómica de `operaciones.csv` de 8 columnas a 10: se **deriva solo lo cierto** (operaciones normales: vela = fecha, decisión = +1 h); en las antiguas de apagado la vela queda vacía (desconocida) y no se inventa. Probado sobre una copia de las 37 operaciones reales actuales: se conservan todas.
 - **Higiene:** había colado `__pycache__` en dos commits míos; se quita del índice y se añade `.gitignore`.
 - **Pruebas:** 4 nuevas (normal, apagado, migración que no inventa, cabecera del verificador). Total 75 correctas.
+
+## Mejora 8 — CRYPTO-013 Módulo único de estrategias
+- **Archivos:** `estrategias.py` (nuevo), `agentes_nube.py`, `laboratorio.py`, `comparar_estrategias.py`, `tests/test_estrategias.py`, `tests/legacy_estrategias.py`.
+- **Problema:** la simulación, el laboratorio y la comparación tenían **tres copias** de las estrategias con diferencias sutiles (p. ej. umbrales de datos mínimos), así que lo "probado" en el laboratorio no era exactamente lo que operaba.
+- **Cambio:** un único módulo con `Serie`, las familias (cruce con hueco, momentum, rebote, ruptura, filtro, volatilidad, fuerza relativa, consenso), la definición de los 9 agentes en vivo y sus reglas rápidas. La simulación construye una `Serie` por moneda e invoca `decidir(serie, i, 1.0)`; el laboratorio y la comparación importan las mismas funciones.
+- **Garantías (pruebas):** (1) **equivalencia**: copia literal de las funciones antiguas (`tests/legacy_estrategias.py`, de `main`) frente a las nuevas, 9 agentes × 5 series aleatorias × todas las velas desde la 40ª → 0 diferencias; (2) **sin mirar el futuro**: cambiar por completo las velas posteriores a `i` no altera la señal en `i` (agentes y familias); (3) laboratorio/comparación usan los mismos objetos. Ejecución completa de simulación, laboratorio, comparación y director en demo sin errores.
+- **Diferencia reconocida:** en las primeras velas de una serie (índice < 40) el código antiguo exigía una vela más de historial en momentum/filtro; irrelevante con 220 velas de historia.
