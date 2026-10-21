@@ -1,13 +1,13 @@
 # Parte del director
 
-Actualizado: 2026-10-21T11:38:07Z
+Actualizado: 2026-10-21T11:40:16Z
 
 **Hay avisos de riesgo.**
 
 - Fondo de 90,00 € (10,00 € por agente): vale 90,00 € (+0,00 €).
 - Capital total 90,00 € (+0,00 €, +0,00 %).
 - Mejor agente: Cruce 10/30 (+0,00 €). Peor: Cruce 10/30 (+0,00 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener» (9,96 €).
+- 9 de 9 agentes van por encima de «Comprar y mantener» (9,95 €).
 - 0 con monedas, 9 en efectivo, 0 apagados.
 - Operaciones en las últimas 24 h: 0.
 
