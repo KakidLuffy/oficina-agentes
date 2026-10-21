@@ -25,8 +25,8 @@ import sys
 import urllib.request
 
 START = 50.0
-FEE = 0.0025
-SLIP = 0.0005   # deslizamiento por operacion, igual que en la simulacion en vivo
+FEE = 0.004
+SLIP = 0.0005   # deslizamiento por operacion, igual que en la simulacion en vivo (comision 0,40 %: Kraken Pro, nivel mas bajo)
 STOP = START * 0.7
 WARM = 50   # velas de calentamiento antes de empezar a operar
 INTERVALOS = [(15, "15 minutos"), (60, "1 hora"), (240, "4 horas"), (1440, "1 día")]

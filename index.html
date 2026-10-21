@@ -236,7 +236,7 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
     <svg id="floor" viewBox="0 0 480 340" shape-rendering="crispEdges" role="img" aria-label="Aldea de trading: un puesto por agente, estanque de descanso, casa de dirección y vigilante de riesgo"></svg>
     <div class="glance" id="glance"></div>
     <div class="parte" id="parte" hidden></div>
-    <div class="lab" id="labbox" hidden><svg id="labsvg" viewBox="0 0 480 236" shape-rendering="crispEdges" role="img" aria-label="Laboratorio con tres analistas de estrategias"></svg><div id="labtxt"></div></div>
+    <div class="lab" id="labbox" hidden><svg id="labsvg" viewBox="0 0 480 236" shape-rendering="crispEdges" role="img" aria-label="Laboratorio con analistas de estrategias"></svg><div id="labtxt"></div></div>
     <div class="mkt" id="mktbox" hidden>
       <div class="mtop"><div class="mh" id="mhead"></div><div class="rng" id="rng"></div></div>
       <svg id="mchart" viewBox="0 0 900 460" role="img" aria-label="Gráfico de velas en tiempo real"></svg>
@@ -402,7 +402,7 @@ function pintarOps(){
     var c = o.tipo === "COMPRA" ? "buy" : "sell";
     var ag = D.agentes.filter(function(a){ return a.nombre === o.agente; })[0];
     return '<div class="item"><time>' + esc(horaLocal(o.fecha_utc)) + '</time><span><span class="dotag" style="background:' + (ag ? ag.color : "#8a97a3") + '"></span><span class="'+c+'">' + esc(o.tipo) + '</span> ' +
-           esc(corto(o.moneda)) + ' · ' + esc(o.agente) + ' · ' + parseFloat(o.importe_eur).toFixed(2).replace(".", ",") + ' €</span></div>';
+           esc(corto(o.moneda)) + ' · ' + esc(o.agente) + ' · ' + parseFloat(o.importe_eur).toFixed(2).replace(".", ",") + ' €' + (o.motivo ? ' · ' + esc(o.motivo) : '') + (o.coste_eur ? ' · coste ' + parseFloat(o.coste_eur).toFixed(3).replace(".", ",") + ' €' : '') + '</span></div>';
   }).join("") : '<p class="note">Aún no hay operaciones. Los agentes solo compran cuando su regla se cumple.</p>';
 }
 function pintarInforme(){
@@ -579,9 +579,11 @@ function estadoDe(a){ return a.apagado ? "off" : a.pos.length ? "trab" : "espera
 
 /* ----- vista Laboratorio ----- */
 function pintarLab(){
-  var L = LAB, cols = {"Analista de tendencia": "#7aa2ff", "Analista de filtros": "#ffb020", "Analista de rebote": "#ff6bd6"};
+  var L = LAB, cols = {"Analista de tendencia": "#7aa2ff", "Analista de filtros": "#ffb020", "Analista de rebote": "#ff6bd6", "Analista de volatilidad": "#2ee6a6", "Analista de salidas": "#ff5a7a", "Analista de fuerza relativa": "#e0c080"};
   var an = L ? L.analistas : [{nombre: "Analista de tendencia"}, {nombre: "Analista de filtros"}, {nombre: "Analista de rebote"}];
-  var s = defsAldea() + R(0, 0, 480, 236, "url(#pasto)");
+  var EXL = an.length > 3 ? 108 : 0;
+  $("labsvg").setAttribute("viewBox", "0 0 480 " + (236 + EXL));
+  var s = defsAldea() + R(0, 0, 480, 236 + EXL, "url(#pasto)");
   s += arbol(6, 70) + arbol(6, 120) + arbol(6, 170) + arbol(452, 190);
   s += casa(140, 12, 200, "#3a7bd5", "#2f67b8");
   s += R(148, 36, 184, 2, "#1d1a2b", ' opacity=".4"') + cartel(240, 16, "LABORATORIO", 112);
@@ -589,7 +591,7 @@ function pintarLab(){
   s += R(160, 56, 36, 18, "#1d1a2b") + R(162, 58, 32, 14, "#9ccaf0") + R(284, 56, 36, 18, "#1d1a2b") + R(286, 58, 32, 14, "#9ccaf0");
   var fila = "", pj = "", info = "";
   an.forEach(function(a, k){
-    var cx = 62 + k * 100, b = 100, c = cols[a.nombre] || "#c6ff1a", hay = !!L;
+    var cx = 62 + (k % 3) * 100, b = 100 + Math.floor(k / 3) * 108, c = cols[a.nombre] || "#c6ff1a", hay = !!L;
     fila += puesto(cx, b, c, hay, hay ? "trab" : "espera");
     pj += '<g transform="translate(' + (cx - 14) + ',' + (b + 44) + ')"><g class="' + (hay ? "tb" : "") + '"><g transform="scale(2)">' + sprite(c, hay ? "trab" : "espera") + '</g></g></g>';
     pj += tx(cx, b + 90, a.nombre.replace("Analista de ", "").toUpperCase(), 5.5, "#fdf6e3");
@@ -603,7 +605,7 @@ function pintarLab(){
   ex += tx(408, 116, "EXAMEN", 6, "#4a4260").replace('class="tx"', '');
   ex += '<text x="408" y="136" text-anchor="middle" font-size="10" fill="' + (L ? vc : "#8a8aa8") + '" ' + FONT + '>' + (L ? v.toUpperCase() : "—") + '</text>';
   ex += '<text x="408" y="145" text-anchor="middle" font-size="5" fill="#4a4260" ' + FONT + '>' + (L ? "azar " + Math.round(L.tasa_azar * 100) + " %" : "sin datos") + '</text>';
-  s += fila + ex + planta(330, 190) + planta(470, 208);
+  s += fila + ex + planta(330, 190 + EXL) + planta(470, 208 + EXL);
   s += '<g transform="translate(394,168) scale(2)">' + sprite("#e8e8f0", "espera", true) + '</g>' + tx(408, 214, "DIRECTOR", 5.5, "#fdf6e3");
   s += pj + info;
   $("labsvg").innerHTML = s;

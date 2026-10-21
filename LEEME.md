@@ -37,7 +37,7 @@ Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pa
 
 ## El laboratorio (analistas de estrategias)
 
-Un grupo de tres analistas (tendencia, filtros y rebote) prueba cada lunes unas 80 variantes de estrategias sobre el historial de Kraken (6 monedas, velas de 4 horas y de 1 día). Funciona así:
+Un grupo de seis analistas (tendencia, filtros, rebote, volatilidad, salidas con stop/objetivo y fuerza relativa frente a BTC) prueba cada lunes unas 100 variantes de estrategias sobre el historial de Kraken (12 monedas, velas de 4 horas y de 1 día), con los mismos costes que la simulación (comisión 0,40 % + deslizamiento). Al final enseña también el resultado medio de cada familia, para ver qué ideas valen la pena.
 
 1. **Entrenamiento:** se eligen las 12 mejores variantes con el primer 60 % del historial.
 2. **Examen:** se las prueba en el último 40 %, que no se usó para elegir. Una variante aprueba si gana dinero y supera a comprar y mantener en al menos el 60 % de las series, con 4 operaciones o más.
@@ -77,7 +77,7 @@ A partir de ahí corre solo. Si cambias `agentes_nube.py`, se ejecuta de nuevo a
 
 ## Costes y límites simulados
 
-- Cada operación paga una **comisión del 0,25 %** y un **deslizamiento** del 0,05 % (0,3 % en monedas de poco volumen): comprar sale un poco más caro y vender un poco más barato. Los valores están al principio de `agentes_nube.py` (`FEE`, `SLIP`, `SLIP_POCO_VOLUMEN`).
+- Cada operación paga una **comisión del 0,40 %** (la tarifa «maker» de Kraken Pro en su nivel más bajo; con órdenes a mercado sería la «taker», 0,80 %) y un **deslizamiento** del 0,05 % (0,3 % en monedas de poco volumen). Ida y vuelta, una operación cuesta alrededor de un 1 %: por eso una estrategia que opera mucho necesita ganar mucho para compensar. Cada operación guarda en `operaciones.csv` su **motivo** (señal, stop u objetivo) y su **coste** en euros.
 - **Reparto:** cada agente invierte 2 € por moneda y puede tener hasta 5 a la vez.
 - **Límite de pérdida diaria:** si un agente pierde 0,40 € (un 4 %) en un día, no vuelve a comprar ese día. Si baja de 7 € (un 30 % de pérdida), se apaga.
 - **Más monedas:** el número de monedas vigiladas se cambia con `TOP_MONEDAS`. Subirlo alarga la ejecución y aumenta la probabilidad de que alguna estrategia parezca buena solo por azar.
@@ -106,3 +106,15 @@ python agentes_nube.py
 ```
 
 Hace un paso con precios reales y crea la carpeta `datos`. Para una prueba sin internet: `python agentes_nube.py --demo 120`.
+
+
+## Reglas de los agentes rápidos (versión 3)
+
+Los tres agentes «rápidos» llevan reglas extra para no perder todo en costes; los seis originales no las llevan, para poder compararlos con lo que ya se midió:
+
+- **Señal más fuerte:** Cruce 3/8 solo compra si la media rápida supera a la lenta un 0,2 % y el precio está por encima de su media de 48 horas; Momentum mira 6 horas y exige un 1 %; Rebote exige caer un 1,2 % bajo su media.
+- **Tiempo mínimo:** tras vender una moneda, no vuelven a comprarla durante 6 horas.
+- **Stop y objetivo:** venden solos si pierden un 1,5 % (stop) o ganan un 3 % (objetivo).
+- **Solo monedas con volumen:** no compran monedas de poco volumen, donde el coste real es mayor.
+
+Si cambian las reglas o los costes, sube `VERSION` en `agentes_nube.py`: la simulación anterior se archiva sola en `datos/archivo_…` y empieza de cero.
