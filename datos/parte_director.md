@@ -1,11 +1,11 @@
 # Parte del director
 
-Actualizado: 2026-10-21T12:20:44Z
+Actualizado: 2026-10-21T12:21:57Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 89,96 € (-0,04 €).
-- Capital total 89,96 € (-0,04 €, -0,05 %).
+- Fondo de 90,00 € (10,00 € por agente): vale 89,95 € (-0,05 €).
+- Capital total 89,95 € (-0,05 €, -0,05 %).
 - Mejor agente: Cruce 10/30 (+0,00 €). Peor: Momentum (-0,02 €).
 - 9 de 9 agentes van por encima de «Comprar y mantener» (9,97 €).
 - 3 con monedas, 6 en efectivo, 0 apagados.
