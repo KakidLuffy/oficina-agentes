@@ -179,3 +179,10 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Adaptador de exchange:** **no se implementa ninguna conexión** (no hay necesidad concreta ni autorización del usuario). Solo se fija el contrato: sin métodos de órdenes/retiradas, credenciales solo de «consulta», solo rutas públicas, no importable desde el simulador. El documento explica qué haría falta del usuario.
 - **Pruebas (+19, 207 en total).**
 - **Límite:** las reglas del analista son heurísticas simples; sirven para dejar constancia y orientar, no sustituyen a la validación cuantitativa.
+
+## Validación global (20 escenarios) y regresión
+- **Archivo:** `tests/test_validacion_global.py` (21 pruebas, `esc01`…`esc20`). Resultado: todas correctas.
+- **Regresión completa:** 228 pruebas, 0 fallos, 0 omitidas, ≈ 58 s.
+- **Fallo real encontrado y corregido durante la validación:** las compras que no cumplían los mínimos del exchange se descartaban en `paso` sin anotarse en las decisiones rechazadas (se anotan ahora). El escenario 10 inicial dependía de la trayectoria (apagado por riesgo): se ajustó la **prueba**, no el código, y queda dicho en el informe final.
+- **Estado final del proyecto: PARCIAL** (validaciones con Kraken real y con GitHub Actions pendientes). Ver `INFORME_FINAL_IMPLEMENTACION_CRYPTO.md`.
+

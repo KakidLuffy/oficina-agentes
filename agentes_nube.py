@@ -581,8 +581,10 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                     uv = a.get("ultima_venta", {}).get(par)
                     if op.get("espera_h") and uv and (datetime.fromisoformat(fecha) - datetime.fromisoformat(uv)).total_seconds() < op["espera_h"] * 3600:
                         continue                         # vendida hace poco: se espera antes de volver a entrar
-                    if preparar_orden(a, "COMPRA", par, precios[par], volumenes)[1]:
-                        continue                         # no cumple los minimos del exchange con un slot tan pequeno: ni se intenta
+                    _, razon_min = preparar_orden(a, "COMPRA", par, precios[par], volumenes)
+                    if razon_min:                        # no cumple los minimos del exchange con un slot tan pequeno: no se intenta, pero SE ANOTA
+                        RECHAZOS.append((fecha, a["nombre"], par, "COMPRA", "senal compradora", razon_min))
+                        continue
                     pedir(par, "COMPRA", "senal compradora")
                     compras += 1
             ejecutar_pendientes(a, aperturas, volumenes, ahora_ts)  # a la apertura de la vela siguiente, si ya existe

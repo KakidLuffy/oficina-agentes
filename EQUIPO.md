@@ -9,6 +9,7 @@ Esta oficina es una **simulación con dinero ficticio**. Este documento dice qui
 | Ejecución | Los 9 agentes de trading | Operan con 10 € ficticios cada uno (90 € en total; 3 de ellos son «rápidos» y operan varias veces al día), con precios reales de Kraken. |
 | Análisis | Los 6 analistas del laboratorio | Cada lunes prueban variantes de estrategias y las examinan en datos que no usaron para elegirlas. |
 | Dirección | El director | Revisa los datos, escribe el parte, anota decisiones en la memoria y prepara las propuestas. Solo lee y resume. |
+| Análisis (IA) | El analista experimental | Redacta hipótesis, inconsistencias y experimentos como **propuestas pendientes de revisión** (`datos/propuestas_analista.md`). No puede activar estrategias, cambiar límites, operar ni mover fondos: técnicamente no tiene acceso a nada que lo haga. Se lanza solo a mano. |
 | Riesgo | El vigilante (en el panel) | Avisa si un agente cae de golpe o se acerca al límite de pérdida. Solo avisa. |
 
 ## Qué puede hacer cada uno por su cuenta
@@ -24,7 +25,7 @@ Esta oficina es una **simulación con dinero ficticio**. Este documento dice qui
 
 ## Qué está prohibido
 
-- Operar con dinero real o conectarse a un exchange con claves.
+- Operar con dinero real o conectarse a un exchange con claves. Si algún día se quisiera leer una cuenta, solo con una clave de **consulta** creada por ti (ver `ADAPTADOR_EXCHANGE_SOLO_LECTURA.md`), nunca de trading ni de retirada.
 - Subir claves, contraseñas o datos personales al repositorio (es público).
 - Presentar un resultado de simulación como garantía de beneficios.
 
