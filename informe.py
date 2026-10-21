@@ -5,6 +5,8 @@ Lee datos/historial.csv y datos/operaciones.csv; no modifica el estado de la sim
 import csv
 import os
 
+import persistencia as ps
+
 COLORES = ["#2563eb", "#16a34a", "#f59e0b", "#a855f7", "#6b7280"]   # 4 agentes + Comprar y mantener
 
 
@@ -87,6 +89,5 @@ def grafico_svg(historial_csv, ruta_svg, nombres):
                  f'stroke-width="2"{dash}/>')
         p.append(f'<text x="{ancho - md + 40}" y="{ly + 4}" fill="#111827">{c}</text>')
     p.append("</svg>")
-    with open(ruta_svg, "w") as f:
-        f.write("\n".join(p))
+    ps.escribir_atomico(ruta_svg, "\n".join(p))
     return True

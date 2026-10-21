@@ -24,6 +24,8 @@ import random
 import sys
 import urllib.request
 
+import persistencia as ps
+
 START = 50.0
 FEE = 0.004
 SLIP = 0.0005   # deslizamiento por operacion, igual que en la simulacion en vivo (comision 0,40 %: Kraken Pro, nivel mas bajo)
@@ -241,8 +243,7 @@ def main():
            "así que cada tabla se compara solo con comprar y mantener en su propio periodo. "
            "El historial pasado no garantiza resultados futuros."]
     texto = "\n".join(md) + "\n"
-    with open(os.path.join(out, "comparacion.md"), "w", encoding="utf-8") as f:
-        f.write(texto)
+    ps.escribir_atomico(os.path.join(out, "comparacion.md"), texto)
     with open(os.path.join(out, "comparacion.csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["vela", "estrategia", "resultado_eur", "operaciones", "caida_max_pct", "mantener_eur",

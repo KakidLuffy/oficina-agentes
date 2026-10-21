@@ -17,11 +17,13 @@ import os
 import random
 import sys
 import time
+import io
 import shutil
 import urllib.request
 from datetime import datetime, timezone
 
 import informe
+import persistencia as ps
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
 VERSION = 3           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
@@ -299,13 +301,20 @@ def migrar(estado, velas):
         a.setdefault("precio_inicio", estado["precio_inicio"])
 
 
-def anotar(archivo, cabecera, fila):
-    nuevo = not os.path.exists(archivo)
-    with open(archivo, "a", newline="") as f:
-        w = csv.writer(f)
-        if nuevo:
-            w.writerow(cabecera)
-        w.writerow(fila)
+COLA_OPS = []        # operaciones de esta ejecucion; se escriben junto con el estado y el historial en una sola transaccion
+
+
+def texto_csv(filas):
+    b = io.StringIO()
+    csv.writer(b).writerows(filas)
+    return b.getvalue()
+
+
+def leer_texto(ruta):
+    if not os.path.exists(ruta):
+        return ""
+    with open(ruta, encoding="utf-8", newline="") as f:
+        return f.read()
 
 
 def asegurar_operaciones():
@@ -317,8 +326,7 @@ def asegurar_operaciones():
         if len(filas) <= 1 and (not filas or filas[0] != CAB_OPERACIONES):
             os.remove(OPERACIONES)
     if not os.path.exists(OPERACIONES):
-        with open(OPERACIONES, "w", newline="") as f:
-            csv.writer(f).writerow(CAB_OPERACIONES)
+        ps.escribir_atomico(OPERACIONES, texto_csv([CAB_OPERACIONES]))
 
 
 def parametros(estado):
@@ -359,8 +367,7 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
         a.setdefault("ultima_venta", {})[par] = fecha
         coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
     a["operaciones"] += 1
-    anotar(OPERACIONES, CAB_OPERACIONES,
-           [fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4)])
+    COLA_OPS.append([fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4)])
     print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR ({motivo})")
 
 
@@ -444,24 +451,17 @@ def nombre_corto(par):
     return par[:-3] if par.endswith("EUR") else par
 
 
-def ajustar_historial(cabecera):
-    """Si se anadieron agentes, reescribe el historial con las columnas nuevas (las filas viejas las rellenan con START)."""
-    if not os.path.exists(HISTORIAL):
-        return
-    with open(HISTORIAL, newline="") as f:
-        filas = list(csv.reader(f))
-    if not filas or filas[0] == cabecera:
-        return
-    viejas = filas[0]
-    nuevas = []
-    for fila in filas[1:]:
-        d = dict(zip(viejas, fila))
-        nuevas.append([d.get(c, str(START)) for c in cabecera])
-    with open(HISTORIAL, "w", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(cabecera)
-        w.writerows(nuevas)
-    print("Historial ampliado con las columnas de los agentes nuevos.")
+def historial_con_fila(cabecera, fila):
+    """Texto completo del historial con la fila nueva. Si se anadieron agentes, las filas viejas se rellenan con START."""
+    filas = list(csv.reader(io.StringIO(leer_texto(HISTORIAL), newline="")))
+    if not filas:
+        filas = [cabecera]
+    elif filas[0] != cabecera:
+        viejas = filas[0]
+        filas = [cabecera] + [[dict(zip(viejas, f)).get(c, str(START)) for c in cabecera] for f in filas[1:]]
+        print("Historial ampliado con las columnas de los agentes nuevos.")
+    filas.append(fila)
+    return texto_csv(filas)
 
 
 def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
@@ -472,11 +472,14 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
     eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
     cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"]
-    ajustar_historial(cab_hist)
-    anotar(HISTORIAL, cab_hist,
-           [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)])
-    with open(ESTADO, "w") as f:
-        json.dump(estado, f, indent=2)
+    fila = [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)]
+    tx = ps.Transaccion(DATOS)                    # estado + historial + operaciones cambian juntos o no cambian
+    ops = leer_texto(OPERACIONES) or texto_csv([CAB_OPERACIONES])
+    tx.poner(OPERACIONES, ops + texto_csv(COLA_OPS))
+    tx.poner(HISTORIAL, historial_con_fila(cab_hist, fila))
+    tx.poner(ESTADO, json.dumps(estado, indent=2))
+    tx.confirmar()
+    COLA_OPS.clear()
     dias = (datetime.fromisoformat(ahora) - datetime.fromisoformat(estado["inicio"])).total_seconds() / 86400
     lineas = [
         "# Oficina de agentes (dinero ficticio)",
@@ -531,8 +534,7 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     lineas += ["", "Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.",
                "Probar muchas monedas y estrategias aumenta la probabilidad de que alguna parezca buena solo por casualidad.",
                "Estos resultados no garantizan beneficios futuros."]
-    with open(RESUMEN, "w") as f:
-        f.write("\n".join(lineas) + "\n")
+    ps.escribir_atomico(RESUMEN, "\n".join(lineas) + "\n")
     print("\n".join(lineas[4:]))
 
 
@@ -547,8 +549,11 @@ def archivar(etiqueta):
 
 def main():
     demo = int(sys.argv[sys.argv.index("--demo") + 1]) if "--demo" in sys.argv else 0
-    velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
     os.makedirs(DATOS, exist_ok=True)
+    rec = ps.recuperar(DATOS)
+    if rec != "nada":
+        print(f"Se encontro una escritura interrumpida de la ejecucion anterior: {rec}.")
+    velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
     if os.path.exists(ESTADO):
         with open(ESTADO) as f:
             estado = json.load(f)

@@ -33,6 +33,7 @@ class BaseDatos(unittest.TestCase):
         an.RESUMEN = os.path.join(d, "resumen.md")
         an.GRAFICO = os.path.join(d, "grafico.svg")
         self.addCleanup(self._restaurar)
+        an.COLA_OPS.clear()
         an.asegurar_operaciones()
 
     def _restaurar(self):

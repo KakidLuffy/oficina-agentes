@@ -6,8 +6,9 @@ from tests.base import an, BaseDatos, velas, T0
 
 
 def filas_ops():
+    """Operaciones ya guardadas en disco + las pendientes de esta ejecucion."""
     with open(an.OPERACIONES, newline="") as f:
-        return list(csv.DictReader(f))
+        return list(csv.DictReader(f)) + [dict(zip(an.CAB_OPERACIONES, map(str, r))) for r in an.COLA_OPS]
 
 
 class Operar(BaseDatos):
@@ -136,10 +137,11 @@ class Persistencia(BaseDatos):
     def test_ajustar_historial_rellena_columnas_nuevas(self):
         with open(an.HISTORIAL, "w", newline="") as f:
             f.write("fecha_utc,precio_eur,A\n2026-01-01,100,9.5\n")
-        an.ajustar_historial(["fecha_utc", "precio_eur", "A", "B"])
-        with open(an.HISTORIAL, newline="") as f:
-            filas = list(csv.reader(f))
+        import io
+        txt = an.historial_con_fila(["fecha_utc", "precio_eur", "A", "B"], ["2026-01-02", "101", "9.6", "10"])
+        filas = list(csv.reader(io.StringIO(txt, newline="")))
         self.assertEqual(filas[1], ["2026-01-01", "100", "9.5", str(an.START)])
+        self.assertEqual(filas[2], ["2026-01-02", "101", "9.6", "10"])
 
     def test_migrar_estado_antiguo_y_agentes_nuevos(self):
         v = {an.BTC: velas([100.0] * 40)}
@@ -169,6 +171,55 @@ class Persistencia(BaseDatos):
         json.load(open(an.ESTADO, encoding="utf-8"))
         for a in est["agentes"]:
             self.assertGreaterEqual(a["efectivo"], -1e-9)
+
+
+class CortesDeEjecucion(BaseDatos):
+    """Simula que el proceso muere en distintos momentos de guardar()."""
+
+    def preparar(self):
+        v, vol, orden, fuente, ts = an.obtener_datos(150)
+        est = an.estado_nuevo({p: x[:100] for p, x in v.items()}, v[an.BTC][99][0] + 3600)
+        ahora, precios = an.paso(est, v, vol, orden, ts)
+        return est, ahora, precios, fuente, orden, v
+
+    def contar_ops(self):
+        with open(an.OPERACIONES, newline="") as f:
+            return len(list(csv.reader(f))) - 1
+
+    def test_corte_antes_del_diario_no_cambia_nada(self):
+        est, ahora, precios, fuente, orden, v = self.preparar()
+        original = an.ps.Transaccion.preparar
+
+        def muere(self):
+            raise KeyboardInterrupt("corte")
+        an.ps.Transaccion.preparar = muere
+        try:
+            with self.assertRaises(KeyboardInterrupt):
+                an.guardar(est, ahora, precios, fuente, len(orden), len(v))
+        finally:
+            an.ps.Transaccion.preparar = original
+        self.assertFalse(os.path.exists(an.ESTADO))
+        self.assertEqual(self.contar_ops(), 0)
+
+    def test_corte_tras_el_diario_se_completa_y_sin_duplicados(self):
+        est, ahora, precios, fuente, orden, v = self.preparar()
+        n_ops = len(an.COLA_OPS)
+        self.assertGreater(n_ops, 0)
+        original = an.ps.recuperar
+
+        def muere(carpeta):
+            raise KeyboardInterrupt("corte tras el diario")
+        an.ps.recuperar = muere
+        try:
+            with self.assertRaises(KeyboardInterrupt):
+                an.guardar(est, ahora, precios, fuente, len(orden), len(v))
+        finally:
+            an.ps.recuperar = original
+        self.assertEqual(an.ps.recuperar(an.DATOS), "completada")
+        self.assertEqual(self.contar_ops(), n_ops)
+        guardado = json.load(open(an.ESTADO, encoding="utf-8"))
+        self.assertEqual(guardado["ultima_vela"], est["ultima_vela"])
+        self.assertEqual(an.ps.recuperar(an.DATOS), "nada")
 
 
 if __name__ == "__main__":

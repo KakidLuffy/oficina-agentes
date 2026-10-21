@@ -28,6 +28,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 import comparar_estrategias as ce
+import persistencia as ps
 
 ce.FEE = 0.004                  # mismos costes que la simulacion en vivo (comision Kraken Pro 0,40 % + deslizamiento 0,05 %)
 START, FEE, SLIP = ce.START, ce.FEE, ce.SLIP
@@ -336,8 +337,7 @@ def main():
         "candidatas": [{k: (round(v, 2) if isinstance(v, float) else v) for k, v in f.items()} for f in candidatas],
         "mejores_entreno": [{k: (round(v, 2) if isinstance(v, float) else v) for k, v in f.items()} for f in elegidas],
     }
-    with open(os.path.join(out, "laboratorio.json"), "w", encoding="utf-8") as fh:
-        json.dump(datos, fh, ensure_ascii=False, indent=1)
+    ps.escribir_json(os.path.join(out, "laboratorio.json"), datos, indent=1)
     md = ["# Laboratorio de estrategias", "",
           f"Actualizado: {datos['generado']} · datos: {datos['fuente']} · {len(series)} series ({', '.join(datos['series'])})", "",
           f"**Veredicto: {veredicto.upper()}.** {txt}", "",
@@ -352,8 +352,7 @@ def main():
         md.append(f"| {nom} | {d['n']} | {d['dif'] / d['n']:+.2f} | {d['ops'] / d['n']:.0f} | {d['pasan']} |")
     md += ["", "Las candidatas NO operan solas: solo se proponen. Para dudar de ellas: probar tantas variantes hace que algunas "
            "salgan bien por azar, y el historial pasado no garantiza el futuro. Antes de confiar, deben aguantar semanas en simulación.", ""]
-    with open(os.path.join(out, "laboratorio.md"), "w", encoding="utf-8") as fh:
-        fh.write("\n".join(md))
+    ps.escribir_atomico(os.path.join(out, "laboratorio.md"), "\n".join(md))
     print("\n".join(md))
 
 
