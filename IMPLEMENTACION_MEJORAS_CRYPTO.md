@@ -21,7 +21,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 13 | CRYPTO-012 | Precisión decimal | VALIDADA |
 | 14 | CRYPTO-010 | Sin historial inventado | VALIDADA (panel: comprobación visual pendiente en etapa 6) |
 | 15 | CRYPTO-004 | Sesgo de supervivencia | IMPLEMENTADA (reduce, no elimina) |
-| 16 | CRYPTO-003 | Walk-forward y regímenes | PENDIENTE |
+| 16 | CRYPTO-003 | Walk-forward y regímenes | VALIDADA |
 | 17 | CRYPTO-014 | Métricas avanzadas | PENDIENTE |
 | 18 | CRYPTO-016 | Decisiones rechazadas + alertas | PENDIENTE |
 | 19 | CRYPTO-019 | Seguridad del panel | PENDIENTE |
@@ -141,3 +141,11 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Cambio:** universo "punto en el tiempo": cada moneda solo se puede **comprar** mientras estaba entre las **10 de mayor volumen** (de las 16 candidatas; suma de los últimos 30 días con datos solo hasta esa vela, sin mirar el futuro; una moneda sin 30 días de historia aún no cuenta; las ventas siempre se permiten). El simulador acepta `permitido(i)`. Cada variante se evalúa **dos veces** (punto en el tiempo y lista fija) y el informe publica la diferencia media y cuántas variantes aprueban en cada caso (sección «Sesgo de supervivencia» de `laboratorio.md`, y `sesgo_supervivencia` en el JSON). Se amplía la lista de 12 a 16 monedas (BCH, XLM, UNI, NEAR).
 - **Pruebas (+11, 140 en total):** top-N por volumen, ranking cambiante, sin mirar el futuro, monedas sin historia suficiente, alineación por marca temporal con inicios distintos, volumen inválido, N mayor que el número de monedas, simulador con membresía (no compra fuera, sí vende), integración en el laboratorio demo (membresía alineada y variable; reduce operaciones).
 - **Límite que no se puede arreglar con datos gratuitos:** Kraken no ofrece historial de monedas deslistadas; **las que murieron no pueden incluirse**. El informe lo dice explícitamente y pide tomar los resultados favorables como optimistas.
+
+## Mejora 16 — CRYPTO-003 Walk-forward y regímenes de mercado
+- **Archivos:** `walkforward.py` (nuevo), `laboratorio.py` (reestructurado en `evaluar_pliegues` / `resumir` / `calcular` / `veredicto_de` / `main`), `ejecucion.py` (parámetro `curva`), `tests/test_walkforward.py`, `tests/test_informe_lab.py`.
+- **Problema:** una sola partición 60/40 permite que la suerte de un tramo decida; elegir «lo mejor del pasado» una vez no demuestra que elegir sirva.
+- **Cambio:** validación **walk-forward**: se elige con 200 velas y se mide en las 80 siguientes (nunca usadas para elegir), y la ventana se desliza (4 pliegues en demo). Una variante es candidata solo si gana dinero y supera a mantener en ≥60 % de las pruebas (pliegue×serie) **y** en ≥60 % de los pliegues, con ≥4 operaciones. Se publica la **ventaja real de elegir** (rendimiento fuera de muestra de las elegidas en cada pliegue menos el de todas las variantes) y la tasa de azar. Tabla por **régimen** (alcista/bajista/lateral, tendencia de 60 velas en unidades de su propia volatilidad, solo datos ≤ i) con la diferencia frente a mantener y el número de velas de cada régimen. Se conserva el estrés de costes y el sesgo de supervivencia. `laboratorio.json` mantiene los campos que usan director y panel y añade `walk_forward` y `regimenes`.
+- **Pruebas (+16, 156 en total):** pliegues contiguos y sin solapar el entrenamiento, errores de parámetros, régimen sin mirar el futuro, atribución de retornos por régimen, y en el laboratorio: una fila por variante, elegidas×pliegues coherente, tres regímenes presentes, azar y veredicto válidos.
+- **Resultado demo:** `python3 laboratorio.py --demo` (14 s): veredicto NINGUNA; ventaja de elegir +0,07 € (≈ ruido), como cabe esperar en datos aleatorios.
+- **Riesgo:** con pocos pliegues la estimación es ruidosa; los regímenes futuros pueden no parecerse a los pasados. Con datos reales el nº de velas disponible limita los pliegues.

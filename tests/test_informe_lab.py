@@ -138,7 +138,45 @@ class UniversoEnElLaboratorio(unittest.TestCase):
     def test_el_universo_punto_en_el_tiempo_solo_reduce_las_operaciones(self):
         import estrategias as es
         fn = es.cruce(5, 20)
-        con = laboratorio.evaluar(self.series, fn, None, pit=True)
-        sin = laboratorio.evaluar(self.series, fn, None, pit=False)
-        self.assertLessEqual(sum(x["test_ops"] for x in con), sum(x["test_ops"] for x in sin))
-        self.assertNotEqual([x["test_dif"] for x in con], [x["test_dif"] for x in sin])
+        con = laboratorio.evaluar_pliegues(self.series, fn, None, pit=True)
+        sin = laboratorio.evaluar_pliegues(self.series, fn, None, pit=False)
+        ops = lambda d: sum(x["test_ops"] for v in d.values() for x in v)
+        difs = lambda d: [x["test_dif"] for k in sorted(d) for x in d[k]]
+        self.assertLessEqual(ops(con), ops(sin))
+        self.assertNotEqual(difs(con), difs(sin))
+
+
+class WalkForwardEnLaboratorio(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.series = laboratorio.cargar_series(True)
+        todas = laboratorio.variantes()[:12]
+        cls.todas = todas
+        cls.calc = laboratorio.calcular(cls.series, todas)
+
+    def test_pliegues_no_se_solapan_con_su_entrenamiento(self):
+        for s in self.series:
+            for i0, i1, j0, j1 in laboratorio.wf.pliegues(len(s["c"]), laboratorio.WARM, laboratorio.ENTRENO_VELAS, laboratorio.PRUEBA_VELAS):
+                self.assertLessEqual(i1, j0)
+
+    def test_hay_varios_pliegues_y_una_fila_por_variante(self):
+        self.assertEqual(len(self.calc["filas"]), len(self.todas))
+        self.assertGreaterEqual(self.calc["metodo"]["pliegues"], 2)
+        for f in self.calc["filas"]:
+            self.assertEqual(len(f["fold_test"]), f["pliegues"])
+            self.assertLessEqual(f["ok"], f["total"])
+
+    def test_elegir_n_por_pliegue_suma_veces_elegida(self):
+        total = sum(f["veces_elegida"] for f in self.calc["filas"])
+        self.assertEqual(total, self.calc["metodo"]["pliegues"] * min(laboratorio.N_CANDIDATAS, len(self.todas)))
+
+    def test_regimenes_de_las_elegidas_cubren_los_tres(self):
+        for f in self.calc["elegidas"]:
+            self.assertEqual(set(f["regimenes"]), set(laboratorio.wf.REGIMENES))
+            self.assertGreater(sum(d["velas"] for d in f["regimenes"].values()), 0)
+
+    def test_tasa_azar_y_veredicto_validos(self):
+        self.assertTrue(0 <= self.calc["azar"] <= 1)
+        v, txt = laboratorio.veredicto_de([f for f in self.calc["elegidas"] if f["pasa"]], self.calc["elegidas"], self.calc["azar"])
+        self.assertIn(v, ("ninguna", "posible", "ruido"))
+        self.assertTrue(txt)
