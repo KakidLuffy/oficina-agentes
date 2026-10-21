@@ -2,48 +2,53 @@
   "version": 3,
   "capital_inicial": 10.0,
   "inicio": "2026-10-21T11:37:53+00:00",
-  "ultima_vela": 1792602000,
+  "ultima_vela": 1792605600,
   "precio_inicio": 74221.2,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 75403.4,
-    "ETHEUR": 2238.34,
-    "XRPEUR": 1.24046,
-    "ZECEUR": 1213.461,
-    "SOLEUR": 96.97,
-    "NEAREUR": 4.7669,
-    "LTCEUR": 55.37,
-    "SUIEUR": 0.9382,
-    "PUMPEUR": 0.004507,
-    "HYPEEUR": 73.2,
-    "XMREUR": 542.44,
-    "UNIEUR": 6.8511,
-    "ZROEUR": 1.799,
-    "ADAEUR": 0.204776,
+    "XBTEUR": 75226.2,
+    "ETHEUR": 2222.27,
+    "XRPEUR": 1.2343,
+    "ZECEUR": 1206.718,
+    "SOLEUR": 96.37,
+    "NEAREUR": 4.7379,
+    "LTCEUR": 55.13,
+    "SUIEUR": 0.9273,
+    "PUMPEUR": 0.004482,
+    "HYPEEUR": 72.92,
+    "XMREUR": 542.76,
+    "UNIEUR": 6.7647,
+    "ZROEUR": 1.814,
+    "ADAEUR": 0.203327,
     "COMPEUR": 22.8,
-    "LINKEUR": 11.37783,
+    "LINKEUR": 11.29427,
     "PEPEEUR": 4.171e-06,
-    "TIAEUR": 0.5649,
+    "TIAEUR": 0.5582,
     "INJEUR": 7.821,
     "XLMEUR": 0.164283,
-    "ENAEUR": 0.1982,
-    "TAOEUR": 249.4547,
+    "ENAEUR": 0.1946,
+    "TAOEUR": 245.045,
     "AVAXEUR": 8.821,
-    "ARBEUR": 0.1752,
-    "QNTEUR": 187.75
+    "ARBEUR": 0.1748,
+    "QNTEUR": 186.5
   },
   "agentes": [
     {
       "nombre": "Cruce 10/30",
-      "efectivo": 10.0,
-      "posiciones": {},
+      "efectivo": 8.0,
+      "posiciones": {
+        "XMREUR": 0.0036704603232636315
+      },
       "apagado": false,
-      "operaciones": 0,
+      "operaciones": 1,
       "dia": 20747,
       "eq_dia": 10.0,
       "inicio": "2026-10-21T11:37:53+00:00",
-      "precio_inicio": 74221.2
+      "precio_inicio": 74221.2,
+      "entradas": {
+        "XMREUR": 542.71122
+      }
     },
     {
       "nombre": "Cruce 5/20",
@@ -114,47 +119,28 @@
     },
     {
       "nombre": "Cruce 10/30 + filtro",
-      "efectivo": 10.0,
-      "posiciones": {},
-      "apagado": false,
-      "operaciones": 0,
-      "dia": 20747,
-      "eq_dia": 10.0,
-      "inicio": "2026-10-21T11:37:53+00:00",
-      "precio_inicio": 74221.2
-    },
-    {
-      "nombre": "Consenso 2 de 3",
-      "efectivo": 0.0,
+      "efectivo": 8.0,
       "posiciones": {
-        "XMREUR": 0.003692789705748061,
-        "PUMPEUR": 459.92249890300866,
-        "TIAEUR": 3.5630001749304308,
-        "AVAXEUR": 0.22741342064547393,
-        "UNIEUR": 0.2928766122521182
+        "XMREUR": 0.0036704603232636315
       },
       "apagado": false,
-      "operaciones": 5,
+      "operaciones": 1,
       "dia": 20747,
       "eq_dia": 10.0,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
       "entradas": {
-        "XMREUR": 539.42958,
-        "PUMPEUR": 0.0043311645,
-        "TIAEUR": 0.5590793999999999,
-        "AVAXEUR": 8.759377500000001,
-        "UNIEUR": 6.801499049999999
+        "XMREUR": 542.71122
       }
     },
     {
-      "nombre": "Cruce 3/8 rapido",
-      "efectivo": 1.9506874253506163,
+      "nombre": "Consenso 2 de 3",
+      "efectivo": 1.9593483271993213,
       "posiciones": {
-        "UNIEUR": 0.2928766122521182,
-        "TIAEUR": 3.5288984362834537,
-        "HYPEEUR": 0.02758388054518044,
-        "QNTEUR": 0.011000024849453727
+        "XMREUR": 0.003692789705748061,
+        "PUMPEUR": 459.92249890300866,
+        "AVAXEUR": 0.22741342064547393,
+        "UNIEUR": 0.2928766122521182
       },
       "apagado": false,
       "operaciones": 6,
@@ -163,13 +149,37 @@
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
       "entradas": {
+        "XMREUR": 539.42958,
+        "PUMPEUR": 0.0043311645,
+        "AVAXEUR": 8.759377500000001,
+        "UNIEUR": 6.801499049999999
+      },
+      "ultima_venta": {
+        "TIAEUR": "2026-10-21T18:00+00:00"
+      }
+    },
+    {
+      "nombre": "Cruce 3/8 rapido",
+      "efectivo": 3.8912826845476753,
+      "posiciones": {
+        "UNIEUR": 0.2928766122521182,
+        "HYPEEUR": 0.02758388054518044,
+        "QNTEUR": 0.011000024849453727
+      },
+      "apagado": false,
+      "operaciones": 7,
+      "dia": 20747,
+      "eq_dia": 10.0,
+      "inicio": "2026-10-21T11:37:53+00:00",
+      "precio_inicio": 74221.2,
+      "entradas": {
         "UNIEUR": 6.801499049999999,
-        "TIAEUR": 0.5644821,
         "HYPEEUR": 72.21609000000001,
         "QNTEUR": 181.0905
       },
       "ultima_venta": {
-        "PUMPEUR": "2026-10-21T16:00+00:00"
+        "PUMPEUR": "2026-10-21T16:00+00:00",
+        "TIAEUR": "2026-10-21T18:00+00:00"
       }
     },
     {

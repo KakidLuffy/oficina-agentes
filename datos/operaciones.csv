@@ -32,3 +32,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-21T16:00+00:00,Cruce 3/8 rapido,PUMPEUR,VENTA,0.004352,1.95,stop de perdida (-1.6 %),0.0088
 2026-10-21T16:00+00:00,Cruce 3/8 rapido,HYPEEUR,COMPRA,72.21609,2.0,senal compradora,0.009
 2026-10-21T17:00+00:00,Cruce 3/8 rapido,QNTEUR,COMPRA,181.0905,2.0,senal compradora,0.009
+2026-10-21T18:00+00:00,Cruce 10/30,XMREUR,COMPRA,542.71122,2.0,senal compradora,0.009
+2026-10-21T18:00+00:00,Cruce 10/30 + filtro,XMREUR,COMPRA,542.71122,2.0,senal compradora,0.009
+2026-10-21T18:00+00:00,Consenso 2 de 3,TIAEUR,VENTA,0.552124,1.96,senal vendedora,0.0089
+2026-10-21T18:00+00:00,Cruce 3/8 rapido,TIAEUR,VENTA,0.552124,1.94,stop de perdida (-2.1 %),0.0088
