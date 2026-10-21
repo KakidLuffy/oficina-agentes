@@ -101,9 +101,18 @@ def regla(par):
     return REGLAS.get(par) or rm.GENERICA._replace(par=par)
 
 
-def universo_kraken():
-    """Las TOP_MONEDAS de mayor volumen entre los pares contra EUR en linea (sin stablecoins ni fiat).
-    Devuelve [(par, volumen_24h_EUR)] ordenado de mayor a menor volumen."""
+def pares_en_cartera(estado):
+    """Monedas que algun agente tiene (o va a vender): hay que seguir vigilandolas aunque salgan del ranking de volumen."""
+    pares = set()
+    for a in estado.get("agentes", []):
+        pares |= set(a.get("posiciones", {}))
+        pares |= {o["par"] for o in a.get("pendientes", []) if o.get("tipo") == "VENTA"}
+    return pares
+
+
+def universo_kraken(extra=()):
+    """Las TOP_MONEDAS de mayor volumen entre los pares contra EUR en linea (sin stablecoins ni fiat), MAS las monedas
+    'extra' (las que hay en cartera). Devuelve [(par, volumen_24h_EUR)]: primero el ranking, luego las extra."""
     res = kraken("https://api.kraken.com/0/public/AssetPairs")
     pares = {}
     for clave, v in res.items():
@@ -138,6 +147,11 @@ def universo_kraken():
         salida = [(p, 0.0) for p in RESPALDO if p in disponibles][:TOP_MONEDAS]
     if BTC not in [p for p, _ in salida]:
         salida.insert(0, (BTC, 0.0))
+    vol_alt = {pares[c]: v for c, v in volumenes.items() if c in pares}
+    for e in sorted(extra):
+        if e not in [p for p, _ in salida]:
+            salida.append((e, vol_alt.get(e, 0.0)))
+            print(f"{e}: fuera del ranking de volumen pero en cartera; se sigue vigilando.")
     return salida
 
 
@@ -192,21 +206,21 @@ def validar_todo(velas, ahora_ts):
     return limpias
 
 
-def obtener_datos(demo):
+def obtener_datos(demo, extra=()):
     """Devuelve (velas {par: [Vela]}, volumenes {par: EUR}, orden [pares], fuente, ahora_ts). Las velas ya estan validadas."""
-    velas, volumenes, orden, fuente, ahora_ts = _descargar(demo)
+    velas, volumenes, orden, fuente, ahora_ts = _descargar(demo, extra)
     velas = validar_todo(velas, ahora_ts)
     orden = [p for p in orden if p in velas]
     return velas, volumenes, orden, fuente, ahora_ts
 
 
-def _descargar(demo):
+def _descargar(demo, extra=()):
     if demo:
         nombres = [BTC] + [f"DEMO{k}EUR" for k in range(1, 8)]
         velas = {p: velas_demo(demo, k) for k, p in enumerate(nombres)}
         vol = {p: (500_000 if k % 3 else 20_000) for k, p in enumerate(nombres)}
         return velas, vol, nombres, "demo", velas[BTC][-1].ts + 1800
-    uni = universo_kraken()
+    uni = universo_kraken(extra)
     print(f"Se vigilan {len(uni)} monedas (las de mayor volumen contra EUR en Kraken): "
           + ", ".join(p for p, _ in uni))
     velas, fuente = {}, "Kraken"
@@ -401,14 +415,27 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo="", vela_inicio=None, 
     return True
 
 
+def precio_valoracion(a, par, precios):
+    """Precio con el que se valora una posicion. Con cotizacion normal, el de mercado. SIN cotizacion (o sin precio conocido) la
+    valoracion es CONSERVADORA: nunca por encima del precio de entrada (no se reconocen ganancias que no se pueden vender) y nunca a 0."""
+    p, entrada = precios.get(par), a.get("entradas", {}).get(par)
+    if par in a.get("sin_cotizacion", {}) or p is None:
+        candidatos = [x for x in (p, entrada) if x]
+        return min(candidatos) if candidatos else 0.0
+    return p
+
+
 def equity(a, precios):
-    return a["efectivo"] + sum(u * precios.get(p, 0.0) for p, u in a["posiciones"].items())
+    return a["efectivo"] + sum(u * precio_valoracion(a, p, precios) for p, u in a["posiciones"].items())
 
 
 def apagar_si_toca(a, precios, fecha, volumenes, ultima=None):
     """'ultima' {par: inicio de la ultima vela} se usa cuando 'fecha' es la hora real de ejecucion y no el inicio de una vela."""
     if not a["apagado"] and equity(a, precios) < STOP:
         for par in list(a["posiciones"]):
+            if par in a.get("sin_cotizacion", {}) or par not in precios:
+                print(f"{a['nombre']}: {par} no se puede vender (sin cotizacion); sigue en cartera.")
+                continue
             if ultima is None:
                 operar(a, "VENTA", par, precios[par], fecha, volumenes, "apagado por riesgo")
             else:
@@ -426,7 +453,7 @@ def rechazar(a, o, razon):
     print(f"{a['nombre']}: orden de {o['tipo']} {o['par']} no ejecutada ({razon})")
 
 
-def ejecutar_pendientes(a, aperturas, volumenes):
+def ejecutar_pendientes(a, aperturas, volumenes, ahora_ts):
     """Ejecuta las ordenes decididas con el cierre de una vela a la APERTURA de la siguiente vela con precio (ejecucion.py).
     Si esa apertura aun no existe (la vela siguiente no ha empezado a negociarse), la orden queda pendiente en el estado."""
     resto = []
@@ -434,7 +461,10 @@ def ejecutar_pendientes(a, aperturas, volumenes):
         tss = aperturas.get(o["par"], ([], {}))
         k = bisect.bisect_right(tss[0], o["vela_ts"])
         if k >= len(tss[0]):
-            resto.append(o)                                          # aun no hay vela posterior
+            if ahora_ts - o["vela_ts"] > MAX_ESPERA_ORDEN:
+                rechazar(a, o, "caducada: sin precio de ejecucion en 6 horas")
+            else:
+                resto.append(o)                                      # aun no hay vela posterior
             continue
         ts_exec = tss[0][k]
         if ts_exec - o["vela_ts"] > MAX_ESPERA_ORDEN:
@@ -484,9 +514,22 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
         print(f"Aviso: {len(tiempos)} velas nuevas (la ejecucion anterior se retraso); se procesan todas en orden.")
     precios = estado["precios"]
     rango = {p: i for i, p in enumerate(orden)}
+    dia_ts = ahora_ts // 86400 * 86400
+    for a in estado["agentes"]:                          # posiciones de monedas de las que no llegan velas: se marcan, no se cierran
+        sc = a.setdefault("sin_cotizacion", {})
+        for par in list(a["posiciones"]):
+            if par not in velas:
+                if par not in sc:
+                    sc[par] = {"desde": ahora, "ultimo_precio": precios.get(par)}
+                INCIDENCIAS.append((par, {"tipo": "sin_cotizacion", "ts": dia_ts, "nivel": "alerta", "agente": a["nombre"]}))
+                print(f"ALERTA: {a['nombre']} tiene {par} pero no llegan velas de esa moneda; se valora de forma conservadora y NO se cierra.")
+            else:
+                sc.pop(par, None)
+        for par in [p for p in sc if p not in a["posiciones"]]:
+            sc.pop(par)
     for a in estado["agentes"]:                          # ordenes que quedaron pendientes de una ejecucion anterior
         a.setdefault("pendientes", [])
-        ejecutar_pendientes(a, aperturas, volumenes)
+        ejecutar_pendientes(a, aperturas, volumenes, ahora_ts)
     for t in tiempos:
         fecha = iso_vela(t)
         pares_t = sorted(cerr_por_t[t], key=lambda p: rango.get(p, 10 ** 6))
@@ -539,7 +582,7 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                         continue                         # no cumple los minimos del exchange con un slot tan pequeno: ni se intenta
                     pedir(par, "COMPRA", "senal compradora")
                     compras += 1
-            ejecutar_pendientes(a, aperturas, volumenes)  # a la apertura de la vela siguiente, si ya existe
+            ejecutar_pendientes(a, aperturas, volumenes, ahora_ts)  # a la apertura de la vela siguiente, si ya existe
             apagar_si_toca(a, precios, fecha, volumenes)
     if tiempos:
         estado["ultima_vela"] = tiempos[-1]
@@ -641,6 +684,10 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
                       f"{a['operaciones']} | {a['inicio'][:10]} | {est} |")
     lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | {estado['inicio'][:10]} | Referencia |")
     nombres = [n for n, _ in AGENTES]
+    sc = [(a["nombre"], p) for a in estado["agentes"] for p in a.get("sin_cotizacion", {})]
+    if sc:
+        lineas += ["", "⚠ Posiciones SIN COTIZACION (no llegan velas de esa moneda; valoradas de forma conservadora y sin cerrar): "
+                   + ", ".join(f"{n}: {nombre_corto(p)}" for n, p in sc) + ". Revisar a mano."]
     sin_verificar = [p for p in estado["precios"] if regla(p).fuente != "kraken"]
     if sin_verificar:
         lineas += ["", f"⚠ Minimos del exchange NO verificados para {len(sin_verificar)} moneda(s) (se usa un supuesto de 0,5 EUR de coste minimo): "
@@ -694,7 +741,14 @@ def main():
     rec = ps.recuperar(DATOS)
     if rec != "nada":
         print(f"Se encontro una escritura interrumpida de la ejecucion anterior: {rec}.")
-    velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
+    extra = set()
+    if os.path.exists(ESTADO):
+        try:
+            with open(ESTADO, encoding="utf-8") as f:
+                extra = pares_en_cartera(json.load(f))
+        except (OSError, ValueError):
+            pass
+    velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo, extra)
     if os.path.exists(ESTADO):
         with open(ESTADO) as f:
             estado = json.load(f)
