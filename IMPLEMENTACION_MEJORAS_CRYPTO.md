@@ -19,12 +19,12 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 11 | CRYPTO-001 | Posiciones fuera del universo | VALIDADA |
 | 12 | CRYPTO-007 | Modelo de costes compartido | VALIDADA (horquilla y deslizamiento son supuestos, no medidos) |
 | 13 | CRYPTO-012 | Precisión decimal | VALIDADA |
-| 14 | CRYPTO-010 | Sin historial inventado | VALIDADA (panel: comprobación visual pendiente en etapa 6) |
+| 14 | CRYPTO-010 | Sin historial inventado | VALIDADA (panel comprobado en Chromium: columnas en blanco sin NaN, ver mejora 19) |
 | 15 | CRYPTO-004 | Sesgo de supervivencia | IMPLEMENTADA (reduce, no elimina) |
 | 16 | CRYPTO-003 | Walk-forward y regímenes | VALIDADA |
 | 17 | CRYPTO-014 | Métricas avanzadas | VALIDADA |
 | 18 | CRYPTO-016 | Decisiones rechazadas + alertas | VALIDADA (la alerta real solo se puede probar dentro de GitHub) |
-| 19 | CRYPTO-019 | Seguridad del panel | PENDIENTE |
+| 19 | CRYPTO-019 | Seguridad del panel | VALIDADA (Chromium real) |
 | 20 | CRYPTO-020 | Analista de IA (solo propuestas) | PENDIENTE |
 
 ## Preparación (2026-10-22)
@@ -163,3 +163,11 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Cambio:** `datos/decisiones_rechazadas.csv` (fecha de la vela, registro, agente, moneda, tipo, motivo de la decisión, categoría estable, razón), escrito **en la misma transacción atómica** que el estado, sin repetir la misma decisión aunque se reintente cada hora; se archiva con la simulación al cambiar de versión. Alertas: cada workflow tiene un trabajo `alerta` (único con permiso `issues: write`) que abre **un solo Issue** por workflow si falla (si ya hay uno abierto no crea otro) y lo **cierra solo** cuando una ejecución posterior termina bien. No se inventa ninguna configuración de correo: GitHub avisa por su propio sistema de notificaciones a quien vigile el repositorio.
 - **Pruebas (+11, 181 en total):** categorías, deduplicación entre horas y dentro de una pasada, archivado, y el script con un `gh` simulado (abrir, no duplicar, título distinto, cerrar, cerrar sin alerta, comillas en el título), permisos mínimos en los 4 workflows. Comprobación de integración: `guardar` escribe el CSV.
 - **Límite:** el envío real del Issue solo se puede probar ejecutando el workflow en GitHub (la rama no se ha subido). Si el fallo es del propio GitHub Actions (no arranca), no hay alerta.
+
+## Mejora 19 — CRYPTO-019 Seguridad del panel
+- **Archivos:** `index.html`, `tests/test_panel_navegador.py` (Playwright + Chromium; se omite si no están).
+- **Problemas encontrados:** (1) cualquier texto de los datos podía llegar al HTML sin escapar en 3 sitios (veredicto del laboratorio en el SVG y en una clase, `data-par`); (2) `?base=` permitía que un enlace manipulado hiciera leer datos de otro sitio; (3) el CSV se leía con `split(",")`, que descuadra las columnas si un campo lleva comas; (4) un archivo vacío o con forma inesperada lanzaba excepciones; (5) se cargaban tipografías de Google (petición a un tercero con la IP del usuario).
+- **Cambios:** `esc()` también escapa `'` y `` ` ``; `num()` convierte todo lo que no sea número finito en un valor por defecto antes de calcular o mostrar; veredicto con lista blanca; lector de CSV con comillas; objetos sin prototipo para los datos externos; validación de la forma de `estado.json` con mensaje claro; `?base=` solo acepta una ruta del mismo sitio o el repositorio oficial; política **CSP** (`default-src 'none'`, conexiones solo a `self`, raw.githubusercontent.com y api.kraken.com, sin fuentes ni scripts externos) y `referrer: no-referrer`; **sin Google Fonts**.
+- **Tipografías:** no pude descargar los ficheros (sin acceso al registro de paquetes desde aquí), así que el panel usa las tipografías que ya tenga el dispositivo (`local()`) o la del sistema; el aspecto puede variar ligeramente. Si se quiere el aspecto exacto, hay que guardar los `.woff2` (licencia libre) en el repositorio y declararlos con `@font-face`.
+- **Pruebas (+7, 188 en total):** datos normales, archivos vacíos, estado roto, columnas en blanco (sin «NaN»), datos maliciosos en estado, historial, operaciones, laboratorio y parte del director (no se ejecuta nada; comprobado además por mutación: con `esc` desactivado la prueba falla), `?base=` manipulado, ninguna petición a terceros.
+- **Límite:** el CSP en `<meta>` no puede impedir que otros sitios incrusten el panel en un `iframe` (eso exige cabeceras HTTP, que GitHub Pages no permite configurar).
