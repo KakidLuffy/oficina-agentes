@@ -24,7 +24,9 @@ import random
 import sys
 import urllib.request
 
+import ejecucion as ej
 import estrategias
+import velas as vl
 import persistencia as ps
 
 START = 50.0
@@ -55,28 +57,12 @@ ESTRATEGIAS = [
 ]
 
 
-# ---------------- simulacion ----------------
-def simular(c, ini, fin, s, fn):
-    """Opera de la vela ini a la fin-1. Devuelve (resultado, operaciones, resultado de mantener, caida maxima en %)."""
-    cash, btc, ops, apagado = START, 0.0, 0, False
-    pico, caida = START, 0.0
-    for i in range(ini, fin):
-        p = c[i]
-        if apagado:
-            break
-        senal = fn(c, i, s)
-        if senal == "b" and cash > 1:
-            btc, cash, ops = cash * (1 - FEE) / (p * (1 + SLIP)), 0.0, ops + 1
-        elif senal == "s" and btc > 0:
-            cash, btc, ops = btc * p * (1 - SLIP) * (1 - FEE), 0.0, ops + 1
-        eq = cash + btc * p
-        pico = max(pico, eq)
-        caida = max(caida, (pico - eq) / pico * 100)
-        if eq < STOP:
-            cash, btc, apagado = btc * p * (1 - SLIP) * (1 - FEE) + cash, 0.0, True
-    final = cash + btc * c[fin - 1]
-    mantener = START * (1 - FEE) * c[fin - 1] / (c[ini] * (1 + SLIP))
-    return final - START, ops, mantener - START, caida
+# ---------------- simulacion: simulador unico (ejecucion.py), igual que en el laboratorio ----------------
+def simular(c, ini, fin, s, fn, o=None):
+    """Opera de la vela ini a la fin-1; la orden decidida con el cierre de i se ejecuta a la apertura de i+1.
+    'o' son las aperturas (si faltan se aproximan con el cierre anterior). Devuelve (resultado, operaciones, mantener, caida maxima %)."""
+    o = o if o is not None else [c[0]] + list(c[:-1])
+    return ej.simular(c, o, ini, fin, s, fn, None, FEE, SLIP, ej.SPREAD, START)
 
 
 # ---------------- datos ----------------
@@ -86,38 +72,49 @@ def get_json(url):
         return json.loads(r.read().decode())
 
 
-def cierres_kraken(minutos):
+def _cerradas_validas(velas_, minutos):
+    """Valida (velas.py) y se queda con las velas cerradas, por su marca temporal."""
+    import time as _t
+    util, _ = vl.validar(velas_, minutos * 60, int(_t.time()))
+    return [x for x in util if x.ts + minutos * 60 <= int(_t.time())]
+
+
+def velas_kraken(minutos):
     d = get_json(f"https://api.kraken.com/0/public/OHLC?pair=XBTEUR&interval={minutos}")
     if d.get("error"):
         raise RuntimeError(d["error"])
     k = [x for x in d["result"] if x != "last"][0]
-    return [float(v[4]) for v in d["result"][k][:-1]]   # sin la vela en curso
+    return _cerradas_validas([vl.desde_kraken(v) for v in d["result"][k]], minutos)
 
 
-def cierres_coinbase(minutos):
+def velas_coinbase(minutos):
+    """Coinbase: [time, low, high, open, close, volume]."""
     if minutos not in (15, 60, 1440):
         raise RuntimeError("Coinbase no ofrece esta duracion")
     d = get_json(f"https://api.exchange.coinbase.com/products/BTC-EUR/candles?granularity={minutos * 60}")
-    return [float(v[4]) for v in sorted(d, key=lambda v: v[0])][:-1]
+    crudas = [vl.Vela(int(v[0]), vl._num(v[3]), vl._num(v[2]), vl._num(v[1]), vl._num(v[4]), vl._num(v[5])) for v in d]
+    return _cerradas_validas(crudas, minutos)
 
 
-def cierres_demo(minutos):
+def velas_demo(minutos):
     random.seed(minutos)
-    p, out = 60000.0, []
-    for _ in range(720):
+    p, out, t0 = 60000.0, [], 1_700_000_000 - (1_700_000_000 % (minutos * 60))
+    for k in range(720):
+        antes = p
         p *= 1 + random.gauss(0, 0.007 * math.sqrt(minutos / 60))
-        out.append(p)
+        out.append(vl.Vela(t0 + k * minutos * 60, antes, max(antes, p), min(antes, p), p, 1.0))
     return out
 
 
 def obtener(minutos, demo):
+    """Devuelve (velas, fuente) con velas cerradas y validadas."""
     if demo:
-        return cierres_demo(minutos), "demo"
+        return velas_demo(minutos), "demo"
     try:
-        return cierres_kraken(minutos), "Kraken"
+        return velas_kraken(minutos), "Kraken"
     except Exception as e1:
         try:
-            return cierres_coinbase(minutos), "Coinbase"
+            return velas_coinbase(minutos), "Coinbase"
         except Exception as e2:
             print(f"  No se pudo descargar velas de {minutos} min (Kraken: {e1}; Coinbase: {e2})")
             return None, None
@@ -134,13 +131,15 @@ def main():
     os.makedirs(out, exist_ok=True)
     md = ["# Comparación de estrategias sobre el historial real de BTC/EUR",
           "",
-          f"Dinero ficticio: {START:.0f} € por combinación, comisión {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % por operación. "
+          f"Dinero ficticio: {START:.0f} € por combinación, comisión {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % + horquilla {ej.SPREAD * 100:.2f} % por operación. "
+          "Cada orden se decide con el cierre de una vela y se ejecuta en la apertura de la siguiente. "
           "Las cifras son en euros. \"Dif.\" es la diferencia frente a comprar y mantener durante el mismo periodo "
           "(positivo = mejor que mantener).",
           ""]
     filas, buenas, probadas = [], [], 0
     for minutos, nombre in INTERVALOS:
-        c, fuente = obtener(minutos, demo)
+        velas_, fuente = obtener(minutos, demo)
+        c, ap = ([x.c for x in velas_], [x.o for x in velas_]) if velas_ else (None, None)
         if not c or len(c) < WARM + 40:
             md += [f"## Velas de {nombre}", "", "Sin datos suficientes.", ""]
             continue
@@ -150,9 +149,9 @@ def main():
                "| Estrategia | Resultado (€) | Operaciones | Caída máx. (%) | Dif. total | Dif. 1ª mitad | Dif. 2ª mitad |",
                "|---|---:|---:|---:|---:|---:|---:|"]
         for nom, fn in ESTRATEGIAS:
-            r, ops, hold, dd = simular(c, WARM, n, s, fn)
-            r1, _, h1, _ = simular(c, WARM, mid, s, fn)
-            r2, _, h2, _ = simular(c, mid, n, s, fn)
+            r, ops, hold, dd = simular(c, WARM, n, s, fn, ap)
+            r1, _, h1, _ = simular(c, WARM, mid, s, fn, ap)
+            r2, _, h2, _ = simular(c, mid, n, s, fn, ap)
             d, d1, d2 = r - hold, r1 - h1, r2 - h2
             probadas += 1
             # gana dinero, supera a mantener en el total y en las dos mitades, y tiene al menos 10 operaciones
@@ -161,7 +160,7 @@ def main():
             filas.append([nombre, nom, round(r, 2), ops, round(dd, 1), round(hold, 2), round(d, 2), round(d1, 2), round(d2, 2), ok])
             if ok:
                 buenas.append(f"{nom} con velas de {nombre}")
-        md +=[f"| *Comprar y mantener* | {f2(START * (1 - FEE) * c[-1] / (c[WARM] * (1 + SLIP)) - START)} | 1 | – | – | – |", ""]
+        md +=[f"| *Comprar y mantener* | {f2(START * (1 - FEE) * c[-1] / ej.precio_compra(ap[WARM + 1], SLIP) - START)} | 1 | – | – | – |", ""]
     md += ["## Veredicto", ""]
     if buenas:
         md.append("Combinaciones que ganan dinero y además superan a comprar y mantener, en el total y en las dos mitades (✔): "

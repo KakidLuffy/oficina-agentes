@@ -28,6 +28,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 import comparar_estrategias as ce
+import ejecucion as ej
 import estrategias
 import velas as vl
 import persistencia as ps
@@ -96,33 +97,8 @@ def _base():
 
 # ---------------- simulador con stop, objetivo y espera ----------------
 def simular2(c, ini, fin, s, fn, opc):
-    """Como comparar_estrategias.simular, pero con stop y objetivo (opc) y espera tras vender. Devuelve lo mismo."""
-    if not opc:
-        return ce.simular(c, ini, fin, s, fn)
-    stop, obj, esp = opc["stop"] * s, opc["objetivo"] * s, opc["espera"]
-    cash, btc, ops, entrada, libre = START, 0.0, 0, 0.0, ini
-    pico, caida = START, 0.0
-    for i in range(ini, fin):
-        p = c[i]
-        senal = fn(c, i, s)
-        if btc > 0:
-            cambio = p / entrada - 1
-            if cambio <= -stop or cambio >= obj:
-                senal = "s"
-        if senal == "b" and btc == 0 and cash > 1 and i >= libre:
-            entrada = p * (1 + SLIP)
-            btc, cash, ops = cash * (1 - FEE) / entrada, 0.0, ops + 1
-        elif senal == "s" and btc > 0:
-            cash, btc, ops, libre = btc * p * (1 - SLIP) * (1 - FEE), 0.0, ops + 1, i + esp
-        eq = cash + btc * p
-        pico = max(pico, eq)
-        caida = max(caida, (pico - eq) / pico * 100)
-        if eq < ce.STOP:
-            cash, btc = btc * p * (1 - SLIP) * (1 - FEE) + cash, 0.0
-            break
-    final = cash + btc * c[fin - 1]
-    mantener = START * (1 - FEE) * c[fin - 1] / (c[ini] * (1 + SLIP))
-    return final - START, ops, mantener - START, caida
+    """Simulador unico (ejecucion.py): senal con el cierre de la vela i, orden a la apertura de i+1, con comision, horquilla y deslizamiento."""
+    return ej.simular(c, c.o, ini, fin, s, fn, opc, FEE, SLIP, ej.SPREAD, START)
 
 
 # ---------------- datos ----------------
@@ -175,7 +151,7 @@ def cargar_series(es_demo):
                 print(f"  sin datos de {sym} {nom}: {e}")
                 continue
             if len(c) >= WARM + 150:
-                series.append({"moneda": sym, "vela": nom, "minutos": minutos, "c": Serie(c, [x.ts for x in velas_])})
+                series.append({"moneda": sym, "vela": nom, "minutos": minutos, "c": Serie(c, [x.ts for x in velas_], [x.o for x in velas_])})
     for s in series:                                    # BTC de la misma duracion de vela, como referencia
         ref = [x for x in series if x["moneda"] == "BTC" and x["minutos"] == s["minutos"]]
         s["c"].ref = ref[0]["c"] if ref else None

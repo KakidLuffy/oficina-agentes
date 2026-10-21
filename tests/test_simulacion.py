@@ -24,7 +24,8 @@ class Operar(BaseDatos):
         self.assertEqual(a["posiciones"], {})
         self.assertLess(a["efectivo"], an.START)           # pierde comision y deslizamiento
         perdido = an.START - a["efectivo"]
-        esperado = an.SLOT * (1 - (1 - an.FEE) ** 2 * (1 - an.SLIP) / (1 + an.SLIP))
+        h = an.SPREAD / 2
+        esperado = an.SLOT * (1 - (1 - an.FEE) ** 2 * (1 - h - an.SLIP) / (1 + h + an.SLIP))
         self.assertAlmostEqual(perdido, esperado, places=9)
 
     def test_coste_registrado_coincide_con_lo_perdido(self):
@@ -99,24 +100,76 @@ class Paso(BaseDatos):
         an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40)
         self.assertEqual(antes, json.dumps(est, sort_keys=True))
 
-    def test_momentum_compra_tras_subida_y_registra_operacion(self):
+    def test_momentum_decide_al_cierre_y_ejecuta_en_la_apertura_siguiente(self):
         precios = [100.0] * 39 + [103.0]
         v = {an.BTC: velas(precios)}
         est = an.estado_nuevo({an.BTC: v[an.BTC][:39]}, T0 + 3600 * 39)
-        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40)
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40)          # aun no existe la vela 40
         por = {a["nombre"]: a for a in est["agentes"]}
+        self.assertEqual(por["Momentum"]["posiciones"], {})
+        self.assertEqual([(o["par"], o["tipo"]) for o in por["Momentum"]["pendientes"]], [(an.BTC, "COMPRA")])
+        self.assertEqual(filas_ops(), [])
+        # aparece la vela 40 (abre a 105): la orden pendiente se ejecuta a ESA apertura, no al cierre 103
+        v[an.BTC].append(vl_.Vela(T0 + 3600 * 40, 105.0, 105.0, 105.0, 105.0, 1.0))
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40 + 600)
+        self.assertEqual(por["Momentum"]["pendientes"], [])
         self.assertIn(an.BTC, por["Momentum"]["posiciones"])
-        self.assertTrue(any(r["agente"] == "Momentum" and r["tipo"] == "COMPRA" for r in filas_ops()))
+        fila = [f for f in filas_ops() if f["agente"] == "Momentum"][0]
+        self.assertAlmostEqual(float(fila["precio_eur"]), round(an.ejecucion.precio_compra(105.0, an.SLIP, an.SPREAD), 6), places=5)
+        self.assertEqual(fila["vela_inicio_utc"], an.iso_vela(T0 + 3600 * 39))      # decidida con la vela 39...
+        self.assertEqual(fila["decision_utc"], an.iso_vela(T0 + 3600 * 40))         # ...que cierra cuando abre la 40
+
+    def test_si_la_vela_siguiente_ya_existe_se_ejecuta_en_la_misma_pasada(self):
+        precios = [100.0] * 39 + [103.0]
+        v = {an.BTC: velas(precios) + [vl_.Vela(T0 + 3600 * 40, 104.0, 104.0, 104.0, 104.0, 1.0)]}   # la vela 40 esta abierta
+        est = an.estado_nuevo({an.BTC: v[an.BTC][:39]}, T0 + 3600 * 39)
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 40 + 600)
+        mom = {a["nombre"]: a for a in est["agentes"]}["Momentum"]
+        self.assertIn(an.BTC, mom["posiciones"])
+        self.assertEqual(mom["pendientes"], [])
+        px = float([f for f in filas_ops() if f["agente"] == "Momentum"][0]["precio_eur"])
+        self.assertAlmostEqual(px, an.ejecucion.precio_compra(104.0, an.SLIP, an.SPREAD), places=4)
+
+    def test_orden_pendiente_se_rechaza_si_ya_no_cabe(self):
+        est = an.estado_nuevo({an.BTC: velas([100.0] * 39)}, T0 + 3600 * 39)
+        a = est["agentes"][0]
+        a["efectivo"] = 0.5                                                # sin dinero cuando llega la ejecucion
+        a["pendientes"] = [{"par": an.BTC, "tipo": "COMPRA", "motivo": "x", "vela_ts": T0 + 3600 * 38}]
+        v = {an.BTC: velas([100.0] * 40)}                                  # la vela 39 (siguiente a la decision) ya existe
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 39 + 60)
+        self.assertEqual(a["posiciones"], {})
+        self.assertEqual(a["pendientes"], [])
+        self.assertEqual([r[5] for r in an.RECHAZOS], ["efectivo insuficiente"])
+
+    def test_no_se_duplican_ordenes_ni_se_exceden_posiciones_con_ordenes_en_cola(self):
+        est = an.estado_nuevo({an.BTC: velas([100.0] * 39)}, T0 + 3600 * 39)
+        a = est["agentes"][0]
+        a["pendientes"] = [{"par": f"M{k}EUR", "tipo": "COMPRA", "motivo": "x", "vela_ts": T0 + 3600 * 38} for k in range(an.MAX_POS)]
+        v = {an.BTC: velas([100.0] * 39)}
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 39)        # sin velas de esas monedas: siguen pendientes
+        self.assertEqual(len(a["pendientes"]), an.MAX_POS)
+        self.assertEqual(a["posiciones"], {})
+
+    def test_orden_caduca_si_la_siguiente_vela_llega_demasiado_tarde(self):
+        est = an.estado_nuevo({an.BTC: velas([100.0] * 39)}, T0 + 3600 * 39)
+        a = est["agentes"][0]
+        a["pendientes"] = [{"par": an.BTC, "tipo": "COMPRA", "motivo": "x", "vela_ts": T0 + 3600 * 39}]
+        v = {an.BTC: velas([100.0] * 39) + [vl_.Vela(T0 + 3600 * 50, 100.0, 100.0, 100.0, 100.0, 1.0)]}
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 39)
+        self.assertEqual(a["pendientes"], [])
+        self.assertEqual(a["posiciones"], {})
+        self.assertTrue(any("caducada" in r[5] for r in an.RECHAZOS))
 
     def test_stop_de_perdida_en_agente_rapido(self):
-        a = next(x for x in [an.agente_nuevo("Momentum rapido", 100.0)])
+        a = an.agente_nuevo("Momentum rapido", 100.0)
         est = {"ultima_vela": T0, "precios": {}, "agentes": [a]}
         a["posiciones"], a["entradas"], a["efectivo"] = {an.BTC: 0.02}, {an.BTC: 100.0}, 8.0
-        v = {an.BTC: velas([100.0] * 10 + [98.0])}      # -2 % desde la entrada
-        est["ultima_vela"] = v[an.BTC][9][0]
-        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 11)
+        v = {an.BTC: velas([100.0] * 10 + [98.0]) + [vl_.Vela(T0 + 3600 * 11, 97.0, 97.0, 97.0, 97.0, 1.0)]}   # -2 %; la vela siguiente abre a 97
+        est["ultima_vela"] = v[an.BTC][9].ts
+        an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 11 + 300)
         self.assertEqual(a["posiciones"], {})
-        self.assertTrue(any("stop de perdida" in r["motivo"] for r in filas_ops()))
+        fila = [f for f in filas_ops() if "stop de perdida" in f["motivo"]][0]
+        self.assertAlmostEqual(float(fila["precio_eur"]), an.ejecucion.precio_venta(97.0, an.SLIP, an.SPREAD), places=4)
 
     def test_limite_de_posiciones(self):
         a = self.agente("Momentum")

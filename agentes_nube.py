@@ -14,6 +14,7 @@ Uso:
 import csv
 import json
 import os
+import bisect
 import random
 import re
 import sys
@@ -23,14 +24,16 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 
 import archivado
+import ejecucion
 import estrategias
 import informe
 import velas as vl
 import persistencia as ps
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
-VERSION = 3           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
+VERSION = 4           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
 FEE = 0.004           # comision 0,40 % por operacion: tarifa "maker" de Kraken Pro en el nivel mas bajo (con ordenes a mercado seria "taker", 0,80 %)
+SPREAD = ejecucion.SPREAD   # horquilla compra-venta total (0,08 %): cada orden paga la mitad por su lado
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
 PERDIDA_DIA = START * 0.04   # si un agente pierde esto (EUR, el 4 % de su capital) en un dia, no vuelve a comprar ese dia
 STOP = START * 0.7    # el responsable de riesgo apaga al agente que baja de aqui
@@ -216,7 +219,7 @@ def _descargar(demo):
 
 # ---------------- estado ----------------
 def agente_nuevo(nombre, precio_btc):
-    return {"nombre": nombre, "efectivo": START, "posiciones": {}, "apagado": False, "operaciones": 0,
+    return {"nombre": nombre, "efectivo": START, "posiciones": {}, "pendientes": [], "apagado": False, "operaciones": 0,
             "dia": None, "eq_dia": START,
             "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"), "precio_inicio": precio_btc}
 
@@ -231,6 +234,7 @@ def estado_nuevo(velas, ahora_ts):
         "precio_inicio": velas[BTC][-1].c,
         "fee": FEE,
         "slip": SLIP,
+        "spread": SPREAD,
         "precios": {p: v[-1].c for p, v in velas.items()},
         "agentes": [agente_nuevo(n, velas[BTC][-1].c) for n, _ in AGENTES],
     }
@@ -315,7 +319,8 @@ def asegurar_operaciones():
 
 def parametros(estado):
     """Usa los costes guardados en el estado. Un estado antiguo sin operaciones adopta los costes actuales."""
-    global FEE, SLIP
+    global FEE, SLIP, SPREAD
+    estado.setdefault("spread", SPREAD if sum(a["operaciones"] for a in estado["agentes"]) == 0 else 0.0)
     if "slip" not in estado:
         if sum(a["operaciones"] for a in estado["agentes"]) == 0:
             estado["fee"], estado["slip"] = FEE, SLIP
@@ -324,7 +329,7 @@ def parametros(estado):
             estado["fee"], estado["slip"] = 0.0025, 0.0
             print("Aviso: este estado ya tiene operaciones con los costes antiguos; se mantienen. "
                   "Para aplicar los nuevos, borra la carpeta datos y empieza de nuevo.")
-    FEE, SLIP = estado["fee"], estado["slip"]
+    FEE, SLIP, SPREAD = estado["fee"], estado["slip"], estado["spread"]
 
 
 def deslizamiento(par, volumenes):
@@ -336,7 +341,7 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo="", vela_inicio=None, 
     """Compra un 'slot' o vende toda la moneda. El precio ejecutado incluye el deslizamiento y se paga la comision."""
     slip = deslizamiento(par, volumenes)
     if tipo == "COMPRA":
-        ejecutado = precio * (1 + slip)
+        ejecutado = ejecucion.precio_compra(precio, slip, SPREAD)     # 'precio' es la apertura de la vela de ejecucion
         importe = min(a["efectivo"], SLOT)
         a["posiciones"][par] = importe * (1 - FEE) / ejecutado
         a["efectivo"] -= importe
@@ -344,7 +349,7 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo="", vela_inicio=None, 
         coste = importe - a["posiciones"][par] * precio                 # comision + deslizamiento pagados al comprar
     else:
         unidades = a["posiciones"].pop(par)
-        ejecutado = precio * (1 - slip)
+        ejecutado = ejecucion.precio_venta(precio, slip, SPREAD)
         importe = unidades * ejecutado * (1 - FEE)    # lo que realmente se cobra, ya sin comision
         a["efectivo"] += importe
         a.setdefault("entradas", {}).pop(par, None)
@@ -377,13 +382,63 @@ def apagar_si_toca(a, precios, fecha, volumenes, ultima=None):
         print(f"RIESGO: {a['nombre']} apagado por superar el limite de perdida")
 
 
+MAX_ESPERA_ORDEN = 6 * 3600       # una orden que no encuentra precio de ejecucion en 6 horas se anula (moneda sin operaciones)
+RECHAZOS = []                     # decisiones que no llegaron a ejecutarse en esta ejecucion: (fecha, agente, par, tipo, motivo, razon)
+
+
+def rechazar(a, o, razon):
+    RECHAZOS.append((iso_vela(o["vela_ts"]), a["nombre"], o["par"], o["tipo"], o["motivo"], razon))
+    print(f"{a['nombre']}: orden de {o['tipo']} {o['par']} no ejecutada ({razon})")
+
+
+def ejecutar_pendientes(a, aperturas, volumenes):
+    """Ejecuta las ordenes decididas con el cierre de una vela a la APERTURA de la siguiente vela con precio (ejecucion.py).
+    Si esa apertura aun no existe (la vela siguiente no ha empezado a negociarse), la orden queda pendiente en el estado."""
+    resto = []
+    for o in a.get("pendientes", []):
+        tss = aperturas.get(o["par"], ([], {}))
+        k = bisect.bisect_right(tss[0], o["vela_ts"])
+        if k >= len(tss[0]):
+            resto.append(o)                                          # aun no hay vela posterior
+            continue
+        ts_exec = tss[0][k]
+        if ts_exec - o["vela_ts"] > MAX_ESPERA_ORDEN:
+            rechazar(a, o, "caducada: sin precio de ejecucion en 6 horas")
+            continue
+        px = tss[1][ts_exec]
+        par, tipo = o["par"], o["tipo"]
+        if a["apagado"]:
+            rechazar(a, o, "agente apagado por riesgo")
+        elif tipo == "COMPRA":
+            if par in a["posiciones"]:
+                rechazar(a, o, "ya hay posicion en esa moneda")
+            elif len(a["posiciones"]) >= MAX_POS:
+                rechazar(a, o, "maximo de posiciones alcanzado")
+            elif a["efectivo"] < SLOT * 0.5:
+                rechazar(a, o, "efectivo insuficiente")
+            elif par in BLOQUEADOS:
+                rechazar(a, o, "datos anomalos en esa moneda")
+            else:
+                fecha = iso_vela(o["vela_ts"])
+                operar(a, "COMPRA", par, px, fecha, volumenes, o["motivo"])
+        else:
+            if par not in a["posiciones"]:
+                rechazar(a, o, "ya no hay posicion que vender")
+            else:
+                fecha = iso_vela(o["vela_ts"])
+                operar(a, "VENTA", par, px, fecha, volumenes, o["motivo"])
+    a["pendientes"] = resto
+
+
 def paso(estado, velas, volumenes, orden, ahora_ts):
     ahora = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    cierres, indice, cerr_por_t, series = {}, {}, {}, {}
+    RECHAZOS.clear()
+    cierres, indice, cerr_por_t, series, aperturas = {}, {}, {}, {}, {}
     for par, v in velas.items():
         cer = [c for c in v if c.ts + 3600 <= ahora_ts]          # solo velas ya cerradas
         cierres[par] = [c.c for c in cer]
         series[par] = estrategias.Serie(cierres[par])       # medias precalculadas; la senal en i solo mira hasta i
+        aperturas[par] = ([c.ts for c in v], {c.ts: c.o for c in v})    # TODAS las velas (tambien la abierta): su apertura ya es un hecho
         for i, x in enumerate(cer):
             t = x.ts
             indice[(par, t)] = i
@@ -394,8 +449,11 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
         print(f"Aviso: {len(tiempos)} velas nuevas (la ejecucion anterior se retraso); se procesan todas en orden.")
     precios = estado["precios"]
     rango = {p: i for i, p in enumerate(orden)}
+    for a in estado["agentes"]:                          # ordenes que quedaron pendientes de una ejecucion anterior
+        a.setdefault("pendientes", [])
+        ejecutar_pendientes(a, aperturas, volumenes)
     for t in tiempos:
-        fecha = datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes")
+        fecha = iso_vela(t)
         pares_t = sorted(cerr_por_t[t], key=lambda p: rango.get(p, 10 ** 6))
         for par in pares_t:
             precios[par] = cierres[par][indice[(par, t)]]
@@ -408,23 +466,31 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                 a["dia"], a["eq_dia"] = dia, equity(a, precios)
             op = OPCIONES.get(a["nombre"], {})
             senales = {par: decidir(series[par], indice[(par, t)], 1.0) for par in pares_t}
-            for par in pares_t:                          # primero se vende (stop y objetivo, y luego la senal vendedora)...
+            nuevas = a.setdefault("pendientes", [])
+            en_cola = {(o["par"], o["tipo"]) for o in nuevas}
+
+            def pedir(par, tipo, motivo):
+                if (par, tipo) not in en_cola:
+                    nuevas.append({"par": par, "tipo": tipo, "motivo": motivo, "vela_ts": t})
+                    en_cola.add((par, tipo))
+            for par in pares_t:                          # primero se decide vender (stop y objetivo, y luego la senal vendedora)...
                 if par not in a["posiciones"]:
                     continue
                 entrada = a.get("entradas", {}).get(par)
                 cambio = precios[par] / entrada - 1 if entrada else 0.0
                 if op.get("stop") and entrada and cambio <= -op["stop"]:
-                    operar(a, "VENTA", par, precios[par], fecha, volumenes, f"stop de perdida ({cambio * 100:.1f} %)")
+                    pedir(par, "VENTA", f"stop de perdida ({cambio * 100:.1f} %)")
                 elif op.get("objetivo") and entrada and cambio >= op["objetivo"]:
-                    operar(a, "VENTA", par, precios[par], fecha, volumenes, f"objetivo de ganancia ({cambio * 100:+.1f} %)")
+                    pedir(par, "VENTA", f"objetivo de ganancia ({cambio * 100:+.1f} %)")
                 elif senales[par] == "s":
-                    operar(a, "VENTA", par, precios[par], fecha, volumenes, "senal vendedora")
+                    pedir(par, "VENTA", "senal vendedora")
             bloqueado = a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA
-            for par in pares_t:                          # ...y luego se compra, por orden de volumen
-                if senales[par] == "b" and par not in a["posiciones"]:
+            compras = sum(1 for o in nuevas if o["tipo"] == "COMPRA")
+            for par in pares_t:                          # ...y luego se decide comprar, por orden de volumen
+                if senales[par] == "b" and par not in a["posiciones"] and (par, "COMPRA") not in en_cola:
                     if par in BLOQUEADOS:
                         continue                         # salto anomalo en los datos: no se abre posicion nueva
-                    if len(a["posiciones"]) >= MAX_POS or a["efectivo"] < SLOT * 0.5:
+                    if len(a["posiciones"]) + compras >= MAX_POS or a["efectivo"] - compras * SLOT < SLOT * 0.5:
                         break
                     if bloqueado:
                         print(f"{a['nombre']}: compra bloqueada por el limite de perdida diaria")
@@ -434,7 +500,9 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                     uv = a.get("ultima_venta", {}).get(par)
                     if op.get("espera_h") and uv and (datetime.fromisoformat(fecha) - datetime.fromisoformat(uv)).total_seconds() < op["espera_h"] * 3600:
                         continue                         # vendida hace poco: se espera antes de volver a entrar
-                    operar(a, "COMPRA", par, precios[par], fecha, volumenes, "senal compradora")
+                    pedir(par, "COMPRA", "senal compradora")
+                    compras += 1
+            ejecutar_pendientes(a, aperturas, volumenes)  # a la apertura de la vela siguiente, si ya existe
             apagar_si_toca(a, precios, fecha, volumenes)
     if tiempos:
         estado["ultima_vela"] = tiempos[-1]
@@ -492,7 +560,7 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     asegurar_operaciones()
     precio = precios[BTC]
     eqs = [equity(a, precios) for a in estado["agentes"]]
-    mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
+    mantener = START * (1 - FEE) * precio / ejecucion.precio_compra(estado["precio_inicio"], SLIP, SPREAD)
     eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
     cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"]
     fila = [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)]
@@ -515,7 +583,7 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"En marcha desde: {estado['inicio']} UTC ({dias:.1f} dias)",
         f"Monedas vigiladas: las {n_monedas} de mayor volumen contra EUR (con datos en esta ejecucion: {n_con_datos}) · "
         f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una",
-        f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
+        f"Costes simulados por operacion: comision {FEE * 100:.2f} % + horquilla {SPREAD * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
         f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",
         "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |",
@@ -528,7 +596,7 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
             est = "Con " + ", ".join(nombre_corto(p) for p in sorted(a["posiciones"]))
         else:
             est = "En efectivo"
-        hold_a = START * (1 - FEE) * precio / (a["precio_inicio"] * (1 + SLIP))   # mantener BTC desde que empezo ESTE agente
+        hold_a = START * (1 - FEE) * precio / ejecucion.precio_compra(a["precio_inicio"], SLIP, SPREAD)   # mantener BTC desde que empezo ESTE agente
         lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - hold_a:+.2f} | "
                       f"{a['operaciones']} | {a['inicio'][:10]} | {est} |")
     lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | {estado['inicio'][:10]} | Referencia |")
