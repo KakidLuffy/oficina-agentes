@@ -29,6 +29,7 @@ import estrategias
 import informe
 import velas as vl
 import persistencia as ps
+import reglas_mercado as rm
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
 VERSION = 4           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
@@ -93,6 +94,13 @@ def kraken(url):
         raise RuntimeError(err)
 
 
+REGLAS = {}      # {par: reglas_mercado.Regla} leidas de AssetPairs de Kraken
+
+
+def regla(par):
+    return REGLAS.get(par) or rm.GENERICA._replace(par=par)
+
+
 def universo_kraken():
     """Las TOP_MONEDAS de mayor volumen entre los pares contra EUR en linea (sin stablecoins ni fiat).
     Devuelve [(par, volumen_24h_EUR)] ordenado de mayor a menor volumen."""
@@ -110,6 +118,7 @@ def universo_kraken():
         if base.upper() in EXCLUIR_BASES:
             continue
         pares[clave] = alt
+        REGLAS[alt] = rm.desde_kraken(alt, v)
     volumenes = {}
     try:
         lista = list(pares)
@@ -337,32 +346,59 @@ def deslizamiento(par, volumenes):
     return SLIP if volumenes.get(par, 0) >= VOLUMEN_ALTO or par == BTC else max(SLIP, SLIP_POCO_VOLUMEN)
 
 
-def operar(a, tipo, par, precio, fecha, volumenes, motivo="", vela_inicio=None, decision=None):
-    """Compra un 'slot' o vende toda la moneda. El precio ejecutado incluye el deslizamiento y se paga la comision."""
+RECHAZOS = []        # decisiones que no llegaron a ejecutarse en esta ejecucion: (fecha, agente, par, tipo, motivo, razon)
+
+
+def preparar_orden(a, tipo, par, precio, volumenes):
+    """Calcula la orden con costes, redondeo y minimos del exchange. Devuelve (datos, None) o (None, motivo_de_rechazo).
+    'precio' es el precio de referencia (apertura de la vela de ejecucion)."""
     slip = deslizamiento(par, volumenes)
+    r = regla(par)
     if tipo == "COMPRA":
-        ejecutado = ejecucion.precio_compra(precio, slip, SPREAD)     # 'precio' es la apertura de la vela de ejecucion
+        ejecutado = ejecucion.precio_compra(precio, slip, SPREAD)
         importe = min(a["efectivo"], SLOT)
-        a["posiciones"][par] = importe * (1 - FEE) / ejecutado
+        q = rm.redondear_abajo(importe * (1 - FEE) / ejecutado, r.lot_decimals)     # el exchange solo admite ciertos decimales
+        motivo = rm.motivo_invalida(r, q, ejecutado)
+        if motivo:
+            return None, motivo
+        return {"ejecutado": ejecutado, "unidades": q, "importe": q * ejecutado / (1 - FEE)}, None   # lo no gastado por el redondeo queda en efectivo
+    unidades = a["posiciones"][par]
+    ejecutado = ejecucion.precio_venta(precio, slip, SPREAD)
+    motivo = rm.motivo_invalida(r, unidades, ejecutado)
+    if motivo:
+        return None, motivo
+    return {"ejecutado": ejecutado, "unidades": unidades, "importe": unidades * ejecutado * (1 - FEE)}, None
+
+
+def operar(a, tipo, par, precio, fecha, volumenes, motivo="", vela_inicio=None, decision=None):
+    """Compra un 'slot' o vende toda la moneda. El precio ejecutado incluye horquilla y deslizamiento; se paga la comision y se
+    respetan los minimos y decimales del exchange. Devuelve True si se ejecuta; False (y anota el rechazo) si no cumple los minimos."""
+    datos, razon = preparar_orden(a, tipo, par, precio, volumenes)
+    if razon:
+        RECHAZOS.append((fecha, a["nombre"], par, tipo, motivo, razon))
+        print(f"{a['nombre']}: orden de {tipo} {par} no ejecutada ({razon})")
+        return False
+    ejecutado, importe = datos["ejecutado"], datos["importe"]
+    if tipo == "COMPRA":
+        a["posiciones"][par] = datos["unidades"]
         a["efectivo"] -= importe
         a.setdefault("entradas", {})[par] = ejecutado
-        coste = importe - a["posiciones"][par] * precio                 # comision + deslizamiento pagados al comprar
+        coste = importe - datos["unidades"] * precio                    # comision + horquilla + deslizamiento pagados al comprar
     else:
         unidades = a["posiciones"].pop(par)
-        ejecutado = ejecucion.precio_venta(precio, slip, SPREAD)
-        importe = unidades * ejecutado * (1 - FEE)    # lo que realmente se cobra, ya sin comision
         a["efectivo"] += importe
         a.setdefault("entradas", {}).pop(par, None)
         a.setdefault("ultima_venta", {})[par] = fecha
-        coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
+        coste = unidades * precio - importe                              # comision + horquilla + deslizamiento pagados al vender
     a["operaciones"] += 1
     if vela_inicio is None:                                           # caso normal: 'fecha' es el inicio de la vela decisoria
         vela_inicio = fecha
     if decision is None:
         decision = fin_de_vela(fecha)
-    COLA_OPS.append([fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4),
-                     vela_inicio, decision])
+    COLA_OPS.append([fecha, a["nombre"], par, tipo, round(ejecutado, regla(par).pair_decimals if regla(par).fuente == "kraken" else 6),
+                     round(importe, 2), motivo, round(coste, 4), vela_inicio, decision])
     print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR ({motivo})")
+    return True
 
 
 def equity(a, precios):
@@ -383,7 +419,6 @@ def apagar_si_toca(a, precios, fecha, volumenes, ultima=None):
 
 
 MAX_ESPERA_ORDEN = 6 * 3600       # una orden que no encuentra precio de ejecucion en 6 horas se anula (moneda sin operaciones)
-RECHAZOS = []                     # decisiones que no llegaron a ejecutarse en esta ejecucion: (fecha, agente, par, tipo, motivo, razon)
 
 
 def rechazar(a, o, razon):
@@ -500,6 +535,8 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                     uv = a.get("ultima_venta", {}).get(par)
                     if op.get("espera_h") and uv and (datetime.fromisoformat(fecha) - datetime.fromisoformat(uv)).total_seconds() < op["espera_h"] * 3600:
                         continue                         # vendida hace poco: se espera antes de volver a entrar
+                    if preparar_orden(a, "COMPRA", par, precios[par], volumenes)[1]:
+                        continue                         # no cumple los minimos del exchange con un slot tan pequeno: ni se intenta
                     pedir(par, "COMPRA", "senal compradora")
                     compras += 1
             ejecutar_pendientes(a, aperturas, volumenes)  # a la apertura de la vela siguiente, si ya existe
@@ -569,6 +606,9 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     tx.poner(OPERACIONES, ops + texto_csv(COLA_OPS))
     tx.poner(HISTORIAL, historial_con_fila(cab_hist, fila))
     tx.poner(ESTADO, json.dumps(estado, indent=2))
+    if REGLAS:
+        vigiladas = {p: REGLAS[p]._asdict() for p in sorted(set(estado["precios"]) | set(p for a in estado["agentes"] for p in a["posiciones"])) if p in REGLAS}
+        tx.poner(os.path.join(DATOS, "reglas_mercado.json"), json.dumps({"generado": ahora, "reglas": vigiladas}, indent=1, ensure_ascii=False) + "\n")
     nuevas = incidencias_nuevas(ahora)
     if nuevas:
         previo = leer_texto(ruta_incidencias()) or texto_csv([CAB_INCIDENCIAS])
@@ -601,6 +641,10 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
                       f"{a['operaciones']} | {a['inicio'][:10]} | {est} |")
     lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | {estado['inicio'][:10]} | Referencia |")
     nombres = [n for n, _ in AGENTES]
+    sin_verificar = [p for p in estado["precios"] if regla(p).fuente != "kraken"]
+    if sin_verificar:
+        lineas += ["", f"⚠ Minimos del exchange NO verificados para {len(sin_verificar)} moneda(s) (se usa un supuesto de 0,5 EUR de coste minimo): "
+                   + ", ".join(nombre_corto(p) for p in sin_verificar[:10]) + ("…" if len(sin_verificar) > 10 else "") + "."]
     try:
         met = informe.metricas(HISTORIAL, OPERACIONES, nombres + ["Comprar y mantener"])
         lineas += ["", "Riesgo (calculado con el historial guardado):", "",

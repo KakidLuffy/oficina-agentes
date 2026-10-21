@@ -19,14 +19,14 @@ class Operar(BaseDatos):
     def test_ida_y_vuelta_cuesta_comisiones_y_nunca_crea_dinero(self):
         a = self.agente()
         an.operar(a, "COMPRA", an.BTC, 100.0, FECHA, {an.BTC: 1e6})
-        self.assertAlmostEqual(a["efectivo"], an.START - an.SLOT)
+        self.assertAlmostEqual(a["efectivo"], an.START - an.SLOT, delta=1e-5)    # el redondeo de cantidad devuelve migajas
         an.operar(a, "VENTA", an.BTC, 100.0, FECHA, {an.BTC: 1e6})
         self.assertEqual(a["posiciones"], {})
         self.assertLess(a["efectivo"], an.START)           # pierde comision y deslizamiento
         perdido = an.START - a["efectivo"]
         h = an.SPREAD / 2
         esperado = an.SLOT * (1 - (1 - an.FEE) ** 2 * (1 - h - an.SLIP) / (1 + h + an.SLIP))
-        self.assertAlmostEqual(perdido, esperado, places=9)
+        self.assertAlmostEqual(perdido, esperado, delta=1e-5)
 
     def test_coste_registrado_coincide_con_lo_perdido(self):
         a = self.agente()

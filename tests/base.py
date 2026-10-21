@@ -35,6 +35,8 @@ class BaseDatos(unittest.TestCase):
         an.GRAFICO = os.path.join(d, "grafico.svg")
         self.addCleanup(self._restaurar)
         an.COLA_OPS.clear()
+        an.RECHAZOS.clear()
+        an.REGLAS.clear()
         an.INCIDENCIAS.clear()
         an.BLOQUEADOS.clear()
         an.asegurar_operaciones()
