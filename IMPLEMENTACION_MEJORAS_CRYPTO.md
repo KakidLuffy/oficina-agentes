@@ -25,7 +25,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 17 | CRYPTO-014 | Métricas avanzadas | VALIDADA |
 | 18 | CRYPTO-016 | Decisiones rechazadas + alertas | VALIDADA (la alerta real solo se puede probar dentro de GitHub) |
 | 19 | CRYPTO-019 | Seguridad del panel | VALIDADA (Chromium real) |
-| 20 | CRYPTO-020 | Analista de IA (solo propuestas) | PENDIENTE |
+| 20 | CRYPTO-020 | Analista de IA (solo propuestas) + adaptador de exchange | IMPLEMENTADA (analista) / DISEÑADA (adaptador, sin conexión: no autorizada) |
 
 ## Preparación (2026-10-22)
 - Rama `mejoras-crypto` creada desde `main` (f383ff8). Copia de `datos/` guardada fuera del repositorio como línea base.
@@ -171,3 +171,11 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Tipografías:** no pude descargar los ficheros (sin acceso al registro de paquetes desde aquí), así que el panel usa las tipografías que ya tenga el dispositivo (`local()`) o la del sistema; el aspecto puede variar ligeramente. Si se quiere el aspecto exacto, hay que guardar los `.woff2` (licencia libre) en el repositorio y declararlos con `@font-face`.
 - **Pruebas (+7, 188 en total):** datos normales, archivos vacíos, estado roto, columnas en blanco (sin «NaN»), datos maliciosos en estado, historial, operaciones, laboratorio y parte del director (no se ejecuta nada; comprobado además por mutación: con `esc` desactivado la prueba falla), `?base=` manipulado, ninguna petición a terceros.
 - **Límite:** el CSP en `<meta>` no puede impedir que otros sitios incrusten el panel en un `iframe` (eso exige cabeceras HTTP, que GitHub Pages no permite configurar).
+
+## Mejora 20 — CRYPTO-020 Analista experimental y adaptador de exchange de solo lectura
+- **Archivos:** `analista.py`, `exchange_lectura.py`, `ADAPTADOR_EXCHANGE_SOLO_LECTURA.md`, `.github/workflows/analista.yml` (solo manual), `tests/test_analista.py`.
+- **Analista:** examina `estado.json`, `laboratorio.json`, `operaciones.csv`, `decisiones_rechazadas.csv`, `incidencias_datos.csv` y redacta **propuestas pendientes de revisión** (hipótesis, inconsistencias, experimentos, riesgos, informes) con evidencia y «validación requerida». Es determinista, sin red ni claves ni modelo externo (regla «solo gratis»); un analista basado en un modelo de lenguaje tendría que entregar el mismo esquema y pasar por `validar_propuestas`.
+- **Incapacidad técnica (comprobada con pruebas, no solo declarada):** no importa el simulador, la ejecución, las estrategias, la persistencia ni módulos de red; solo una función escribe archivos y solo dos (`propuestas_analista.json/.md`); el lector solo abre una lista cerrada; los estados posibles no incluyen «aplicada»; solo **añade** propuestas nuevas y nunca modifica una existente ni su estado de revisión; el simulador y el director no lo importan; el workflow es manual y solo publica sus dos archivos. El validador rechaza esquemas con campos de acción, estados no permitidos y frases que ordenan operar, mover fondos o tocar límites.
+- **Adaptador de exchange:** **no se implementa ninguna conexión** (no hay necesidad concreta ni autorización del usuario). Solo se fija el contrato: sin métodos de órdenes/retiradas, credenciales solo de «consulta», solo rutas públicas, no importable desde el simulador. El documento explica qué haría falta del usuario.
+- **Pruebas (+19, 207 en total).**
+- **Límite:** las reglas del analista son heurísticas simples; sirven para dejar constancia y orientar, no sustituyen a la validación cuantitativa.
