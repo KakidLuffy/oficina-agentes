@@ -8,7 +8,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 |---|---|---|---|
 | 1 | CRYPTO-015 | Pruebas automáticas | VALIDADA |
 | 2 | CRYPTO-018 | Persistencia atómica | VALIDADA |
-| 3 | CRYPTO-011 | Archivo completo con manifiesto | PENDIENTE |
+| 3 | CRYPTO-011 | Archivo completo con manifiesto | VALIDADA |
 | 4 | CRYPTO-017 | Robustez de GitHub Actions | PENDIENTE |
 | 5 | CRYPTO-008 | Validación de velas | PENDIENTE |
 | 6 | CRYPTO-009 | Alineación de marcas temporales | PENDIENTE |
@@ -44,3 +44,9 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Cambio:** `escribir_atomico` (temporal + fsync + `os.replace`) para todos los archivos generados. Estado, historial y operaciones se guardan en una **transacción** con diario (`datos/.tx/journal.json` con huellas SHA-256): si el proceso muere antes del diario no cambia nada; si muere después, `recuperar()` termina la escritura al arrancar. Las operaciones de una ejecución se acumulan en `COLA_OPS` y se escriben junto con el estado (antes se añadían a `operaciones.csv` al vuelo, y un corte podía duplicarlas al repetir).
 - **Pruebas:** 10 nuevas (escritura atómica, fallo de `replace`, transacción, recuperación completada/descartada, hash corrupto, cortes antes/después del diario sin duplicados). Total 38 correctas. Ejecución real en modo demo de simulación, director y laboratorio sin errores ni temporales sobrantes.
 - **Riesgo residual:** `resumen.md` y `grafico.svg` son derivados y se escriben aparte (atómicos, pero no dentro de la transacción; se regeneran en la siguiente ejecución). Los CSV se reescriben enteros en cada paso (coste lineal; irrelevante con este volumen).
+
+## Mejora 3 — CRYPTO-011 Archivo completo con manifiesto
+- **Archivos:** `archivado.py` (nuevo), `agentes_nube.py`, `tests/test_archivado.py`.
+- **Cambio:** el archivado ya no *mueve* sin comprobar: copia → compara SHA-256 de cada copia → escribe `MANIFIESTO.json` (archivos, bytes, huella, filas de los CSV, motivo, versión y capital anterior/nuevo, fecha) → solo entonces borra los originales de la simulación. Si algo falla, los originales quedan y la carpeta se marca `INCOMPLETO.txt`. Nunca sobrescribe un archivo previo (sufijo `_2`, `_3`…). Además **copia** como contexto `director_estado.json`, `parte_director.json`, `laboratorio.json`, `memoria.jsonl`, `propuestas.md` (no se borran: el director y el laboratorio siguen vivos). `verificar()` detecta archivos faltantes o manipulados.
+- **Pruebas:** 5 nuevas (archivar+verificar, no sobrescribir, sin archivos, fallo de copia conserva originales, manipulación detectada) + comprobación del manifiesto en el test de `archivar`. Prueba real en demo: cambio de versión → archivo con manifiesto, `verificar` = sin problemas. Total 43 correctas.
+- **Nota:** los archivos antiguos ya existentes (`archivo_50eur_*`, `archivo_10eur_v1_*`) no tienen manifiesto; se podría generar uno retroactivo (no se hace para no tocar históricos sin autorización).

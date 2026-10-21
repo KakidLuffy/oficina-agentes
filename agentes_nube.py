@@ -18,10 +18,10 @@ import random
 import sys
 import time
 import io
-import shutil
 import urllib.request
 from datetime import datetime, timezone
 
+import archivado
 import informe
 import persistencia as ps
 
@@ -538,13 +538,15 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     print("\n".join(lineas[4:]))
 
 
-def archivar(etiqueta):
-    """Guarda los archivos de la simulacion anterior en datos/archivo_<etiqueta>_<fecha>/ y deja datos/ listo para empezar."""
-    destino = os.path.join(DATOS, f"archivo_{etiqueta}_{datetime.now(timezone.utc):%Y%m%d}")
-    os.makedirs(destino, exist_ok=True)
-    for ruta in (ESTADO, HISTORIAL, OPERACIONES, RESUMEN, GRAFICO):
-        if os.path.exists(ruta):
-            shutil.move(ruta, os.path.join(destino, os.path.basename(ruta)))
+CONTEXTO = ("director_estado.json", "parte_director.json", "laboratorio.json", "memoria.jsonl", "propuestas.md")
+
+
+def archivar(etiqueta, meta=None):
+    """Archivo verificable (con manifiesto y huellas) de la simulacion anterior en datos/archivo_<etiqueta>_<fecha>/.
+    Los archivos del director y del laboratorio se COPIAN como contexto; los de la simulacion se borran solo tras verificar."""
+    mover = [ESTADO, HISTORIAL, OPERACIONES, RESUMEN, GRAFICO]
+    contexto = [os.path.join(DATOS, c) for c in CONTEXTO]
+    return archivado.archivar(DATOS, etiqueta, mover, contexto, meta)
 
 
 def main():
@@ -559,7 +561,9 @@ def main():
             estado = json.load(f)
         cap_ant, ver_ant = estado.get("capital_inicial", 50.0), estado.get("version", 1)
         if cap_ant != START or ver_ant != VERSION:
-            archivar(f"{cap_ant:g}eur" if cap_ant != START else f"{cap_ant:g}eur_v{ver_ant}")
+            archivar(f"{cap_ant:g}eur" if cap_ant != START else f"{cap_ant:g}eur_v{ver_ant}",
+                     {"motivo": "cambio de capital o de reglas", "capital_anterior": cap_ant, "version_anterior": ver_ant,
+                      "capital_nuevo": START, "version_nueva": VERSION})
             estado = estado_nuevo(velas, ahora_ts)
             print("Cambio de capital o de reglas: simulacion anterior archivada; los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
         else:

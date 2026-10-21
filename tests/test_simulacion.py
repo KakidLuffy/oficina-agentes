@@ -133,6 +133,7 @@ class Persistencia(BaseDatos):
         carpetas = [d for d in os.listdir(an.DATOS) if d.startswith("archivo_prueba")]
         self.assertEqual(len(carpetas), 1)
         self.assertTrue(os.path.exists(os.path.join(an.DATOS, carpetas[0], "estado.json")))
+        self.assertTrue(os.path.exists(os.path.join(an.DATOS, carpetas[0], "MANIFIESTO.json")))
 
     def test_ajustar_historial_rellena_columnas_nuevas(self):
         with open(an.HISTORIAL, "w", newline="") as f:
