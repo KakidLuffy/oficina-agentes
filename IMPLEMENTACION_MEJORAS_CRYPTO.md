@@ -20,7 +20,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 12 | CRYPTO-007 | Modelo de costes compartido | VALIDADA (horquilla y deslizamiento son supuestos, no medidos) |
 | 13 | CRYPTO-012 | Precisión decimal | VALIDADA |
 | 14 | CRYPTO-010 | Sin historial inventado | VALIDADA (panel: comprobación visual pendiente en etapa 6) |
-| 15 | CRYPTO-004 | Sesgo de supervivencia | PENDIENTE |
+| 15 | CRYPTO-004 | Sesgo de supervivencia | IMPLEMENTADA (reduce, no elimina) |
 | 16 | CRYPTO-003 | Walk-forward y regímenes | PENDIENTE |
 | 17 | CRYPTO-014 | Métricas avanzadas | PENDIENTE |
 | 18 | CRYPTO-016 | Decisiones rechazadas + alertas | PENDIENTE |
@@ -134,3 +134,10 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Cambio:** las columnas del agente nuevo quedan **vacías** en las filas anteriores. `informe.grafico_svg` dibuja solo los puntos reales (sin romper si una serie tiene huecos), `informe.metricas` ya ignoraba vacíos, el director ya trataba los vacíos como "sin dato", y el panel ya filtraba valores no numéricos (`isFinite`). Corregido de paso un texto fijo del gráfico del panel ("50 € (capital inicial)") que ahora usa el capital real del estado.
 - **Pruebas:** historial con columna nueva vacía (no `START`); gráfico y métricas con columnas vacías sin NaN. Total 129 correctas.
 - **Pendiente:** verificar visualmente el panel con una columna vacía (se hará en la etapa 6 junto a la seguridad del panel).
+
+## Mejora 15 — CRYPTO-004 Sesgo de supervivencia
+- **Archivos:** `universo_historico.py` (nuevo), `ejecucion.py`, `estrategias.py`, `laboratorio.py`, `tests/test_universo_historico.py`, `tests/test_informe_lab.py`.
+- **Problema:** el laboratorio probaba una lista fija de 12 monedas **que existen hoy**: las que murieron o cayeron no están, así que el historial es más amable que la realidad.
+- **Cambio:** universo "punto en el tiempo": cada moneda solo se puede **comprar** mientras estaba entre las **10 de mayor volumen** (de las 16 candidatas; suma de los últimos 30 días con datos solo hasta esa vela, sin mirar el futuro; una moneda sin 30 días de historia aún no cuenta; las ventas siempre se permiten). El simulador acepta `permitido(i)`. Cada variante se evalúa **dos veces** (punto en el tiempo y lista fija) y el informe publica la diferencia media y cuántas variantes aprueban en cada caso (sección «Sesgo de supervivencia» de `laboratorio.md`, y `sesgo_supervivencia` en el JSON). Se amplía la lista de 12 a 16 monedas (BCH, XLM, UNI, NEAR).
+- **Pruebas (+11, 140 en total):** top-N por volumen, ranking cambiante, sin mirar el futuro, monedas sin historia suficiente, alineación por marca temporal con inicios distintos, volumen inválido, N mayor que el número de monedas, simulador con membresía (no compra fuera, sí vende), integración en el laboratorio demo (membresía alineada y variable; reduce operaciones).
+- **Límite que no se puede arreglar con datos gratuitos:** Kraken no ofrece historial de monedas deslistadas; **las que murieron no pueden incluirse**. El informe lo dice explícitamente y pide tomar los resultados favorables como optimistas.

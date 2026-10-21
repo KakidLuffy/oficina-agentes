@@ -122,3 +122,23 @@ class AlineacionTemporal(unittest.TestCase):
     def test_demo_produce_marcas_alineadas_entre_monedas(self):
         a, b = laboratorio.demo("BTC", 240), laboratorio.demo("ETH", 240)
         self.assertEqual([x.ts for x in a], [x.ts for x in b])
+
+
+class UniversoEnElLaboratorio(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.series = laboratorio.cargar_series(True)
+
+    def test_cada_serie_tiene_membresia_alineada_y_variable(self):
+        self.assertGreaterEqual(len(self.series), 4)
+        for s in self.series:
+            self.assertEqual(len(s["miembro"]), len(s["c"]))
+        self.assertTrue(any(not all(s["miembro"]) for s in self.series))       # hay momentos fuera del top-N
+
+    def test_el_universo_punto_en_el_tiempo_solo_reduce_las_operaciones(self):
+        import estrategias as es
+        fn = es.cruce(5, 20)
+        con = laboratorio.evaluar(self.series, fn, None, pit=True)
+        sin = laboratorio.evaluar(self.series, fn, None, pit=False)
+        self.assertLessEqual(sum(x["test_ops"] for x in con), sum(x["test_ops"] for x in sin))
+        self.assertNotEqual([x["test_dif"] for x in con], [x["test_dif"] for x in sin])

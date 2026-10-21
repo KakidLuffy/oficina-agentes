@@ -31,6 +31,7 @@ import comparar_estrategias as ce
 import costes as costes_mod
 import ejecucion as ej
 import estrategias
+import universo_historico as uh
 import velas as vl
 import persistencia as ps
 
@@ -42,7 +43,10 @@ MIN_OPS_EXAMEN = 4
 FRACCION_SERIES = 0.6           # debe aprobar en al menos el 60 % de las series
 N_CANDIDATAS = 12               # cuántas variantes (las mejores en entrenamiento) pasan al examen
 PARES = [("BTC", "XBTEUR"), ("ETH", "ETHEUR"), ("SOL", "SOLEUR"), ("XRP", "XRPEUR"), ("ADA", "ADAEUR"), ("DOGE", "DOGEEUR"),
-         ("LINK", "LINKEUR"), ("DOT", "DOTEUR"), ("LTC", "LTCEUR"), ("AVAX", "AVAXEUR"), ("ATOM", "ATOMEUR"), ("TRX", "TRXEUR")]
+         ("LINK", "LINKEUR"), ("DOT", "DOTEUR"), ("LTC", "LTCEUR"), ("AVAX", "AVAXEUR"), ("ATOM", "ATOMEUR"), ("TRX", "TRXEUR"),
+         ("BCH", "BCHEUR"), ("XLM", "XLMEUR"), ("UNI", "UNIEUR"), ("NEAR", "NEAREUR")]
+N_TOP = 10                      # universo punto en el tiempo: solo se opera una moneda mientras esta entre las N de mayor volumen (de las PARES)
+VENTANA_VOLUMEN_DIAS = 30       # el volumen se mide con los ultimos 30 dias (solo datos hasta cada vela)
 VELAS = [(240, "4 h"), (1440, "1 día")]
 
 
@@ -97,10 +101,10 @@ def _base():
 
 
 # ---------------- simulador con stop, objetivo y espera ----------------
-def simular2(c, ini, fin, s, fn, opc, costes=None):
+def simular2(c, ini, fin, s, fn, opc, costes=None, permitido=None):
     """Simulador unico (ejecucion.py): senal con el cierre de la vela i, orden a la apertura de i+1, con comision, horquilla y deslizamiento.
     'costes' (costes.py) permite repetir la prueba con otro escenario (por defecto, el base)."""
-    return ej.simular(c, c.o, ini, fin, s, fn, opc, FEE, SLIP, ej.SPREAD, START, costes)
+    return ej.simular(c, c.o, ini, fin, s, fn, opc, FEE, SLIP, ej.SPREAD, START, costes, permitido)
 
 
 # ---------------- datos ----------------
@@ -131,12 +135,13 @@ def descargar(par, minutos):
 
 def demo(par, minutos):
     random.seed(hash((par, minutos)) % 100000)
+    escala_vol = 10 ** random.uniform(1, 3)               # cada moneda negocia un volumen distinto
     p, out = 100.0, []
     t0 = 1_700_000_000 - (1_700_000_000 % (minutos * 60))
     for k in range(720):
         antes = p
         p *= 1 + random.gauss(0.0001, 0.012 * math.sqrt(minutos / 60) ** 0.7)
-        out.append(vl.Vela(t0 + k * minutos * 60, antes, max(antes, p), min(antes, p), p, 1.0))
+        out.append(vl.Vela(t0 + k * minutos * 60, antes, max(antes, p), min(antes, p), p, escala_vol * math.exp(random.gauss(0, 0.5))))
     return out
 
 
@@ -153,7 +158,13 @@ def cargar_series(es_demo):
                 print(f"  sin datos de {sym} {nom}: {e}")
                 continue
             if len(c) >= WARM + 150:
-                series.append({"moneda": sym, "vela": nom, "minutos": minutos, "c": Serie(c, [x.ts for x in velas_], [x.o for x in velas_])})
+                series.append({"moneda": sym, "vela": nom, "minutos": minutos, "c": Serie(c, [x.ts for x in velas_], [x.o for x in velas_], [x.v * x.c for x in velas_])})
+    for minutos in {s["minutos"] for s in series}:      # universo punto en el tiempo, por duracion de vela (ver universo_historico.py)
+        grupo = [s for s in series if s["minutos"] == minutos]
+        ventana = max(2, int(VENTANA_VOLUMEN_DIAS * 1440 / minutos))
+        m = uh.membresia({s["moneda"]: list(zip(s["c"].ts, s["c"].vol)) for s in grupo}, N_TOP, ventana)
+        for s in grupo:
+            s["miembro"] = m[s["moneda"]]
     for s in series:                                    # BTC de la misma duracion de vela, como referencia
         ref = [x for x in series if x["moneda"] == "BTC" and x["minutos"] == s["minutos"]]
         s["c"].ref = ref[0]["c"] if ref else None
@@ -162,14 +173,17 @@ def cargar_series(es_demo):
 
 
 # ---------------- examen ----------------
-def evaluar(series, fn, opc=None, costes=None):
-    """Para cada serie: entrenamiento y examen (con los costes base o con el escenario 'costes'). Devuelve lista de dicts."""
+def evaluar(series, fn, opc=None, costes=None, pit=True):
+    """Para cada serie: entrenamiento y examen (con los costes base o con el escenario 'costes'). Devuelve lista de dicts.
+    pit=True: solo se compra mientras la moneda esta en el top-N de volumen EN ESA FECHA (universo punto en el tiempo);
+    pit=False: lista fija de monedas actuales (la forma antigua, con sesgo de supervivencia)."""
     res = []
     for s in series:
         c, n, esc = s["c"], len(s["c"]), math.sqrt(s["minutos"] / 60)
         corte = WARM + int((n - WARM) * PARTE_ENTRENO)
-        r1, o1, h1, _ = simular2(c, WARM, corte, esc, fn, opc, costes)
-        r2, o2, h2, dd = simular2(c, corte, n, esc, fn, opc, costes)
+        perm = (lambda i, m=s["miembro"]: m[i]) if pit and s.get("miembro") else None
+        r1, o1, h1, _ = simular2(c, WARM, corte, esc, fn, opc, costes, perm)
+        r2, o2, h2, dd = simular2(c, corte, n, esc, fn, opc, costes, perm)
         res.append({"train_dif": r1 - h1, "test_res": r2, "test_dif": r2 - h2, "test_ops": o2, "dd": dd})
     return res
 
@@ -190,8 +204,10 @@ def main():
     filas = []
     for analista, nombre, fn, opc in todas:
         r = evaluar(series, fn, opc)
+        rf = evaluar(series, fn, opc, pit=False)                 # la misma variante con la lista fija de monedas actuales (sesgo de supervivencia)
         ok = sum(aprueba(x) for x in r)
         filas.append({
+            "test_dif_fija": sum(x["test_dif"] for x in rf) / len(rf), "pasa_fija": sum(aprueba(x) for x in rf) >= math.ceil(FRACCION_SERIES * len(rf)),
             "analista": analista, "nombre": nombre,
             "train_dif": sum(x["train_dif"] for x in r) / len(r),
             "test_dif": sum(x["test_dif"] for x in r) / len(r),
@@ -202,6 +218,8 @@ def main():
             "pasa": ok >= math.ceil(FRACCION_SERIES * len(r)) and sum(x["test_dif"] for x in r) > 0,
         })
     probadas = len(filas)
+    sesgo = {"dif_pit": sum(f["test_dif"] for f in filas) / probadas, "dif_fija": sum(f["test_dif_fija"] for f in filas) / probadas,
+             "pasan_pit": sum(1 for f in filas if f["pasa"]), "pasan_fija": sum(1 for f in filas if f["pasa_fija"])}
     azar = sum(1 for f in filas if f["pasa"]) / probadas                      # aprobaría cualquiera, elegida al azar
     elegidas = sorted(filas, key=lambda f: f["train_dif"], reverse=True)[:N_CANDIDATAS]
     por_nombre = {nombre: (fn, opc) for _, nombre, fn, opc in todas}
@@ -240,6 +258,8 @@ def main():
         "generado": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "fuente": "demo" if es_demo else "Kraken",
         "series": [f"{s['moneda']} {s['vela']}" for s in series],
+        "sesgo_supervivencia": {k: round(v, 3) if isinstance(v, float) else v for k, v in sesgo.items()},
+        "universo": {"monedas": [p for p, _ in PARES], "top_n": N_TOP, "ventana_dias": VENTANA_VOLUMEN_DIAS},
         "probadas": probadas, "tasa_azar": round(azar, 3), "veredicto": veredicto, "texto": txt,
         "criterio": f"examen en el último {int((1 - PARTE_ENTRENO) * 100)} % del historial, ≥{MIN_OPS_EXAMEN} operaciones, "
                     f"gana dinero y supera a comprar y mantener en ≥{int(FRACCION_SERIES * 100)} % de las series",
@@ -257,6 +277,13 @@ def main():
           "|---|---|---:|---:|---:|---:|:-:|"]
     for f in elegidas:
         md.append(f"| {f['nombre']} | {f['analista']} | {f['train_dif']:+.2f} | {f['test_dif']:+.2f} | {f['test_dif_estres']:+.2f} | {f['ok']}/{f['total']} | {'✔' if f['pasa'] else '✘'} |")
+    md += ["", "## Sesgo de supervivencia", "",
+           f"Se prueban solo monedas que existen hoy ({len(PARES)} en total), lo que favorece a las que sobrevivieron. Para reducirlo, cada moneda solo se opera "
+           f"mientras estaba entre las {N_TOP} de mayor volumen (últimos {VENTANA_VOLUMEN_DIAS} días, usando solo datos hasta esa fecha). "
+           f"Resultado medio de las {probadas} variantes en el examen: **{sesgo['dif_pit']:+.2f} €** con universo punto en el tiempo frente a "
+           f"**{sesgo['dif_fija']:+.2f} €** con la lista fija de hoy ({sesgo['pasan_pit']} frente a {sesgo['pasan_fija']} variantes que aprueban). "
+           "Kraken no publica el historial de monedas ya deslistadas, así que las que murieron **no se pueden incluir**: el sesgo se reduce, no se elimina. "
+           "Tómese todo resultado favorable como optimista.", ""]
     md += ["", "«Costes duros» = comisión taker 0,80 % (órdenes a mercado) y horquilla y deslizamiento duplicados. Una variante que solo gana con los costes base es frágil.", "",
            "Resultado medio por familia en el examen (frente a comprar y mantener, tras costes):", "",
            "| Familia | Variantes | Dif. media examen (€) | Operaciones medias | Aprueban |", "|---|---:|---:|---:|---:|"]

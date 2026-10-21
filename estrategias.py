@@ -13,13 +13,14 @@ from math import sqrt
 class Serie(list):
     """Lista de cierres con medias moviles precalculadas (cada media en i solo usa c[0..i])."""
 
-    def __init__(self, v, ts=None, o=None):
+    def __init__(self, v, ts=None, o=None, vol=None):
         super().__init__(v)
         self._sma = {}
         # aperturas de cada vela (para ejecutar al precio de apertura de la vela siguiente). Si no se dan, se aproxima
         # con el cierre anterior (en un mercado 24/7 la apertura casi coincide con el cierre previo).
         self.o = list(o) if o is not None else ([v[0]] + list(v[:-1]) if len(v) else [])
         self.ts = list(ts) if ts is not None else list(range(len(v)))   # marca temporal (s) de cada vela
+        self.vol = list(vol) if vol is not None else [0.0] * len(v)     # volumen en EUR de cada vela (para el universo punto en el tiempo)
         self.ref = None          # serie de BTC con la misma duracion de vela (para la fuerza relativa)
         self.ref_idx = None      # para cada vela: indice de la vela de BTC con la MISMA marca temporal (o None)
 

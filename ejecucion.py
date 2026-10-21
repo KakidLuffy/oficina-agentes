@@ -27,9 +27,11 @@ def precio_venta(apertura, slip=SLIP, spread=SPREAD):
     return apertura * (1 - spread / 2 - slip)
 
 
-def simular(c, o, ini, fin, s, fn, opc=None, fee=FEE, slip=SLIP, spread=SPREAD, start=START, costes=None):
+def simular(c, o, ini, fin, s, fn, opc=None, fee=FEE, slip=SLIP, spread=SPREAD, start=START, costes=None, permitido=None):
     """Opera las velas ini..fin-1 con una posicion como maximo.
     c: cierres, o: aperturas (misma longitud), fn(c, i, s) -> 'b'|'s'|None, opc: {stop, objetivo, espera} o None.
+    permitido(i) -> bool (opcional): si es False en la vela i, las COMPRAS decididas en i se ignoran (la moneda no estaba en el universo operable en esa fecha);
+    las ventas siempre estan permitidas.
     Devuelve (resultado_eur, operaciones, resultado_de_mantener_eur, caida_maxima_pct)."""
     if costes is not None:                                         # un objeto Costes (costes.py) manda sobre fee/slip/spread sueltos
         fee, slip, spread = costes.fee, costes.slip, costes.spread
@@ -61,6 +63,8 @@ def simular(c, o, ini, fin, s, fn, opc=None, fee=FEE, slip=SLIP, spread=SPREAD, 
             cambio = p / entrada - 1
             if cambio <= -stop or cambio >= obj:
                 senal = "s"
+        if senal == "b" and permitido is not None and not permitido(i):
+            senal = None                                           # fuera del universo operable en esa fecha
         if (senal == "b" and unidades == 0 and cash > 1 and i >= libre) or (senal == "s" and unidades > 0):
             pend = senal
     final = cash + unidades * c[fin - 1]
