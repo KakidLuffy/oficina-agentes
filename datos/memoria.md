@@ -12,5 +12,6 @@ Aquí quedan las reglas y las decisiones. El director y el laboratorio la leen p
 
 ## Registro de decisiones y cambios (lo más reciente primero)
 
+- 2026-10-21 18:23 · **laboratorio** · Laboratorio del 2026-10-21: veredicto NINGUNA; candidatas: ninguna.
 - 2026-10-20 22:31 · **laboratorio** · Laboratorio del 2026-10-20: veredicto NINGUNA; candidatas: ninguna.
 - 2026-10-20 22:31 · **hito** · El director empieza a vigilar la oficina con 6 agentes.

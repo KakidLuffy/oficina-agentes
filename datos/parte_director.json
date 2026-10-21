@@ -1,5 +1,5 @@
 {
- "generado": "2026-10-21T16:47:39Z",
+ "generado": "2026-10-21T18:23:25Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
   "Fondo de 90,00 € (10,00 € por agente): vale 90,24 € (+0,24 €).",
@@ -27,55 +27,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 1,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Consenso 2 de 3",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Momentum rapido",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 2,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 0.2,
+   "dias": 0.3,
    "cierres": 0,
    "evaluable": false
   }
