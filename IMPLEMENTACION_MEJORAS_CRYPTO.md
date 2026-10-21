@@ -10,7 +10,7 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 | 2 | CRYPTO-018 | Persistencia atómica | VALIDADA |
 | 3 | CRYPTO-011 | Archivo completo con manifiesto | VALIDADA |
 | 4 | CRYPTO-017 | Robustez de GitHub Actions | IMPLEMENTADA (falta ver una ejecución real en GitHub) |
-| 5 | CRYPTO-008 | Validación de velas | PENDIENTE |
+| 5 | CRYPTO-008 | Validación de velas | VALIDADA (datos reales de Kraken sin probar: la API no es accesible desde aquí) |
 | 6 | CRYPTO-009 | Alineación de marcas temporales | PENDIENTE |
 | 7 | CRYPTO-005 | Columnas vela_inicio / decision_utc | PENDIENTE |
 | 8 | CRYPTO-013 | Módulo único de estrategias | PENDIENTE |
@@ -64,3 +64,9 @@ Rama de trabajo: `mejoras-crypto` (no se ha tocado `main`). Todo sigue siendo si
 - **Pruebas:** 9 nuevas (verificador, acciones fijadas, permisos, sin `--force`, solo `main`, y dos pruebas reales de `guardar_datos.sh` con un remoto git local: sin cambios y adelantamiento de otro proceso). Total 52 correctas. YAML de los 4 flujos validado.
 - **Pendiente / riesgos:** los flujos solo se pueden probar de verdad dentro de GitHub (ejecutar a mano tras fusionar). Si una prueba unitaria fallara, la simulación horaria se detendría hasta arreglarla (intencionado: mejor parar que operar con código roto, pero hay que mirar las alertas). El caso de conflicto en el mismo archivo tras 5 intentos no se prueba automáticamente (tardaría ~75 s).
 - **Detección de fallos:** un flujo fallido ya deja el trabajo en rojo; la alerta deduplicada por Issue se hará en la mejora 18.
+
+## Mejora 5 — CRYPTO-008 Validación de velas
+- **Archivos:** `velas.py` (nuevo), `agentes_nube.py`, `tests/test_velas.py`, `tests/test_simulacion.py`, `tests/base.py`.
+- **Cambio:** las velas pasan de `(ts, cierre)` a `Vela(ts, o, h, l, c, v)` (necesario también para la mejora 9). `validar()` aplica una política explícita: **descarta** NaN/inf, precios ≤ 0, volumen negativo, OHLC incoherente y marcas no alineadas; **duplicadas** → gana la última; **desordenadas** → se ordenan; **huecos** → nunca se rellenan y las señales usan solo la cola contigua posterior; **salto anómalo** (>40 % entre cierres) → se conserva el dato pero se bloquean compras nuevas en ese par en esa ejecución (las posiciones abiertas siguen valoradas y las ventas permitidas); **vela abierta** → no es error. Incidencias registradas (sin repetirse cada hora) en `datos/incidencias_datos.csv` dentro de la transacción. Un par sin ninguna vela utilizable se ignora y se avisa.
+- **Pruebas:** 12 de `velas.py` + 3 de integración (bloqueo de compras, registro único, par inutilizable). Total 67 correctas; ejecución demo de extremo a extremo y `verificar_salida.py` correcto.
+- **Riesgos:** (1) en Kraken los pares poco líquidos omiten velas sin operaciones; esos huecos reales recortan la serie utilizable (conservador; es el comportamiento deseado). (2) No se pudo probar con respuestas reales de Kraken (sin acceso), solo con el formato documentado `[time, open, high, low, close, vwap, volume, count]`; la primera ejecución real debe revisarse. (3) El umbral del 40 % es una decisión de diseño, ajustable en `velas.SALTO_MAX`.

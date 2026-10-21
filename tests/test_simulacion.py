@@ -2,6 +2,7 @@ import csv
 import json
 import os
 import unittest
+import velas as vl_
 from tests.base import an, BaseDatos, velas, T0
 
 
@@ -72,7 +73,7 @@ class Paso(BaseDatos):
         v = {an.BTC: velas(precios)}
         est = self.estado(v)
         # aparece una vela nueva pero aun no ha cerrado (ahora_ts dentro de ella)
-        v[an.BTC].append((T0 + 3600 * 40, 500.0))
+        v[an.BTC].append(vl_.Vela(T0 + 3600 * 40, 500.0, 500.0, 500.0, 500.0, 1.0))
         ahora_ts = T0 + 3600 * 40 + 100
         an.paso(est, v, {an.BTC: 1e6}, [an.BTC], ahora_ts)
         self.assertEqual(est["ultima_vela"], T0 + 3600 * 39)
@@ -83,7 +84,7 @@ class Paso(BaseDatos):
         v = {an.BTC: velas(precios)}
         est = self.estado(v)
         for k in range(40, 45):
-            v[an.BTC].append((T0 + 3600 * k, 100.0))
+            v[an.BTC].append(vl_.Vela(T0 + 3600 * k, 100.0, 100.0, 100.0, 100.0, 1.0))
         an.paso(est, v, {an.BTC: 1e6}, [an.BTC], T0 + 3600 * 45)
         self.assertEqual(est["ultima_vela"], T0 + 3600 * 44)
 
@@ -164,7 +165,7 @@ class Persistencia(BaseDatos):
 
     def test_ciclo_completo_en_demo(self):
         v, vol, orden, fuente, ts = an.obtener_datos(150)
-        est = an.estado_nuevo({p: x[:100] for p, x in v.items()}, v[an.BTC][99][0] + 3600)
+        est = an.estado_nuevo({p: x[:100] for p, x in v.items()}, v[an.BTC][99].ts + 3600)
         ahora, precios = an.paso(est, v, vol, orden, ts)
         an.guardar(est, ahora, precios, fuente, len(orden), len(v))
         for r in (an.ESTADO, an.HISTORIAL, an.OPERACIONES, an.RESUMEN):
@@ -179,7 +180,7 @@ class CortesDeEjecucion(BaseDatos):
 
     def preparar(self):
         v, vol, orden, fuente, ts = an.obtener_datos(150)
-        est = an.estado_nuevo({p: x[:100] for p, x in v.items()}, v[an.BTC][99][0] + 3600)
+        est = an.estado_nuevo({p: x[:100] for p, x in v.items()}, v[an.BTC][99].ts + 3600)
         ahora, precios = an.paso(est, v, vol, orden, ts)
         return est, ahora, precios, fuente, orden, v
 
@@ -221,6 +222,39 @@ class CortesDeEjecucion(BaseDatos):
         guardado = json.load(open(an.ESTADO, encoding="utf-8"))
         self.assertEqual(guardado["ultima_vela"], est["ultima_vela"])
         self.assertEqual(an.ps.recuperar(an.DATOS), "nada")
+
+
+class ValidacionIntegrada(BaseDatos):
+    def datos_con_salto(self):
+        base = velas([100.0] * 60)
+        v = {an.BTC: base, "SALTOEUR": velas([100.0] * 55 + [100.0, 100.0, 100.0, 100.0, 300.0])}
+        return v
+
+    def test_salto_anomalo_bloquea_compras_en_ese_par(self):
+        v = an.validar_todo(self.datos_con_salto(), T0 + 3600 * 60)
+        self.assertIn("SALTOEUR", an.BLOQUEADOS)
+        self.assertNotIn(an.BTC, an.BLOQUEADOS)
+        est = an.estado_nuevo({p: x[:55] for p, x in v.items()}, T0 + 3600 * 55)
+        an.paso(est, v, {an.BTC: 1e6, "SALTOEUR": 1e6}, [an.BTC, "SALTOEUR"], T0 + 3600 * 60)
+        for a in est["agentes"]:
+            self.assertNotIn("SALTOEUR", a["posiciones"])
+
+    def test_incidencias_se_registran_una_sola_vez(self):
+        v = an.validar_todo(self.datos_con_salto(), T0 + 3600 * 60)
+        est = an.estado_nuevo({p: x[:55] for p, x in v.items()}, T0 + 3600 * 55)
+        ahora, precios = an.paso(est, v, {an.BTC: 1e6, "SALTOEUR": 1e6}, [an.BTC, "SALTOEUR"], T0 + 3600 * 60)
+        an.guardar(est, ahora, precios, "demo", 2, 2)
+        n1 = len(open(an.ruta_incidencias()).read().splitlines())
+        self.assertEqual(n1, 2)                                  # cabecera + salto
+        an.validar_todo(self.datos_con_salto(), T0 + 3600 * 60)
+        an.guardar(est, ahora, precios, "demo", 2, 2)
+        self.assertEqual(len(open(an.ruta_incidencias()).read().splitlines()), n1)
+
+    def test_par_sin_velas_utilizables_se_ignora(self):
+        malas = [vl_.Vela(T0 + 3600 * i, float("nan"), 1.0, 1.0, 1.0, 1.0) for i in range(5)]
+        v = an.validar_todo({an.BTC: velas([100.0] * 10), "MALOEUR": malas}, T0 + 3600 * 10)
+        self.assertNotIn("MALOEUR", v)
+        self.assertIn(an.BTC, v)
 
 
 if __name__ == "__main__":

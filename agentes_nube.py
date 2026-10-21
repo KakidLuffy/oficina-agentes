@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 
 import archivado
 import informe
+import velas as vl
 import persistencia as ps
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
@@ -215,31 +216,67 @@ def velas_kraken(par):
     desde = int(time.time()) - HISTORIA_HORAS * 3600
     res = kraken(f"https://api.kraken.com/0/public/OHLC?pair={par}&interval=60&since={desde}")
     clave = [k for k in res if k != "last"][0]
-    return [(int(v[0]), float(v[4])) for v in res[clave]]
+    return [vl.desde_kraken(v) for v in res[clave]]
 
 
 def velas_coinbase():
+    """Coinbase devuelve [time, low, high, open, close, volume]."""
     d = get_json("https://api.exchange.coinbase.com/products/BTC-EUR/candles?granularity=3600")
-    return sorted((int(v[0]), float(v[4])) for v in d)
+    return sorted((vl.Vela(int(v[0]), vl._num(v[3]), vl._num(v[2]), vl._num(v[1]), vl._num(v[4]), vl._num(v[5])) for v in d),
+                  key=lambda x: x.ts)
 
 
 def velas_demo(n, k):
     random.seed(7 + 13 * k)
-    precio, t, salida = 60000.0 / (k + 1), 1_700_000_000, []
+    precio, t, salida = 60000.0 / (k + 1), 1_700_000_000 - (1_700_000_000 % 3600), []
     for _ in range(n):
+        antes = precio
         precio *= 1 + random.gauss(0, 0.007 + 0.002 * k)
-        salida.append((t, precio))
+        salida.append(vl.Vela(t, antes, max(antes, precio), min(antes, precio), precio, 1.0))
         t += 3600
     return salida
 
 
+INCIDENCIAS = []         # [(par, incidencia)] de esta ejecucion (ver velas.py)
+BLOQUEADOS = set()       # pares con salto anomalo: no se abren compras nuevas en esta ejecucion
+
+
+def validar_todo(velas, ahora_ts):
+    """Valida cada par; descarta los pares sin datos utilizables y anota incidencias y bloqueos."""
+    INCIDENCIAS.clear()
+    BLOQUEADOS.clear()
+    limpias = {}
+    for par, lista in velas.items():
+        util, inc = vl.validar(lista, 3600, ahora_ts)
+        INCIDENCIAS.extend((par, i) for i in inc)
+        if vl.hay_bloqueo(inc):
+            BLOQUEADOS.add(par)
+        if util:
+            limpias[par] = util
+        else:
+            print(f"{par}: ninguna vela utilizable tras la validacion; se ignora en esta ejecucion.")
+    if INCIDENCIAS:
+        resumen = {}
+        for _, i in INCIDENCIAS:
+            resumen[i["tipo"]] = resumen.get(i["tipo"], 0) + 1
+        print("Incidencias en los datos de velas:", ", ".join(f"{k} x{n}" for k, n in sorted(resumen.items())))
+    return limpias
+
+
 def obtener_datos(demo):
-    """Devuelve (velas {par: [(ts, cierre)]}, volumenes {par: EUR}, orden [pares], fuente, ahora_ts)."""
+    """Devuelve (velas {par: [Vela]}, volumenes {par: EUR}, orden [pares], fuente, ahora_ts). Las velas ya estan validadas."""
+    velas, volumenes, orden, fuente, ahora_ts = _descargar(demo)
+    velas = validar_todo(velas, ahora_ts)
+    orden = [p for p in orden if p in velas]
+    return velas, volumenes, orden, fuente, ahora_ts
+
+
+def _descargar(demo):
     if demo:
         nombres = [BTC] + [f"DEMO{k}EUR" for k in range(1, 8)]
         velas = {p: velas_demo(demo, k) for k, p in enumerate(nombres)}
         vol = {p: (500_000 if k % 3 else 20_000) for k, p in enumerate(nombres)}
-        return velas, vol, nombres, "demo", velas[BTC][-1][0] + 1800
+        return velas, vol, nombres, "demo", velas[BTC][-1].ts + 1800
     uni = universo_kraken()
     print(f"Se vigilan {len(uni)} monedas (las de mayor volumen contra EUR en Kraken): "
           + ", ".join(p for p, _ in uni))
@@ -268,17 +305,17 @@ def agente_nuevo(nombre, precio_btc):
 
 
 def estado_nuevo(velas, ahora_ts):
-    cerradas = [c for c in velas[BTC] if c[0] + 3600 <= ahora_ts]
+    cerradas = [c for c in velas[BTC] if c.ts + 3600 <= ahora_ts]
     return {
         "version": VERSION,
         "capital_inicial": START,          # si se cambia START, la simulacion archiva la anterior y empieza de cero
         "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "ultima_vela": cerradas[-1][0],   # solo se actua sobre velas posteriores a esta
-        "precio_inicio": velas[BTC][-1][1],
+        "ultima_vela": cerradas[-1].ts,   # solo se actua sobre velas posteriores a esta
+        "precio_inicio": velas[BTC][-1].c,
         "fee": FEE,
         "slip": SLIP,
-        "precios": {p: v[-1][1] for p, v in velas.items()},
-        "agentes": [agente_nuevo(n, velas[BTC][-1][1]) for n, _ in AGENTES],
+        "precios": {p: v[-1].c for p, v in velas.items()},
+        "agentes": [agente_nuevo(n, velas[BTC][-1].c) for n, _ in AGENTES],
     }
 
 
@@ -289,12 +326,12 @@ def migrar(estado, velas):
             a["posiciones"] = {BTC: a["btc"]} if a.get("btc", 0) > 0 else {}
             a.pop("btc", None)
     estado.setdefault("precios", {})
-    estado["precios"].setdefault(BTC, estado.get("precio_inicio", velas[BTC][-1][1]))
+    estado["precios"].setdefault(BTC, estado.get("precio_inicio", velas[BTC][-1].c))
     # agentes nuevos: se anaden al final y empiezan ahora con START; los que ya existian conservan todo
     existentes = {a["nombre"] for a in estado["agentes"]}
     for n, _ in AGENTES:
         if n not in existentes:
-            estado["agentes"].append(agente_nuevo(n, velas[BTC][-1][1]))
+            estado["agentes"].append(agente_nuevo(n, velas[BTC][-1].c))
             print(f"Agente nuevo incorporado: {n} (empieza ahora con {START} EUR ficticios).")
     for a in estado["agentes"]:
         a.setdefault("inicio", estado["inicio"])
@@ -387,9 +424,10 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
     ahora = datetime.now(timezone.utc).isoformat(timespec="seconds")
     cierres, indice, cerr_por_t = {}, {}, {}
     for par, v in velas.items():
-        cer = [c for c in v if c[0] + 3600 <= ahora_ts]          # solo velas ya cerradas
-        cierres[par] = [c for _, c in cer]
-        for i, (t, _) in enumerate(cer):
+        cer = [c for c in v if c.ts + 3600 <= ahora_ts]          # solo velas ya cerradas
+        cierres[par] = [c.c for c in cer]
+        for i, x in enumerate(cer):
+            t = x.ts
             indice[(par, t)] = i
             if t > estado["ultima_vela"]:
                 cerr_por_t.setdefault(t, []).append(par)
@@ -426,6 +464,8 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
             bloqueado = a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA
             for par in pares_t:                          # ...y luego se compra, por orden de volumen
                 if senales[par] == "b" and par not in a["posiciones"]:
+                    if par in BLOQUEADOS:
+                        continue                         # salto anomalo en los datos: no se abre posicion nueva
                     if len(a["posiciones"]) >= MAX_POS or a["efectivo"] < SLOT * 0.5:
                         break
                     if bloqueado:
@@ -441,7 +481,7 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
     if tiempos:
         estado["ultima_vela"] = tiempos[-1]
     for par, v in velas.items():                        # precio actual (la ultima vela puede seguir abierta)
-        precios[par] = v[-1][1]
+        precios[par] = v[-1].c
     for a in estado["agentes"]:
         apagar_si_toca(a, precios, ahora, volumenes)
     return ahora, precios
@@ -449,6 +489,30 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
 
 def nombre_corto(par):
     return par[:-3] if par.endswith("EUR") else par
+
+
+CAB_INCIDENCIAS = ["fecha_utc", "par", "tipo", "nivel", "vela_ts", "detalle"]
+
+
+def ruta_incidencias():
+    return os.path.join(DATOS, "incidencias_datos.csv")
+
+
+def incidencias_nuevas(ahora):
+    """Filas de incidencias aun no registradas (la misma vela con el mismo problema se descarga cada hora: no se repite)."""
+    vistas = set()
+    if os.path.exists(ruta_incidencias()):
+        with open(ruta_incidencias(), newline="", encoding="utf-8") as f:
+            vistas = {(r["par"], r["tipo"], r["vela_ts"]) for r in csv.DictReader(f)}
+    filas = []
+    for par, i in INCIDENCIAS:
+        clave = (par, i["tipo"], str(i["ts"]))
+        if clave in vistas:
+            continue
+        vistas.add(clave)
+        extra = {k: v for k, v in i.items() if k not in ("tipo", "ts", "nivel")}
+        filas.append([ahora, par, i["tipo"], i["nivel"], i["ts"], json.dumps(extra, ensure_ascii=False) if extra else ""])
+    return filas
 
 
 def historial_con_fila(cabecera, fila):
@@ -478,6 +542,10 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     tx.poner(OPERACIONES, ops + texto_csv(COLA_OPS))
     tx.poner(HISTORIAL, historial_con_fila(cab_hist, fila))
     tx.poner(ESTADO, json.dumps(estado, indent=2))
+    nuevas = incidencias_nuevas(ahora)
+    if nuevas:
+        previo = leer_texto(ruta_incidencias()) or texto_csv([CAB_INCIDENCIAS])
+        tx.poner(ruta_incidencias(), previo + texto_csv(nuevas))
     tx.confirmar()
     COLA_OPS.clear()
     dias = (datetime.fromisoformat(ahora) - datetime.fromisoformat(estado["inicio"])).total_seconds() / 86400

@@ -9,13 +9,14 @@ if RAIZ not in sys.path:
     sys.path.insert(0, RAIZ)
 
 import agentes_nube as an  # noqa: E402
+import velas as vl  # noqa: E402
 
 T0 = 1_700_000_000 - (1_700_000_000 % 3600)
 
 
 def velas(precios, par=None, t0=T0):
     """Lista [(ts, cierre)] con una vela por hora."""
-    return [(t0 + 3600 * i, float(p)) for i, p in enumerate(precios)]
+    return [vl.Vela(t0 + 3600 * i, float(p), float(p), float(p), float(p), 1.0) for i, p in enumerate(precios)]
 
 
 class BaseDatos(unittest.TestCase):
@@ -34,6 +35,8 @@ class BaseDatos(unittest.TestCase):
         an.GRAFICO = os.path.join(d, "grafico.svg")
         self.addCleanup(self._restaurar)
         an.COLA_OPS.clear()
+        an.INCIDENCIAS.clear()
+        an.BLOQUEADOS.clear()
         an.asegurar_operaciones()
 
     def _restaurar(self):
