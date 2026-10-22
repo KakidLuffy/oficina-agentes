@@ -100,3 +100,16 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-22T13:00+00:00,Momentum rapido,PUMPEUR,COMPRA,0.004333,2.0,senal compradora,0.009
 2026-10-22T13:00+00:00,Momentum rapido,NEAREUR,COMPRA,4.508953,2.0,senal compradora,0.009
 2026-10-22T13:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.18109,2.0,senal compradora,0.009
+2026-10-22T14:00+00:00,Cruce 3/8 rapido,PUMPEUR,VENTA,0.004194,1.92,stop de perdida (-3.2 %),0.0087
+2026-10-22T14:00+00:00,Momentum rapido,PUMPEUR,VENTA,0.004194,1.92,stop de perdida (-3.2 %),0.0087
+2026-10-22T14:00+00:00,Momentum rapido,SOLEUR,COMPRA,93.46671,2.0,senal compradora,0.009
+2026-10-22T14:00+00:00,Momentum rapido,UNIEUR,COMPRA,6.375086,1.65,senal compradora,0.0074
+2026-10-22T14:00+00:00,Rebote rapido,XBTEUR,VENTA,73028.96725,1.96,senal vendedora,0.0089
+2026-10-22T15:00+00:00,Cruce 5/20,XMREUR,VENTA,544.56758,2.0,senal vendedora,0.009
+2026-10-22T15:00+00:00,Momentum rapido,NEAREUR,VENTA,4.400699,1.94,stop de perdida (-2.4 %),0.0087
+2026-10-22T15:00+00:00,Momentum rapido,ENAEUR,VENTA,0.176712,1.94,stop de perdida (-2.4 %),0.0087
+2026-10-22T16:00+00:00,Momentum rapido,ARBEUR,VENTA,0.161419,1.95,stop de perdida (-1.7 %),0.0088
+2026-10-22T16:00+00:00,Momentum rapido,UNIEUR,VENTA,6.194401,1.59,stop de perdida (-2.8 %),0.0072
+2026-10-22T17:00+00:00,Momentum,XMREUR,VENTA,544.657535,1.97,senal vendedora,0.0089
+2026-10-22T17:00+00:00,Consenso 2 de 3,XMREUR,VENTA,544.657535,2.0,senal vendedora,0.0091
+2026-10-22T17:00+00:00,Momentum rapido,SOLEUR,VENTA,92.17389,1.96,senal vendedora,0.0088
