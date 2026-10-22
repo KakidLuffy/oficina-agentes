@@ -96,3 +96,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-22T11:00+00:00,Cruce 3/8 rapido,XMREUR,VENTA,562.9184,1.93,stop de perdida (-2.8 %),0.0087
 2026-10-22T11:00+00:00,Momentum rapido,XMREUR,VENTA,562.9184,1.94,stop de perdida (-2.4 %),0.0087
 2026-10-22T11:00+00:00,Momentum rapido,ARBEUR,COMPRA,0.164282,2.0,senal compradora,0.009
+2026-10-22T13:00+00:00,Cruce 3/8 rapido,PUMPEUR,COMPRA,0.004333,2.0,senal compradora,0.009
+2026-10-22T13:00+00:00,Momentum rapido,PUMPEUR,COMPRA,0.004333,2.0,senal compradora,0.009
+2026-10-22T13:00+00:00,Momentum rapido,NEAREUR,COMPRA,4.508953,2.0,senal compradora,0.009
+2026-10-22T13:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.18109,2.0,senal compradora,0.009
