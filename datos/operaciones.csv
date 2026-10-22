@@ -40,3 +40,23 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-21T20:00+00:00,Rebote,ZROEUR,COMPRA,1.78089,2.0,senal compradora,0.009
 2026-10-21T20:00+00:00,Cruce 3/8 rapido,QNTEUR,VENTA,186.44673,2.04,objetivo de ganancia (+3.0 %),0.0092
 2026-10-21T21:00+00:00,Rebote rapido,ZROEUR,VENTA,1.769115,1.95,stop de perdida (-1.8 %),0.0088
+2026-10-21T22:00+00:00,Cruce 3/8 rapido,UNIEUR,VENTA,6.67696,1.95,stop de perdida (-1.8 %),0.0088
+2026-10-21T22:00+00:00,Cruce 3/8 rapido,HYPEEUR,VENTA,72.153905,1.98,senal vendedora,0.009
+2026-10-21T22:00+00:00,Momentum rapido,ETHEUR,VENTA,2209.664615,1.99,senal vendedora,0.009
+2026-10-21T22:00+00:00,Momentum rapido,SUIEUR,VENTA,0.91994,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-21T22:00+00:00,Momentum rapido,PUMPEUR,COMPRA,0.00457,2.0,senal compradora,0.009
+2026-10-21T22:00+00:00,Momentum rapido,QNTEUR,COMPRA,185.962935,2.0,senal compradora,0.009
+2026-10-21T22:00+00:00,Rebote rapido,ENAEUR,COMPRA,0.190895,2.0,senal compradora,0.009
+2026-10-21T22:00+00:00,Rebote rapido,ARBEUR,COMPRA,0.170285,2.0,senal compradora,0.009
+2026-10-21T22:00+00:00,Rebote rapido,WEUR,COMPRA,0.012956,2.0,senal compradora,0.009
+2026-10-21T23:00+00:00,Rebote,ARBEUR,COMPRA,0.167083,2.0,senal compradora,0.009
+2026-10-21T23:00+00:00,Momentum rapido,XRPEUR,VENTA,1.213983,2.0,senal vendedora,0.009
+2026-10-21T23:00+00:00,Momentum rapido,SOLEUR,VENTA,95.05245,1.98,senal vendedora,0.009
+2026-10-21T23:00+00:00,Momentum rapido,QNTEUR,VENTA,182.018945,1.94,stop de perdida (-2.1 %),0.0088
+2026-10-21T23:00+00:00,Momentum rapido,XMREUR,COMPRA,553.55664,2.0,senal compradora,0.009
+2026-10-21T23:00+00:00,Rebote rapido,ARBEUR,VENTA,0.166917,1.94,stop de perdida (-1.9 %),0.0088
+2026-10-21T23:00+00:00,Rebote rapido,ZECEUR,COMPRA,1168.88515,2.0,senal compradora,0.009
+2026-10-21T23:00+00:00,Rebote rapido,SUIEUR,COMPRA,0.915057,2.0,senal compradora,0.009
+2026-10-21T23:00+00:00,Rebote rapido,UNIEUR,COMPRA,6.628513,1.89,senal compradora,0.0085
+2026-10-22T00:00+00:00,Cruce 5/20,TAOEUR,VENTA,242.167556,1.94,senal vendedora,0.0088
+2026-10-22T00:00+00:00,Rebote,WEUR,COMPRA,0.012816,2.0,senal compradora,0.009
