@@ -1,23 +1,23 @@
 {
- "generado": "2026-10-22T13:49:52Z",
+ "generado": "2026-10-22T14:13:01Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 88,05 € (-1,95 €).",
-  "Capital total 88,05 € (-1,95 €, -2,16 %).",
-  "Mejor agente: Cruce 10/30 (+0,06 €). Peor: Rebote rapido (-0,69 €).",
-  "6 de 9 agentes van por encima de «Comprar y mantener» (9,75 €).",
-  "8 con monedas, 1 en efectivo, 0 apagados.",
-  "Operaciones en las últimas 24 h: 82."
+  "Fondo de 90,00 € (10,00 € por agente): vale 87,94 € (-2,06 €).",
+  "Capital total 87,94 € (-2,06 €, -2,29 %).",
+  "Mejor agente: Cruce 10/30 (+0,05 €). Peor: Rebote rapido (-0,69 €).",
+  "5 de 9 agentes van por encima de «Comprar y mantener» (9,77 €).",
+  "9 con monedas, 0 en efectivo, 0 apagados.",
+  "Operaciones en las últimas 24 h: 80."
  ],
  "alertas": [
-  "Cruce 10/30 está cerca del límite de 7 € (10,06 €).",
-  "Cruce 5/20 está cerca del límite de 7 € (9,87 €).",
-  "Momentum está cerca del límite de 7 € (9,84 €).",
-  "Rebote está cerca del límite de 7 € (9,60 €).",
-  "Cruce 10/30 + filtro está cerca del límite de 7 € (10,06 €).",
+  "Cruce 10/30 está cerca del límite de 7 € (10,05 €).",
+  "Cruce 5/20 está cerca del límite de 7 € (9,85 €).",
+  "Momentum está cerca del límite de 7 € (9,82 €).",
+  "Rebote está cerca del límite de 7 € (9,62 €).",
+  "Cruce 10/30 + filtro está cerca del límite de 7 € (10,05 €).",
   "Consenso 2 de 3 está cerca del límite de 7 € (9,80 €).",
-  "Cruce 3/8 rapido está cerca del límite de 7 € (9,79 €).",
-  "Momentum rapido está cerca del límite de 7 € (9,73 €).",
+  "Cruce 3/8 rapido está cerca del límite de 7 € (9,77 €).",
+  "Momentum rapido está cerca del límite de 7 € (9,67 €).",
   "Rebote rapido está cerca del límite de 7 € (9,31 €)."
  ],
  "revision": {
