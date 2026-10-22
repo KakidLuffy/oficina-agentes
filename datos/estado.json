@@ -2,55 +2,54 @@
   "version": 3,
   "capital_inicial": 10.0,
   "inicio": "2026-10-21T11:37:53+00:00",
-  "ultima_vela": 1792688400,
+  "ultima_vela": 1792702800,
   "precio_inicio": 74221.2,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 72436.6,
-    "ETHEUR": 2123.91,
-    "XRPEUR": 1.16485,
-    "ZECEUR": 1088.881,
-    "SOLEUR": 92.38,
-    "NEAREUR": 4.3376,
-    "LTCEUR": 52.0,
-    "SUIEUR": 0.871,
+    "XBTEUR": 72417.4,
+    "ETHEUR": 2124.2,
+    "XRPEUR": 1.16423,
+    "ZECEUR": 1076.437,
+    "SOLEUR": 92.17,
+    "NEAREUR": 4.341,
+    "LTCEUR": 52.2,
+    "SUIEUR": 0.8693,
     "PUMPEUR": 0.004108,
-    "HYPEEUR": 69.35,
-    "XMREUR": 541.57,
+    "HYPEEUR": 69.0,
+    "XMREUR": 527.24,
     "UNIEUR": 6.2437,
-    "ZROEUR": 1.599,
-    "ADAEUR": 0.189631,
+    "ZROEUR": 1.595,
+    "ADAEUR": 0.188586,
     "COMPEUR": 22.8,
-    "LINKEUR": 10.63875,
+    "LINKEUR": 10.62246,
     "PEPEEUR": 4.171e-06,
     "TIAEUR": 0.5582,
-    "INJEUR": 7.171,
+    "INJEUR": 7.029,
     "XLMEUR": 0.164283,
-    "ENAEUR": 0.1775,
-    "TAOEUR": 232.6822,
-    "AVAXEUR": 8.142,
-    "ARBEUR": 0.1608,
+    "ENAEUR": 0.1767,
+    "TAOEUR": 229.707,
+    "AVAXEUR": 8.107,
+    "ARBEUR": 0.16,
     "QNTEUR": 173.08,
-    "EURCEUR": 0.9972,
+    "EURCEUR": 0.9998,
     "WEUR": 0.01216,
     "STRKEUR": 0.05034
   },
   "agentes": [
     {
       "nombre": "Cruce 10/30",
-      "efectivo": 8.0,
-      "posiciones": {
-        "XMREUR": 0.0036704603232636315
-      },
+      "efectivo": 9.951282695529457,
+      "posiciones": {},
       "apagado": false,
-      "operaciones": 1,
+      "operaciones": 2,
       "dia": 20748,
       "eq_dia": 10.032003539561979,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
-      "entradas": {
-        "XMREUR": 542.71122
+      "entradas": {},
+      "ultima_venta": {
+        "XMREUR": "2026-10-22T20:00+00:00"
       }
     },
     {
@@ -77,18 +76,20 @@
     },
     {
       "nombre": "Momentum",
-      "efectivo": 7.774888871820487,
+      "efectivo": 5.774888871820487,
       "posiciones": {
-        "XLMEUR": 12.137976954058223
+        "XLMEUR": 12.137976954058223,
+        "ENAEUR": 11.223249705474208
       },
       "apagado": false,
-      "operaciones": 15,
+      "operaciones": 16,
       "dia": 20748,
       "eq_dia": 10.095437803506766,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
       "entradas": {
-        "XLMEUR": 0.16411301550000001
+        "XLMEUR": 0.16411301550000001,
+        "ENAEUR": 0.1774887
       },
       "ultima_venta": {
         "HYPEEUR": "2026-10-21T13:00+00:00",
@@ -126,18 +127,17 @@
     },
     {
       "nombre": "Cruce 10/30 + filtro",
-      "efectivo": 8.0,
-      "posiciones": {
-        "XMREUR": 0.0036704603232636315
-      },
+      "efectivo": 9.951282695529457,
+      "posiciones": {},
       "apagado": false,
-      "operaciones": 1,
+      "operaciones": 2,
       "dia": 20748,
       "eq_dia": 10.032003539561979,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
-      "entradas": {
-        "XMREUR": 542.71122
+      "entradas": {},
+      "ultima_venta": {
+        "XMREUR": "2026-10-22T20:00+00:00"
       }
     },
     {

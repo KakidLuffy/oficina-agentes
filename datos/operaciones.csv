@@ -113,3 +113,6 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-22T17:00+00:00,Momentum,XMREUR,VENTA,544.657535,1.97,senal vendedora,0.0089
 2026-10-22T17:00+00:00,Consenso 2 de 3,XMREUR,VENTA,544.657535,2.0,senal vendedora,0.0091
 2026-10-22T17:00+00:00,Momentum rapido,SOLEUR,VENTA,92.17389,1.96,senal vendedora,0.0088
+2026-10-22T20:00+00:00,Cruce 10/30,XMREUR,VENTA,533.75299,1.95,senal vendedora,0.0088
+2026-10-22T20:00+00:00,Momentum,ENAEUR,COMPRA,0.177489,2.0,senal compradora,0.009
+2026-10-22T20:00+00:00,Cruce 10/30 + filtro,XMREUR,VENTA,533.75299,1.95,senal vendedora,0.0088
