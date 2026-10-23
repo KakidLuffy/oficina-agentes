@@ -191,3 +191,23 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-23T16:00+00:00,Momentum rapido,ENAEUR,VENTA,0.187606,2.05,objetivo de ganancia (+3.3 %),0.0093
 2026-10-23T16:00+00:00,Momentum rapido,HYPEEUR,COMPRA,70.225095,2.0,senal compradora,0.009
 2026-10-23T17:00+00:00,Rebote rapido,XMREUR,COMPRA,531.24549,2.0,senal compradora,0.009
+2026-10-23T18:00+00:00,Momentum,XRPEUR,VENTA,1.167846,1.91,senal vendedora,0.0086
+2026-10-23T18:00+00:00,Momentum,SUIEUR,VENTA,0.87906,1.73,senal vendedora,0.0078
+2026-10-23T18:00+00:00,Momentum,ENAEUR,COMPRA,0.187294,2.0,senal compradora,0.009
+2026-10-23T18:00+00:00,Consenso 2 de 3,SUIEUR,VENTA,0.87906,1.84,senal vendedora,0.0083
+2026-10-23T18:00+00:00,Rebote rapido,PEPEEUR,VENTA,4e-06,1.95,stop de perdida (-1.8 %),0.0088
+2026-10-23T18:00+00:00,Rebote rapido,NEAREUR,COMPRA,4.298048,2.0,senal compradora,0.009
+2026-10-23T18:00+00:00,Rebote rapido,PUMPEUR,COMPRA,0.004046,1.23,senal compradora,0.0056
+2026-10-23T19:00+00:00,Momentum rapido,SOLEUR,VENTA,92.33381,1.35,senal vendedora,0.0061
+2026-10-23T19:00+00:00,Momentum rapido,ZECEUR,VENTA,1092.207623,1.95,stop de perdida (-1.8 %),0.0088
+2026-10-23T19:00+00:00,Momentum rapido,HYPEEUR,VENTA,68.855555,1.95,stop de perdida (-1.9 %),0.0088
+2026-10-23T19:00+00:00,Rebote rapido,NEAREUR,VENTA,4.225586,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-23T19:00+00:00,Rebote rapido,DOTEUR,VENTA,0.995002,1.95,stop de perdida (-1.8 %),0.0088
+2026-10-23T19:00+00:00,Rebote rapido,PUMPEUR,VENTA,0.003957,1.2,stop de perdida (-2.2 %),0.0054
+2026-10-23T19:00+00:00,Rebote rapido,SUIEUR,COMPRA,0.868434,2.0,senal compradora,0.009
+2026-10-23T19:00+00:00,Rebote rapido,ZROEUR,COMPRA,1.550775,2.0,senal compradora,0.009
+2026-10-23T20:00+00:00,Cruce 10/30,LINKEUR,VENTA,10.661227,1.94,senal vendedora,0.0088
+2026-10-23T20:00+00:00,Cruce 10/30,DOTEUR,VENTA,0.998501,1.88,senal vendedora,0.0085
+2026-10-23T20:00+00:00,Momentum,PEPEEUR,VENTA,4e-06,1.85,senal vendedora,0.0084
+2026-10-23T20:00+00:00,Cruce 10/30 + filtro,LINKEUR,VENTA,10.661227,1.94,senal vendedora,0.0088
+2026-10-23T20:00+00:00,Cruce 10/30 + filtro,DOTEUR,VENTA,0.998501,1.88,senal vendedora,0.0085
