@@ -211,3 +211,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-23T20:00+00:00,Momentum,PEPEEUR,VENTA,4e-06,1.85,senal vendedora,0.0084
 2026-10-23T20:00+00:00,Cruce 10/30 + filtro,LINKEUR,VENTA,10.661227,1.94,senal vendedora,0.0088
 2026-10-23T20:00+00:00,Cruce 10/30 + filtro,DOTEUR,VENTA,0.998501,1.88,senal vendedora,0.0085
+2026-10-23T21:00+00:00,Cruce 5/20,ETHEUR,VENTA,2138.63015,1.79,senal vendedora,0.0081
+2026-10-23T21:00+00:00,Rebote rapido,ZECEUR,COMPRA,1089.814635,1.1,senal compradora,0.0049
