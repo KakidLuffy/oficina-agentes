@@ -116,3 +116,12 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-22T20:00+00:00,Cruce 10/30,XMREUR,VENTA,533.75299,1.95,senal vendedora,0.0088
 2026-10-22T20:00+00:00,Momentum,ENAEUR,COMPRA,0.177489,2.0,senal compradora,0.009
 2026-10-22T20:00+00:00,Cruce 10/30 + filtro,XMREUR,VENTA,533.75299,1.95,senal vendedora,0.0088
+2026-10-23T01:00+00:00,Cruce 5/20,EURCEUR,COMPRA,1.0003,2.0,senal compradora,0.009
+2026-10-23T01:00+00:00,Cruce 5/20,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
+2026-10-23T01:00+00:00,Momentum,ENAEUR,VENTA,0.177211,1.98,senal vendedora,0.009
+2026-10-23T01:00+00:00,Momentum,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
+2026-10-23T01:00+00:00,Rebote,SUIEUR,VENTA,0.875862,1.92,senal vendedora,0.0087
+2026-10-23T01:00+00:00,Rebote,XMREUR,COMPRA,543.41157,1.92,senal compradora,0.0086
+2026-10-23T01:00+00:00,Consenso 2 de 3,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
+2026-10-23T01:00+00:00,Cruce 3/8 rapido,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
+2026-10-23T01:00+00:00,Momentum rapido,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
