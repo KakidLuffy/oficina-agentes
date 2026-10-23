@@ -167,3 +167,27 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-23T11:00+00:00,Rebote rapido,NEAREUR,VENTA,4.412193,2.01,senal vendedora,0.0091
 2026-10-23T11:00+00:00,Rebote rapido,PUMPEUR,VENTA,0.00414,2.02,senal vendedora,0.0091
 2026-10-23T12:00+00:00,Momentum rapido,NEAREUR,VENTA,4.3985,1.94,senal vendedora,0.0088
+2026-10-23T13:00+00:00,Cruce 10/30,WLDEUR,VENTA,0.47916,1.92,senal vendedora,0.0087
+2026-10-23T13:00+00:00,Momentum,DOTEUR,VENTA,1.013093,1.96,senal vendedora,0.0088
+2026-10-23T13:00+00:00,Momentum,ZECEUR,COMPRA,1113.327385,1.96,senal compradora,0.0088
+2026-10-23T13:00+00:00,Cruce 10/30 + filtro,WLDEUR,VENTA,0.47916,1.92,senal vendedora,0.0087
+2026-10-23T13:00+00:00,Momentum rapido,ZECEUR,COMPRA,1113.327385,2.0,senal compradora,0.009
+2026-10-23T13:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.181691,2.0,senal compradora,0.009
+2026-10-23T13:00+00:00,Rebote rapido,DOTEUR,COMPRA,1.014107,2.0,senal compradora,0.009
+2026-10-23T14:00+00:00,Cruce 10/30,ZECEUR,COMPRA,1103.918683,1.92,senal compradora,0.0086
+2026-10-23T14:00+00:00,Cruce 5/20,LINKEUR,VENTA,10.718488,1.95,senal vendedora,0.0088
+2026-10-23T14:00+00:00,Cruce 5/20,PUMPEUR,COMPRA,0.00411,1.95,senal compradora,0.0088
+2026-10-23T14:00+00:00,Momentum,LINKEUR,VENTA,10.718488,1.95,senal vendedora,0.0088
+2026-10-23T14:00+00:00,Momentum,PEPEEUR,COMPRA,4e-06,1.95,senal compradora,0.0088
+2026-10-23T14:00+00:00,Rebote,INJEUR,COMPRA,7.019508,1.7,senal compradora,0.0077
+2026-10-23T14:00+00:00,Cruce 10/30 + filtro,ZECEUR,COMPRA,1103.918683,1.92,senal compradora,0.0086
+2026-10-23T14:00+00:00,Consenso 2 de 3,LINKEUR,VENTA,10.718488,1.95,senal vendedora,0.0088
+2026-10-23T14:00+00:00,Momentum rapido,XRPEUR,VENTA,1.170824,1.97,senal vendedora,0.0089
+2026-10-23T14:00+00:00,Rebote rapido,INJEUR,VENTA,7.012492,1.94,stop de perdida (-2.1 %),0.0088
+2026-10-23T14:00+00:00,Rebote rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-23T15:00+00:00,Cruce 5/20,DOTEUR,VENTA,1.005397,1.94,senal vendedora,0.0088
+2026-10-23T15:00+00:00,Consenso 2 de 3,DOTEUR,VENTA,1.005397,1.94,senal vendedora,0.0088
+2026-10-23T16:00+00:00,Cruce 5/20,PUMPEUR,VENTA,0.004075,1.92,senal vendedora,0.0087
+2026-10-23T16:00+00:00,Momentum rapido,ENAEUR,VENTA,0.187606,2.05,objetivo de ganancia (+3.3 %),0.0093
+2026-10-23T16:00+00:00,Momentum rapido,HYPEEUR,COMPRA,70.225095,2.0,senal compradora,0.009
+2026-10-23T17:00+00:00,Rebote rapido,XMREUR,COMPRA,531.24549,2.0,senal compradora,0.009
