@@ -125,3 +125,25 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-23T01:00+00:00,Consenso 2 de 3,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
 2026-10-23T01:00+00:00,Cruce 3/8 rapido,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
 2026-10-23T01:00+00:00,Momentum rapido,DOTEUR,COMPRA,1.026713,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Cruce 5/20,LINKEUR,COMPRA,10.918767,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Momentum,LINKEUR,COMPRA,10.918767,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Momentum,WLDEUR,COMPRA,0.497749,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Consenso 2 de 3,LINKEUR,COMPRA,10.918767,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Momentum rapido,XRPEUR,COMPRA,1.179279,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Momentum rapido,ETHEUR,COMPRA,2153.486205,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Momentum rapido,ZECEUR,COMPRA,1097.406429,2.0,senal compradora,0.009
+2026-10-23T02:00+00:00,Momentum rapido,SOLEUR,COMPRA,93.26661,1.37,senal compradora,0.0062
+2026-10-23T03:00+00:00,Cruce 10/30,DOTEUR,COMPRA,1.055127,2.0,senal compradora,0.009
+2026-10-23T03:00+00:00,Cruce 5/20,ETHEUR,COMPRA,2147.723325,1.81,senal compradora,0.0081
+2026-10-23T03:00+00:00,Momentum,SUIEUR,COMPRA,0.885543,1.76,senal compradora,0.0079
+2026-10-23T03:00+00:00,Cruce 10/30 + filtro,DOTEUR,COMPRA,1.055127,2.0,senal compradora,0.009
+2026-10-23T03:00+00:00,Consenso 2 de 3,ETHEUR,COMPRA,2147.723325,2.0,senal compradora,0.009
+2026-10-23T03:00+00:00,Consenso 2 de 3,SUIEUR,COMPRA,0.885543,1.87,senal compradora,0.0084
+2026-10-23T04:00+00:00,Momentum rapido,ZECEUR,VENTA,1080.357551,1.95,stop de perdida (-1.5 %),0.0088
+2026-10-23T04:00+00:00,Momentum rapido,NEAREUR,COMPRA,4.393196,1.95,senal compradora,0.0088
+2026-10-23T05:00+00:00,Rebote,XMREUR,VENTA,546.436645,1.92,senal vendedora,0.0087
+2026-10-23T06:00+00:00,Cruce 10/30,EURCEUR,COMPRA,1.0005,2.0,senal compradora,0.009
+2026-10-23T06:00+00:00,Cruce 10/30,LINKEUR,COMPRA,10.913304,2.0,senal compradora,0.009
+2026-10-23T06:00+00:00,Cruce 10/30,WLDEUR,COMPRA,0.495047,2.0,senal compradora,0.009
+2026-10-23T06:00+00:00,Cruce 10/30 + filtro,LINKEUR,COMPRA,10.913304,2.0,senal compradora,0.009
+2026-10-23T06:00+00:00,Cruce 10/30 + filtro,WLDEUR,COMPRA,0.495047,2.0,senal compradora,0.009
