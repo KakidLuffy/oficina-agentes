@@ -13,11 +13,17 @@ Nueve agentes de trading con **dinero ficticio** (10 € cada uno, 90 € en tot
 | `.github/workflows/agentes.yml` | La orden que ejecuta el programa cada hora (minutos 17 y 47, como respaldo). |
 | `comparar_estrategias.py` y `.github/workflows/comparar.yml` | Comparador manual de estrategias sobre el historial de BTC/EUR (se lanza a mano desde Actions). |
 | `laboratorio.py` y `.github/workflows/laboratorio.yml` | El laboratorio: cada lunes prueba ~80 variantes de estrategias y las examina (ver más abajo). |
+| `estrategias.py`, `ejecucion.py`, `costes.py`, `velas.py`, `reglas_mercado.py` | Las reglas comunes: **un único** conjunto de estrategias y **un único** simulador, usados por los agentes en vivo, el laboratorio y el comparador (así sus resultados son comparables). |
+| `persistencia.py`, `archivado.py`, `verificar_salida.py`, `scripts/` | Escritura atómica (todo o nada), archivado verificable con huellas y comprobación antes de publicar. |
+| `metricas.py`, `walkforward.py`, `universo_historico.py` | Métricas de riesgo con intervalos de confianza, validación walk-forward y universo «punto en el tiempo». |
+| `analista.py`, `exchange_lectura.py`, `ADAPTADOR_EXCHANGE_SOLO_LECTURA.md` | El analista experimental (**solo propone**) y el diseño —sin conexión— de un adaptador de exchange de solo lectura. |
+| `tests/` | Más de 200 pruebas automáticas (`python3 -m unittest discover -s tests -t .`). Se ejecutan antes de cada paso de la simulación. |
+| `IMPLEMENTACION_MEJORAS_CRYPTO.md`, `INFORME_FINAL_IMPLEMENTACION_CRYPTO.md` | Registro de las 20 mejoras de la auditoría y el informe final con sus límites. |
 | `index.html` | El panel «Sala de trading», publicado con GitHub Pages. |
 | `manifest.webmanifest`, `icon-192.png`, `icon-512.png` | Permiten instalar el panel en la pantalla de inicio del móvil. |
 | `director.py` y `.github/workflows/director.yml` | El director: tras cada ejecución de los agentes o del laboratorio revisa los datos y escribe el parte, la memoria y las propuestas. |
 | `EQUIPO.md` | Carta del equipo: quién hace qué, qué necesita tu aprobación y qué está prohibido. |
-| `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`, `laboratorio.json`, `laboratorio.md`, `parte_director.json` y `.md`, `memoria.jsonl` y `.md`, `propuestas.md` y `director_estado.json`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
+| `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`, `laboratorio.json`, `laboratorio.md`, `parte_director.json` y `.md`, `memoria.jsonl` y `.md`, `propuestas.md`, `director_estado.json`, `decisiones_rechazadas.csv`, `incidencias_datos.csv`, `reglas_mercado.json` y `propuestas_analista.json/.md`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
 | `comparacion/` | Resultado del comparador (`comparacion.md` y `.csv`). |
 
 ## Los agentes
@@ -35,12 +41,22 @@ Nueve agentes de trading con **dinero ficticio** (10 € cada uno, 90 € en tot
 
 Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pasar horas sin ninguna operación.
 
+### Reglas de la simulación (versión 4)
+
+- **Decisión y ejecución separadas:** la señal se calcula con el **cierre** de una vela y la orden se ejecuta a la **apertura de la vela siguiente** (nunca al precio con el que se decidió). Una orden que no encuentra precio en 6 horas caduca.
+- **Costes más prudentes:** comisión 0,40 % + horquilla 0,08 % + deslizamiento 0,05 %; en monedas de poco volumen la horquilla y el deslizamiento son mayores. Son **supuestos de diseño**, no mediciones reales.
+- **Mínimos del exchange:** cada orden respeta el volumen y el coste mínimos y los decimales de Kraken. Con 2 € por posición **algunas monedas (BTC incluido) pueden no ser operables**; esas decisiones se anotan en `datos/decisiones_rechazadas.csv` en vez de ejecutarse. Si se quieren más monedas hay que dar más capital por agente o menos posiciones (decisión del usuario).
+- **Datos de velas validados:** se descartan velas con valores imposibles, duplicadas o mal alineadas; un salto de precio anómalo (>40 %) bloquea las compras nuevas de esa moneda. Nunca se rellenan huecos inventando precios.
+- **Posiciones de monedas que salen del ranking:** se siguen vigilando; si dejan de llegar datos no se cierran ni se inventa ganancia (valoración conservadora y alerta).
+- **Cambios de versión:** al cambiar de reglas, la simulación anterior se **archiva con manifiesto y huellas SHA-256** antes de empezar de cero.
+- **Historial honesto:** un agente nuevo no tiene pasado; sus columnas anteriores quedan vacías en vez de rellenarse.
+
 ## El laboratorio (analistas de estrategias)
 
-Un grupo de seis analistas (tendencia, filtros, rebote, volatilidad, salidas con stop/objetivo y fuerza relativa frente a BTC) prueba cada lunes unas 100 variantes de estrategias sobre el historial de Kraken (12 monedas, velas de 4 horas y de 1 día), con los mismos costes que la simulación (comisión 0,40 % + deslizamiento). Al final enseña también el resultado medio de cada familia, para ver qué ideas valen la pena.
+Un grupo de seis analistas (tendencia, filtros, rebote, volatilidad, salidas con stop/objetivo y fuerza relativa frente a BTC) prueba cada lunes unas 100 variantes de estrategias sobre el historial de Kraken (16 monedas, velas de 4 horas y de 1 día), con **las mismas estrategias, el mismo simulador y los mismos costes** que la simulación en vivo. Al final enseña también el resultado medio de cada familia, para ver qué ideas valen la pena.
 
-1. **Entrenamiento:** se eligen las 12 mejores variantes con el primer 60 % del historial.
-2. **Examen:** se las prueba en el último 40 %, que no se usó para elegir. Una variante aprueba si gana dinero y supera a comprar y mantener en al menos el 60 % de las series, con 4 operaciones o más.
+1. **Entrenamiento (walk-forward):** en cada pliegue se eligen las 12 mejores variantes con 200 velas y se las examina en las 80 siguientes, que no se usaron para elegir; luego la ventana se desliza. Se publica además la **ventaja real de elegir** frente a la media de todas las variantes.
+2. **Examen:** una variante aprueba si gana dinero y supera a comprar y mantener en al menos el 60 % de las pruebas y de los pliegues, con 4 operaciones o más. Solo se compra en monedas que estaban entre las 10 de mayor volumen *en esa fecha* (reduce, **no elimina**, el sesgo de supervivencia: Kraken no da las monedas ya deslistadas). Se informa también del resultado por régimen de mercado (alcista, bajista, lateral), con costes duros y con métricas de riesgo con intervalo de confianza.
 3. **Tasa de azar:** se calcula qué porcentaje de *todas* las variantes aprobaría el examen. Si las candidatas no destacan claramente sobre ese porcentaje, el veredicto es «ruido».
 4. **Director:** el veredicto (POSIBLE, RUIDO o NINGUNA) aparece en el panel, en la vista **Laboratorio**, y en el informe diario.
 
