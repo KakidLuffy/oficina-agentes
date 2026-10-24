@@ -244,3 +244,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-24T07:00+00:00,Momentum rapido,ADAEUR,VENTA,0.186181,1.24,stop de perdida (-1.6 %),0.0056
 2026-10-24T07:00+00:00,Rebote rapido,NEAREUR,COMPRA,4.074736,2.0,senal compradora,0.009
 2026-10-24T07:00+00:00,Rebote rapido,DOTEUR,COMPRA,0.949374,2.0,senal compradora,0.009
+2026-10-24T09:00+00:00,Rebote rapido,NEAREUR,VENTA,3.973912,1.93,stop de perdida (-2.4 %),0.0087
+2026-10-24T09:00+00:00,Rebote rapido,ZECEUR,COMPRA,1029.146316,2.0,senal compradora,0.009
