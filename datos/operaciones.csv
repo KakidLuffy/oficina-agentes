@@ -237,3 +237,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-24T04:00+00:00,Momentum rapido,ADAEUR,COMPRA,0.189349,1.27,senal compradora,0.0057
 2026-10-24T04:00+00:00,Rebote rapido,PUMPEUR,VENTA,0.003826,2.0,senal vendedora,0.009
 2026-10-24T04:00+00:00,Rebote rapido,ENAEUR,VENTA,0.178011,2.03,senal vendedora,0.0092
+2026-10-24T05:00+00:00,Momentum rapido,ENAEUR,VENTA,0.174613,1.94,stop de perdida (-2.0 %),0.0088
+2026-10-24T05:00+00:00,Momentum rapido,INJEUR,VENTA,6.871563,1.97,senal vendedora,0.0089
+2026-10-24T07:00+00:00,Momentum rapido,SUIEUR,VENTA,0.846577,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-24T07:00+00:00,Momentum rapido,LINKEUR,VENTA,10.441996,1.96,senal vendedora,0.0088
+2026-10-24T07:00+00:00,Momentum rapido,ADAEUR,VENTA,0.186181,1.24,stop de perdida (-1.6 %),0.0056
+2026-10-24T07:00+00:00,Rebote rapido,NEAREUR,COMPRA,4.074736,2.0,senal compradora,0.009
+2026-10-24T07:00+00:00,Rebote rapido,DOTEUR,COMPRA,0.949374,2.0,senal compradora,0.009
