@@ -256,3 +256,12 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-24T19:00+00:00,Momentum rapido,PUMPEUR,COMPRA,0.003825,2.0,senal compradora,0.009
 2026-10-24T19:00+00:00,Momentum rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
 2026-10-24T19:00+00:00,Rebote rapido,ETHEUR,VENTA,2086.79608,2.0,senal vendedora,0.009
+2026-10-24T20:00+00:00,Cruce 5/20,PUMPEUR,COMPRA,0.003844,2.0,senal compradora,0.009
+2026-10-24T20:00+00:00,Momentum,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-24T20:00+00:00,Momentum,HYPEEUR,COMPRA,68.244105,1.15,senal compradora,0.0052
+2026-10-24T20:00+00:00,Consenso 2 de 3,PUMPEUR,COMPRA,0.003844,2.0,senal compradora,0.009
+2026-10-24T20:00+00:00,Momentum rapido,XRPEUR,COMPRA,1.152656,2.0,senal compradora,0.009
+2026-10-24T20:00+00:00,Momentum rapido,SOLEUR,COMPRA,90.68532,1.06,senal compradora,0.0048
+2026-10-24T21:00+00:00,Cruce 5/20,XRPEUR,COMPRA,1.154487,1.64,senal compradora,0.0074
+2026-10-24T21:00+00:00,Consenso 2 de 3,XRPEUR,COMPRA,1.154487,2.0,senal compradora,0.009
+2026-10-24T21:00+00:00,Consenso 2 de 3,PEPEEUR,COMPRA,4e-06,1.68,senal compradora,0.0076
