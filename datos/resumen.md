@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-10-24T05:06:02+00:00 UTC · Precio BTC/EUR: 72154 (Kraken)
-En marcha desde: 2026-10-21T11:37:53+00:00 UTC (2.7 dias)
+Ultima actualizacion: 2026-10-24T05:56:07+00:00 UTC · Precio BTC/EUR: 72069 (Kraken)
+En marcha desde: 2026-10-21T11:37:53+00:00 UTC (2.8 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 9.42 | -0.58 | -5.81 % | -0.26 | 16 | 2026-10-21 | En efectivo |
-| Cruce 5/20 | 9.63 | -0.37 | -3.74 % | -0.05 | 18 | 2026-10-21 | Con EURC, TIA |
-| Momentum | 9.14 | -0.86 | -8.55 % | -0.53 | 33 | 2026-10-21 | Con XLM |
-| Rebote | 9.35 | -0.65 | -6.47 % | -0.32 | 11 | 2026-10-21 | Con ARB, COMP, INJ, W, WLD |
-| Cruce 10/30 + filtro | 9.49 | -0.51 | -5.07 % | -0.18 | 14 | 2026-10-21 | En efectivo |
-| Consenso 2 de 3 | 9.52 | -0.48 | -4.79 % | -0.16 | 17 | 2026-10-21 | Con AVAX |
-| Cruce 3/8 rapido | 9.78 | -0.22 | -2.21 % | +0.10 | 16 | 2026-10-21 | En efectivo |
-| Momentum rapido | 9.20 | -0.80 | -8.00 % | -0.48 | 59 | 2026-10-21 | Con ADA, ENA, INJ, LINK, SUI |
-| Rebote rapido | 8.87 | -1.13 | -11.31 % | -0.81 | 54 | 2026-10-21 | Con WLD, XMR |
-| Comprar y mantener (solo BTC) | 9.68 | -0.32 | -3.22 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Cruce 10/30 | 9.42 | -0.58 | -5.81 % | -0.25 | 16 | 2026-10-21 | En efectivo |
+| Cruce 5/20 | 9.63 | -0.37 | -3.75 % | -0.04 | 18 | 2026-10-21 | Con EURC, TIA |
+| Momentum | 9.14 | -0.86 | -8.55 % | -0.52 | 33 | 2026-10-21 | Con XLM |
+| Rebote | 9.35 | -0.65 | -6.50 % | -0.32 | 11 | 2026-10-21 | Con ARB, COMP, INJ, W, WLD |
+| Cruce 10/30 + filtro | 9.49 | -0.51 | -5.07 % | -0.17 | 14 | 2026-10-21 | En efectivo |
+| Consenso 2 de 3 | 9.51 | -0.49 | -4.89 % | -0.16 | 17 | 2026-10-21 | Con AVAX |
+| Cruce 3/8 rapido | 9.78 | -0.22 | -2.21 % | +0.11 | 16 | 2026-10-21 | En efectivo |
+| Momentum rapido | 9.16 | -0.84 | -8.41 % | -0.51 | 59 | 2026-10-21 | Con ADA, ENA, INJ, LINK, SUI |
+| Rebote rapido | 8.87 | -1.13 | -11.31 % | -0.80 | 54 | 2026-10-21 | Con WLD, XMR |
+| Comprar y mantener (solo BTC) | 9.67 | -0.33 | -3.34 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
@@ -29,7 +29,7 @@ Riesgo (calculado con el historial guardado):
 | Cruce 10/30 + filtro | -6.52 % | 0 | 7 |
 | Consenso 2 de 3 | -5.84 % | 0 | 8 |
 | Cruce 3/8 rapido | -3.39 % | 2 | 6 |
-| Momentum rapido | -9.89 % | 5 | 22 |
+| Momentum rapido | -10.28 % | 5 | 22 |
 | Rebote rapido | -11.50 % | 3 | 23 |
 | Comprar y mantener | -4.55 % | 0 | 0 |
 
@@ -39,7 +39,7 @@ Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una ope
 
 ![Evolucion del capital](grafico.svg)
 
-Aviso: solo hay 2.7 dias de datos; aun no hay base para concluir que una estrategia sea mejor.
+Aviso: solo hay 2.8 dias de datos; aun no hay base para concluir que una estrategia sea mejor.
 
 Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.
 Probar muchas monedas y estrategias aumenta la probabilidad de que alguna parezca buena solo por casualidad.
