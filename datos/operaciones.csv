@@ -213,3 +213,12 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-23T20:00+00:00,Cruce 10/30 + filtro,DOTEUR,VENTA,0.998501,1.88,senal vendedora,0.0085
 2026-10-23T21:00+00:00,Cruce 5/20,ETHEUR,VENTA,2138.63015,1.79,senal vendedora,0.0081
 2026-10-23T21:00+00:00,Rebote rapido,ZECEUR,COMPRA,1089.814635,1.1,senal compradora,0.0049
+2026-10-23T22:00+00:00,Cruce 10/30,SUIEUR,VENTA,0.846277,1.89,senal vendedora,0.0085
+2026-10-23T22:00+00:00,Momentum,ZECEUR,VENTA,1043.887795,1.82,senal vendedora,0.0082
+2026-10-23T22:00+00:00,Momentum,ENAEUR,VENTA,0.173613,1.84,senal vendedora,0.0083
+2026-10-23T22:00+00:00,Consenso 2 de 3,ETHEUR,VENTA,2110.52421,1.95,senal vendedora,0.0088
+2026-10-23T22:00+00:00,Momentum rapido,ETHEUR,VENTA,2110.52421,1.94,stop de perdida (-1.9 %),0.0088
+2026-10-23T22:00+00:00,Rebote rapido,ZECEUR,VENTA,1043.887795,1.04,stop de perdida (-4.2 %),0.0047
+2026-10-23T22:00+00:00,Rebote rapido,SUIEUR,VENTA,0.846277,1.93,stop de perdida (-2.5 %),0.0087
+2026-10-23T22:00+00:00,Rebote rapido,ZROEUR,VENTA,1.497251,1.92,stop de perdida (-3.4 %),0.0087
+2026-10-23T23:00+00:00,Cruce 10/30 + filtro,SOLEUR,VENTA,91.704125,1.9,senal vendedora,0.0086
