@@ -318,3 +318,8 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-25T12:00+00:00,Consenso 2 de 3,ENAEUR,VENTA,0.173413,1.96,senal vendedora,0.0089
 2026-10-25T12:00+00:00,Cruce 3/8 rapido,ZECEUR,COMPRA,1083.974716,2.0,senal compradora,0.009
 2026-10-25T12:00+00:00,Momentum rapido,ZECEUR,COMPRA,1083.974716,2.0,senal compradora,0.009
+2026-10-25T13:00+00:00,Cruce 10/30,INJEUR,COMPRA,6.859428,2.0,senal compradora,0.009
+2026-10-25T13:00+00:00,Cruce 5/20,ENAEUR,COMPRA,0.173687,2.0,senal compradora,0.009
+2026-10-25T13:00+00:00,Consenso 2 de 3,ZECEUR,VENTA,1074.684389,1.96,senal vendedora,0.0089
+2026-10-25T13:00+00:00,Consenso 2 de 3,ENAEUR,COMPRA,0.173687,2.0,senal compradora,0.009
+2026-10-25T13:00+00:00,Momentum rapido,PEPEEUR,VENTA,4e-06,1.94,stop de perdida (-2.0 %),0.0088
