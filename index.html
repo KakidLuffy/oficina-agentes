@@ -10,8 +10,13 @@
 <meta name="theme-color" content="#07090b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://raw.githubusercontent.com https://api.kraken.com; base-uri 'none'; form-action 'none'; manifest-src 'self'">
+<meta name="referrer" content="no-referrer">
 <style>
+/* Tipografías: solo las que ya tiene el dispositivo (sin pedir nada a Google ni a terceros). Si no están, se usa la fuente del sistema. */
+@font-face{font-family:"Barlow Condensed";src:local("Barlow Condensed"),local("BarlowCondensed-SemiBold"),local("Barlow Condensed SemiBold");font-weight:600 800}
+@font-face{font-family:Inter;src:local("Inter"),local("Inter-Regular");font-weight:400 700}
+@font-face{font-family:Silkscreen;src:local("Silkscreen"),local("Silkscreen-Regular");font-weight:400 700}
 :root{--bg:#07090b;--panel:#0e1216;--panel2:#131a20;--line:#1f2830;--ink:#eef2f5;--mute:#8a97a3;--lime:#c6ff1a;--lime-d:#8fb812;--red:#ff5a4d;--amber:#ffb020;
 --cond:"Barlow Condensed","Arial Narrow",Impact,system-ui,sans-serif;--body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
@@ -250,8 +255,18 @@ header{display:flex;align-items:center;gap:20px;padding:14px 20px;border-bottom:
 "use strict";
 /* ===== configuración ===== */
 var REPO = "KakidLuffy/oficina-agentes";
-var BASE = (new URLSearchParams(location.search).get("base")) ||
-           "https://raw.githubusercontent.com/" + REPO + "/main/datos/";
+var BASE_OFICIAL = "https://raw.githubusercontent.com/" + REPO + "/main/datos/";
+/* ?base= solo se acepta si apunta a una ruta de ESTE mismo sitio o al repositorio oficial: un enlace manipulado no puede hacer que el panel lea datos de otra parte. */
+function baseSegura(b){
+  if (!b) return BASE_OFICIAL;
+  try {
+    var u = new URL(b, location.href);
+    var mismo = u.origin === location.origin && /^[\w\-./]*$/.test(u.pathname);
+    var oficial = u.href.indexOf(BASE_OFICIAL) === 0;
+    return (mismo || oficial) && !/[?#]/.test(b) ? u.href : BASE_OFICIAL;
+  } catch (e) { return BASE_OFICIAL; }
+}
+var BASE = baseSegura(new URLSearchParams(location.search).get("base"));
 var REFRESH_MS = 5 * 60 * 1000;
 var MIN_CERRADAS = 30, MIN_DIAS = 21, START = 50;
 var COLORES = ["#c6ff1a", "#3ddcff", "#ffb020", "#ff6bd6", "#7aa2ff", "#ff7a45", "#2ee6a6", "#ff5a7a", "#e0c080"];
@@ -264,8 +279,10 @@ var DEMO = false;
 var VIEW = "sala";
 
 function $(id){ return document.getElementById(id); }
-function eur(v, signo){ var s = (signo && v >= 0 ? "+" : "") + v.toFixed(2).replace(".", ","); return s + " €"; }
-function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function eur(v, signo){ v = num(v); var s = (signo && v >= 0 ? "+" : "") + v.toFixed(2).replace(".", ","); return s + " €"; }
+function esc(t){ return String(t == null ? "" : t).replace(/[&<>"'`]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","`":"&#96;"}[c]; }); }
+/* número seguro: cualquier cosa que no sea un número finito se convierte en el valor por defecto (nunca llega texto a un cálculo ni a un atributo) */
+function num(v, def){ var n = typeof v === "number" ? v : parseFloat(v); return isFinite(n) ? n : (def === undefined ? 0 : def); }
 function corto(par){ return par.replace(/EUR$/, "").replace(/^XBT$/, "BTC"); }
 function hace(ms){
   var m = Math.round(ms / 60000);
@@ -277,13 +294,23 @@ function hace(ms){
 
 /* ===== lectura de datos ===== */
 function parseCSV(txt){
-  var lines = txt.trim().split(/\r?\n/);
-  var head = lines.shift().split(",");
-  return lines.map(function(l){
-    var c = l.split(","), o = {};
-    head.forEach(function(h, i){ o[h] = c[i]; });
-    return o;
-  });
+  /* admite campos entre comillas (con comas, comillas dobles y saltos de línea); un archivo vacío da una lista vacía */
+  txt = String(txt || "");
+  var filas = [], f = [], c = "", q = false;
+  for (var i = 0; i < txt.length; i++){
+    var ch = txt[i];
+    if (q){
+      if (ch === '"'){ if (txt[i + 1] === '"'){ c += '"'; i++; } else q = false; } else c += ch;
+    } else if (ch === '"') q = true;
+    else if (ch === ","){ f.push(c); c = ""; }
+    else if (ch === "\n" || ch === "\r"){ if (ch === "\r" && txt[i + 1] === "\n") i++; f.push(c); c = ""; filas.push(f); f = []; }
+    else c += ch;
+  }
+  if (c !== "" || f.length){ f.push(c); filas.push(f); }
+  filas = filas.filter(function(r){ return !(r.length === 1 && r[0] === ""); });
+  if (!filas.length) return [];
+  var head = filas.shift();
+  return filas.map(function(r){ var o = Object.create(null); head.forEach(function(h, i){ o[h] = r[i]; }); return o; });
 }
 function get(url, tipo){
   /* sin AbortController: algunos visores integrados no pueden copiar esa señal; el límite de tiempo se hace con una carrera */
@@ -303,9 +330,11 @@ function cargar(){
 
 /* ===== cálculos ===== */
 function preparar(estado, hist, ops){
-  START = +estado.capital_inicial || 50;   /* capital ficticio por agente (lo guarda la simulación; las versiones antiguas usaban 50) */
-  var fee = estado.fee, slip = estado.slip, precios = estado.precios || {};
-  var btc = precios.XBTEUR || (hist.length ? parseFloat(hist[hist.length - 1].precio_eur) : 0);
+  if (!estado || typeof estado !== "object" || !Array.isArray(estado.agentes) || !estado.agentes.length) throw new Error("estado.json vacío o con formato inesperado");
+  hist = Array.isArray(hist) ? hist : []; ops = Array.isArray(ops) ? ops : [];
+  START = num(estado.capital_inicial, 50) || 50;   /* capital ficticio por agente (lo guarda la simulación; las versiones antiguas usaban 50) */
+  var fee = num(estado.fee, 0.004), slip = num(estado.slip, 0.0005), precios = (estado.precios && typeof estado.precios === "object") ? estado.precios : {};
+  var btc = num(precios.XBTEUR) || (hist.length ? num(hist[hist.length - 1].precio_eur) : 0);
   var ahoraMs = Date.now();
   var ultima = hist.length ? Date.parse(hist[hist.length - 1].fecha_utc) : NaN;
   var agentes = estado.agentes.map(function(a, i){
@@ -313,22 +342,22 @@ function preparar(estado, hist, ops){
     var eq = serie.length ? serie[serie.length - 1] : START;
     var pico = 0, dd = 0;
     serie.forEach(function(v){ pico = Math.max(pico, v); if (pico) dd = Math.max(dd, (pico - v) / pico * 100); });
-    var hold = START * (1 - fee) * btc / (a.precio_inicio * (1 + slip));
+    var hold = START * (1 - fee) * btc / ((num(a.precio_inicio) || btc || 1) * (1 + slip));
     var mias = ops.filter(function(o){ return o.agente === a.nombre; });
-    var abiertas = {}, gan = 0, per = 0;
+    var abiertas = Object.create(null), gan = 0, per = 0, neu = 0;
     mias.forEach(function(o){
-      if (o.tipo === "COMPRA") abiertas[o.moneda] = parseFloat(o.importe_eur);
-      else if (o.moneda in abiertas){ if (parseFloat(o.importe_eur) > abiertas[o.moneda]) gan++; else per++; delete abiertas[o.moneda]; }
+      if (o.tipo === "COMPRA") abiertas[o.moneda] = num(o.importe_eur);
+      else if (o.tipo === "VENTA" && o.moneda in abiertas){ var imp = num(o.importe_eur); if (imp > abiertas[o.moneda]) gan++; else if (imp < abiertas[o.moneda]) per++; else neu++; delete abiertas[o.moneda]; }
     });
-    var dias = (ahoraMs - Date.parse(a.inicio)) / 86400000;
+    var dias = num((ahoraMs - Date.parse(a.inicio)) / 86400000);
     return {
       i: i, nombre: a.nombre, color: COLORES[i % COLORES.length], eq: eq, res: eq - START, pct: (eq / START - 1) * 100,
-      vsHold: eq - hold, ops: a.operaciones, cerradas: gan + per, gan: gan, per: per, dd: dd, dias: dias,
-      pos: Object.keys(a.posiciones || {}).map(corto), apagado: !!a.apagado, serie: serie, inicio: a.inicio
+      vsHold: eq - hold, ops: num(a.operaciones), cerradas: gan + per + neu, gan: gan, per: per, dd: dd, dias: dias,
+      pos: Object.keys(a.posiciones || {}).map(corto), apagado: !!a.apagado, serie: serie, inicio: String(a.inicio || "")
     };
   });
   var total = agentes.reduce(function(s, a){ return s + a.eq; }, 0);
-  var hold0 = START * (1 - fee) * btc / (estado.precio_inicio * (1 + slip));
+  var hold0 = START * (1 - fee) * btc / ((num(estado.precio_inicio) || btc || 1) * (1 + slip));
   return {
     estado: estado, hist: hist, ops: ops, agentes: agentes, btc: btc, ultimaMs: ultima, fee: fee, slip: slip,
     total: total, base: START * agentes.length, hold: hold0,
@@ -402,7 +431,7 @@ function pintarOps(){
     var c = o.tipo === "COMPRA" ? "buy" : "sell";
     var ag = D.agentes.filter(function(a){ return a.nombre === o.agente; })[0];
     return '<div class="item"><time>' + esc(horaLocal(o.fecha_utc)) + '</time><span><span class="dotag" style="background:' + (ag ? ag.color : "#8a97a3") + '"></span><span class="'+c+'">' + esc(o.tipo) + '</span> ' +
-           esc(corto(o.moneda)) + ' · ' + esc(o.agente) + ' · ' + parseFloat(o.importe_eur).toFixed(2).replace(".", ",") + ' €' + (o.motivo ? ' · ' + esc(o.motivo) : '') + (o.coste_eur ? ' · coste ' + parseFloat(o.coste_eur).toFixed(3).replace(".", ",") + ' €' : '') + '</span></div>';
+           esc(corto(o.moneda)) + ' · ' + esc(o.agente) + ' · ' + num(o.importe_eur).toFixed(2).replace(".", ",") + ' €' + (o.motivo ? ' · ' + esc(o.motivo) : '') + (o.coste_eur ? ' · coste ' + num(o.coste_eur).toFixed(3).replace(".", ",") + ' €' : '') + '</span></div>';
   }).join("") : '<p class="note">Aún no hay operaciones. Los agentes solo compran cuando su regla se cumple.</p>';
 }
 function pintarInforme(){
@@ -471,8 +500,8 @@ function pintarParte(){
   (rev.problemas || []).forEach(function(l){ h += '<li class="' + (l.nivel === "error" ? "er" : "al") + '">Revisión: ' + esc(l.texto) + '</li>'; });
   h += '</ul><div class="prog">';
   (P.progreso || []).forEach(function(g){
-    var d = Math.min(100, g.dias / (P.min_dias || 21) * 100), c = Math.min(100, g.cierres / (P.min_cierres || 30) * 100);
-    h += '<div class="pg"><b>' + esc(g.nombre) + '</b>' + (g.evaluable ? ' · ✔ evaluable' : '') + '<div class="bar"><i style="width:' + d.toFixed(0) + '%"></i></div><div class="bar c"><i style="width:' + c.toFixed(0) + '%"></i></div>' + g.dias.toFixed(1).replace(".", ",") + ' de ' + (P.min_dias || 21) + ' días · ' + g.cierres + ' de ' + (P.min_cierres || 30) + ' cierres</div>';
+    var d = Math.max(0, Math.min(100, num(g.dias) / num(P.min_dias, 21) * 100)), c = Math.max(0, Math.min(100, num(g.cierres) / num(P.min_cierres, 30) * 100));
+    h += '<div class="pg"><b>' + esc(g.nombre) + '</b>' + (g.evaluable ? ' · ✔ evaluable' : '') + '<div class="bar"><i style="width:' + d.toFixed(0) + '%"></i></div><div class="bar c"><i style="width:' + c.toFixed(0) + '%"></i></div>' + num(g.dias).toFixed(1).replace(".", ",") + ' de ' + num(P.min_dias, 21) + ' días · ' + num(g.cierres) + ' de ' + num(P.min_cierres, 30) + ' cierres</div>';
   });
   h += '</div><div class="pie">Actualizado ' + horaLocal(P.generado) + ' · el director solo lee y resume; no opera.</div></div>';
   el.innerHTML = h; el.hidden = (TAB === "mkt" || VIEW !== "sala");
@@ -600,11 +629,11 @@ function pintarLab(){
       pj += tx(cx, b + 98, a.candidatas + (a.candidatas === 1 ? " CANDIDATA" : " CANDIDATAS"), 5.5, a.candidatas ? "#e8ff8a" : "#d6dcf5");
     } else info += burbuja(cx, b - 2, "Sin datos", "#9aa0c8", false);
   });
-  var v = L ? L.veredicto : "", vc = v === "posible" ? "#2fa04f" : v === "ruido" ? "#d98a00" : "#d9453a";
+  var v = L ? (["posible", "ruido", "ninguna"].indexOf(L.veredicto) >= 0 ? L.veredicto : "ninguna") : "", vc = v === "posible" ? "#2fa04f" : v === "ruido" ? "#d98a00" : "#d9453a";
   var ex = R(396, 126, 4, 40, "#6a4622") + R(440, 126, 4, 40, "#6a4622") + R(356, 100, 104, 50, "#1d1a2b") + R(358, 102, 100, 46, "#fdf6e3") + R(358, 102, 100, 4, "#c9b98a");
   ex += tx(408, 116, "EXAMEN", 6, "#4a4260").replace('class="tx"', '');
   ex += '<text x="408" y="136" text-anchor="middle" font-size="10" fill="' + (L ? vc : "#8a8aa8") + '" ' + FONT + '>' + (L ? v.toUpperCase() : "—") + '</text>';
-  ex += '<text x="408" y="145" text-anchor="middle" font-size="5" fill="#4a4260" ' + FONT + '>' + (L ? "azar " + Math.round(L.tasa_azar * 100) + " %" : "sin datos") + '</text>';
+  ex += '<text x="408" y="145" text-anchor="middle" font-size="5" fill="#4a4260" ' + FONT + '>' + (L ? "azar " + Math.round(num(L.tasa_azar) * 100) + " %" : "sin datos") + '</text>';
   s += fila + ex + planta(330, 190 + EXL) + planta(470, 208 + EXL);
   s += '<g transform="translate(394,168) scale(2)">' + sprite("#e8e8f0", "espera", true) + '</g>' + tx(408, 214, "DIRECTOR", 5.5, "#fdf6e3");
   s += pj + info;
@@ -615,10 +644,10 @@ function pintarLab(){
   } else {
     var f = new Date(L.generado);
     h += '<div class="labv ' + v + '"><b>Veredicto: ' + esc(v.toUpperCase()) + '</b><span>' + esc(L.texto) + '</span></div>';
-    h += '<p class="note">Actualizado ' + f.toLocaleString("es-ES", {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"}) + ' · ' + L.probadas + ' variantes · ' + L.series.length + ' series (' + esc(L.fuente) + '). Criterio: ' + esc(L.criterio) + '.</p>';
+    h += '<p class="note">Actualizado ' + f.toLocaleString("es-ES", {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"}) + ' · ' + num(L.probadas) + ' variantes · ' + (Array.isArray(L.series) ? L.series.length : 0) + ' series (' + esc(L.fuente) + '). Criterio: ' + esc(L.criterio) + '.</p>';
     h += '<table class="labt"><thead><tr><th>Variante (mejores en entrenamiento)</th><th>Entrena</th><th>Examen</th><th>Series</th><th></th></tr></thead><tbody>';
-    L.mejores_entreno.forEach(function(x){
-      h += '<tr><td>' + esc(x.nombre) + '</td><td class="' + (x.train_dif >= 0 ? "up" : "down") + '">' + eur(x.train_dif, true) + '</td><td class="' + (x.test_dif >= 0 ? "up" : "down") + '">' + eur(x.test_dif, true) + '</td><td>' + x.ok + '/' + x.total + '</td><td>' + (x.pasa ? "✔" : "✘") + '</td></tr>';
+    (Array.isArray(L.mejores_entreno) ? L.mejores_entreno : []).forEach(function(x){
+      h += '<tr><td>' + esc(x.nombre) + '</td><td class="' + (x.train_dif >= 0 ? "up" : "down") + '">' + eur(x.train_dif, true) + '</td><td class="' + (x.test_dif >= 0 ? "up" : "down") + '">' + eur(x.test_dif, true) + '</td><td>' + num(x.ok) + '/' + num(x.total) + '</td><td>' + (x.pasa ? "✔" : "✘") + '</td></tr>';
     });
     h += '</tbody></table><p class="note">«Entrena» y «Examen» son la diferencia media frente a comprar y mantener. Las candidatas (✔) <b>no operan solas</b>: solo se proponen. Con tantas variantes probadas, algunas salen bien por azar, por eso se compara con la tasa de azar.</p>';
   }
@@ -815,7 +844,7 @@ function pintarMercado(){
   if (MK.errT) h += '<div class="banner err">No se pudo leer Kraken: ' + esc(MK.errT) + '</div>';
   paresMercado().forEach(function(par){
     var t = MK.tick[par], n = tenencia[corto(par)], c = t ? t.cambio : 0;
-    h += '<div class="mrow' + (par === MK.sel ? " sel" : "") + '" data-par="' + par + '" tabindex="0" role="button"><div><b>' + (n ? '<span class="dot"></span>' : "") + esc(corto(par)) + '</b>' +
+    h += '<div class="mrow' + (par === MK.sel ? " sel" : "") + '" data-par="' + esc(par) + '" tabindex="0" role="button"><div><b>' + (n ? '<span class="dot"></span>' : "") + esc(corto(par)) + '</b>' +
          '<small>' + (t ? 'Vol. 24 h ' + Math.round(t.vol).toLocaleString("es-ES") + ' €' : "cargando…") + (n ? " · " + n + (n === 1 ? " agente" : " agentes") : "") + '</small></div>' +
          '<div class="p">' + (t ? fmtP(t.last) + " €" : "–") + '</div><div class="c ' + (c >= 0 ? "up" : "down") + '">' + (t ? (c >= 0 ? "+" : "") + c.toFixed(2).replace(".", ",") + " %" : "") + '</div></div>';
   });
@@ -927,7 +956,7 @@ function pintarEvolucion(){
     s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) + '" stroke="#1b252c"/><text x="' + (L + 4) + '" y="' + (y - 4).toFixed(1) + '" fill="#5d6a75" font-size="11" font-family="Inter,sans-serif">' + v.toFixed(1).replace(".", ",") + ' €</text>';
   }
   s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(START).toFixed(1) + '" y2="' + Y(START).toFixed(1) + '" stroke="#8a97a3" stroke-dasharray="2 5" opacity=".6"/>' +
-       '<text x="' + (L + 4) + '" y="' + (Y(START) - 5).toFixed(1) + '" fill="#8a97a3" font-size="11" font-family="Inter,sans-serif">50 € (capital inicial)</text>';
+       '<text x="' + (L + 4) + '" y="' + (Y(START) - 5).toFixed(1) + '" fill="#8a97a3" font-size="11" font-family="Inter,sans-serif">' + START.toFixed(0) + ' € (capital inicial)</text>';
   /* eje de tiempo */
   var span = t1 - t0;
   for (var k = 0; k <= 4; k++){
