@@ -269,3 +269,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-24T23:00+00:00,Rebote,ARBEUR,VENTA,0.151424,1.8,senal vendedora,0.0081
 2026-10-24T23:00+00:00,Cruce 10/30 + filtro,ZECEUR,COMPRA,1079.146303,2.0,senal compradora,0.009
 2026-10-25T00:00+00:00,Rebote,INJEUR,VENTA,6.912542,1.66,senal vendedora,0.0075
+2026-10-25T01:00+00:00,Cruce 10/30,XRPEUR,COMPRA,1.167023,2.0,senal compradora,0.009
+2026-10-25T01:00+00:00,Cruce 10/30,PUMPEUR,COMPRA,0.003871,2.0,senal compradora,0.009
+2026-10-25T02:00+00:00,Cruce 10/30,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-25T02:00+00:00,Cruce 10/30,HYPEEUR,COMPRA,68.344155,1.42,senal compradora,0.0064
+2026-10-25T02:00+00:00,Cruce 10/30 + filtro,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-25T03:00+00:00,Cruce 10/30 + filtro,VVVEUR,COMPRA,22.214101,2.0,senal compradora,0.009
+2026-10-25T03:00+00:00,Cruce 10/30 + filtro,ENAEUR,COMPRA,0.174987,2.0,senal compradora,0.009
