@@ -276,3 +276,12 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-25T02:00+00:00,Cruce 10/30 + filtro,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
 2026-10-25T03:00+00:00,Cruce 10/30 + filtro,VVVEUR,COMPRA,22.214101,2.0,senal compradora,0.009
 2026-10-25T03:00+00:00,Cruce 10/30 + filtro,ENAEUR,COMPRA,0.174987,2.0,senal compradora,0.009
+2026-10-25T05:00+00:00,Rebote,SUIEUR,COMPRA,0.82141,2.0,senal compradora,0.009
+2026-10-25T05:00+00:00,Momentum rapido,PEPEEUR,VENTA,4e-06,1.95,stop de perdida (-1.5 %),0.0088
+2026-10-25T05:00+00:00,Momentum rapido,PUMPEUR,VENTA,0.003797,1.97,senal vendedora,0.0089
+2026-10-25T05:00+00:00,Rebote rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-25T06:00+00:00,Momentum,PEPEEUR,VENTA,4e-06,1.92,senal vendedora,0.0087
+2026-10-25T06:00+00:00,Momentum,ENAEUR,COMPRA,0.171086,1.92,senal compradora,0.0086
+2026-10-25T06:00+00:00,Rebote,LINKEUR,COMPRA,10.140758,1.46,senal compradora,0.0066
+2026-10-25T06:00+00:00,Momentum rapido,SOLEUR,VENTA,90.37479,1.05,senal vendedora,0.0047
+2026-10-25T06:00+00:00,Momentum rapido,ZECEUR,VENTA,1060.948261,1.97,senal vendedora,0.0089
