@@ -1,25 +1,25 @@
 # Parte del director
 
-Actualizado: 2026-10-25T17:54:08Z
+Actualizado: 2026-10-25T19:39:17Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 83,99 € (-6,01 €).
-- Capital total 83,99 € (-6,01 €, -6,68 %).
-- Mejor agente: Cruce 3/8 rapido (-0,18 €). Peor: Rebote rapido (-1,21 €).
-- 1 de 9 agentes van por encima de «Comprar y mantener» (9,66 €).
+- Fondo de 90,00 € (10,00 € por agente): vale 83,84 € (-6,16 €).
+- Capital total 83,84 € (-6,16 €, -6,84 %).
+- Mejor agente: Cruce 3/8 rapido (-0,22 €). Peor: Rebote rapido (-1,21 €).
+- 1 de 9 agentes van por encima de «Comprar y mantener» (9,64 €).
 - 9 con monedas, 0 en efectivo, 0 apagados.
-- Operaciones en las últimas 24 h: 93.
+- Operaciones en las últimas 24 h: 85.
 
 Avisos:
-- Cruce 10/30 está cerca del límite de 7 € (9,36 €).
-- Cruce 5/20 está cerca del límite de 7 € (9,62 €).
-- Momentum está cerca del límite de 7 € (9,15 €).
+- Cruce 10/30 está cerca del límite de 7 € (9,34 €).
+- Cruce 5/20 está cerca del límite de 7 € (9,59 €).
+- Momentum está cerca del límite de 7 € (9,11 €).
 - Rebote está cerca del límite de 7 € (9,33 €).
-- Cruce 10/30 + filtro está cerca del límite de 7 € (9,58 €).
-- Consenso 2 de 3 está cerca del límite de 7 € (9,34 €).
-- Cruce 3/8 rapido está cerca del límite de 7 € (9,82 €).
-- Momentum rapido está cerca del límite de 7 € (8,99 €).
+- Cruce 10/30 + filtro está cerca del límite de 7 € (9,57 €).
+- Consenso 2 de 3 está cerca del límite de 7 € (9,36 €).
+- Cruce 3/8 rapido está cerca del límite de 7 € (9,78 €).
+- Momentum rapido está cerca del límite de 7 € (8,96 €).
 - Rebote rapido está cerca del límite de 7 € (8,79 €).
 
 Revisión de datos: sin errores.
