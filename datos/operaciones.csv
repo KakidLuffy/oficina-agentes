@@ -285,3 +285,17 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-25T06:00+00:00,Rebote,LINKEUR,COMPRA,10.140758,1.46,senal compradora,0.0066
 2026-10-25T06:00+00:00,Momentum rapido,SOLEUR,VENTA,90.37479,1.05,senal vendedora,0.0047
 2026-10-25T06:00+00:00,Momentum rapido,ZECEUR,VENTA,1060.948261,1.97,senal vendedora,0.0089
+2026-10-25T07:00+00:00,Cruce 5/20,EURCEUR,VENTA,0.999,1.98,senal vendedora,0.009
+2026-10-25T07:00+00:00,Consenso 2 de 3,PEPEEUR,VENTA,4e-06,1.62,senal vendedora,0.0073
+2026-10-25T07:00+00:00,Consenso 2 de 3,AVAXEUR,VENTA,7.918039,1.79,senal vendedora,0.0081
+2026-10-25T07:00+00:00,Consenso 2 de 3,XDGEUR,COMPRA,0.06869,2.0,senal compradora,0.009
+2026-10-25T07:00+00:00,Consenso 2 de 3,UNIEUR,COMPRA,6.059728,1.42,senal compradora,0.0064
+2026-10-25T08:00+00:00,Cruce 5/20,PUMPEUR,VENTA,0.003735,1.93,senal vendedora,0.0087
+2026-10-25T08:00+00:00,Momentum,ZECEUR,VENTA,1055.118177,1.96,senal vendedora,0.0089
+2026-10-25T08:00+00:00,Momentum,HYPEEUR,VENTA,67.296335,1.13,senal vendedora,0.0051
+2026-10-25T08:00+00:00,Momentum,PUMPEUR,VENTA,0.003735,1.94,senal vendedora,0.0088
+2026-10-25T08:00+00:00,Momentum,QNTEUR,COMPRA,160.950435,2.0,senal compradora,0.009
+2026-10-25T08:00+00:00,Consenso 2 de 3,XDGEUR,VENTA,0.067994,1.96,senal vendedora,0.0089
+2026-10-25T08:00+00:00,Consenso 2 de 3,UNIEUR,VENTA,5.95702,1.38,senal vendedora,0.0062
+2026-10-25T08:00+00:00,Consenso 2 de 3,PUMPEUR,VENTA,0.003735,1.93,senal vendedora,0.0087
+2026-10-25T08:00+00:00,Momentum rapido,XRPEUR,VENTA,1.153523,1.99,senal vendedora,0.009
