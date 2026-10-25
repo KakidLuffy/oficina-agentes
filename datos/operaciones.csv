@@ -348,3 +348,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-25T21:00+00:00,Momentum rapido,ADAEUR,VENTA,0.181535,1.96,senal vendedora,0.0089
 2026-10-25T21:00+00:00,Momentum rapido,INJEUR,COMPRA,6.989493,2.0,senal compradora,0.009
 2026-10-25T21:00+00:00,Rebote rapido,ZECEUR,COMPRA,1069.986726,2.0,senal compradora,0.009
+2026-10-25T22:00+00:00,Rebote rapido,ZECEUR,VENTA,1084.827315,2.01,senal vendedora,0.0091
