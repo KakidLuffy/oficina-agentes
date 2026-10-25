@@ -341,3 +341,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-25T16:00+00:00,Rebote,SUIEUR,VENTA,0.829485,2.0,senal vendedora,0.0091
 2026-10-25T16:00+00:00,Momentum rapido,NEAREUR,VENTA,4.162018,2.06,objetivo de ganancia (+4.0 %),0.0093
 2026-10-25T16:00+00:00,Momentum rapido,ETHEUR,COMPRA,2103.701325,2.0,senal compradora,0.009
+2026-10-25T19:00+00:00,Rebote,XDCEUR,COMPRA,0.028074,2.0,senal compradora,0.009
