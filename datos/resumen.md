@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-10-24T23:17:14+00:00 UTC · Precio BTC/EUR: 71905 (Kraken)
+Ultima actualizacion: 2026-10-25T00:35:54+00:00 UTC · Precio BTC/EUR: 72162 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (3.5 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 9.42 | -0.58 | -5.81 % | -0.23 | 16 | 2026-10-21 | En efectivo |
-| Cruce 5/20 | 9.61 | -0.39 | -3.93 % | -0.04 | 21 | 2026-10-21 | Con EURC, PUMP, TIA, XRP, ZEC |
-| Momentum | 9.12 | -0.88 | -8.75 % | -0.52 | 37 | 2026-10-21 | Con HYPE, PEPE, PUMP, XLM, ZEC |
-| Rebote | 9.28 | -0.72 | -7.20 % | -0.36 | 11 | 2026-10-21 | Con ARB, COMP, INJ, W, WLD |
-| Cruce 10/30 + filtro | 9.49 | -0.51 | -5.07 % | -0.15 | 14 | 2026-10-21 | En efectivo |
-| Consenso 2 de 3 | 9.47 | -0.53 | -5.34 % | -0.18 | 21 | 2026-10-21 | Con AVAX, PEPE, PUMP, XRP, ZEC |
-| Cruce 3/8 rapido | 9.78 | -0.22 | -2.21 % | +0.13 | 16 | 2026-10-21 | En efectivo |
-| Momentum rapido | 9.05 | -0.95 | -9.54 % | -0.60 | 69 | 2026-10-21 | Con PEPE, PUMP, SOL, XRP, ZEC |
-| Rebote rapido | 8.78 | -1.22 | -12.15 % | -0.86 | 61 | 2026-10-21 | Con DOT, WLD, XMR |
-| Comprar y mantener (solo BTC) | 9.64 | -0.36 | -3.56 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Cruce 10/30 | 9.41 | -0.59 | -5.88 % | -0.27 | 17 | 2026-10-21 | Con ZEC |
+| Cruce 5/20 | 9.67 | -0.33 | -3.29 % | -0.01 | 21 | 2026-10-21 | Con EURC, PUMP, TIA, XRP, ZEC |
+| Momentum | 9.19 | -0.81 | -8.13 % | -0.49 | 37 | 2026-10-21 | Con HYPE, PEPE, PUMP, XLM, ZEC |
+| Rebote | 9.30 | -0.70 | -7.00 % | -0.38 | 12 | 2026-10-21 | Con COMP, INJ, W, WLD |
+| Cruce 10/30 + filtro | 9.49 | -0.51 | -5.14 % | -0.19 | 15 | 2026-10-21 | Con ZEC |
+| Consenso 2 de 3 | 9.56 | -0.44 | -4.39 % | -0.12 | 21 | 2026-10-21 | Con AVAX, PEPE, PUMP, XRP, ZEC |
+| Cruce 3/8 rapido | 9.78 | -0.22 | -2.21 % | +0.10 | 16 | 2026-10-21 | En efectivo |
+| Momentum rapido | 9.13 | -0.87 | -8.67 % | -0.55 | 69 | 2026-10-21 | Con PEPE, PUMP, SOL, XRP, ZEC |
+| Rebote rapido | 8.78 | -1.22 | -12.15 % | -0.89 | 61 | 2026-10-21 | Con DOT, WLD, XMR |
+| Comprar y mantener (solo BTC) | 9.68 | -0.32 | -3.21 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
@@ -25,7 +25,7 @@ Riesgo (calculado con el historial guardado):
 | Cruce 10/30 | -7.21 % | 0 | 8 |
 | Cruce 5/20 | -4.47 % | 0 | 8 |
 | Momentum | -10.41 % | 2 | 14 |
-| Rebote | -7.60 % | 0 | 3 |
+| Rebote | -7.60 % | 0 | 4 |
 | Cruce 10/30 + filtro | -6.52 % | 0 | 7 |
 | Consenso 2 de 3 | -6.24 % | 0 | 8 |
 | Cruce 3/8 rapido | -3.39 % | 2 | 6 |
@@ -35,7 +35,7 @@ Riesgo (calculado con el historial guardado):
 
 Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una operacion cuenta cuando se cierra con su venta.
 
-⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (8 cerradas, 3 dias); Cruce 5/20 (8 cerradas, 3 dias); Momentum (16 cerradas, 3 dias); Rebote (3 cerradas, 3 dias); Cruce 10/30 + filtro (7 cerradas, 3 dias); Consenso 2 de 3 (8 cerradas, 3 dias); Cruce 3/8 rapido (8 cerradas, 3 dias); Momentum rapido (32 cerradas, 3 dias); Rebote rapido (29 cerradas, 3 dias). Antes de eso, el resultado puede ser pura suerte.
+⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (8 cerradas, 4 dias); Cruce 5/20 (8 cerradas, 4 dias); Momentum (16 cerradas, 4 dias); Rebote (4 cerradas, 4 dias); Cruce 10/30 + filtro (7 cerradas, 4 dias); Consenso 2 de 3 (8 cerradas, 4 dias); Cruce 3/8 rapido (8 cerradas, 4 dias); Momentum rapido (32 cerradas, 4 dias); Rebote rapido (29 cerradas, 4 dias). Antes de eso, el resultado puede ser pura suerte.
 
 ![Evolucion del capital](grafico.svg)
 

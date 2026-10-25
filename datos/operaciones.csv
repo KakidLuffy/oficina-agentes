@@ -265,3 +265,6 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-24T21:00+00:00,Cruce 5/20,XRPEUR,COMPRA,1.154487,1.64,senal compradora,0.0074
 2026-10-24T21:00+00:00,Consenso 2 de 3,XRPEUR,COMPRA,1.154487,2.0,senal compradora,0.009
 2026-10-24T21:00+00:00,Consenso 2 de 3,PEPEEUR,COMPRA,4e-06,1.68,senal compradora,0.0076
+2026-10-24T23:00+00:00,Cruce 10/30,ZECEUR,COMPRA,1079.146303,2.0,senal compradora,0.009
+2026-10-24T23:00+00:00,Rebote,ARBEUR,VENTA,0.151424,1.8,senal vendedora,0.0081
+2026-10-24T23:00+00:00,Cruce 10/30 + filtro,ZECEUR,COMPRA,1079.146303,2.0,senal compradora,0.009
