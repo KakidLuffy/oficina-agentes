@@ -378,3 +378,16 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-26T05:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.187394,2.0,senal compradora,0.009
 2026-10-26T05:00+00:00,Momentum rapido,QNTEUR,COMPRA,172.376145,2.0,senal compradora,0.009
 2026-10-26T05:00+00:00,Momentum rapido,XDCEUR,COMPRA,0.028324,2.0,senal compradora,0.009
+2026-10-26T06:00+00:00,Cruce 5/20,XDCEUR,COMPRA,0.028724,2.0,senal compradora,0.009
+2026-10-26T06:00+00:00,Momentum,XDCEUR,COMPRA,0.028724,2.0,senal compradora,0.009
+2026-10-26T06:00+00:00,Rebote,NEAREUR,COMPRA,3.979589,1.47,senal compradora,0.0066
+2026-10-26T06:00+00:00,Consenso 2 de 3,XDCEUR,COMPRA,0.028724,2.0,senal compradora,0.009
+2026-10-26T06:00+00:00,Cruce 3/8 rapido,ZECEUR,COMPRA,1074.902182,2.0,senal compradora,0.009
+2026-10-26T06:00+00:00,Cruce 3/8 rapido,HYPEEUR,COMPRA,68.09403,2.0,senal compradora,0.009
+2026-10-26T06:00+00:00,Rebote rapido,INJEUR,VENTA,6.722637,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-26T07:00+00:00,Cruce 10/30,INJEUR,VENTA,6.743627,1.95,senal vendedora,0.0088
+2026-10-26T07:00+00:00,Cruce 5/20,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-26T07:00+00:00,Momentum,ENAEUR,VENTA,0.182009,2.01,senal vendedora,0.0091
+2026-10-26T07:00+00:00,Consenso 2 de 3,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-26T07:00+00:00,Momentum rapido,ENAEUR,VENTA,0.182009,1.93,stop de perdida (-2.8 %),0.0087
+2026-10-26T07:00+00:00,Momentum rapido,XDCEUR,VENTA,0.029355,2.06,objetivo de ganancia (+3.7 %),0.0093
