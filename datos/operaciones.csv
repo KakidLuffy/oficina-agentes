@@ -419,3 +419,11 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-26T14:00+00:00,Cruce 3/8 rapido,INJEUR,VENTA,7.11744,2.05,objetivo de ganancia (+3.4 %),0.0093
 2026-10-26T14:00+00:00,Cruce 3/8 rapido,ENAEUR,COMPRA,0.187494,2.0,senal compradora,0.009
 2026-10-26T14:00+00:00,Rebote rapido,ENAEUR,VENTA,0.187306,2.04,senal vendedora,0.0092
+2026-10-26T15:00+00:00,Cruce 3/8 rapido,HYPEEUR,VENTA,70.10493,2.04,objetivo de ganancia (+3.0 %),0.0092
+2026-10-26T16:00+00:00,Momentum rapido,NEAREUR,VENTA,4.032883,1.95,stop de perdida (-1.5 %),0.0088
+2026-10-26T16:00+00:00,Momentum rapido,HYPEEUR,COMPRA,70.05501,2.0,senal compradora,0.009
+2026-10-26T16:00+00:00,Rebote rapido,QNTEUR,COMPRA,186.163035,2.0,senal compradora,0.009
+2026-10-26T17:00+00:00,Momentum,PEPEEUR,VENTA,4e-06,1.97,senal vendedora,0.0089
+2026-10-26T17:00+00:00,Momentum,ZECEUR,COMPRA,1109.422434,2.0,senal compradora,0.009
+2026-10-26T17:00+00:00,Rebote rapido,QNTEUR,VENTA,182.5087,1.95,stop de perdida (-1.9 %),0.0088
+2026-10-26T18:00+00:00,Rebote rapido,NEAREUR,COMPRA,3.990294,2.0,senal compradora,0.009
