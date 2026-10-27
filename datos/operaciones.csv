@@ -440,3 +440,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-26T21:00+00:00,Momentum rapido,INJEUR,COMPRA,7.165581,2.0,senal compradora,0.009
 2026-10-26T22:00+00:00,Cruce 5/20,TRXEUR,VENTA,0.294407,1.33,senal vendedora,0.006
 2026-10-26T22:00+00:00,Consenso 2 de 3,TRXEUR,VENTA,0.294407,1.98,senal vendedora,0.009
+2026-10-26T23:00+00:00,Cruce 10/30,SUIEUR,COMPRA,0.82081,1.95,senal compradora,0.0088
+2026-10-26T23:00+00:00,Cruce 5/20,ENAEUR,VENTA,0.184908,2.11,senal vendedora,0.0095
+2026-10-26T23:00+00:00,Consenso 2 de 3,LTCEUR,COMPRA,50.78538,2.0,senal compradora,0.009
+2026-10-26T23:00+00:00,Rebote rapido,NEAREUR,VENTA,4.025386,2.0,senal vendedora,0.009
