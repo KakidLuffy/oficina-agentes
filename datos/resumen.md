@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-10-27T21:21:30+00:00 UTC · Precio BTC/EUR: 72417 (Kraken)
+Ultima actualizacion: 2026-10-27T21:30:42+00:00 UTC · Precio BTC/EUR: 72442 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (6.4 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 9.13 | -0.87 | -8.67 % | -0.58 | 41 | 2026-10-21 | Con AVAX, ETH, HYPE, XDC, ZEC |
-| Cruce 5/20 | 9.39 | -0.61 | -6.12 % | -0.32 | 54 | 2026-10-21 | Con SOL, TIA, ZEC, ZRO |
-| Momentum | 8.76 | -1.24 | -12.39 % | -0.95 | 66 | 2026-10-21 | Con XDC, XRP, ZEC, ZRO |
-| Rebote | 9.41 | -0.59 | -5.92 % | -0.31 | 31 | 2026-10-21 | Con COMP, PEPE, QNT, W, WLD |
-| Cruce 10/30 + filtro | 9.52 | -0.48 | -4.78 % | -0.19 | 25 | 2026-10-21 | Con BNB, ENA, VVV, XDC, ZEC |
-| Consenso 2 de 3 | 9.03 | -0.97 | -9.67 % | -0.68 | 72 | 2026-10-21 | Con ETH, XBT, ZEC, ZRO |
-| Cruce 3/8 rapido | 9.93 | -0.07 | -0.66 % | +0.22 | 39 | 2026-10-21 | Con ADA |
-| Momentum rapido | 8.75 | -1.25 | -12.54 % | -0.97 | 118 | 2026-10-21 | Con ETH, PEPE, XBT, XRP |
-| Rebote rapido | 8.74 | -1.26 | -12.63 % | -0.98 | 82 | 2026-10-21 | Con DOT, WLD, XDC, XMR |
-| Comprar y mantener (solo BTC) | 9.71 | -0.29 | -2.87 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Cruce 10/30 | 9.12 | -0.88 | -8.77 % | -0.59 | 41 | 2026-10-21 | Con AVAX, ETH, HYPE, XDC, ZEC |
+| Cruce 5/20 | 9.38 | -0.62 | -6.16 % | -0.33 | 54 | 2026-10-21 | Con SOL, TIA, ZEC, ZRO |
+| Momentum | 8.75 | -1.25 | -12.53 % | -0.97 | 66 | 2026-10-21 | Con XDC, XRP, ZEC, ZRO |
+| Rebote | 9.49 | -0.51 | -5.13 % | -0.23 | 31 | 2026-10-21 | Con COMP, PEPE, QNT, W, WLD |
+| Cruce 10/30 + filtro | 9.51 | -0.49 | -4.92 % | -0.21 | 25 | 2026-10-21 | Con BNB, ENA, VVV, XDC, ZEC |
+| Consenso 2 de 3 | 9.03 | -0.97 | -9.69 % | -0.68 | 72 | 2026-10-21 | Con ETH, XBT, ZEC, ZRO |
+| Cruce 3/8 rapido | 9.93 | -0.07 | -0.68 % | +0.22 | 39 | 2026-10-21 | Con ADA |
+| Momentum rapido | 8.82 | -1.18 | -11.77 % | -0.89 | 118 | 2026-10-21 | Con ETH, PEPE, XBT, XRP |
+| Rebote rapido | 8.73 | -1.27 | -12.72 % | -0.99 | 82 | 2026-10-21 | Con DOT, WLD, XDC, XMR |
+| Comprar y mantener (solo BTC) | 9.72 | -0.28 | -2.84 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
