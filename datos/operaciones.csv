@@ -542,3 +542,19 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-28T05:00+00:00,Rebote rapido,XDCEUR,VENTA,0.030185,1.97,senal vendedora,0.0089
 2026-10-28T06:00+00:00,Cruce 3/8 rapido,ADAEUR,VENTA,0.185303,2.0,senal vendedora,0.009
 2026-10-28T06:00+00:00,Rebote rapido,DOTEUR,VENTA,0.898251,1.88,stop de perdida (-5.3 %),0.0085
+2026-10-28T08:00+00:00,Rebote,XDCEUR,VENTA,0.030665,2.02,senal vendedora,0.0091
+2026-10-28T09:00+00:00,Cruce 3/8 rapido,PEPEEUR,COMPRA,5e-06,2.0,senal compradora,0.009
+2026-10-28T09:00+00:00,Cruce 3/8 rapido,HYPEEUR,COMPRA,73.85691,2.0,senal compradora,0.009
+2026-10-28T09:00+00:00,Cruce 3/8 rapido,ENAEUR,COMPRA,0.186393,2.0,senal compradora,0.009
+2026-10-28T10:00+00:00,Cruce 10/30 + filtro,ENAEUR,VENTA,0.186207,1.4,senal vendedora,0.0063
+2026-10-28T11:00+00:00,Rebote,ENAEUR,COMPRA,0.183492,2.0,senal compradora,0.009
+2026-10-28T11:00+00:00,Cruce 3/8 rapido,ENAEUR,VENTA,0.183308,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-28T12:00+00:00,Momentum,ZECEUR,VENTA,1151.049188,2.05,senal vendedora,0.0093
+2026-10-28T12:00+00:00,Momentum,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-28T12:00+00:00,Rebote,ZECEUR,COMPRA,1152.200812,1.84,senal compradora,0.0083
+2026-10-28T12:00+00:00,Cruce 3/8 rapido,PEPEEUR,VENTA,4e-06,1.93,stop de perdida (-2.4 %),0.0087
+2026-10-28T12:00+00:00,Cruce 3/8 rapido,HYPEEUR,VENTA,72.253855,1.94,stop de perdida (-2.1 %),0.0088
+2026-10-28T12:00+00:00,Momentum rapido,LINKEUR,VENTA,10.404805,1.97,senal vendedora,0.0089
+2026-10-28T12:00+00:00,Momentum rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-28T12:00+00:00,Rebote rapido,ZECEUR,COMPRA,1152.200812,2.0,senal compradora,0.009
+2026-10-28T12:00+00:00,Rebote rapido,LINKEUR,COMPRA,10.415215,2.0,senal compradora,0.009
