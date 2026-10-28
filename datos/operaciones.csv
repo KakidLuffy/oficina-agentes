@@ -608,3 +608,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-28T20:00+00:00,Consenso 2 de 3,PUMPEUR,COMPRA,0.004069,2.0,senal compradora,0.009
 2026-10-28T20:00+00:00,Momentum rapido,ENAEUR,VENTA,0.189705,2.05,objetivo de ganancia (+3.6 %),0.0093
 2026-10-28T20:00+00:00,Momentum rapido,XRPEUR,COMPRA,1.193206,2.0,senal compradora,0.009
+2026-10-28T21:00+00:00,Rebote,ZECEUR,VENTA,1167.979718,1.85,senal vendedora,0.0084
+2026-10-28T21:00+00:00,Rebote rapido,BCHEUR,VENTA,259.260305,2.02,senal vendedora,0.0091
+2026-10-28T22:00+00:00,Cruce 10/30,SUIEUR,COMPRA,0.848424,2.0,senal compradora,0.009
+2026-10-28T22:00+00:00,Cruce 10/30,PUMPEUR,COMPRA,0.004038,2.0,senal compradora,0.009
+2026-10-28T22:00+00:00,Cruce 10/30,UNIEUR,COMPRA,6.492345,1.07,senal compradora,0.0048
+2026-10-28T22:00+00:00,Cruce 10/30 + filtro,PUMPEUR,COMPRA,0.004038,2.0,senal compradora,0.009
+2026-10-28T22:00+00:00,Cruce 10/30 + filtro,UNIEUR,COMPRA,6.492345,1.48,senal compradora,0.0066
