@@ -558,3 +558,19 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-28T12:00+00:00,Momentum rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
 2026-10-28T12:00+00:00,Rebote rapido,ZECEUR,COMPRA,1152.200812,2.0,senal compradora,0.009
 2026-10-28T12:00+00:00,Rebote rapido,LINKEUR,COMPRA,10.415215,2.0,senal compradora,0.009
+2026-10-28T13:00+00:00,Cruce 5/20,ZECEUR,VENTA,1151.622901,2.04,senal vendedora,0.0092
+2026-10-28T13:00+00:00,Momentum,XRPEUR,VENTA,1.182998,1.99,senal vendedora,0.009
+2026-10-28T13:00+00:00,Momentum,PEPEEUR,VENTA,4e-06,1.96,senal vendedora,0.0089
+2026-10-28T13:00+00:00,Consenso 2 de 3,ZECEUR,VENTA,1151.622901,2.06,senal vendedora,0.0093
+2026-10-28T13:00+00:00,Momentum rapido,ETHEUR,VENTA,2094.1524,2.0,senal vendedora,0.0091
+2026-10-28T14:00+00:00,Momentum,ZROEUR,VENTA,1.51924,2.05,senal vendedora,0.0093
+2026-10-28T14:00+00:00,Consenso 2 de 3,XBTEUR,VENTA,72261.2513,1.99,senal vendedora,0.009
+2026-10-28T14:00+00:00,Consenso 2 de 3,ETHEUR,VENTA,2091.19388,1.98,senal vendedora,0.009
+2026-10-28T14:00+00:00,Momentum rapido,XBTEUR,VENTA,72261.2513,2.0,senal vendedora,0.009
+2026-10-28T14:00+00:00,Momentum rapido,XRPEUR,VENTA,1.177041,1.97,senal vendedora,0.0089
+2026-10-28T14:00+00:00,Momentum rapido,PEPEEUR,VENTA,4e-06,1.96,senal vendedora,0.0089
+2026-10-28T15:00+00:00,Cruce 5/20,SOLEUR,VENTA,90.5547,1.91,senal vendedora,0.0086
+2026-10-28T15:00+00:00,Cruce 5/20,ZROEUR,VENTA,1.535232,1.42,senal vendedora,0.0064
+2026-10-28T15:00+00:00,Momentum,LTCEUR,COMPRA,52.40619,2.0,senal compradora,0.009
+2026-10-28T15:00+00:00,Consenso 2 de 3,ZROEUR,VENTA,1.535232,2.07,senal vendedora,0.0094
+2026-10-28T15:00+00:00,Cruce 3/8 rapido,LTCEUR,COMPRA,52.40619,2.0,senal compradora,0.009
