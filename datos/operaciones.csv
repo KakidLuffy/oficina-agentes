@@ -529,3 +529,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-27T20:00+00:00,Cruce 5/20,XDCEUR,VENTA,0.030395,1.99,senal vendedora,0.009
 2026-10-27T21:00+00:00,Momentum,XDCEUR,VENTA,0.030235,2.09,senal vendedora,0.0094
 2026-10-27T21:00+00:00,Momentum,XBTEUR,COMPRA,72615.6897,2.0,senal compradora,0.009
+2026-10-28T00:00+00:00,Cruce 5/20,EURCEUR,COMPRA,1.0003,1.99,senal compradora,0.0089
