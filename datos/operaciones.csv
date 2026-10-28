@@ -540,3 +540,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-28T04:00+00:00,Cruce 10/30 + filtro,EURCEUR,COMPRA,1.0008,2.0,senal compradora,0.009
 2026-10-28T05:00+00:00,Rebote,QNTEUR,VENTA,179.560175,1.53,senal vendedora,0.0069
 2026-10-28T05:00+00:00,Rebote rapido,XDCEUR,VENTA,0.030185,1.97,senal vendedora,0.0089
+2026-10-28T06:00+00:00,Cruce 3/8 rapido,ADAEUR,VENTA,0.185303,2.0,senal vendedora,0.009
+2026-10-28T06:00+00:00,Rebote rapido,DOTEUR,VENTA,0.898251,1.88,stop de perdida (-5.3 %),0.0085
