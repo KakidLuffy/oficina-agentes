@@ -530,3 +530,13 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-27T21:00+00:00,Momentum,XDCEUR,VENTA,0.030235,2.09,senal vendedora,0.0094
 2026-10-27T21:00+00:00,Momentum,XBTEUR,COMPRA,72615.6897,2.0,senal compradora,0.009
 2026-10-28T00:00+00:00,Cruce 5/20,EURCEUR,COMPRA,1.0003,1.99,senal compradora,0.0089
+2026-10-28T01:00+00:00,Cruce 10/30,XDCEUR,VENTA,0.030145,2.0,senal vendedora,0.009
+2026-10-28T01:00+00:00,Rebote,PEPEEUR,VENTA,4e-06,2.29,senal vendedora,0.0103
+2026-10-28T01:00+00:00,Cruce 10/30 + filtro,XDCEUR,VENTA,0.030145,2.0,senal vendedora,0.009
+2026-10-28T01:00+00:00,Momentum rapido,PEPEEUR,VENTA,4e-06,2.26,objetivo de ganancia (+14.2 %),0.0102
+2026-10-28T01:00+00:00,Momentum rapido,LINKEUR,COMPRA,10.461128,2.0,senal compradora,0.009
+2026-10-28T04:00+00:00,Cruce 10/30,EURCEUR,COMPRA,1.0008,2.0,senal compradora,0.009
+2026-10-28T04:00+00:00,Rebote,XDCEUR,COMPRA,0.030095,2.0,senal compradora,0.009
+2026-10-28T04:00+00:00,Cruce 10/30 + filtro,EURCEUR,COMPRA,1.0008,2.0,senal compradora,0.009
+2026-10-28T05:00+00:00,Rebote,QNTEUR,VENTA,179.560175,1.53,senal vendedora,0.0069
+2026-10-28T05:00+00:00,Rebote rapido,XDCEUR,VENTA,0.030185,1.97,senal vendedora,0.0089
