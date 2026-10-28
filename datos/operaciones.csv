@@ -574,3 +574,20 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-28T15:00+00:00,Momentum,LTCEUR,COMPRA,52.40619,2.0,senal compradora,0.009
 2026-10-28T15:00+00:00,Consenso 2 de 3,ZROEUR,VENTA,1.535232,2.07,senal vendedora,0.0094
 2026-10-28T15:00+00:00,Cruce 3/8 rapido,LTCEUR,COMPRA,52.40619,2.0,senal compradora,0.009
+2026-10-28T16:00+00:00,Cruce 10/30,ZECEUR,VENTA,1141.965732,2.07,senal vendedora,0.0094
+2026-10-28T16:00+00:00,Cruce 10/30 + filtro,ZECEUR,VENTA,1141.965732,2.07,senal vendedora,0.0094
+2026-10-28T16:00+00:00,Momentum rapido,LTCEUR,COMPRA,53.08653,2.0,senal compradora,0.009
+2026-10-28T17:00+00:00,Cruce 10/30,HYPEEUR,VENTA,71.86405,1.09,senal vendedora,0.0049
+2026-10-28T17:00+00:00,Momentum,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-28T18:00+00:00,Cruce 10/30,ETHEUR,VENTA,2108.64515,1.91,senal vendedora,0.0086
+2026-10-28T18:00+00:00,Momentum,DOTEUR,COMPRA,0.910355,2.0,senal compradora,0.009
+2026-10-28T18:00+00:00,Rebote,ENAEUR,VENTA,0.183108,1.98,senal vendedora,0.0089
+2026-10-28T18:00+00:00,Rebote,BCHEUR,COMPRA,255.197535,1.98,senal compradora,0.0089
+2026-10-28T18:00+00:00,Consenso 2 de 3,SUIEUR,COMPRA,0.842221,2.0,senal compradora,0.009
+2026-10-28T18:00+00:00,Consenso 2 de 3,DOTEUR,COMPRA,0.910355,2.0,senal compradora,0.009
+2026-10-28T18:00+00:00,Momentum rapido,NEAREUR,COMPRA,4.204201,2.0,senal compradora,0.009
+2026-10-28T18:00+00:00,Momentum rapido,SUIEUR,COMPRA,0.842221,2.0,senal compradora,0.009
+2026-10-28T18:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.183292,2.0,senal compradora,0.009
+2026-10-28T18:00+00:00,Rebote rapido,ZECEUR,VENTA,1152.065679,1.98,senal vendedora,0.009
+2026-10-28T18:00+00:00,Rebote rapido,LINKEUR,VENTA,10.47439,2.0,senal vendedora,0.009
+2026-10-28T18:00+00:00,Rebote rapido,BCHEUR,COMPRA,255.197535,2.0,senal compradora,0.009
