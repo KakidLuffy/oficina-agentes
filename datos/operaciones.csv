@@ -640,3 +640,19 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-29T06:00+00:00,Momentum,XBTEUR,VENTA,71671.84615,1.96,senal vendedora,0.0088
 2026-10-29T06:00+00:00,Momentum,PUMPEUR,VENTA,0.003801,1.97,senal vendedora,0.0089
 2026-10-29T06:00+00:00,Consenso 2 de 3,PUMPEUR,VENTA,0.003801,1.85,senal vendedora,0.0084
+2026-10-29T07:00+00:00,Cruce 10/30,PUMPEUR,VENTA,0.003762,1.85,senal vendedora,0.0084
+2026-10-29T07:00+00:00,Momentum,PEPEEUR,VENTA,4e-06,1.98,senal vendedora,0.0089
+2026-10-29T07:00+00:00,Cruce 10/30 + filtro,PUMPEUR,VENTA,0.003762,1.85,senal vendedora,0.0084
+2026-10-29T08:00+00:00,Cruce 10/30,EURCEUR,VENTA,0.9995,1.98,senal vendedora,0.009
+2026-10-29T08:00+00:00,Cruce 5/20,BNBEUR,COMPRA,674.63715,2.0,senal compradora,0.009
+2026-10-29T08:00+00:00,Cruce 10/30 + filtro,EURCEUR,VENTA,0.9995,1.98,senal vendedora,0.009
+2026-10-29T08:00+00:00,Consenso 2 de 3,BNBEUR,COMPRA,674.63715,2.0,senal compradora,0.009
+2026-10-29T08:00+00:00,Momentum rapido,INJEUR,COMPRA,6.98449,2.0,senal compradora,0.009
+2026-10-29T08:00+00:00,Rebote rapido,XBTEUR,VENTA,71751.00655,1.98,senal vendedora,0.009
+2026-10-29T08:00+00:00,Rebote rapido,NEAREUR,COMPRA,3.900949,2.0,senal compradora,0.009
+2026-10-29T09:00+00:00,Cruce 5/20,BNBEUR,VENTA,672.333665,1.98,senal vendedora,0.0089
+2026-10-29T09:00+00:00,Cruce 10/30 + filtro,BNBEUR,VENTA,672.333665,1.98,senal vendedora,0.009
+2026-10-29T09:00+00:00,Consenso 2 de 3,BNBEUR,VENTA,672.333665,1.98,senal vendedora,0.0089
+2026-10-29T09:00+00:00,Momentum rapido,LINKEUR,COMPRA,10.337156,2.0,senal compradora,0.009
+2026-10-29T09:00+00:00,Momentum rapido,ZECEUR,COMPRA,1125.824631,2.0,senal compradora,0.009
+2026-10-29T09:00+00:00,Momentum rapido,SUIEUR,COMPRA,0.82041,2.0,senal compradora,0.009
