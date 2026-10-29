@@ -707,3 +707,19 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-29T18:00+00:00,Rebote rapido,NEAREUR,COMPRA,3.963081,2.0,senal compradora,0.009
 2026-10-29T18:00+00:00,Rebote rapido,ZROEUR,COMPRA,1.528764,2.0,senal compradora,0.009
 2026-10-29T19:00+00:00,Momentum rapido,SOLEUR,VENTA,89.29533,1.94,stop de perdida (-2.1 %),0.0088
+2026-10-29T20:00+00:00,Momentum,ZROEUR,VENTA,1.407296,1.75,senal vendedora,0.0079
+2026-10-29T20:00+00:00,Rebote,XBTEUR,COMPRA,70530.2475,2.0,senal compradora,0.009
+2026-10-29T20:00+00:00,Momentum rapido,XBTEUR,VENTA,70459.7525,1.92,stop de perdida (-3.0 %),0.0087
+2026-10-29T20:00+00:00,Momentum rapido,PEPEEUR,VENTA,4e-06,1.85,stop de perdida (-6.9 %),0.0083
+2026-10-29T20:00+00:00,Momentum rapido,ENAEUR,VENTA,0.168216,1.78,stop de perdida (-10.5 %),0.008
+2026-10-29T20:00+00:00,Rebote rapido,NEAREUR,VENTA,3.735931,1.87,stop de perdida (-5.7 %),0.0085
+2026-10-29T20:00+00:00,Rebote rapido,ZROEUR,VENTA,1.407296,1.83,stop de perdida (-7.9 %),0.0083
+2026-10-29T20:00+00:00,Rebote rapido,XBTEUR,COMPRA,70530.2475,2.0,senal compradora,0.009
+2026-10-29T20:00+00:00,Rebote rapido,XRPEUR,COMPRA,1.108594,2.0,senal compradora,0.009
+2026-10-29T21:00+00:00,Cruce 10/30,UNIEUR,VENTA,5.722337,0.93,senal vendedora,0.0042
+2026-10-29T21:00+00:00,Cruce 5/20,UNIEUR,VENTA,5.722337,1.75,senal vendedora,0.0079
+2026-10-29T21:00+00:00,Cruce 5/20,ZROEUR,VENTA,1.434283,1.01,senal vendedora,0.0046
+2026-10-29T21:00+00:00,Momentum,TRXEUR,COMPRA,0.330941,2.0,senal compradora,0.009
+2026-10-29T21:00+00:00,Cruce 10/30 + filtro,UNIEUR,VENTA,5.722337,1.29,senal vendedora,0.0058
+2026-10-29T21:00+00:00,Consenso 2 de 3,ZROEUR,VENTA,1.434283,1.78,senal vendedora,0.0081
+2026-10-29T21:00+00:00,Cruce 3/8 rapido,TRXEUR,COMPRA,0.330941,2.0,senal compradora,0.009
