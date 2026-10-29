@@ -615,3 +615,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-28T22:00+00:00,Cruce 10/30,UNIEUR,COMPRA,6.492345,1.07,senal compradora,0.0048
 2026-10-28T22:00+00:00,Cruce 10/30 + filtro,PUMPEUR,COMPRA,0.004038,2.0,senal compradora,0.009
 2026-10-28T22:00+00:00,Cruce 10/30 + filtro,UNIEUR,COMPRA,6.492345,1.48,senal compradora,0.0066
+2026-10-28T23:00+00:00,Rebote,ZROEUR,COMPRA,1.505752,1.85,senal compradora,0.0083
+2026-10-28T23:00+00:00,Rebote rapido,ZROEUR,COMPRA,1.505752,2.0,senal compradora,0.009
