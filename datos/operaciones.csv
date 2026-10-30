@@ -784,3 +784,6 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-30T12:00+00:00,Momentum rapido,UNIEUR,VENTA,6.1971,2.05,objetivo de ganancia (+3.2 %),0.0093
 2026-10-30T12:00+00:00,Rebote rapido,ENAEUR,VENTA,0.168716,2.02,senal vendedora,0.0091
 2026-10-30T12:00+00:00,Rebote rapido,TRXEUR,COMPRA,0.305954,2.0,senal compradora,0.009
+2026-10-30T14:00+00:00,Momentum rapido,HYPEEUR,COMPRA,82.94145,2.0,senal compradora,0.009
+2026-10-30T14:00+00:00,Momentum rapido,LINKEUR,COMPRA,9.978227,2.0,senal compradora,0.009
+2026-10-30T14:00+00:00,Momentum rapido,SUIEUR,COMPRA,0.799099,2.0,senal compradora,0.009
