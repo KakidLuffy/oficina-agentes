@@ -737,3 +737,18 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-30T01:00+00:00,Momentum,HYPEEUR,VENTA,79.72012,2.06,senal vendedora,0.0093
 2026-10-30T01:00+00:00,Rebote rapido,XRPEUR,VENTA,1.077681,1.93,stop de perdida (-2.7 %),0.0087
 2026-10-30T01:00+00:00,Rebote rapido,SOLEUR,COMPRA,83.82189,2.0,senal compradora,0.009
+2026-10-30T03:00+00:00,Momentum rapido,TRXEUR,VENTA,0.317335,1.96,senal vendedora,0.0088
+2026-10-30T03:00+00:00,Momentum rapido,ZECEUR,COMPRA,1140.493962,2.0,senal compradora,0.009
+2026-10-30T03:00+00:00,Momentum rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-30T03:00+00:00,Momentum rapido,UNIEUR,COMPRA,6.005601,2.0,senal compradora,0.009
+2026-10-30T03:00+00:00,Momentum rapido,LTCEUR,COMPRA,50.18508,2.0,senal compradora,0.009
+2026-10-30T03:00+00:00,Rebote rapido,SOLEUR,VENTA,86.666645,2.05,objetivo de ganancia (+3.4 %),0.0093
+2026-10-30T04:00+00:00,Cruce 3/8 rapido,HYPEEUR,COMPRA,82.56126,2.0,senal compradora,0.009
+2026-10-30T04:00+00:00,Rebote rapido,ETHEUR,VENTA,2001.03898,2.0,senal vendedora,0.009
+2026-10-30T04:00+00:00,Rebote rapido,TRXEUR,COMPRA,0.314317,2.0,senal compradora,0.009
+2026-10-30T05:00+00:00,Cruce 5/20,HYPEEUR,VENTA,82.49873,2.13,senal vendedora,0.0096
+2026-10-30T05:00+00:00,Consenso 2 de 3,HYPEEUR,VENTA,82.49873,2.13,senal vendedora,0.0096
+2026-10-30T06:00+00:00,Cruce 5/20,HYPEEUR,COMPRA,83.651805,2.0,senal compradora,0.009
+2026-10-30T06:00+00:00,Consenso 2 de 3,HYPEEUR,COMPRA,83.651805,2.0,senal compradora,0.009
+2026-10-30T06:00+00:00,Consenso 2 de 3,EURCEUR,COMPRA,1.0007,2.0,senal compradora,0.009
+2026-10-30T06:00+00:00,Rebote rapido,TRXEUR,VENTA,0.30772,1.94,stop de perdida (-2.0 %),0.0088
