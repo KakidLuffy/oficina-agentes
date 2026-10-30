@@ -787,3 +787,13 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-30T14:00+00:00,Momentum rapido,HYPEEUR,COMPRA,82.94145,2.0,senal compradora,0.009
 2026-10-30T14:00+00:00,Momentum rapido,LINKEUR,COMPRA,9.978227,2.0,senal compradora,0.009
 2026-10-30T14:00+00:00,Momentum rapido,SUIEUR,COMPRA,0.799099,2.0,senal compradora,0.009
+2026-10-30T16:00+00:00,Cruce 10/30,HYPEEUR,VENTA,81.97899,2.02,senal vendedora,0.0091
+2026-10-30T16:00+00:00,Cruce 10/30 + filtro,HYPEEUR,VENTA,81.97899,2.02,senal vendedora,0.0091
+2026-10-30T16:00+00:00,Momentum rapido,HYPEEUR,VENTA,81.97899,1.96,senal vendedora,0.0089
+2026-10-30T17:00+00:00,Cruce 10/30,UNIEUR,COMPRA,6.219108,2.0,senal compradora,0.009
+2026-10-30T17:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.167784,2.0,senal compradora,0.009
+2026-10-30T18:00+00:00,Momentum,XRPEUR,VENTA,1.109735,1.96,senal vendedora,0.0089
+2026-10-30T18:00+00:00,Momentum,UNIEUR,COMPRA,6.195096,2.0,senal compradora,0.009
+2026-10-30T18:00+00:00,Momentum rapido,ENAEUR,VENTA,0.165117,1.95,stop de perdida (-1.5 %),0.0088
+2026-10-30T18:00+00:00,Momentum rapido,ZROEUR,VENTA,1.50025,1.95,stop de perdida (-1.8 %),0.0088
+2026-10-30T18:00+00:00,Momentum rapido,AVAXEUR,COMPRA,7.511754,2.0,senal compradora,0.009
