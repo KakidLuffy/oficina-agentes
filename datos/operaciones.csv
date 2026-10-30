@@ -734,3 +734,6 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-30T00:00+00:00,Momentum rapido,TRXEUR,COMPRA,0.321547,2.0,senal compradora,0.009
 2026-10-30T00:00+00:00,Rebote rapido,XBTEUR,VENTA,68814.7754,1.94,stop de perdida (-2.4 %),0.0087
 2026-10-30T00:00+00:00,Rebote rapido,ETHEUR,COMPRA,1982.87094,2.0,senal compradora,0.009
+2026-10-30T01:00+00:00,Momentum,HYPEEUR,VENTA,79.72012,2.06,senal vendedora,0.0093
+2026-10-30T01:00+00:00,Rebote rapido,XRPEUR,VENTA,1.077681,1.93,stop de perdida (-2.7 %),0.0087
+2026-10-30T01:00+00:00,Rebote rapido,SOLEUR,COMPRA,83.82189,2.0,senal compradora,0.009
