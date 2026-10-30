@@ -762,3 +762,25 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-30T08:00+00:00,Consenso 2 de 3,HYPEEUR,VENTA,81.93901,1.94,senal vendedora,0.0088
 2026-10-30T08:00+00:00,Consenso 2 de 3,ZROEUR,COMPRA,1.503751,2.0,senal compradora,0.009
 2026-10-30T08:00+00:00,Consenso 2 de 3,EURCEUR,COMPRA,1.0007,2.0,senal compradora,0.009
+2026-10-30T09:00+00:00,Cruce 5/20,NEAREUR,COMPRA,3.904551,2.0,senal compradora,0.009
+2026-10-30T09:00+00:00,Momentum,TRXEUR,VENTA,0.30921,1.85,senal vendedora,0.0084
+2026-10-30T09:00+00:00,Momentum,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-10-30T09:00+00:00,Consenso 2 de 3,NEAREUR,COMPRA,3.904551,2.0,senal compradora,0.009
+2026-10-30T09:00+00:00,Cruce 3/8 rapido,HYPEEUR,VENTA,81.53921,1.96,senal vendedora,0.0089
+2026-10-30T09:00+00:00,Momentum rapido,LTCEUR,VENTA,49.445265,1.95,senal vendedora,0.0088
+2026-10-30T09:00+00:00,Momentum rapido,NEAREUR,COMPRA,3.904551,2.0,senal compradora,0.009
+2026-10-30T10:00+00:00,Cruce 5/20,PEPEEUR,COMPRA,5e-06,2.0,senal compradora,0.009
+2026-10-30T10:00+00:00,Momentum rapido,PEPEEUR,VENTA,5e-06,2.11,objetivo de ganancia (+6.2 %),0.0095
+2026-10-30T10:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.170185,2.0,senal compradora,0.009
+2026-10-30T11:00+00:00,Cruce 10/30,ZROEUR,COMPRA,1.528764,2.0,senal compradora,0.009
+2026-10-30T11:00+00:00,Momentum rapido,XBTEUR,VENTA,68994.18565,1.96,senal vendedora,0.0089
+2026-10-30T11:00+00:00,Momentum rapido,ENAEUR,VENTA,0.165317,1.93,stop de perdida (-2.8 %),0.0087
+2026-10-30T11:00+00:00,Momentum rapido,ZROEUR,COMPRA,1.528764,2.0,senal compradora,0.009
+2026-10-30T11:00+00:00,Rebote rapido,ZECEUR,COMPRA,1106.821134,2.0,senal compradora,0.009
+2026-10-30T11:00+00:00,Rebote rapido,ENAEUR,COMPRA,0.165483,2.0,senal compradora,0.009
+2026-10-30T12:00+00:00,Cruce 10/30,PEPEEUR,COMPRA,5e-06,2.0,senal compradora,0.009
+2026-10-30T12:00+00:00,Cruce 10/30 + filtro,PEPEEUR,COMPRA,5e-06,2.0,senal compradora,0.009
+2026-10-30T12:00+00:00,Momentum rapido,NEAREUR,VENTA,3.834782,1.95,stop de perdida (-1.7 %),0.0088
+2026-10-30T12:00+00:00,Momentum rapido,UNIEUR,VENTA,6.1971,2.05,objetivo de ganancia (+3.2 %),0.0093
+2026-10-30T12:00+00:00,Rebote rapido,ENAEUR,VENTA,0.168716,2.02,senal vendedora,0.0091
+2026-10-30T12:00+00:00,Rebote rapido,TRXEUR,COMPRA,0.305954,2.0,senal compradora,0.009
