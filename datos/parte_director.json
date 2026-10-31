@@ -1,24 +1,24 @@
 {
- "generado": "2026-10-30T23:48:58Z",
+ "generado": "2026-10-31T01:06:08Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 76,86 € (-13,14 €).",
-  "Capital total 76,86 € (-13,14 €, -14,60 %).",
-  "Mejor agente: Rebote (-0,24 €). Peor: Cruce 10/30 (-2,09 €).",
-  "2 de 9 agentes van por encima de «Comprar y mantener» (9,28 €).",
-  "8 con monedas, 1 en efectivo, 0 apagados.",
-  "Operaciones en las últimas 24 h: 77."
+  "Fondo de 90,00 € (10,00 € por agente): vale 77,00 € (-13,00 €).",
+  "Capital total 77,00 € (-13,00 €, -14,44 %).",
+  "Mejor agente: Rebote (-0,25 €). Peor: Cruce 10/30 (-2,06 €).",
+  "2 de 9 agentes van por encima de «Comprar y mantener» (9,31 €).",
+  "9 con monedas, 0 en efectivo, 0 apagados.",
+  "Operaciones en las últimas 24 h: 79."
  ],
  "alertas": [
-  "Cruce 10/30 está cerca del límite de 7 € (7,91 €).",
-  "Cruce 5/20 está cerca del límite de 7 € (8,56 €).",
-  "Momentum está cerca del límite de 7 € (8,13 €).",
-  "Rebote está cerca del límite de 7 € (9,76 €).",
-  "Cruce 10/30 + filtro está cerca del límite de 7 € (8,40 €).",
-  "Consenso 2 de 3 está cerca del límite de 7 € (8,23 €).",
-  "Cruce 3/8 rapido está cerca del límite de 7 € (9,53 €).",
-  "Momentum rapido está cerca del límite de 7 € (8,19 €).",
-  "Rebote rapido está cerca del límite de 7 € (8,14 €)."
+  "Cruce 10/30 está cerca del límite de 7 € (7,94 €).",
+  "Cruce 5/20 está cerca del límite de 7 € (8,57 €).",
+  "Momentum está cerca del límite de 7 € (8,18 €).",
+  "Rebote está cerca del límite de 7 € (9,75 €).",
+  "Cruce 10/30 + filtro está cerca del límite de 7 € (8,42 €).",
+  "Consenso 2 de 3 está cerca del límite de 7 € (8,24 €).",
+  "Cruce 3/8 rapido está cerca del límite de 7 € (9,51 €).",
+  "Momentum rapido está cerca del límite de 7 € (8,25 €).",
+  "Rebote rapido está cerca del límite de 7 € (8,15 €)."
  ],
  "revision": {
   "ok": true,
@@ -27,56 +27,56 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 9.5,
+   "dias": 9.6,
    "cierres": 30,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 9.5,
-   "cierres": 39,
+   "dias": 9.6,
+   "cierres": 40,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 9.5,
+   "dias": 9.6,
    "cierres": 47,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 9.5,
-   "cierres": 20,
+   "dias": 9.6,
+   "cierres": 21,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 9.5,
+   "dias": 9.6,
    "cierres": 21,
    "evaluable": false
   },
   {
    "nombre": "Consenso 2 de 3",
-   "dias": 9.5,
+   "dias": 9.6,
    "cierres": 52,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 9.5,
+   "dias": 9.6,
    "cierres": 32,
    "evaluable": false
   },
   {
    "nombre": "Momentum rapido",
-   "dias": 9.5,
-   "cierres": 90,
+   "dias": 9.6,
+   "cierres": 91,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 9.5,
-   "cierres": 58,
+   "dias": 9.6,
+   "cierres": 59,
    "evaluable": false
   }
  ],
