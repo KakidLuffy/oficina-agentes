@@ -808,3 +808,11 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-30T21:00+00:00,Momentum,LINKEUR,COMPRA,10.042439,2.0,senal compradora,0.009
 2026-10-30T22:00+00:00,Momentum,PEPEEUR,VENTA,4e-06,2.02,senal vendedora,0.0091
 2026-10-30T22:00+00:00,Momentum,TAOEUR,COMPRA,212.744219,2.0,senal compradora,0.009
+2026-10-31T00:00+00:00,Cruce 5/20,ZROEUR,VENTA,1.526236,2.03,senal vendedora,0.0092
+2026-10-31T00:00+00:00,Cruce 5/20,ZECEUR,COMPRA,1147.605516,2.0,senal compradora,0.009
+2026-10-31T00:00+00:00,Rebote,XBTEUR,VENTA,69375.79475,1.95,senal vendedora,0.0088
+2026-10-31T00:00+00:00,Rebote,HYPEEUR,COMPRA,80.14005,1.96,senal compradora,0.0088
+2026-10-31T00:00+00:00,Cruce 3/8 rapido,ZROEUR,COMPRA,1.527763,2.0,senal compradora,0.009
+2026-10-31T00:00+00:00,Momentum rapido,LINKEUR,VENTA,10.419728,2.07,objetivo de ganancia (+4.5 %),0.0094
+2026-10-31T00:00+00:00,Momentum rapido,XBTEUR,COMPRA,69445.20525,2.0,senal compradora,0.009
+2026-10-31T00:00+00:00,Rebote rapido,PEPEEUR,VENTA,4e-06,2.0,senal vendedora,0.0091
