@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-10-31T17:45:39+00:00 UTC · Precio BTC/EUR: 69484 (Kraken)
+Ultima actualizacion: 2026-10-31T18:50:10+00:00 UTC · Precio BTC/EUR: 69530 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (10.3 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 7.88 | -2.12 | -21.23 % | -1.44 | 68 | 2026-10-21 | Con AVAX, UNI, XBT, ZRO |
-| Cruce 5/20 | 8.61 | -1.39 | -13.87 % | -0.71 | 84 | 2026-10-21 | Con EURC, NEAR, TIA, ZEC |
-| Momentum | 8.08 | -1.92 | -19.22 % | -1.24 | 100 | 2026-10-21 | Con DOT, LINK, PEPE, TAO |
-| Rebote | 9.71 | -0.29 | -2.86 % | +0.39 | 47 | 2026-10-21 | Con BCH, COMP, HYPE, W, WLD |
-| Cruce 10/30 + filtro | 8.34 | -1.66 | -16.57 % | -0.98 | 46 | 2026-10-21 | Con VVV, ZEC |
-| Consenso 2 de 3 | 8.24 | -1.76 | -17.61 % | -1.08 | 112 | 2026-10-21 | Con DOT, EURC, NEAR, XLM |
-| Cruce 3/8 rapido | 9.56 | -0.44 | -4.43 % | +0.24 | 73 | 2026-10-21 | Con LINK, PUMP, UNI |
-| Momentum rapido | 8.09 | -1.91 | -19.06 % | -1.23 | 198 | 2026-10-21 | Con LINK, NEAR, XBT, ZEC |
+| Cruce 10/30 | 7.90 | -2.10 | -21.01 % | -1.43 | 68 | 2026-10-21 | Con AVAX, UNI, XBT, ZRO |
+| Cruce 5/20 | 8.63 | -1.37 | -13.72 % | -0.70 | 84 | 2026-10-21 | Con EURC, NEAR, TIA, ZEC |
+| Momentum | 8.11 | -1.89 | -18.88 % | -1.21 | 100 | 2026-10-21 | Con DOT, LINK, PEPE, TAO |
+| Rebote | 9.72 | -0.28 | -2.81 % | +0.39 | 47 | 2026-10-21 | Con BCH, COMP, HYPE, W, WLD |
+| Cruce 10/30 + filtro | 8.34 | -1.66 | -16.55 % | -0.98 | 46 | 2026-10-21 | Con VVV, ZEC |
+| Consenso 2 de 3 | 8.25 | -1.75 | -17.48 % | -1.07 | 112 | 2026-10-21 | Con DOT, EURC, NEAR, XLM |
+| Cruce 3/8 rapido | 9.61 | -0.39 | -3.90 % | +0.28 | 73 | 2026-10-21 | Con LINK, PUMP, UNI |
+| Momentum rapido | 8.12 | -1.88 | -18.78 % | -1.20 | 198 | 2026-10-21 | Con LINK, NEAR, XBT, ZEC |
 | Rebote rapido | 8.06 | -1.94 | -19.37 % | -1.26 | 127 | 2026-10-21 | Con INJ, WLD, XMR |
-| Comprar y mantener (solo BTC) | 9.32 | -0.68 | -6.80 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Comprar y mantener (solo BTC) | 9.33 | -0.67 | -6.74 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
