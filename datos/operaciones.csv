@@ -826,3 +826,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-31T04:00+00:00,Rebote rapido,HYPEEUR,VENTA,79.22037,1.95,stop de perdida (-1.6 %),0.0088
 2026-10-31T04:00+00:00,Rebote rapido,UNIEUR,COMPRA,6.195596,2.0,senal compradora,0.009
 2026-10-31T04:00+00:00,Rebote rapido,INJEUR,COMPRA,6.325161,2.0,senal compradora,0.009
+2026-10-31T05:00+00:00,Momentum rapido,SUIEUR,VENTA,0.800799,1.99,senal vendedora,0.009
+2026-10-31T05:00+00:00,Momentum rapido,UNIEUR,VENTA,6.208794,1.97,senal vendedora,0.0089
+2026-10-31T06:00+00:00,Momentum rapido,AVAXEUR,VENTA,7.614191,2.01,senal vendedora,0.0091
+2026-10-31T06:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.174587,2.0,senal compradora,0.009
