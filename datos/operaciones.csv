@@ -846,3 +846,11 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-10-31T11:00+00:00,Consenso 2 de 3,SOLEUR,VENTA,85.827065,1.97,senal vendedora,0.0089
 2026-10-31T11:00+00:00,Consenso 2 de 3,XLMEUR,COMPRA,0.151483,2.0,senal compradora,0.009
 2026-10-31T11:00+00:00,Cruce 3/8 rapido,PUMPEUR,COMPRA,0.003707,2.0,senal compradora,0.009
+2026-10-31T13:00+00:00,Cruce 3/8 rapido,PEPEEUR,VENTA,4e-06,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-31T13:00+00:00,Momentum rapido,PEPEEUR,VENTA,4e-06,1.95,stop de perdida (-1.6 %),0.0088
+2026-10-31T13:00+00:00,Momentum rapido,NEAREUR,COMPRA,3.948373,2.0,senal compradora,0.009
+2026-10-31T14:00+00:00,Cruce 3/8 rapido,UNIEUR,COMPRA,6.266131,2.0,senal compradora,0.009
+2026-10-31T14:00+00:00,Rebote rapido,TRXEUR,VENTA,0.283819,1.94,stop de perdida (-2.2 %),0.0088
+2026-10-31T15:00+00:00,Cruce 3/8 rapido,ZROEUR,VENTA,1.611194,2.05,objetivo de ganancia (+3.4 %),0.0093
+2026-10-31T15:00+00:00,Momentum rapido,ZROEUR,VENTA,1.611194,2.05,objetivo de ganancia (+3.4 %),0.0093
+2026-10-31T15:00+00:00,Momentum rapido,LINKEUR,COMPRA,10.373714,2.0,senal compradora,0.009
