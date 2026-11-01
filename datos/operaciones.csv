@@ -911,3 +911,6 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-01T13:00+00:00,Momentum rapido,LINKEUR,VENTA,10.365605,1.92,stop de perdida (-1.6 %),0.0087
 2026-11-01T13:00+00:00,Momentum rapido,ZROEUR,COMPRA,1.714857,1.92,senal compradora,0.0086
 2026-11-01T14:00+00:00,Consenso 2 de 3,LINKEUR,COMPRA,10.387791,2.0,senal compradora,0.009
+2026-11-01T15:00+00:00,Cruce 5/20,XRPEUR,VENTA,1.11864,1.98,senal vendedora,0.0089
+2026-11-01T15:00+00:00,Consenso 2 de 3,SUIEUR,VENTA,0.805997,1.98,senal vendedora,0.0089
+2026-11-01T15:00+00:00,Rebote rapido,PEPEEUR,VENTA,4e-06,1.95,stop de perdida (-1.8 %),0.0088
