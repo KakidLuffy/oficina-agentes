@@ -923,3 +923,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-01T17:00+00:00,Momentum rapido,ZROEUR,VENTA,1.671164,1.86,stop de perdida (-2.5 %),0.0084
 2026-11-01T17:00+00:00,Rebote rapido,AAVEEUR,COMPRA,121.370655,1.96,senal compradora,0.0088
 2026-11-01T18:00+00:00,Cruce 3/8 rapido,ZROEUR,VENTA,1.627186,1.93,stop de perdida (-2.5 %),0.0087
+2026-11-01T19:00+00:00,Cruce 10/30 + filtro,HYPEEUR,VENTA,77.951005,1.96,senal vendedora,0.0088
+2026-11-01T20:00+00:00,Momentum,ZROEUR,VENTA,1.617191,1.88,senal vendedora,0.0085
