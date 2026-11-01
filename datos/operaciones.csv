@@ -874,3 +874,20 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-01T01:00+00:00,Momentum rapido,PEPEEUR,COMPRA,5e-06,2.0,senal compradora,0.009
 2026-11-01T01:00+00:00,Rebote rapido,INJEUR,VENTA,6.508744,2.04,senal vendedora,0.0092
 2026-11-01T01:00+00:00,Rebote rapido,LSKEUR,COMPRA,0.211005,2.0,senal compradora,0.009
+2026-11-01T02:00+00:00,Cruce 3/8 rapido,INJEUR,COMPRA,6.502249,2.0,senal compradora,0.009
+2026-11-01T02:00+00:00,Rebote rapido,LSKEUR,VENTA,0.203828,1.92,stop de perdida (-3.4 %),0.0087
+2026-11-01T02:00+00:00,Rebote rapido,ENAEUR,VENTA,0.166417,1.78,stop de perdida (-1.5 %),0.008
+2026-11-01T02:00+00:00,Rebote rapido,LINKEUR,COMPRA,10.334535,2.0,senal compradora,0.009
+2026-11-01T02:00+00:00,Rebote rapido,ZECEUR,COMPRA,1112.066755,1.74,senal compradora,0.0078
+2026-11-01T03:00+00:00,Cruce 5/20,PEPEEUR,COMPRA,5e-06,2.0,senal compradora,0.009
+2026-11-01T03:00+00:00,Momentum,NEAREUR,VENTA,3.951523,1.96,senal vendedora,0.0089
+2026-11-01T03:00+00:00,Momentum,ZROEUR,COMPRA,1.672836,1.96,senal compradora,0.0088
+2026-11-01T04:00+00:00,Cruce 5/20,NEAREUR,VENTA,3.939829,2.0,senal vendedora,0.009
+2026-11-01T04:00+00:00,Consenso 2 de 3,NEAREUR,VENTA,3.939829,2.0,senal vendedora,0.009
+2026-11-01T04:00+00:00,Consenso 2 de 3,SUIEUR,COMPRA,0.809204,2.0,senal compradora,0.009
+2026-11-01T05:00+00:00,Rebote rapido,LINKEUR,VENTA,10.436969,2.0,senal vendedora,0.0091
+2026-11-01T06:00+00:00,Rebote,TRXEUR,VENTA,0.278317,1.93,senal vendedora,0.0087
+2026-11-01T06:00+00:00,Rebote,ZECEUR,COMPRA,1117.692567,1.93,senal compradora,0.0087
+2026-11-01T06:00+00:00,Cruce 3/8 rapido,LINKEUR,COMPRA,10.533314,2.0,senal compradora,0.009
+2026-11-01T06:00+00:00,Momentum rapido,PEPEEUR,VENTA,4e-06,1.95,senal vendedora,0.0088
+2026-11-01T06:00+00:00,Momentum rapido,TRXEUR,COMPRA,0.278595,1.97,senal compradora,0.0089
