@@ -2,36 +2,36 @@
   "version": 3,
   "capital_inicial": 10.0,
   "inicio": "2026-10-21T11:37:53+00:00",
-  "ultima_vela": 1793512800,
+  "ultima_vela": 1793520000,
   "precio_inicio": 74221.2,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 69700.1,
-    "ETHEUR": 2029.84,
-    "XRPEUR": 1.12124,
-    "ZECEUR": 1115.201,
-    "SOLEUR": 85.42,
-    "NEAREUR": 3.9045,
-    "LTCEUR": 50.38,
-    "SUIEUR": 0.8105,
-    "PUMPEUR": 0.00379,
-    "HYPEEUR": 78.52,
+    "XBTEUR": 69903.5,
+    "ETHEUR": 2033.68,
+    "XRPEUR": 1.12145,
+    "ZECEUR": 1118.863,
+    "SOLEUR": 85.56,
+    "NEAREUR": 3.9333,
+    "LTCEUR": 50.11,
+    "SUIEUR": 0.8101,
+    "PUMPEUR": 0.003839,
+    "HYPEEUR": 78.9,
     "XMREUR": 529.74,
     "UNIEUR": 6.3277,
-    "ZROEUR": 1.637,
+    "ZROEUR": 1.656,
     "ADAEUR": 0.172758,
     "COMPEUR": 22.8,
-    "LINKEUR": 10.53026,
-    "PEPEEUR": 4.45e-06,
+    "LINKEUR": 10.52,
+    "PEPEEUR": 4.459e-06,
     "TIAEUR": 0.5582,
-    "INJEUR": 6.504,
+    "INJEUR": 6.484,
     "XLMEUR": 0.151633,
-    "ENAEUR": 0.1679,
+    "ENAEUR": 0.1692,
     "TAOEUR": 214.1229,
-    "AVAXEUR": 7.992,
+    "AVAXEUR": 7.892,
     "ARBEUR": 0.1517,
-    "QNTEUR": 179.51,
+    "QNTEUR": 178.96,
     "EURCEUR": 1.0001,
     "WEUR": 0.01216,
     "STRKEUR": 0.05034,
@@ -39,15 +39,15 @@
     "DOTEUR": 0.9124,
     "WLDEUR": 0.4753,
     "XDGEUR": 0.0668808,
-    "XDCEUR": 0.02792,
+    "XDCEUR": 0.02797,
     "ONDOEUR": 0.36256,
     "VVVEUR": 22.213,
     "AAVEEUR": 122.28,
     "BNBEUR": 664.4,
-    "TRXEUR": 0.278044,
+    "TRXEUR": 0.278328,
     "BCHEUR": 250.47,
     "OPEUR": 0.1011,
-    "LSKEUR": 0.207483
+    "LSKEUR": 0.206117
   },
   "agentes": [
     {
@@ -94,14 +94,15 @@
     },
     {
       "nombre": "Cruce 5/20",
-      "efectivo": 2.532589621654283,
+      "efectivo": 0.5325896216542829,
       "posiciones": {
         "TIAEUR": 3.5630001749304308,
         "EURCEUR": 1.9908054172094038,
-        "PEPEEUR": 442543.787008474
+        "PEPEEUR": 442543.787008474,
+        "XRPEUR": 1.7739604381441838
       },
       "apagado": false,
-      "operaciones": 87,
+      "operaciones": 88,
       "dia": 20758,
       "eq_dia": 8.532158965580129,
       "inicio": "2026-10-21T11:37:53+00:00",
@@ -109,7 +110,8 @@
       "entradas": {
         "TIAEUR": 0.5590793999999999,
         "EURCEUR": 1.0006000499999999,
-        "PEPEEUR": 4.5012495e-06
+        "PEPEEUR": 4.5012495e-06,
+        "XRPEUR": 1.1229111749999998
       },
       "ultima_venta": {
         "TAOEUR": "2026-10-22T00:00+00:00",
@@ -225,20 +227,22 @@
     },
     {
       "nombre": "Cruce 10/30 + filtro",
-      "efectivo": 4.2993484596582,
+      "efectivo": 2.2993484596581997,
       "posiciones": {
         "VVVEUR": 0.0896727693442834,
-        "PEPEEUR": 441366.5479386222
+        "PEPEEUR": 441366.5479386222,
+        "HYPEEUR": 0.025212162818173033
       },
       "apagado": false,
-      "operaciones": 48,
+      "operaciones": 49,
       "dia": 20758,
       "eq_dia": 8.286864458093655,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
       "entradas": {
         "VVVEUR": 22.214101499999998,
-        "PEPEEUR": 4.5132554999999996e-06
+        "PEPEEUR": 4.5132554999999996e-06,
+        "HYPEEUR": 79.009485
       },
       "ultima_venta": {
         "XMREUR": "2026-10-22T20:00+00:00",
@@ -309,25 +313,21 @@
     },
     {
       "nombre": "Cruce 3/8 rapido",
-      "efectivo": 3.503846805262272,
+      "efectivo": 7.542964833680347,
       "posiciones": {
-        "PUMPEUR": 537.3831302971996,
-        "INJEUR": 0.3063555158872326,
         "LINKEUR": 0.18911427071025733
       },
       "apagado": false,
-      "operaciones": 77,
+      "operaciones": 79,
       "dia": 20758,
       "eq_dia": 9.571083830117765,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
       "entradas": {
-        "PUMPEUR": 0.0037068525,
-        "INJEUR": 6.5022495,
         "LINKEUR": 10.533314025
       },
       "ultima_venta": {
-        "PUMPEUR": "2026-10-29T15:00+00:00",
+        "PUMPEUR": "2026-11-01T08:00+00:00",
         "TIAEUR": "2026-10-21T18:00+00:00",
         "QNTEUR": "2026-10-27T09:00+00:00",
         "UNIEUR": "2026-11-01T00:00+00:00",
@@ -335,7 +335,7 @@
         "XMREUR": "2026-10-22T11:00+00:00",
         "DOTEUR": "2026-10-23T08:00+00:00",
         "ZECEUR": "2026-10-29T01:00+00:00",
-        "INJEUR": "2026-10-26T14:00+00:00",
+        "INJEUR": "2026-11-01T08:00+00:00",
         "ENAEUR": "2026-10-28T11:00+00:00",
         "XDCEUR": "2026-10-27T11:00+00:00",
         "ADAEUR": "2026-10-28T06:00+00:00",
@@ -353,11 +353,11 @@
       "posiciones": {
         "XBTEUR": 2.868448574424798e-05,
         "HYPEEUR": 0.02528901940494252,
-        "ZROEUR": 1.2132873234315202,
-        "TRXEUR": 7.045041728778191
+        "TRXEUR": 7.045041728778191,
+        "LINKEUR": 0.18610543568134721
       },
       "apagado": false,
-      "operaciones": 206,
+      "operaciones": 208,
       "dia": 20758,
       "eq_dia": 8.023426404416325,
       "inicio": "2026-10-21T11:37:53+00:00",
@@ -365,8 +365,8 @@
       "entradas": {
         "XBTEUR": 69445.20525,
         "HYPEEUR": 78.769365,
-        "ZROEUR": 1.6418205,
-        "TRXEUR": 0.278595228
+        "TRXEUR": 0.278595228,
+        "LINKEUR": 10.542898815
       },
       "ultima_venta": {
         "ZECEUR": "2026-10-31T19:00+00:00",
@@ -391,20 +391,21 @@
         "XDCEUR": "2026-10-27T03:00+00:00",
         "LTCEUR": "2026-10-30T09:00+00:00",
         "TRXEUR": "2026-10-30T03:00+00:00",
-        "ZROEUR": "2026-10-31T15:00+00:00",
+        "ZROEUR": "2026-11-01T07:00+00:00",
         "AVAXEUR": "2026-10-31T06:00+00:00"
       }
     },
     {
       "nombre": "Rebote rapido",
-      "efectivo": 2.003697401159282,
+      "efectivo": 0.0,
       "posiciones": {
         "WLDEUR": 4.167897211118117,
         "XMREUR": 0.003749678891391624,
-        "ZECEUR": 0.001554564196043704
+        "ZROEUR": 1.220726240190757,
+        "LSKEUR": 8.428693757938255
       },
       "apagado": false,
-      "operaciones": 137,
+      "operaciones": 140,
       "dia": 20758,
       "eq_dia": 7.827391916868526,
       "inicio": "2026-10-21T11:37:53+00:00",
@@ -412,7 +413,8 @@
       "entradas": {
         "WLDEUR": 0.47793884999999997,
         "XMREUR": 531.24549,
-        "ZECEUR": 1112.0667555
+        "ZROEUR": 1.6318154999999999,
+        "LSKEUR": 0.2056777875
       },
       "ultima_venta": {
         "ZROEUR": "2026-10-29T20:00+00:00",
@@ -421,7 +423,7 @@
         "WEUR": "2026-10-22T01:00+00:00",
         "SUIEUR": "2026-10-23T22:00+00:00",
         "UNIEUR": "2026-10-31T09:00+00:00",
-        "ZECEUR": "2026-10-30T20:00+00:00",
+        "ZECEUR": "2026-11-01T08:00+00:00",
         "NEAREUR": "2026-10-29T20:00+00:00",
         "ETHEUR": "2026-10-30T04:00+00:00",
         "XRPEUR": "2026-10-30T01:00+00:00",
