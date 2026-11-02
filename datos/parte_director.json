@@ -1,87 +1,82 @@
 {
- "generado": "2026-11-02T13:39:56Z",
+ "generado": "2026-11-02T15:57:33Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 74,41 € (-15,59 €).",
-  "Capital total 74,41 € (-15,59 €, -17,32 %).",
-  "Mejor agente: Rebote (-0,32 €). Peor: Rebote rapido (-2,44 €).",
-  "2 de 9 agentes van por encima de «Comprar y mantener» (9,35 €).",
-  "8 con monedas, 1 en efectivo, 0 apagados.",
-  "Operaciones en las últimas 24 h: 57."
+  "Fondo de 90,00 € (10,00 € por agente): vale 74,12 € (-15,88 €).",
+  "Capital total 74,12 € (-15,88 €, -17,65 %).",
+  "Mejor agente: Rebote (-0,33 €). Peor: Rebote rapido (-2,50 €).",
+  "2 de 9 agentes van por encima de «Comprar y mantener» (9,30 €).",
+  "9 con monedas, 0 en efectivo, 0 apagados.",
+  "Operaciones en las últimas 24 h: 69."
  ],
  "alertas": [
-  "Cruce 10/30 está cerca del límite de 7 € (7,90 €).",
-  "Cruce 5/20 está cerca del límite de 7 € (8,41 €).",
-  "Momentum está cerca del límite de 7 € (7,76 €).",
-  "Rebote está cerca del límite de 7 € (9,68 €).",
-  "Cruce 10/30 + filtro está cerca del límite de 7 € (8,08 €).",
-  "Consenso 2 de 3 está cerca del límite de 7 € (7,96 €).",
-  "Cruce 3/8 rapido está cerca del límite de 7 € (9,35 €).",
-  "Momentum rapido está cerca del límite de 7 € (7,69 €).",
-  "Rebote rapido está cerca del límite de 7 € (7,56 €)."
+  "Cruce 10/30 está cerca del límite de 7 € (7,87 €).",
+  "Cruce 5/20 está cerca del límite de 7 € (8,36 €).",
+  "Momentum está cerca del límite de 7 € (7,75 €).",
+  "Rebote está cerca del límite de 7 € (9,67 €).",
+  "Cruce 10/30 + filtro está cerca del límite de 7 € (8,06 €).",
+  "Consenso 2 de 3 está cerca del límite de 7 € (7,94 €).",
+  "Cruce 3/8 rapido está cerca del límite de 7 € (9,33 €).",
+  "Momentum rapido está cerca del límite de 7 € (7,63 €).",
+  "Rebote rapido está cerca del límite de 7 € (7,50 €)."
  ],
  "revision": {
   "ok": true,
-  "problemas": [
-   {
-    "nivel": "aviso",
-    "texto": "Los datos llevan 5,3 h sin actualizarse (GitHub a veces se retrasa),"
-   }
-  ]
+  "problemas": []
  },
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 12.1,
-   "cierres": 35,
+   "dias": 12.2,
+   "cierres": 38,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 12.1,
-   "cierres": 46,
+   "dias": 12.2,
+   "cierres": 49,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 12.1,
+   "dias": 12.2,
    "cierres": 53,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 12.1,
+   "dias": 12.2,
    "cierres": 24,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 12.1,
-   "cierres": 25,
+   "dias": 12.2,
+   "cierres": 27,
    "evaluable": false
   },
   {
    "nombre": "Consenso 2 de 3",
-   "dias": 12.1,
-   "cierres": 64,
+   "dias": 12.2,
+   "cierres": 65,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 12.1,
+   "dias": 12.2,
    "cierres": 43,
    "evaluable": false
   },
   {
    "nombre": "Momentum rapido",
-   "dias": 12.1,
-   "cierres": 106,
+   "dias": 12.2,
+   "cierres": 109,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 12.1,
-   "cierres": 72,
+   "dias": 12.2,
+   "cierres": 73,
    "evaluable": false
   }
  ],
