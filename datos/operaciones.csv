@@ -930,3 +930,9 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-01T21:00+00:00,Consenso 2 de 3,ETHEUR,COMPRA,2038.31865,2.0,senal compradora,0.009
 2026-11-01T21:00+00:00,Momentum rapido,PEPEEUR,COMPRA,4e-06,1.86,senal compradora,0.0084
 2026-11-01T22:00+00:00,Consenso 2 de 3,ETHEUR,VENTA,2023.857565,1.97,senal vendedora,0.0089
+2026-11-01T23:00+00:00,Consenso 2 de 3,ETHEUR,COMPRA,2039.229105,2.0,senal compradora,0.009
+2026-11-01T23:00+00:00,Consenso 2 de 3,UNIEUR,COMPRA,6.474836,2.0,senal compradora,0.009
+2026-11-02T00:00+00:00,Cruce 10/30,AVAXEUR,VENTA,7.75712,1.92,senal vendedora,0.0087
+2026-11-02T00:00+00:00,Cruce 5/20,ETHEUR,COMPRA,2034.746865,2.0,senal compradora,0.009
+2026-11-02T00:00+00:00,Consenso 2 de 3,UNIEUR,VENTA,6.420488,1.97,senal vendedora,0.0089
+2026-11-02T00:00+00:00,Rebote rapido,AAVEEUR,VENTA,120.55969,1.93,senal vendedora,0.0087
