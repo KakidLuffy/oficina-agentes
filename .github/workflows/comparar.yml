@@ -4,7 +4,7 @@ on:
   workflow_dispatch:   # se lanza a mano desde la pestaña Actions
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: agentes       # mismo grupo que la simulación horaria para que no se pisen
@@ -14,21 +14,39 @@ jobs:
   comparar:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
 
       - name: Comparar estrategias sobre el historial real
         run: python comparar_estrategias.py --out comparacion
 
-      - name: Guardar resultados en el repositorio
+      - name: Guardar resultados en el repositorio (reintenta, nunca fuerza)
+        run: bash scripts/guardar_datos.sh "Actualizar comparación de estrategias" comparacion
+
+  alerta:
+    needs: comparar
+    if: ${{ always() && needs.comparar.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write        # solo este trabajo puede abrir o cerrar la alerta
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Avisar del fallo (sin duplicados) o cerrar la alerta si ya se recuperó
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
-          git config user.name "agentes-bot"
-          git config user.email "agentes-bot@users.noreply.github.com"
-          git add comparacion
-          git diff --staged --quiet || git commit -m "Actualizar comparación de estrategias"
-          git pull --rebase
-          git push
+          if [ "${{ needs.comparar.result }}" = "success" ]; then
+            bash scripts/alerta_fallo.sh cerrar "Fallo del workflow: comparar estrategias" "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          else
+            bash scripts/alerta_fallo.sh abrir "Fallo del workflow: comparar estrategias" "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi

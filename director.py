@@ -16,6 +16,8 @@ import os
 import sys
 from datetime import datetime, timedelta, timezone
 
+import persistencia as ps
+
 START = 50.0  # valor por defecto; se lee de estado.json (capital_inicial)
 MAX_POS = 5
 STOP = 35.0
@@ -268,14 +270,13 @@ def main():
             prop_md.append("No hay candidatas esta semana.")
     else:
         prop_md.append("El laboratorio aún no ha trabajado.")
-    with open(os.path.join(carpeta, "propuestas.md"), "w", encoding="utf-8") as f:
-        f.write("\n".join(prop_md) + "\n")
+    ps.escribir_atomico(os.path.join(carpeta, "propuestas.md"), "\n".join(prop_md) + "\n")
 
     # memoria
     if nuevos:
-        with open(os.path.join(carpeta, "memoria.jsonl"), "a", encoding="utf-8") as f:
-            for e in nuevos:
-                f.write(json.dumps(e, ensure_ascii=False) + "\n")
+        ruta_mem = os.path.join(carpeta, "memoria.jsonl")
+        previo = open(ruta_mem, encoding="utf-8").read() if os.path.exists(ruta_mem) else ""
+        ps.escribir_atomico(ruta_mem, previo + "".join(json.dumps(e, ensure_ascii=False) + "\n" for e in nuevos))
         eventos += nuevos
     md = ["# Memoria compartida de la oficina", "",
           "Aquí quedan las reglas y las decisiones. El director y el laboratorio la leen para no empezar de cero cada vez.", "", "## Reglas fijas", ""]
@@ -283,8 +284,7 @@ def main():
     md += ["", "## Registro de decisiones y cambios (lo más reciente primero)", ""]
     for e in [e for e in eventos if e.get("tipo") != "regla"][::-1][:MAX_EVENTOS_MD]:
         md.append(f"- {e['fecha'][:16].replace('T', ' ')} · **{e['tipo']}** · {e['texto']}")
-    with open(os.path.join(carpeta, "memoria.md"), "w", encoding="utf-8") as f:
-        f.write("\n".join(md) + "\n")
+    ps.escribir_atomico(os.path.join(carpeta, "memoria.md"), "\n".join(md) + "\n")
 
     # parte
     progreso = [{"nombre": x["nombre"], "dias": round(x["dias"], 1), "cierres": x["cierres"], "evaluable": x["evaluable"]} for x in ag]
@@ -297,8 +297,7 @@ def main():
     parte = {"generado": iso(ref), "titular": titular, "lineas": lineas, "alertas": alertas,
              "revision": {"ok": not errores, "problemas": problemas}, "progreso": progreso,
              "laboratorio": veredicto, "min_dias": MIN_DIAS, "min_cierres": MIN_CIERRES}
-    with open(os.path.join(carpeta, "parte_director.json"), "w", encoding="utf-8") as f:
-        json.dump(parte, f, ensure_ascii=False, indent=1)
+    ps.escribir_json(os.path.join(carpeta, "parte_director.json"), parte, indent=1)
     pm = ["# Parte del director", "", f"Actualizado: {parte['generado']}", "", f"**{titular}**", ""]
     pm += [f"- {l}" for l in lineas]
     if alertas:
@@ -309,13 +308,11 @@ def main():
     pm += [f"- {p['nombre']}: {p['dias']} días, {p['cierres']} cierres{' ✔ evaluable' if p['evaluable'] else ''}" for p in progreso]
     if veredicto:
         pm += ["", f"Laboratorio: {str(veredicto).upper()} (ver propuestas.md)."]
-    with open(os.path.join(carpeta, "parte_director.md"), "w", encoding="utf-8") as f:
-        f.write("\n".join(pm) + "\n")
-    with open(os.path.join(carpeta, "director_estado.json"), "w", encoding="utf-8") as f:
-        json.dump({"apagados": sorted(ap_now), "evaluables": [x["nombre"] for x in ag if x["evaluable"]],
+    ps.escribir_atomico(os.path.join(carpeta, "parte_director.md"), "\n".join(pm) + "\n")
+    ps.escribir_json(os.path.join(carpeta, "director_estado.json"), {"apagados": sorted(ap_now), "evaluables": [x["nombre"] for x in ag if x["evaluable"]],
                    "lab_generado": (lab or {}).get("generado"), "semanas_candidatas": semanas,
                    "estado_prop": {c["nombre"]: {"aprobar": "Aprobada", "rechazar": "Rechazada"}.get(estados_user.get(c["nombre"].lower(), ""), "Pendiente")
-                                   for c in (lab or {}).get("candidatas", [])}, "actualizado": iso(ref)}, f, ensure_ascii=False, indent=1)
+                                   for c in (lab or {}).get("candidatas", [])}, "actualizado": iso(ref)}, indent=1)
     print("\n".join(pm))
 
 

@@ -1,0 +1,3 @@
+# El proyecto usa SOLO la libreria estandar de Python 3.12 (sin dependencias externas).
+# Este archivo existe para dejar constancia de ello y para que, si algun dia se anade una libreria,
+# se fije aqui con version exacta (por ejemplo: paquete==1.2.3).
