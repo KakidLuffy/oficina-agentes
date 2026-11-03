@@ -1048,3 +1048,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-03T17:00+00:00,Momentum rapido,XRPEUR,COMPRA,1.145693,1.65,senal compradora,0.0074
 2026-11-03T18:00+00:00,Momentum rapido,AAVEEUR,VENTA,113.353295,1.97,senal vendedora,0.0089
 2026-11-03T18:00+00:00,Momentum rapido,ZROEUR,COMPRA,1.679839,1.97,senal compradora,0.0089
+2026-11-03T21:00+00:00,Cruce 3/8 rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
