@@ -1028,3 +1028,17 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-03T09:00+00:00,Momentum rapido,HYPEEUR,COMPRA,75.427695,2.0,senal compradora,0.009
 2026-11-03T09:00+00:00,Momentum rapido,PUMPEUR,COMPRA,0.003591,1.47,senal compradora,0.0066
 2026-11-03T09:00+00:00,Rebote rapido,NEAREUR,VENTA,3.427685,1.63,senal vendedora,0.0074
+2026-11-03T10:00+00:00,Cruce 5/20,ETHEUR,COMPRA,2029.644315,2.0,senal compradora,0.009
+2026-11-03T10:00+00:00,Momentum,PUMPEUR,COMPRA,0.003647,2.0,senal compradora,0.009
+2026-11-03T11:00+00:00,Momentum,ZECEUR,COMPRA,1056.703087,1.38,senal compradora,0.0062
+2026-11-03T11:00+00:00,Consenso 2 de 3,EURCEUR,VENTA,0.9994,1.87,senal vendedora,0.0085
+2026-11-03T11:00+00:00,Consenso 2 de 3,XBTEUR,COMPRA,68893.8297,1.87,senal compradora,0.0084
+2026-11-03T11:00+00:00,Momentum rapido,PUMPEUR,VENTA,0.003722,1.52,objetivo de ganancia (+3.7 %),0.0069
+2026-11-03T11:00+00:00,Momentum rapido,ZECEUR,COMPRA,1056.703087,1.52,senal compradora,0.0068
+2026-11-03T12:00+00:00,Cruce 10/30,EURCEUR,COMPRA,1.0006,2.0,senal compradora,0.009
+2026-11-03T12:00+00:00,Cruce 10/30 + filtro,EURCEUR,COMPRA,1.0006,2.0,senal compradora,0.009
+2026-11-03T12:00+00:00,Momentum rapido,UNIEUR,VENTA,6.515341,2.05,objetivo de ganancia (+3.4 %),0.0093
+2026-11-03T12:00+00:00,Momentum rapido,XBTEUR,COMPRA,69180.7731,2.0,senal compradora,0.009
+2026-11-03T13:00+00:00,Cruce 10/30,UNIEUR,COMPRA,6.569583,1.76,senal compradora,0.0079
+2026-11-03T13:00+00:00,Cruce 10/30 + filtro,UNIEUR,COMPRA,6.569583,2.0,senal compradora,0.009
+2026-11-03T14:00+00:00,Cruce 10/30 + filtro,PEPEEUR,COMPRA,4e-06,1.94,senal compradora,0.0087
