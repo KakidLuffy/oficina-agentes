@@ -998,3 +998,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-02T18:00+00:00,Momentum rapido,UNIEUR,VENTA,6.338229,1.93,stop de perdida (-2.5 %),0.0087
 2026-11-02T21:00+00:00,Momentum rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
 2026-11-02T21:00+00:00,Momentum rapido,DOTEUR,COMPRA,0.843121,2.0,senal compradora,0.009
+2026-11-02T23:00+00:00,Cruce 5/20,XRPEUR,COMPRA,1.116078,2.0,senal compradora,0.009
+2026-11-02T23:00+00:00,Momentum,TAOEUR,VENTA,199.124888,1.86,senal vendedora,0.0084
+2026-11-02T23:00+00:00,Consenso 2 de 3,XRPEUR,COMPRA,1.116078,2.0,senal compradora,0.009
+2026-11-03T00:00+00:00,Rebote rapido,SOLEUR,VENTA,82.448755,1.63,senal vendedora,0.0074
