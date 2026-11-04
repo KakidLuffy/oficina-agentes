@@ -1115,3 +1115,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-04T15:00+00:00,Momentum rapido,ZECEUR,COMPRA,1160.270845,2.0,senal compradora,0.009
 2026-11-04T16:00+00:00,Momentum rapido,XBTEUR,VENTA,71713.82515,2.05,objetivo de ganancia (+3.3 %),0.0093
 2026-11-04T16:00+00:00,Momentum rapido,ADAEUR,COMPRA,0.17686,2.0,senal compradora,0.009
+2026-11-04T17:00+00:00,Rebote,PUMPEUR,COMPRA,0.003789,1.88,senal compradora,0.0085
+2026-11-04T17:00+00:00,Rebote rapido,PUMPEUR,COMPRA,0.003789,1.65,senal compradora,0.0074
