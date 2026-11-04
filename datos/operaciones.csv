@@ -1068,3 +1068,29 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-04T02:00+00:00,Momentum,ZECEUR,VENTA,1042.306586,1.35,senal vendedora,0.0061
 2026-11-04T02:00+00:00,Momentum,PUMPEUR,VENTA,0.003678,2.0,senal vendedora,0.009
 2026-11-04T02:00+00:00,Consenso 2 de 3,XBTEUR,VENTA,67583.9911,1.82,senal vendedora,0.0082
+2026-11-04T04:00+00:00,Momentum,ENAEUR,COMPRA,0.155978,2.0,senal compradora,0.009
+2026-11-04T04:00+00:00,Consenso 2 de 3,ZECEUR,COMPRA,1083.370414,2.0,senal compradora,0.009
+2026-11-04T04:00+00:00,Consenso 2 de 3,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-11-04T04:00+00:00,Consenso 2 de 3,PUMPEUR,COMPRA,0.003796,1.69,senal compradora,0.0076
+2026-11-04T04:00+00:00,Rebote rapido,XRPEUR,VENTA,1.130185,1.63,senal vendedora,0.0074
+2026-11-04T05:00+00:00,Momentum,ZECEUR,COMPRA,1108.720083,2.0,senal compradora,0.009
+2026-11-04T05:00+00:00,Momentum,PEPEEUR,COMPRA,4e-06,1.36,senal compradora,0.0061
+2026-11-04T05:00+00:00,Cruce 3/8 rapido,ZECEUR,COMPRA,1108.720083,2.0,senal compradora,0.009
+2026-11-04T05:00+00:00,Cruce 3/8 rapido,ENAEUR,COMPRA,0.158979,2.0,senal compradora,0.009
+2026-11-04T05:00+00:00,Cruce 3/8 rapido,AAVEEUR,COMPRA,114.467205,2.0,senal compradora,0.009
+2026-11-04T05:00+00:00,Momentum rapido,ZECEUR,COMPRA,1108.720083,2.0,senal compradora,0.009
+2026-11-04T05:00+00:00,Momentum rapido,NEAREUR,COMPRA,3.457228,2.0,senal compradora,0.009
+2026-11-04T05:00+00:00,Momentum rapido,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-11-04T05:00+00:00,Momentum rapido,ENAEUR,COMPRA,0.158979,1.38,senal compradora,0.0062
+2026-11-04T06:00+00:00,Cruce 10/30,XRPEUR,VENTA,1.133813,2.02,senal vendedora,0.0091
+2026-11-04T06:00+00:00,Cruce 5/20,ZECEUR,COMPRA,1131.98571,2.0,senal compradora,0.009
+2026-11-04T06:00+00:00,Cruce 5/20,PEPEEUR,COMPRA,4e-06,2.0,senal compradora,0.009
+2026-11-04T06:00+00:00,Cruce 3/8 rapido,XBTEUR,COMPRA,69399.38235,2.0,senal compradora,0.009
+2026-11-04T06:00+00:00,Cruce 3/8 rapido,ADAEUR,COMPRA,0.16957,1.16,senal compradora,0.0052
+2026-11-04T07:00+00:00,Cruce 10/30,NEAREUR,COMPRA,3.577888,2.0,senal compradora,0.009
+2026-11-04T07:00+00:00,Momentum rapido,NEAREUR,VENTA,3.574312,2.05,objetivo de ganancia (+3.4 %),0.0093
+2026-11-04T07:00+00:00,Momentum rapido,XBTEUR,COMPRA,69465.81555,2.0,senal compradora,0.009
+2026-11-04T08:00+00:00,Rebote,HYPEEUR,VENTA,77.04146,1.88,senal vendedora,0.0085
+2026-11-04T08:00+00:00,Cruce 3/8 rapido,ZECEUR,VENTA,1144.24759,2.05,objetivo de ganancia (+3.3 %),0.0093
+2026-11-04T08:00+00:00,Momentum rapido,ZECEUR,VENTA,1144.24759,2.05,objetivo de ganancia (+3.3 %),0.0093
+2026-11-04T08:00+00:00,Momentum rapido,ETHEUR,COMPRA,2064.241605,2.0,senal compradora,0.009
