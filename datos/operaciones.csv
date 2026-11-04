@@ -1059,3 +1059,12 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-04T00:00+00:00,Momentum rapido,XRPEUR,VENTA,1.122159,1.6,stop de perdida (-2.0 %),0.0072
 2026-11-04T00:00+00:00,Momentum rapido,ZROEUR,VENTA,1.656172,1.93,senal vendedora,0.0087
 2026-11-04T00:00+00:00,Rebote rapido,XRPEUR,COMPRA,1.123281,1.63,senal compradora,0.0073
+2026-11-04T01:00+00:00,Cruce 5/20,ETHEUR,VENTA,2011.503745,1.97,senal vendedora,0.0089
+2026-11-04T01:00+00:00,Cruce 5/20,XRPEUR,VENTA,1.113183,1.98,senal vendedora,0.0089
+2026-11-04T01:00+00:00,Consenso 2 de 3,XRPEUR,VENTA,1.113183,1.98,senal vendedora,0.0089
+2026-11-04T01:00+00:00,Cruce 3/8 rapido,PEPEEUR,VENTA,4e-06,1.92,stop de perdida (-3.1 %),0.0087
+2026-11-04T01:00+00:00,Momentum rapido,XBTEUR,VENTA,68425.07035,1.96,senal vendedora,0.0089
+2026-11-04T01:00+00:00,Momentum rapido,PUMPEUR,VENTA,0.003745,1.89,stop de perdida (-2.8 %),0.0085
+2026-11-04T02:00+00:00,Momentum,ZECEUR,VENTA,1042.306586,1.35,senal vendedora,0.0061
+2026-11-04T02:00+00:00,Momentum,PUMPEUR,VENTA,0.003678,2.0,senal vendedora,0.009
+2026-11-04T02:00+00:00,Consenso 2 de 3,XBTEUR,VENTA,67583.9911,1.82,senal vendedora,0.0082
