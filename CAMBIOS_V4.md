@@ -12,10 +12,11 @@ hace que la siguiente ejecución archive la v3 en `datos/archivo_10eur_v3_<fecha
 | `espera_h = 6` en todos: no recomprar una moneda vendida hace menos de 6 h | Misma razón: menos compraventas | Puede perder alguna entrada buena |
 | Nuevo agente «Rebalanceo semanal» (pedido por el usuario el 5-nov): cesta fija BTC, ETH, SOL, XRP y ADA a partes iguales; cada 7 días vende lo que no es de la cesta y rehace solo las posiciones desviadas más de un 35 % | Opera muy poco (5 operaciones en 15 días de prueba con precios inventados) y no persigue monedas de moda: en la v3, PUMP, ENA, ZEC y PEPE fueron las que más perdieron | Casi no cerrará operaciones: el criterio de 30 cierres no le sirve; hay que juzgarlo por días y frente a «Comprar y mantener» |
 | Los agentes de señales solo compran monedas de su universo (top 20 por volumen); la cesta se descarga aparte | Que el rebalanceo no cambie lo que operan los demás | Ninguno |
+| Aviso del director «cerca del límite de 7 €» solo por debajo de 7,75 € (antes: por debajo de 12 €) | Con 10 € por agente avisaba de los 9 agentes a la vez, incluso de Rebote con 9,57 €: el aviso no servía | Ninguno: solo cambia el parte, no las operaciones |
 | El workflow solo se ejecuta con push a `main` | Antes, un push a cualquier rama con cambios en `agentes_nube.py` lanzaba la simulación | Ninguno |
 
 Lo que **no** cambia: costes simulados (0,40 % + deslizamiento), capital (10 € por agente), límite de 7 €, velas de 1 h,
 criterio de evaluación (21 días y 30 operaciones cerradas, superando a «Comprar y mantener»).
 
-Comprobado con `python -m unittest test_agentes` (8 pruebas) y simulando 600 velas inventadas: los agentes de señales comunes
+Comprobado con `python -m unittest test_agentes` (9 pruebas) y simulando 600 velas inventadas: los agentes de señales comunes
 operan entre un 0 % y un 28 % menos. Con precios inventados no se puede saber si ganarán más; eso solo lo dirá la v4 en vivo.

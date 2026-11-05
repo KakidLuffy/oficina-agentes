@@ -131,5 +131,14 @@ class TestRebalanceo(unittest.TestCase):
         self.assertTrue(otras)
 
 
+class TestDirector(unittest.TestCase):
+    def test_aviso_de_limite_solo_cerca_del_limite(self):
+        import director
+        with open(director.__file__, encoding="utf-8") as f:
+            src = f.read()
+        self.assertNotIn('x["eq"] < STOP + 5', src)                 # con 10 EUR avisaba siempre (umbral 12 EUR)
+        self.assertIn('x["eq"] < STOP + (START - STOP) * 0.25', src)  # con 10 EUR: avisa por debajo de 7,75 EUR
+
+
 if __name__ == "__main__":
     unittest.main()
