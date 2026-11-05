@@ -1182,3 +1182,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-05T05:00+00:00,Cruce 3/8 rapido,PEPEEUR,VENTA,4e-06,1.98,senal vendedora,0.0089
 2026-11-05T05:00+00:00,Cruce 3/8 rapido,ENAEUR,VENTA,0.15902,1.96,senal vendedora,0.0089
 2026-11-05T05:00+00:00,Rebote rapido,UNIEUR,COMPRA,6.713655,1.58,senal compradora,0.0071
+2026-11-05T06:00+00:00,Consenso 2 de 3,NEAREUR,COMPRA,3.588793,1.58,senal compradora,0.0071
+2026-11-05T06:00+00:00,Rebote rapido,UNIEUR,VENTA,6.800298,1.59,senal vendedora,0.0072
