@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 import informe
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
-VERSION = 3           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
+VERSION = 4           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
 FEE = 0.004           # comision 0,40 % por operacion: tarifa "maker" de Kraken Pro en el nivel mas bajo (con ordenes a mercado seria "taker", 0,80 %)
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
 PERDIDA_DIA = START * 0.04   # si un agente pierde esto (EUR, el 4 % de su capital) en un dia, no vuelve a comprar ese dia
@@ -40,7 +40,9 @@ MIN_CERRADAS = 30                       # criterio acordado: al menos 30 operaci
 MIN_DIAS = 21                           # ...y 3 semanas de simulacion antes de fiarse de un agente
 BTC = "XBTEUR"                          # moneda de referencia para 'Comprar y mantener' y la columna precio_eur
 # Stablecoins y monedas fiat: su precio casi no se mueve, asi que no tiene sentido operarlas
+# v4: faltaba EURC (euro estable de Circle): en v3 los agentes hicieron 51 operaciones con ella pagando 0,46 EUR en costes.
 EXCLUIR_BASES = {"USDT", "USDC", "DAI", "PYUSD", "TUSD", "EURT", "EURR", "EURQ", "USDG", "RLUSD", "USDD", "USDQ",
+                 "EURC", "EUROC", "EURCV", "EURI", "EURE", "EURAU", "USDE", "USDS", "FDUSD", "USD1",
                  "USD", "GBP", "AUD", "CAD", "CHF", "JPY", "EUR"}
 # Lista de emergencia: solo se usa si Kraken no da los volumenes
 RESPALDO = ["XBTEUR", "ETHEUR", "SOLEUR", "XRPEUR", "ADAEUR", "DOGEEUR", "DOTEUR", "LINKEUR", "LTCEUR", "AVAXEUR",
@@ -135,18 +137,23 @@ AGENTES = [
     ("Momentum", momentum),
     ("Rebote", rebote),
     ("Cruce 10/30 + filtro", filtro(lambda p: cruce(p, 10, 30))),
-    ("Consenso 2 de 3", consenso),
     # agentes rapidos: senales de pocas horas, para que operen varias veces al dia
     ("Cruce 3/8 rapido", filtro(lambda p: cruce(p, 3, 8, 0.002), 48)),
-    ("Momentum rapido", momentum_rapido),
     ("Rebote rapido", rebote_rapido),
 ]
 DECIDIR = dict(AGENTES)
-# Reglas de salida y de entrada propias de los agentes rapidos (los 6 originales no llevan ninguna: se mantienen tal cual):
+# Reglas de salida y de entrada (v4: espera_h y min_horas en TODOS los agentes; stop, objetivo y solo_liquidas en los rapidos):
 #   espera_h: horas sin volver a comprar una moneda tras venderla · stop / objetivo: venta automatica al perder / ganar ese %
 #   solo_liquidas: no compra monedas de poco volumen (donde el deslizamiento real es mayor)
-OPCIONES = {n: {"espera_h": 6, "stop": 0.015, "objetivo": 0.03, "solo_liquidas": True}
-            for n in ("Cruce 3/8 rapido", "Momentum rapido", "Rebote rapido")}
+#   min_horas (v4, TODOS los agentes): no se vende por senal antes de ese tiempo desde la compra (stop y objetivo si actuan).
+#   En v3, las 245 operaciones cerradas en menos de 6 h perdieron 7,16 EUR con ~20 % de aciertos.
+# v4 retira "Momentum rapido" (288 operaciones, 2,48 EUR en costes, -29 %) y "Consenso 2 de 3" (165 operaciones, -26 %):
+# menos agentes = menos comparaciones y menos riesgo de que uno "gane" por casualidad.
+MIN_HORAS = 6
+ESPERA_H = 6
+OPCIONES = {n: {"espera_h": ESPERA_H, "min_horas": MIN_HORAS} for n, _ in AGENTES}
+for _n in ("Cruce 3/8 rapido", "Rebote rapido"):
+    OPCIONES[_n].update({"stop": 0.015, "objetivo": 0.03, "solo_liquidas": True})
 
 
 # ---------------- precios ----------------
@@ -349,6 +356,7 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
         a["posiciones"][par] = importe * (1 - FEE) / ejecutado
         a["efectivo"] -= importe
         a.setdefault("entradas", {})[par] = ejecutado
+        a.setdefault("compras", {})[par] = fecha
         coste = importe - a["posiciones"][par] * precio                 # comision + deslizamiento pagados al comprar
     else:
         unidades = a["posiciones"].pop(par)
@@ -356,6 +364,7 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
         importe = unidades * ejecutado * (1 - FEE)    # lo que realmente se cobra, ya sin comision
         a["efectivo"] += importe
         a.setdefault("entradas", {}).pop(par, None)
+        a.setdefault("compras", {}).pop(par, None)
         a.setdefault("ultima_venta", {})[par] = fecha
         coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
     a["operaciones"] += 1
@@ -374,6 +383,16 @@ def apagar_si_toca(a, precios, fecha, volumenes):
             operar(a, "VENTA", par, precios[par], fecha, volumenes, "apagado por riesgo")
         a["apagado"] = True
         print(f"RIESGO: {a['nombre']} apagado por superar el limite de perdida")
+
+
+def horas_desde(desde, fecha):
+    return (datetime.fromisoformat(fecha) - datetime.fromisoformat(desde)).total_seconds() / 3600
+
+
+def retenida(a, par, fecha, op):
+    """True si la moneda se compro hace menos de op['min_horas']: la senal vendedora se ignora (el stop no)."""
+    comprada = a.get("compras", {}).get(par)
+    return bool(op.get("min_horas") and comprada and horas_desde(comprada, fecha) < op["min_horas"])
 
 
 def paso(estado, velas, volumenes, orden, ahora_ts):
@@ -414,7 +433,7 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
                     operar(a, "VENTA", par, precios[par], fecha, volumenes, f"stop de perdida ({cambio * 100:.1f} %)")
                 elif op.get("objetivo") and entrada and cambio >= op["objetivo"]:
                     operar(a, "VENTA", par, precios[par], fecha, volumenes, f"objetivo de ganancia ({cambio * 100:+.1f} %)")
-                elif senales[par] == "s":
+                elif senales[par] == "s" and not retenida(a, par, fecha, op):
                     operar(a, "VENTA", par, precios[par], fecha, volumenes, "senal vendedora")
             bloqueado = a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA
             for par in pares_t:                          # ...y luego se compra, por orden de volumen
