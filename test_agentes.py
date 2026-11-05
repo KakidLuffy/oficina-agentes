@@ -41,7 +41,8 @@ class TestV4(unittest.TestCase):
         nombres = [n for n, _ in a.AGENTES]
         self.assertNotIn("Momentum rapido", nombres)
         self.assertNotIn("Consenso 2 de 3", nombres)
-        self.assertEqual(len(nombres), 7)
+        self.assertEqual(len(nombres), 8)
+        self.assertIn(a.REBALANCEO, nombres)
         self.assertTrue(all(a.OPCIONES[n]["min_horas"] == 6 for n in nombres))
 
     def test_monedas_estables_excluidas(self):
@@ -72,6 +73,62 @@ class TestV4(unittest.TestCase):
         self.assertFalse(a.retenida(ag, "XEUR", "2026-11-01T16:00+00:00", op))
         self.assertFalse(a.retenida(ag, "YEUR", "2026-11-01T11:00+00:00", op))      # sin fecha de compra (estado v3)
         self.assertFalse(a.retenida(ag, "XEUR", "2026-11-01T11:00+00:00", {}))
+
+
+class TestRebalanceo(unittest.TestCase):
+    """Cesta inventada de 5 monedas: C1..C4 + BTC. 'OTRA' solo la pueden operar los agentes de senales."""
+    def setUp(self):
+        self.antes = os.getcwd()
+        self.dir = tempfile.TemporaryDirectory()
+        os.chdir(self.dir.name)
+        os.makedirs(a.DATOS)
+        self.cesta = [a.BTC, "C1EUR", "C2EUR", "C3EUR", "C4EUR"]
+
+    def tearDown(self):
+        os.chdir(self.antes)
+        self.dir.cleanup()
+
+    def correr(self, series, orden, horas):
+        t0 = 1_700_000_000
+        velas = {p: [(t0 + i * 3600, f(i)) for i in range(horas)] for p, f in series.items()}
+        vol = {p: 1e6 for p in velas}
+        ini = {p: v[:25] for p, v in velas.items()}
+        est = a.estado_nuevo(ini, ini[a.BTC][-1][0] + 3600)
+        est["cesta"] = self.cesta
+        a.parametros(est)
+        a.asegurar_operaciones()
+        with contextlib.redirect_stdout(io.StringIO()):
+            a.paso(est, velas, vol, orden, velas[a.BTC][-1][0] + 3600)
+        with open(a.OPERACIONES, newline="") as f:
+            ops = list(csv.DictReader(f))
+        ag = next(x for x in est["agentes"] if x["nombre"] == a.REBALANCEO)
+        return [o for o in ops if o["agente"] == a.REBALANCEO], ops, ag, est
+
+    def test_compra_la_cesta_a_partes_iguales_y_no_opera_hasta_la_semana(self):
+        planas = {p: (lambda i: 100.0) for p in self.cesta}
+        reb, _, ag, est = self.correr(planas, list(self.cesta), 25 + 24 * 6)     # menos de 7 dias
+        self.assertEqual(sorted(o["moneda"] for o in reb), sorted(self.cesta))
+        self.assertTrue(all(o["tipo"] == "COMPRA" for o in reb))
+        valores = [u * est["precios"][p] for p, u in ag["posiciones"].items()]
+        self.assertAlmostEqual(max(valores), min(valores), places=6)
+        self.assertLess(ag["efectivo"], 0.01)
+
+    def test_a_los_7_dias_solo_rehace_la_moneda_desviada(self):
+        series = {p: (lambda i: 100.0) for p in self.cesta}
+        series["C1EUR"] = lambda i: 100.0 if i < 60 else 200.0                    # C1 dobla su precio
+        series["C2EUR"] = lambda i: 100.0 if i < 60 else 110.0                    # C2 +10 %: dentro de la banda
+        reb, _, ag, _ = self.correr(series, list(self.cesta), 25 + 24 * 7 + 3)
+        ventas = [o["moneda"] for o in reb if o["tipo"] == "VENTA"]
+        self.assertEqual(ventas, ["C1EUR"])
+        self.assertEqual(sum(o["tipo"] == "COMPRA" and o["moneda"] == "C1EUR" for o in reb), 2)
+        self.assertEqual(ag["ultimo_rebalanceo"] - 1_700_000_000, (25 + 24 * 7) * 3600)   # primera vela procesada (25) + 7 dias
+
+    def test_los_demas_agentes_no_operan_monedas_fuera_de_su_universo(self):
+        series = {p: (lambda i: 100.0 + (i % 7) * 3) for p in self.cesta}         # oscila: los agentes de senales operan
+        _, ops, _, _ = self.correr(series, [a.BTC], 25 + 72)                      # universo de senales: solo BTC
+        otras = {o["moneda"] for o in ops if o["agente"] != a.REBALANCEO}
+        self.assertEqual(otras - {a.BTC}, set())
+        self.assertTrue(otras)
 
 
 if __name__ == "__main__":
