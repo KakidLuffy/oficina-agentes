@@ -1218,3 +1218,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-05T14:00+00:00,Momentum rapido,INJEUR,VENTA,7.21639,1.93,stop de perdida (-2.2 %),0.0087
 2026-11-05T14:00+00:00,Rebote rapido,TRUMPEUR,VENTA,1.077461,1.55,stop de perdida (-2.4 %),0.007
 2026-11-05T14:00+00:00,Rebote rapido,XBTEUR,COMPRA,69764.0646,1.55,senal compradora,0.007
+2026-11-05T15:00+00:00,Momentum,INJEUR,VENTA,7.060468,1.9,senal vendedora,0.0086
+2026-11-05T15:00+00:00,Rebote rapido,XBTEUR,VENTA,67608.07905,1.49,stop de perdida (-3.0 %),0.0067
+2026-11-05T15:00+00:00,Rebote rapido,ETHEUR,COMPRA,2006.28264,1.49,senal compradora,0.0067
+2026-11-05T16:00+00:00,Cruce 5/20,EURCEUR,VENTA,0.9993,1.98,senal vendedora,0.009
+2026-11-05T17:00+00:00,Consenso 2 de 3,EURCEUR,COMPRA,1.0005,2.0,senal compradora,0.009
+2026-11-05T18:00+00:00,Cruce 5/20,EURCEUR,COMPRA,1.0007,2.0,senal compradora,0.009
+2026-11-05T19:00+00:00,Consenso 2 de 3,INJEUR,COMPRA,7.321659,2.0,senal compradora,0.009
