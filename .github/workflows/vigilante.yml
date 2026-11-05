@@ -1,0 +1,67 @@
+name: Vigilante (avisa si la oficina se para)
+
+# Cada hora mira cuándo trabajó la oficina por última vez (última fila de datos/historial_v2.csv).
+#  - Más de 2 h sin trabajar: lanza una ronda de "Agentes de trading (simulación)".
+#  - Más de 3 h: abre una incidencia "La oficina está parada" (GitHub te avisa en el móvil y por correo).
+#  - Cuando vuelve a trabajar: cierra esa incidencia sola.
+# Ojo: GitHub también puede retrasar a este vigilante; es una red de seguridad, no una garantía.
+
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+  issues: write
+
+concurrency:
+  group: vigilante
+  cancel-in-progress: true
+
+jobs:
+  vigilar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TITULO: "La oficina está parada"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar la última ronda
+        id: edad
+        run: |
+          ultima=$(tail -n 1 datos/historial_v2.csv | cut -d, -f1)
+          if t=$(date -u -d "$ultima" +%s 2>/dev/null); then
+            horas=$(( ( $(date -u +%s) - t ) / 3600 ))
+          else
+            horas=0   # historial recién empezado (solo cabecera): no hay nada que vigilar todavía
+          fi
+          echo "Última ronda: $ultima (hace $horas h)"
+          echo "ultima=$ultima" >> "$GITHUB_OUTPUT"
+          echo "horas=$horas" >> "$GITHUB_OUTPUT"
+
+      - name: Relanzar la oficina si lleva más de 2 h parada
+        if: ${{ fromJSON(steps.edad.outputs.horas) >= 2 }}
+        run: gh workflow run agentes.yml --ref main
+
+      - name: Abrir incidencia si lleva más de 3 h parada
+        if: ${{ fromJSON(steps.edad.outputs.horas) >= 3 }}
+        run: |
+          abierta=$(gh issue list --state open --search "in:title \"$TITULO\"" --json number --jq '.[0].number')
+          texto="La última ronda fue el ${{ steps.edad.outputs.ultima }} (UTC), hace ${{ steps.edad.outputs.horas }} h. El vigilante ya ha pedido una ronda nueva. Si sigue parada, revisa la pestaña Actions."
+          if [ -z "$abierta" ]; then
+            gh issue create --title "$TITULO" --body "$texto"
+          else
+            gh issue comment "$abierta" --body "$texto"
+          fi
+
+      - name: Cerrar la incidencia cuando vuelve a trabajar
+        if: ${{ fromJSON(steps.edad.outputs.horas) < 2 }}
+        run: |
+          for n in $(gh issue list --state open --search "in:title \"$TITULO\"" --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "La oficina vuelve a trabajar: última ronda el ${{ steps.edad.outputs.ultima }} (UTC)."
+          done

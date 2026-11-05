@@ -214,7 +214,7 @@ def main():
     for x in ag:
         if x["apagado"]:
             alertas.append(f"{x['nombre']} está apagado por riesgo.")
-        elif x["eq"] < STOP + 5:
+        elif x["eq"] < STOP + (START - STOP) * 0.25:   # antes "STOP + 5" (pensado para 50 EUR): con 10 EUR avisaba siempre
             alertas.append(f"{x['nombre']} está cerca del límite de {STOP:.0f} € ({euros(x['eq'])}).")
         elif x["dd"] >= 10:
             alertas.append(f"{x['nombre']} acumula una caída máxima del " + f"{x['dd']:.1f}".replace(".", ",") + " %.")
