@@ -6,6 +6,7 @@ on:
     - cron: "47 * * * *"
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - agentes_nube.py
       - .github/workflows/agentes.yml
