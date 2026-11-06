@@ -1,13 +1,13 @@
 {
- "generado": "2026-11-06T10:56:06Z",
+ "generado": "2026-11-06T11:35:43Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 70,50 € (-19,50 €).",
-  "Capital total 70,50 € (-19,50 €, -21,66 %).",
-  "Mejor agente: Rebote (-0,45 €). Peor: Momentum (-3,05 €).",
+  "Fondo de 90,00 € (10,00 € por agente): vale 70,45 € (-19,55 €).",
+  "Capital total 70,45 € (-19,55 €, -21,72 %).",
+  "Mejor agente: Rebote (-0,43 €). Peor: Momentum (-3,05 €).",
   "1 de 9 agentes van por encima de «Comprar y mantener» (9,13 €).",
   "8 con monedas, 0 en efectivo, 1 apagados.",
-  "Operaciones en las últimas 24 h: 82."
+  "Operaciones en las últimas 24 h: 84."
  ],
  "alertas": [
   "Cruce 10/30 acumula una caída máxima del 23,8 %.",
@@ -15,8 +15,8 @@
   "Momentum está apagado por riesgo.",
   "Cruce 10/30 + filtro acumula una caída máxima del 23,1 %.",
   "Consenso 2 de 3 está cerca del límite de 7 € (7,22 €).",
-  "Cruce 3/8 rapido acumula una caída máxima del 12,9 %.",
-  "Momentum rapido está cerca del límite de 7 € (7,21 €).",
+  "Cruce 3/8 rapido acumula una caída máxima del 13,2 %.",
+  "Momentum rapido está cerca del límite de 7 € (7,20 €).",
   "Rebote rapido está cerca del límite de 7 € (7,18 €)."
  ],
  "revision": {
@@ -27,7 +27,7 @@
   {
    "nombre": "Cruce 10/30",
    "dias": 16.0,
-   "cierres": 45,
+   "cierres": 46,
    "evaluable": false
   },
   {
@@ -51,7 +51,7 @@
   {
    "nombre": "Cruce 10/30 + filtro",
    "dias": 16.0,
-   "cierres": 33,
+   "cierres": 34,
    "evaluable": false
   },
   {
@@ -63,7 +63,7 @@
   {
    "nombre": "Cruce 3/8 rapido",
    "dias": 16.0,
-   "cierres": 61,
+   "cierres": 62,
    "evaluable": false
   },
   {
