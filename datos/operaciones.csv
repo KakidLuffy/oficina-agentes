@@ -1295,3 +1295,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-06T19:00+00:00,Momentum rapido,ARBEUR,VENTA,0.148726,1.95,senal vendedora,0.0088
 2026-11-06T19:00+00:00,Rebote rapido,ARBEUR,COMPRA,0.148874,1.48,senal compradora,0.0067
 2026-11-06T20:00+00:00,Momentum rapido,NEAREUR,VENTA,3.327535,1.98,senal vendedora,0.009
+2026-11-06T21:00+00:00,Cruce 5/20,ARBEUR,VENTA,0.150125,2.02,senal vendedora,0.0091
+2026-11-06T21:00+00:00,Consenso 2 de 3,ARBEUR,VENTA,0.150125,1.52,senal vendedora,0.0069
+2026-11-06T21:00+00:00,Consenso 2 de 3,EURCEUR,COMPRA,1.0005,1.52,senal compradora,0.0068
+2026-11-06T22:00+00:00,Consenso 2 de 3,EURCEUR,VENTA,0.9995,1.5,senal vendedora,0.0068

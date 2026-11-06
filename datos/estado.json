@@ -2,37 +2,37 @@
   "version": 3,
   "capital_inicial": 10.0,
   "inicio": "2026-10-21T11:37:53+00:00",
-  "ultima_vela": 1793995200,
+  "ultima_vela": 1794002400,
   "precio_inicio": 74221.2,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 67961.0,
-    "ETHEUR": 1997.84,
-    "XRPEUR": 1.05614,
-    "ZECEUR": 1198.557,
-    "SOLEUR": 80.62,
-    "NEAREUR": 3.3311,
-    "LTCEUR": 47.43,
-    "SUIEUR": 0.7835,
+    "XBTEUR": 68056.1,
+    "ETHEUR": 2006.44,
+    "XRPEUR": 1.05619,
+    "ZECEUR": 1187.33,
+    "SOLEUR": 80.69,
+    "NEAREUR": 3.319,
+    "LTCEUR": 47.19,
+    "SUIEUR": 0.7787,
     "PUMPEUR": 0.00351,
-    "HYPEEUR": 70.42,
+    "HYPEEUR": 70.44,
     "XMREUR": 529.74,
-    "UNIEUR": 6.1814,
+    "UNIEUR": 6.1835,
     "ZROEUR": 1.616,
-    "ADAEUR": 0.167101,
+    "ADAEUR": 0.165367,
     "COMPEUR": 22.8,
-    "LINKEUR": 9.75025,
-    "PEPEEUR": 4.527e-06,
+    "LINKEUR": 9.74701,
+    "PEPEEUR": 4.445e-06,
     "TIAEUR": 0.5582,
-    "INJEUR": 7.538,
+    "INJEUR": 7.512,
     "XLMEUR": 0.146241,
-    "ENAEUR": 0.1479,
+    "ENAEUR": 0.1468,
     "TAOEUR": 201.6162,
-    "AVAXEUR": 7.509,
-    "ARBEUR": 0.1503,
+    "AVAXEUR": 7.482,
+    "ARBEUR": 0.1486,
     "QNTEUR": 178.01,
-    "EURCEUR": 1.0,
+    "EURCEUR": 1.0001,
     "WEUR": 0.01216,
     "STRKEUR": 0.05034,
     "PAXGEUR": 3576.5,
@@ -42,10 +42,10 @@
     "XDCEUR": 0.02781,
     "ONDOEUR": 0.36256,
     "VVVEUR": 22.213,
-    "AAVEEUR": 117.45,
+    "AAVEEUR": 117.15,
     "BNBEUR": 664.4,
     "TRXEUR": 0.283931,
-    "BCHEUR": 236.71,
+    "BCHEUR": 236.82,
     "OPEUR": 0.1011,
     "LSKEUR": 0.206117,
     "TRUMPEUR": 1.082,
@@ -99,22 +99,20 @@
     },
     {
       "nombre": "Cruce 5/20",
-      "efectivo": 1.9181811449553439,
+      "efectivo": 3.9337786650632656,
       "posiciones": {
         "TIAEUR": 3.5630001749304308,
-        "INJEUR": 0.2745834364571955,
-        "ARBEUR": 13.480057533860018
+        "INJEUR": 0.2745834364571955
       },
       "apagado": false,
-      "operaciones": 127,
+      "operaciones": 128,
       "dia": 20763,
       "eq_dia": 8.086670701711554,
       "inicio": "2026-10-21T11:37:53+00:00",
       "precio_inicio": 74221.2,
       "entradas": {
         "TIAEUR": 0.5590793999999999,
-        "INJEUR": 7.2546254999999995,
-        "ARBEUR": 0.14777384999999998
+        "INJEUR": 7.2546254999999995
       },
       "ultima_venta": {
         "TAOEUR": "2026-10-22T00:00+00:00",
@@ -139,7 +137,8 @@
         "QNTEUR": "2026-10-27T13:00+00:00",
         "SOLEUR": "2026-10-28T15:00+00:00",
         "ZROEUR": "2026-10-31T00:00+00:00",
-        "BNBEUR": "2026-10-29T09:00+00:00"
+        "BNBEUR": "2026-10-29T09:00+00:00",
+        "ARBEUR": "2026-11-06T21:00+00:00"
       }
     },
     {
@@ -263,15 +262,14 @@
     },
     {
       "nombre": "Consenso 2 de 3",
-      "efectivo": 0.0,
+      "efectivo": 1.50383497733778,
       "posiciones": {
         "DOTEUR": 2.188157487362484,
         "INJEUR": 0.26760813141816187,
-        "ARBEUR": 10.148543787290649,
         "ZECEUR": 0.0015835687506587386
       },
       "apagado": false,
-      "operaciones": 178,
+      "operaciones": 181,
       "dia": 20763,
       "eq_dia": 7.346836095236848,
       "inicio": "2026-10-21T11:37:53+00:00",
@@ -279,7 +277,6 @@
       "entradas": {
         "DOTEUR": 0.91035495,
         "INJEUR": 7.44372,
-        "ARBEUR": 0.14777384999999998,
         "ZECEUR": 1177.6115114999998
       },
       "ultima_venta": {
@@ -302,14 +299,15 @@
         "INJEUR": "2026-11-05T20:00+00:00",
         "TRXEUR": "2026-10-26T22:00+00:00",
         "LTCEUR": "2026-10-27T09:00+00:00",
-        "EURCEUR": "2026-11-06T02:00+00:00",
+        "EURCEUR": "2026-11-06T22:00+00:00",
         "XDCEUR": "2026-10-27T07:00+00:00",
         "QNTEUR": "2026-10-27T11:00+00:00",
         "XBTEUR": "2026-11-04T02:00+00:00",
         "ZROEUR": "2026-10-31T01:00+00:00",
         "SOLEUR": "2026-10-31T11:00+00:00",
         "BNBEUR": "2026-10-29T09:00+00:00",
-        "XLMEUR": "2026-11-03T23:00+00:00"
+        "XLMEUR": "2026-11-03T23:00+00:00",
+        "ARBEUR": "2026-11-06T21:00+00:00"
       }
     },
     {
