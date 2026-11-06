@@ -1287,3 +1287,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-06T13:00+00:00,Cruce 10/30 + filtro,ZECEUR,COMPRA,1177.611511,2.0,senal compradora,0.009
 2026-11-06T13:00+00:00,Consenso 2 de 3,ZECEUR,COMPRA,1177.611511,1.87,senal compradora,0.0084
 2026-11-06T14:00+00:00,Cruce 3/8 rapido,ZECEUR,VENTA,1211.659867,2.08,objetivo de ganancia (+5.1 %),0.0094
+2026-11-06T17:00+00:00,Momentum rapido,UNIEUR,VENTA,6.169414,1.18,senal vendedora,0.0053
+2026-11-06T17:00+00:00,Momentum rapido,ZECEUR,COMPRA,1221.389389,1.24,senal compradora,0.0056
