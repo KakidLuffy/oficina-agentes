@@ -1234,3 +1234,15 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-05T23:00+00:00,Cruce 5/20,EURCEUR,VENTA,0.9994,1.98,senal vendedora,0.009
 2026-11-05T23:00+00:00,Cruce 5/20,INJEUR,COMPRA,7.254625,2.0,senal compradora,0.009
 2026-11-05T23:00+00:00,Consenso 2 de 3,EURCEUR,VENTA,0.9994,1.98,senal vendedora,0.009
+2026-11-06T00:00+00:00,Cruce 10/30,INJEUR,COMPRA,7.44372,2.0,senal compradora,0.009
+2026-11-06T00:00+00:00,Momentum,ZECEUR,COMPRA,1183.935672,2.0,senal compradora,0.009
+2026-11-06T00:00+00:00,Momentum,INJEUR,COMPRA,7.44372,2.0,senal compradora,0.009
+2026-11-06T00:00+00:00,Cruce 10/30 + filtro,INJEUR,COMPRA,7.44372,2.0,senal compradora,0.009
+2026-11-06T00:00+00:00,Consenso 2 de 3,EURCEUR,COMPRA,1.0005,2.0,senal compradora,0.009
+2026-11-06T00:00+00:00,Consenso 2 de 3,INJEUR,COMPRA,7.44372,2.0,senal compradora,0.009
+2026-11-06T00:00+00:00,Momentum rapido,ZECEUR,VENTA,1182.752328,2.1,objetivo de ganancia (+6.0 %),0.0095
+2026-11-06T00:00+00:00,Momentum rapido,NEAREUR,COMPRA,3.358178,2.0,senal compradora,0.009
+2026-11-06T00:00+00:00,Rebote rapido,ETHEUR,VENTA,1999.3998,1.47,senal vendedora,0.0067
+2026-11-06T01:00+00:00,Cruce 5/20,ZECEUR,COMPRA,1166.14378,2.0,senal compradora,0.009
+2026-11-06T01:00+00:00,Momentum rapido,AVAXEUR,VENTA,7.395301,1.09,senal vendedora,0.0049
+2026-11-06T01:00+00:00,Momentum rapido,UNIEUR,COMPRA,6.204501,1.19,senal compradora,0.0054
