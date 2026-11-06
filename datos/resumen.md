@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-06T23:11:00+00:00 UTC · Precio BTC/EUR: 68056 (Kraken)
+Ultima actualizacion: 2026-11-06T23:33:31+00:00 UTC · Precio BTC/EUR: 68086 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (16.5 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 7.81 | -2.19 | -21.91 % | -1.32 | 96 | 2026-10-21 | Con AAVE, ARB, INJ, ZEC |
-| Cruce 5/20 | 7.99 | -2.01 | -20.15 % | -1.14 | 128 | 2026-10-21 | Con INJ, TIA |
+| Cruce 10/30 | 7.80 | -2.20 | -22.05 % | -1.34 | 96 | 2026-10-21 | Con AAVE, ARB, INJ, ZEC |
+| Cruce 5/20 | 7.98 | -2.02 | -20.20 % | -1.15 | 128 | 2026-10-21 | Con INJ, TIA |
 | Momentum | 6.95 | -3.05 | -30.53 % | -2.18 | 148 | 2026-10-21 | Apagado por riesgo |
 | Rebote | 9.54 | -0.46 | -4.60 % | +0.41 | 59 | 2026-10-21 | Con BCH, COMP, TRUMP, W, WLD |
-| Cruce 10/30 + filtro | 7.88 | -2.12 | -21.24 % | -1.25 | 72 | 2026-10-21 | Con ARB, INJ, VVV, ZEC |
-| Consenso 2 de 3 | 7.22 | -2.78 | -27.83 % | -1.91 | 181 | 2026-10-21 | Con DOT, INJ, ZEC |
+| Cruce 10/30 + filtro | 7.86 | -2.14 | -21.39 % | -1.27 | 72 | 2026-10-21 | Con ARB, INJ, VVV, ZEC |
+| Consenso 2 de 3 | 7.21 | -2.79 | -27.93 % | -1.93 | 181 | 2026-10-21 | Con DOT, INJ, ZEC |
 | Cruce 3/8 rapido | 8.81 | -1.19 | -11.88 % | -0.32 | 126 | 2026-10-21 | En efectivo |
-| Momentum rapido | 7.10 | -2.90 | -28.99 % | -2.03 | 308 | 2026-10-21 | Con INJ, SUI |
-| Rebote rapido | 7.18 | -2.82 | -28.24 % | -1.95 | 182 | 2026-10-21 | Con ARB, LSK, WLD, XMR |
-| Comprar y mantener (solo BTC) | 9.13 | -0.87 | -8.72 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Momentum rapido | 7.10 | -2.90 | -28.96 % | -2.03 | 308 | 2026-10-21 | Con INJ, SUI |
+| Rebote rapido | 7.17 | -2.83 | -28.27 % | -1.96 | 182 | 2026-10-21 | Con ARB, LSK, WLD, XMR |
+| Comprar y mantener (solo BTC) | 9.13 | -0.87 | -8.68 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
