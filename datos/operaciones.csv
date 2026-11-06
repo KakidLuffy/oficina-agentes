@@ -1289,3 +1289,9 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-06T14:00+00:00,Cruce 3/8 rapido,ZECEUR,VENTA,1211.659867,2.08,objetivo de ganancia (+5.1 %),0.0094
 2026-11-06T17:00+00:00,Momentum rapido,UNIEUR,VENTA,6.169414,1.18,senal vendedora,0.0053
 2026-11-06T17:00+00:00,Momentum rapido,ZECEUR,COMPRA,1221.389389,1.24,senal compradora,0.0056
+2026-11-06T18:00+00:00,Momentum rapido,ZECEUR,VENTA,1201.267066,1.21,stop de perdida (-1.6 %),0.0055
+2026-11-06T18:00+00:00,Momentum rapido,INJEUR,COMPRA,7.489743,1.21,senal compradora,0.0054
+2026-11-06T19:00+00:00,Cruce 5/20,UNIEUR,VENTA,6.163017,1.92,senal vendedora,0.0087
+2026-11-06T19:00+00:00,Momentum rapido,ARBEUR,VENTA,0.148726,1.95,senal vendedora,0.0088
+2026-11-06T19:00+00:00,Rebote rapido,ARBEUR,COMPRA,0.148874,1.48,senal compradora,0.0067
+2026-11-06T20:00+00:00,Momentum rapido,NEAREUR,VENTA,3.327535,1.98,senal vendedora,0.009
