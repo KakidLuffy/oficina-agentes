@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-07T20:11:04+00:00 UTC · Precio BTC/EUR: 67962 (Kraken)
+Ultima actualizacion: 2026-11-07T20:33:28+00:00 UTC · Precio BTC/EUR: 67924 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (17.4 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 7.68 | -2.32 | -23.20 % | -1.44 | 100 | 2026-10-21 | Con AAVE, ARB |
-| Cruce 5/20 | 7.82 | -2.18 | -21.76 % | -1.29 | 140 | 2026-10-21 | Con AAVE, LINK, TIA, UNI |
-| Momentum | 6.95 | -3.05 | -30.53 % | -2.17 | 148 | 2026-10-21 | Apagado por riesgo |
+| Cruce 10/30 | 7.68 | -2.32 | -23.20 % | -1.43 | 100 | 2026-10-21 | Con AAVE, ARB |
+| Cruce 5/20 | 7.82 | -2.18 | -21.79 % | -1.29 | 140 | 2026-10-21 | Con AAVE, LINK, TIA, UNI |
+| Momentum | 6.95 | -3.05 | -30.53 % | -2.16 | 148 | 2026-10-21 | Apagado por riesgo |
 | Rebote | 9.53 | -0.47 | -4.67 % | +0.42 | 59 | 2026-10-21 | Con BCH, COMP, TRUMP, W, WLD |
 | Cruce 10/30 + filtro | 7.76 | -2.24 | -22.38 % | -1.35 | 74 | 2026-10-21 | Con ARB, VVV |
-| Consenso 2 de 3 | 7.04 | -2.96 | -29.61 % | -2.08 | 191 | 2026-10-21 | Con DOT, TRX, UNI |
-| Cruce 3/8 rapido | 8.74 | -1.26 | -12.62 % | -0.38 | 129 | 2026-10-21 | Con AAVE |
+| Consenso 2 de 3 | 7.04 | -2.96 | -29.60 % | -2.07 | 191 | 2026-10-21 | Con DOT, TRX, UNI |
+| Cruce 3/8 rapido | 8.74 | -1.26 | -12.62 % | -0.37 | 129 | 2026-10-21 | Con AAVE |
 | Momentum rapido | 6.95 | -3.05 | -30.47 % | -2.16 | 318 | 2026-10-21 | Apagado por riesgo |
-| Rebote rapido | 7.18 | -2.82 | -28.24 % | -1.94 | 182 | 2026-10-21 | Con ARB, LSK, WLD, XMR |
-| Comprar y mantener (solo BTC) | 9.12 | -0.88 | -8.85 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Rebote rapido | 7.18 | -2.82 | -28.24 % | -1.93 | 182 | 2026-10-21 | Con ARB, LSK, WLD, XMR |
+| Comprar y mantener (solo BTC) | 9.11 | -0.89 | -8.90 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
