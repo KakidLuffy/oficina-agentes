@@ -11,3 +11,4 @@
 {"fecha": "2026-11-02T13:39:56Z", "tipo": "revision", "agente": "", "texto": "Los datos llevan 5,3 h sin actualizarse (GitHub a veces se retrasa),"}
 {"fecha": "2026-11-02T13:39:56Z", "tipo": "laboratorio", "agente": "", "texto": "Laboratorio del 2026-11-02: veredicto NINGUNA; candidatas: ninguna."}
 {"fecha": "2026-11-06T10:56:06Z", "tipo": "decision", "agente": "Momentum", "texto": "Momentum se apaga por riesgo (capital bajo 7 €)."}
+{"fecha": "2026-11-07T10:14:09Z", "tipo": "decision", "agente": "Momentum rapido", "texto": "Momentum rapido se apaga por riesgo (capital bajo 7 €)."}
