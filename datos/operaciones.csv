@@ -1325,3 +1325,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-07T06:00+00:00,Consenso 2 de 3,INJEUR,VENTA,7.421288,1.98,senal vendedora,0.0089
 2026-11-07T06:00+00:00,Cruce 3/8 rapido,AAVEEUR,COMPRA,118.449195,2.0,senal compradora,0.009
 2026-11-07T07:00+00:00,Cruce 5/20,AAVEEUR,COMPRA,118.469205,2.0,senal compradora,0.009
+2026-11-07T08:00+00:00,Consenso 2 de 3,TRXEUR,COMPRA,0.286102,2.0,senal compradora,0.009
+2026-11-07T09:00+00:00,Cruce 5/20,NEAREUR,VENTA,3.325636,1.86,senal vendedora,0.0084
+2026-11-07T09:00+00:00,Cruce 5/20,LINKEUR,COMPRA,9.728822,1.89,senal compradora,0.0085
+2026-11-07T09:00+00:00,Consenso 2 de 3,LINKEUR,COMPRA,9.728822,1.83,senal compradora,0.0082
