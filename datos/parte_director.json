@@ -1,20 +1,20 @@
 {
- "generado": "2026-11-07T16:39:47Z",
+ "generado": "2026-11-07T20:33:39Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 69,68 € (-20,32 €).",
-  "Capital total 69,68 € (-20,32 €, -22,58 %).",
+  "Fondo de 90,00 € (10,00 € por agente): vale 69,65 € (-20,35 €).",
+  "Capital total 69,65 € (-20,35 €, -22,61 %).",
   "Mejor agente: Rebote (-0,47 €). Peor: Momentum (-3,05 €).",
   "1 de 9 agentes van por encima de «Comprar y mantener» (9,11 €).",
   "7 con monedas, 0 en efectivo, 2 apagados.",
-  "Operaciones en las últimas 24 h: 52."
+  "Operaciones en las últimas 24 h: 45."
  ],
  "alertas": [
   "Cruce 10/30 está cerca del límite de 7 € (7,68 €).",
-  "Cruce 5/20 acumula una caída máxima del 22,2 %.",
+  "Cruce 5/20 acumula una caída máxima del 22,3 %.",
   "Momentum está apagado por riesgo.",
   "Cruce 10/30 + filtro acumula una caída máxima del 23,3 %.",
-  "Consenso 2 de 3 está cerca del límite de 7 € (7,05 €).",
+  "Consenso 2 de 3 está cerca del límite de 7 € (7,04 €).",
   "Cruce 3/8 rapido acumula una caída máxima del 13,2 %.",
   "Momentum rapido está apagado por riesgo.",
   "Rebote rapido está cerca del límite de 7 € (7,18 €)."
@@ -26,55 +26,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 49,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 68,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 74,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 27,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 36,
    "evaluable": false
   },
   {
    "nombre": "Consenso 2 de 3",
-   "dias": 17.2,
-   "cierres": 93,
+   "dias": 17.4,
+   "cierres": 94,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 64,
    "evaluable": false
   },
   {
    "nombre": "Momentum rapido",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 159,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 17.2,
+   "dias": 17.4,
    "cierres": 89,
    "evaluable": false
   }
