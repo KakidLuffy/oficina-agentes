@@ -1308,3 +1308,20 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-07T02:00+00:00,Consenso 2 de 3,EURCEUR,VENTA,0.9992,1.49,senal vendedora,0.0067
 2026-11-07T02:00+00:00,Cruce 3/8 rapido,ZECEUR,COMPRA,1208.510953,2.0,senal compradora,0.009
 2026-11-07T02:00+00:00,Momentum rapido,ZECEUR,COMPRA,1208.510953,1.93,senal compradora,0.0087
+2026-11-07T03:00+00:00,Cruce 5/20,UNIEUR,COMPRA,6.279938,2.0,senal compradora,0.009
+2026-11-07T03:00+00:00,Cruce 5/20,NEAREUR,COMPRA,3.360279,1.89,senal compradora,0.0085
+2026-11-07T03:00+00:00,Consenso 2 de 3,UNIEUR,COMPRA,6.279938,1.49,senal compradora,0.0067
+2026-11-07T03:00+00:00,Momentum rapido,SUIEUR,VENTA,0.772514,1.94,senal vendedora,0.0088
+2026-11-07T03:00+00:00,Momentum rapido,INJEUR,VENTA,7.413292,1.18,senal vendedora,0.0054
+2026-11-07T03:00+00:00,Momentum rapido,UNIEUR,COMPRA,6.279938,2.0,senal compradora,0.009
+2026-11-07T04:00+00:00,Cruce 3/8 rapido,ZECEUR,VENTA,1179.525942,1.94,stop de perdida (-2.3 %),0.0087
+2026-11-07T04:00+00:00,Momentum rapido,ZECEUR,VENTA,1179.525942,1.87,stop de perdida (-2.3 %),0.0085
+2026-11-07T04:00+00:00,Momentum rapido,NEAREUR,COMPRA,3.372685,2.0,senal compradora,0.009
+2026-11-07T04:00+00:00,Momentum rapido,HYPEEUR,VENTA,70.88454,1.98,apagado por riesgo,0.009
+2026-11-07T04:00+00:00,Momentum rapido,UNIEUR,VENTA,6.306845,1.99,apagado por riesgo,0.009
+2026-11-07T04:00+00:00,Momentum rapido,NEAREUR,VENTA,3.369315,1.98,apagado por riesgo,0.009
+2026-11-07T06:00+00:00,Cruce 5/20,INJEUR,VENTA,7.421288,2.03,senal vendedora,0.0092
+2026-11-07T06:00+00:00,Consenso 2 de 3,ZECEUR,VENTA,1176.008702,1.85,senal vendedora,0.0084
+2026-11-07T06:00+00:00,Consenso 2 de 3,INJEUR,VENTA,7.421288,1.98,senal vendedora,0.0089
+2026-11-07T06:00+00:00,Cruce 3/8 rapido,AAVEEUR,COMPRA,118.449195,2.0,senal compradora,0.009
+2026-11-07T07:00+00:00,Cruce 5/20,AAVEEUR,COMPRA,118.469205,2.0,senal compradora,0.009
