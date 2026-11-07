@@ -1339,3 +1339,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-07T14:00+00:00,Consenso 2 de 3,LINKEUR,COMPRA,9.789552,1.81,senal compradora,0.0081
 2026-11-07T15:00+00:00,Cruce 10/30,LINKEUR,VENTA,9.712271,1.97,senal vendedora,0.0089
 2026-11-07T15:00+00:00,Cruce 5/20,LINKEUR,COMPRA,9.721989,1.87,senal compradora,0.0084
+2026-11-07T19:00+00:00,Consenso 2 de 3,LINKEUR,VENTA,9.713891,1.78,senal vendedora,0.0081
