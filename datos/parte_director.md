@@ -1,13 +1,13 @@
 # Parte del director
 
-Actualizado: 2026-11-08T00:00:55Z
+Actualizado: 2026-11-08T00:38:41Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 69,53 € (-20,47 €).
-- Capital total 69,53 € (-20,47 €, -22,74 %).
-- Mejor agente: Rebote (-0,56 €). Peor: Momentum (-3,05 €).
-- 1 de 9 agentes van por encima de «Comprar y mantener» (9,12 €).
+- Fondo de 90,00 € (10,00 € por agente): vale 69,51 € (-20,49 €).
+- Capital total 69,51 € (-20,49 €, -22,77 %).
+- Mejor agente: Rebote (-0,57 €). Peor: Momentum (-3,05 €).
+- 1 de 9 agentes van por encima de «Comprar y mantener» (9,11 €).
 - 7 con monedas, 0 en efectivo, 2 apagados.
 - Operaciones en las últimas 24 h: 40.
 
