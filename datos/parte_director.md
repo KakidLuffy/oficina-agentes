@@ -1,15 +1,15 @@
 # Parte del director
 
-Actualizado: 2026-11-07T20:54:32Z
+Actualizado: 2026-11-08T00:00:55Z
 
 **Hay avisos de riesgo.**
 
 - Fondo de 90,00 € (10,00 € por agente): vale 69,53 € (-20,47 €).
-- Capital total 69,53 € (-20,47 €, -22,75 %).
-- Mejor agente: Rebote (-0,58 €). Peor: Momentum (-3,05 €).
-- 1 de 9 agentes van por encima de «Comprar y mantener» (9,10 €).
+- Capital total 69,53 € (-20,47 €, -22,74 %).
+- Mejor agente: Rebote (-0,56 €). Peor: Momentum (-3,05 €).
+- 1 de 9 agentes van por encima de «Comprar y mantener» (9,12 €).
 - 7 con monedas, 0 en efectivo, 2 apagados.
-- Operaciones en las últimas 24 h: 45.
+- Operaciones en las últimas 24 h: 40.
 
 Avisos:
 - Cruce 10/30 está cerca del límite de 7 € (7,68 €).
@@ -24,14 +24,14 @@ Avisos:
 Revisión de datos: sin errores.
 
 Progreso hacia la evaluación (21 días y 30 cierres):
-- Cruce 10/30: 17.4 días, 49 cierres
-- Cruce 5/20: 17.4 días, 68 cierres
-- Momentum: 17.4 días, 74 cierres
-- Rebote: 17.4 días, 27 cierres
-- Cruce 10/30 + filtro: 17.4 días, 36 cierres
-- Consenso 2 de 3: 17.4 días, 94 cierres
-- Cruce 3/8 rapido: 17.4 días, 64 cierres
-- Momentum rapido: 17.4 días, 159 cierres
-- Rebote rapido: 17.4 días, 89 cierres
+- Cruce 10/30: 17.5 días, 49 cierres
+- Cruce 5/20: 17.5 días, 69 cierres
+- Momentum: 17.5 días, 74 cierres
+- Rebote: 17.5 días, 27 cierres
+- Cruce 10/30 + filtro: 17.5 días, 36 cierres
+- Consenso 2 de 3: 17.5 días, 94 cierres
+- Cruce 3/8 rapido: 17.5 días, 64 cierres
+- Momentum rapido: 17.5 días, 159 cierres
+- Rebote rapido: 17.5 días, 89 cierres
 
 Laboratorio: NINGUNA (ver propuestas.md).
