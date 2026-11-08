@@ -1,21 +1,21 @@
 # Parte del director
 
-Actualizado: 2026-11-08T19:12:39Z
+Actualizado: 2026-11-08T19:44:15Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 68,99 € (-21,01 €).
-- Capital total 68,99 € (-21,01 €, -23,34 %).
+- Fondo de 90,00 € (10,00 € por agente): vale 69,01 € (-20,99 €).
+- Capital total 69,01 € (-20,99 €, -23,32 %).
 - Mejor agente: Rebote (-0,59 €). Peor: Consenso 2 de 3 (-3,06 €).
-- 1 de 9 agentes van por encima de «Comprar y mantener» (9,12 €).
+- 1 de 9 agentes van por encima de «Comprar y mantener» (9,13 €).
 - 6 con monedas, 0 en efectivo, 3 apagados.
 - Operaciones en las últimas 24 h: 24.
 
 Avisos:
-- Cruce 10/30 está cerca del límite de 7 € (7,64 €).
+- Cruce 10/30 está cerca del límite de 7 € (7,65 €).
 - Cruce 5/20 está cerca del límite de 7 € (7,74 €).
 - Momentum está apagado por riesgo.
-- Cruce 10/30 + filtro está cerca del límite de 7 € (7,50 €).
+- Cruce 10/30 + filtro está cerca del límite de 7 € (7,51 €).
 - Consenso 2 de 3 está apagado por riesgo.
 - Cruce 3/8 rapido acumula una caída máxima del 13,5 %.
 - Momentum rapido está apagado por riesgo.
