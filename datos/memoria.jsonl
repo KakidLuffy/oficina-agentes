@@ -12,3 +12,4 @@
 {"fecha": "2026-11-02T13:39:56Z", "tipo": "laboratorio", "agente": "", "texto": "Laboratorio del 2026-11-02: veredicto NINGUNA; candidatas: ninguna."}
 {"fecha": "2026-11-06T10:56:06Z", "tipo": "decision", "agente": "Momentum", "texto": "Momentum se apaga por riesgo (capital bajo 7 €)."}
 {"fecha": "2026-11-07T10:14:09Z", "tipo": "decision", "agente": "Momentum rapido", "texto": "Momentum rapido se apaga por riesgo (capital bajo 7 €)."}
+{"fecha": "2026-11-08T19:12:39Z", "tipo": "decision", "agente": "Consenso 2 de 3", "texto": "Consenso 2 de 3 se apaga por riesgo (capital bajo 7 €)."}
