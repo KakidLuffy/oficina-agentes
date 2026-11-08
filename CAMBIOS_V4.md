@@ -4,15 +4,15 @@ Preparada el 5-nov-2026 con los datos de la v3 (en marcha desde el 21-oct). **No
 11-nov-2026 a las 12:38 (hora de Madrid)**, cuando la v3 cumple los 21 días de evaluación. Al fusionarla, `VERSION = 4`
 hace que la siguiente ejecución archive la v3 en `datos/archivo_10eur_v3_<fecha>/` y empiece de cero.
 
-| Cambio | Por qué (datos de la v3, a 5-nov) | Riesgo |
+| Cambio | Por qué (datos de la v3, actualizados a 8-nov) | Riesgo |
 |---|---|---|
-| Excluir EURC y otras monedas estables | 51 operaciones con EURC (vale siempre 1 €) y 0,46 € en costes, sin poder ganar nada | Ninguno |
-| Retirar «Momentum rapido» y «Consenso 2 de 3» | Los que más operan: 288 y 165 operaciones; −29 % y −26 % | Con 15 días de datos puede ser mala racha, no mala regla |
-| `min_horas = 6` en todos: no vender por señal antes de 6 h (stop y objetivo sí actúan) | Las 245 operaciones cerradas en menos de 6 h perdieron 7,16 € con ~20 % de aciertos; costes totales 10,57 € | Puede alargar operaciones perdedoras en los agentes sin stop |
+| Excluir EURC y otras monedas estables | 66 operaciones con EURC (vale siempre 1 €) y 0,58 € en costes, sin poder ganar nada | Ninguno |
+| Retirar «Momentum rapido» y «Consenso 2 de 3» | Los que más operan: 318 y 192 operaciones; −30 % y −29 % | Con 18 días de datos puede ser mala racha, no mala regla; «Momentum» (148 operaciones) pierde lo mismo (−31 %) y sigue |
+| `min_horas = 6` en todos: no vender por señal antes de 6 h (stop y objetivo sí actúan) | Las 277 operaciones cerradas en menos de 6 h perdieron 8,13 € con ~19 % de aciertos; costes totales 11,65 €. Ojo: las de 6 h o más pierden más por operación (−0,040 € frente a −0,029 €); la razón es pagar menos costes, no que las cortas sean peores | Puede alargar operaciones perdedoras en los agentes sin stop |
 | `espera_h = 6` en todos: no recomprar una moneda vendida hace menos de 6 h | Misma razón: menos compraventas | Puede perder alguna entrada buena |
 | Nuevo agente «Rebalanceo semanal» (pedido por el usuario el 5-nov): cesta fija BTC, ETH, SOL, XRP y ADA a partes iguales; cada 7 días vende lo que no es de la cesta y rehace solo las posiciones desviadas más de un 35 % | Opera muy poco (5 operaciones en 15 días de prueba con precios inventados) y no persigue monedas de moda: en la v3, PUMP, ENA, ZEC y PEPE fueron las que más perdieron | Casi no cerrará operaciones: el criterio de 30 cierres no le sirve; hay que juzgarlo por días y frente a «Comprar y mantener» |
 | Referencia nueva «Comprar y mantener (cesta)»: al empezar, 10 € a partes iguales entre las monedas que operan los agentes, sin tocarlas | En la v3 solo se comparaba con BTC, pero los agentes operan sobre todo monedas pequeñas, que cayeron más: la comparación no era justa | Si una moneda deja de cotizar, se queda con su último precio |
-| Costes pagados por agente en `resumen.md` y en el parte del director (la web ya los muestra desde el 5-nov) | Los costes (10,57 € a 5-nov) explicaban casi toda la diferencia con «Comprar y mantener»: hay que verlos en cada informe | Ninguno |
+| Costes pagados por agente en `resumen.md` y en el parte del director (la web ya los muestra desde el 5-nov) | Los costes (11,65 € a 8-nov) explican casi toda la diferencia con «Comprar y mantener»: hay que verlos en cada informe | Ninguno |
 | Los agentes de señales solo compran monedas de su universo (top 20 por volumen); la cesta se descarga aparte | Que el rebalanceo no cambie lo que operan los demás | Ninguno |
 | El workflow solo se ejecuta con push a `main` | Antes, un push a cualquier rama con cambios en `agentes_nube.py` lanzaba la simulación | Ninguno |
 
