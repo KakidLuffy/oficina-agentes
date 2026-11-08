@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-08T13:34:22+00:00 UTC · Precio BTC/EUR: 68147 (Kraken)
+Ultima actualizacion: 2026-11-08T13:55:22+00:00 UTC · Precio BTC/EUR: 68063 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (18.1 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 7.73 | -2.27 | -22.70 % | -1.41 | 102 | 2026-10-21 | Con AAVE, ARB, EURC, NEAR |
-| Cruce 5/20 | 7.84 | -2.16 | -21.60 % | -1.30 | 142 | 2026-10-21 | Con AAVE, NEAR, TIA, UNI |
-| Momentum | 6.95 | -3.05 | -30.53 % | -2.19 | 148 | 2026-10-21 | Apagado por riesgo |
-| Rebote | 9.42 | -0.58 | -5.83 % | +0.28 | 59 | 2026-10-21 | Con BCH, COMP, TRUMP, W, WLD |
-| Cruce 10/30 + filtro | 7.49 | -2.51 | -25.05 % | -1.65 | 76 | 2026-10-21 | Con ARB, EURC, PEPE, VVV |
-| Consenso 2 de 3 | 7.06 | -2.94 | -29.42 % | -2.08 | 192 | 2026-10-21 | Con DOT, NEAR, TRX, UNI |
-| Cruce 3/8 rapido | 8.68 | -1.32 | -13.18 % | -0.46 | 131 | 2026-10-21 | Con AAVE |
-| Momentum rapido | 6.95 | -3.05 | -30.47 % | -2.19 | 318 | 2026-10-21 | Apagado por riesgo |
-| Rebote rapido | 7.17 | -2.83 | -28.29 % | -1.97 | 187 | 2026-10-21 | Con LSK, WLD, XMR |
-| Comprar y mantener (solo BTC) | 9.14 | -0.86 | -8.60 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Cruce 10/30 | 7.71 | -2.29 | -22.87 % | -1.42 | 102 | 2026-10-21 | Con AAVE, ARB, EURC, NEAR |
+| Cruce 5/20 | 7.83 | -2.17 | -21.75 % | -1.30 | 142 | 2026-10-21 | Con AAVE, NEAR, TIA, UNI |
+| Momentum | 6.95 | -3.05 | -30.53 % | -2.18 | 148 | 2026-10-21 | Apagado por riesgo |
+| Rebote | 9.40 | -0.60 | -6.01 % | +0.27 | 59 | 2026-10-21 | Con BCH, COMP, TRUMP, W, WLD |
+| Cruce 10/30 + filtro | 7.48 | -2.52 | -25.17 % | -1.65 | 76 | 2026-10-21 | Con ARB, EURC, PEPE, VVV |
+| Consenso 2 de 3 | 7.04 | -2.96 | -29.57 % | -2.09 | 192 | 2026-10-21 | Con DOT, NEAR, TRX, UNI |
+| Cruce 3/8 rapido | 8.68 | -1.32 | -13.18 % | -0.45 | 131 | 2026-10-21 | Con AAVE |
+| Momentum rapido | 6.95 | -3.05 | -30.47 % | -2.18 | 318 | 2026-10-21 | Apagado por riesgo |
+| Rebote rapido | 7.17 | -2.83 | -28.29 % | -1.96 | 187 | 2026-10-21 | Con LSK, WLD, XMR |
+| Comprar y mantener (solo BTC) | 9.13 | -0.87 | -8.71 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
