@@ -131,6 +131,54 @@ class TestRebalanceo(unittest.TestCase):
         self.assertTrue(otras)
 
 
+class TestReferenciaYCostes(unittest.TestCase):
+    def setUp(self):
+        self.antes = os.getcwd()
+        self.dir = tempfile.TemporaryDirectory()
+        os.chdir(self.dir.name)
+        os.makedirs(a.DATOS)
+
+    def tearDown(self):
+        os.chdir(self.antes)
+        self.dir.cleanup()
+
+    def test_cesta_a_partes_iguales_con_costes(self):
+        velas = {a.BTC: [(0, 60000.0)], "XEUR": [(0, 2.0)], "YEUR": [(0, 50.0)], "FUERAEUR": [(0, 1.0)]}
+        ref = a.referencia_cesta(velas, [a.BTC, "XEUR", "YEUR"])
+        self.assertEqual(sorted(ref), sorted([a.BTC, "XEUR", "YEUR"]))                     # solo el universo de senales
+        self.assertAlmostEqual(ref["XEUR"] * 2.0, ref["YEUR"] * 50.0)
+        est = {"referencia_cesta": ref, "precios": {a.BTC: 60000.0, "XEUR": 2.0, "YEUR": 50.0}}
+        self.assertAlmostEqual(a.valor_referencia(est, est["precios"]), a.START * (1 - a.FEE) / (1 + a.SLIP))
+        # si una moneda no tiene precio en esta ronda, vale su ultimo precio conocido
+        self.assertAlmostEqual(a.valor_referencia(est, {a.BTC: 60000.0, "XEUR": 4.0}),
+                               a.START / 3 * (1 - a.FEE) / (1 + a.SLIP) * 4)
+
+    def test_resumen_e_historial_con_cesta_y_costes(self):
+        t0 = 1_700_000_000
+        x = [100.0] * 30 + [98.0] + [101.0] * 10
+        velas = {a.BTC: [(t0 + i * 3600, 60000.0) for i in range(len(x))], "XEUR": [(t0 + i * 3600, p) for i, p in enumerate(x)]}
+        ini = {p: v[:25] for p, v in velas.items()}
+        est = a.estado_nuevo(ini, ini[a.BTC][-1][0] + 3600, [a.BTC, "XEUR"])
+        a.parametros(est)
+        a.asegurar_operaciones()
+        with contextlib.redirect_stdout(io.StringIO()):
+            ahora, precios = a.paso(est, velas, {p: 1e6 for p in velas}, [a.BTC, "XEUR"], velas[a.BTC][-1][0] + 3600)
+            a.guardar(est, ahora, precios, "prueba", 2, 2)
+        with open(a.OPERACIONES, newline="") as f:
+            ops = list(csv.DictReader(f))
+        for ag in est["agentes"]:
+            esperado = sum(float(o["coste_eur"]) for o in ops if o["agente"] == ag["nombre"])
+            self.assertAlmostEqual(ag.get("costes", 0.0), esperado, places=3)
+        self.assertTrue(any(ag.get("costes", 0) > 0 for ag in est["agentes"]))
+        with open(a.HISTORIAL, newline="") as f:
+            filas = list(csv.DictReader(f))
+        self.assertIn(a.REF_CESTA, filas[-1])
+        with open(a.RESUMEN, encoding="utf-8") as f:
+            resumen = f.read()
+        self.assertIn("Costes pagados (EUR)", resumen)
+        self.assertIn("| " + a.REF_CESTA + " |", resumen)
+
+
 class TestDirector(unittest.TestCase):
     def test_aviso_de_limite_solo_cerca_del_limite(self):
         import director

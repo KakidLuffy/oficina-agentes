@@ -11,11 +11,36 @@ hace que la siguiente ejecución archive la v3 en `datos/archivo_10eur_v3_<fecha
 | `min_horas = 6` en todos: no vender por señal antes de 6 h (stop y objetivo sí actúan) | Las 245 operaciones cerradas en menos de 6 h perdieron 7,16 € con ~20 % de aciertos; costes totales 10,57 € | Puede alargar operaciones perdedoras en los agentes sin stop |
 | `espera_h = 6` en todos: no recomprar una moneda vendida hace menos de 6 h | Misma razón: menos compraventas | Puede perder alguna entrada buena |
 | Nuevo agente «Rebalanceo semanal» (pedido por el usuario el 5-nov): cesta fija BTC, ETH, SOL, XRP y ADA a partes iguales; cada 7 días vende lo que no es de la cesta y rehace solo las posiciones desviadas más de un 35 % | Opera muy poco (5 operaciones en 15 días de prueba con precios inventados) y no persigue monedas de moda: en la v3, PUMP, ENA, ZEC y PEPE fueron las que más perdieron | Casi no cerrará operaciones: el criterio de 30 cierres no le sirve; hay que juzgarlo por días y frente a «Comprar y mantener» |
+| Referencia nueva «Comprar y mantener (cesta)»: al empezar, 10 € a partes iguales entre las monedas que operan los agentes, sin tocarlas | En la v3 solo se comparaba con BTC, pero los agentes operan sobre todo monedas pequeñas, que cayeron más: la comparación no era justa | Si una moneda deja de cotizar, se queda con su último precio |
+| Costes pagados por agente en `resumen.md` y en el parte del director (la web ya los muestra desde el 5-nov) | Los costes (10,57 € a 5-nov) explicaban casi toda la diferencia con «Comprar y mantener»: hay que verlos en cada informe | Ninguno |
 | Los agentes de señales solo compran monedas de su universo (top 20 por volumen); la cesta se descarga aparte | Que el rebalanceo no cambie lo que operan los demás | Ninguno |
 | El workflow solo se ejecuta con push a `main` | Antes, un push a cualquier rama con cambios en `agentes_nube.py` lanzaba la simulación | Ninguno |
 
 Lo que **no** cambia: costes simulados (0,40 % + deslizamiento), capital (10 € por agente), límite de 7 €, velas de 1 h,
 criterio de evaluación (21 días y 30 operaciones cerradas, superando a «Comprar y mantener»).
 
-Comprobado con `python -m unittest test_agentes` (9 pruebas; el aviso del director ya se publicó en main el 5-nov) y simulando 600 velas inventadas: los agentes de señales comunes
+Comprobado con `python -m unittest test_agentes` (11 pruebas; el aviso del director ya se publicó en main el 5-nov) y simulando 600 velas inventadas: los agentes de señales comunes
 operan entre un 0 % y un 28 % menos. Con precios inventados no se puede saber si ganarán más; eso solo lo dirá la v4 en vivo.
+
+## No incluido a propósito
+
+- **Margen extra antes de vender**: el mínimo de 6 h ya ataca el mismo problema (vender por movimientos pequeños). Añadir
+  otro parámetro sin datos sería ajustar a ciegas; se decidirá con lo que enseñe la v4.
+- **Universo fijo para todos los agentes**: elegirlo mirando las 2 semanas de la v3 sería sobreajustar. Lo prueba solo el
+  agente de rebalanceo, con la lista de respaldo que ya existía.
+- **Agente con IA (LLM)**: experimento aparte después de la v4, evaluado solo en vivo.
+
+## Pendiente del usuario: que la oficina trabaje cada 30 minutos de verdad
+
+GitHub ejecuta el programa cada 1-5 h en vez de cada 30 min (7 rondas en 24 h el 6-nov), y al vigilante le pasa lo mismo.
+La solución habitual es que un servicio externo gratuito (p. ej. cron-job.org) lance la ronda:
+
+1. GitHub → Settings → Developer settings → Fine-grained tokens → Generate new token. Repositorio: solo
+   `oficina-agentes`. Permiso: **Actions: Read and write** (nada más). Caducidad: 90 días.
+2. cron-job.org → Create cronjob. URL:
+   `https://api.github.com/repos/KakidLuffy/oficina-agentes/actions/workflows/agentes.yml/dispatches`,
+   cada 30 min, método **POST**, cuerpo `{"ref":"main"}`, cabeceras `Authorization: Bearer <token>`,
+   `Accept: application/vnd.github+json` y `X-GitHub-Api-Version: 2022-11-28`.
+3. Comprobar en la pestaña Actions que aparecen rondas `workflow_dispatch` cada 30 min.
+
+El token solo lo debe ver el usuario: no se guarda en el repositorio ni se comparte.

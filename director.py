@@ -116,7 +116,7 @@ def revisar(estado, hist, ops, precios, ag, ref):
                 p.append({"nivel": "error", "texto": f"Los datos llevan {h:.0f} h sin actualizarse. Revisa la pestaña Actions de GitHub."})
             elif h > 3:
                 p.append({"nivel": "aviso", "texto": f"Los datos llevan {h:.1f} h sin actualizarse (GitHub a veces se retrasa).".replace(".", ",")})
-        nombres = [c for c in hist[-1].keys() if c not in ("fecha_utc", "precio_eur", "Comprar y mantener")]
+        nombres = [c for c in hist[-1].keys() if c not in ("fecha_utc", "precio_eur") and not c.startswith("Comprar y mantener")]
         faltan = [a["nombre"] for a in ag if a["nombre"] not in nombres]
         if faltan:
             p.append({"nivel": "aviso", "texto": "Agentes sin columna en el historial: " + ", ".join(faltan) + "."})
@@ -206,6 +206,13 @@ def main():
         if hold is not None:
             sup = [x for x in ag if x["vs_mantener"] is not None and x["vs_mantener"] > 0]
             lineas.append(f"{len(sup)} de {len(ag)} agentes van por encima de «Comprar y mantener» ({euros(hold)}).")
+        cesta = num(ult.get("Comprar y mantener (cesta)"), None) if ult and ult.get("Comprar y mantener (cesta)") not in (None, "") else None
+        if cesta is not None:
+            sup_c = [x for x in ag if x["eq"] > cesta]
+            lineas.append(f"{len(sup_c)} de {len(ag)} agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales ({euros(cesta)}).")
+        costes = sum(num(a["raw"].get("costes")) for a in ag)
+        if costes:
+            lineas.append("Costes pagados entre todos: " + euros(costes) + ".")
         activos = [x for x in ag if x["pos"] and not x["apagado"]]
         lineas.append(f"{len(activos)} con monedas, {len([x for x in ag if not x['pos'] and not x['apagado']])} en efectivo, {len([x for x in ag if x['apagado']])} apagados.")
         hace24 = ref - timedelta(hours=24)

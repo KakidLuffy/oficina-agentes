@@ -54,6 +54,10 @@ REBALANCEO = "Rebalanceo semanal"
 CESTA = RESPALDO[:5]                    # XBT, ETH, SOL, XRP, ADA
 REBALANCEO_DIAS = 7
 DESVIO_MAX = 0.35
+# Referencia "Comprar y mantener (cesta)" (v4): al empezar se reparten START EUR a partes iguales entre las monedas que
+# operan los agentes de senales en ese momento (las de mas volumen) y se mantienen sin tocar. Es una comparacion mas justa
+# que solo BTC: en la v3 los agentes operaban sobre todo monedas pequenas, que cayeron mas que BTC.
+REF_CESTA = "Comprar y mantener (cesta)"
 _VOLUMENES_TODOS = {}                   # volumen 24 h (EUR) de todos los pares EUR, para el deslizamiento de la cesta
 DATOS = "datos"
 ESTADO = os.path.join(DATOS, "estado.json")
@@ -248,7 +252,16 @@ def velas_demo(n, k):
     return salida
 
 
-def obtener_datos(demo):
+def pares_referencia():
+    """Monedas de la referencia en cesta ya guardada (hay que seguir descargandolas aunque salgan del top)."""
+    try:
+        with open(ESTADO) as f:
+            return list(json.load(f).get("referencia_cesta", {}))
+    except (OSError, ValueError):
+        return []
+
+
+def obtener_datos(demo, extra=()):
     """Devuelve (velas {par: [(ts, cierre)]}, volumenes {par: EUR}, orden [pares], fuente, ahora_ts)."""
     if demo:
         nombres = [BTC] + [f"DEMO{k}EUR" for k in range(1, 8)]
@@ -268,7 +281,7 @@ def obtener_datos(demo):
             print(f"{par}: sin datos esta vez ({e})")
         time.sleep(PAUSA_API)
     vol = {p: v for p, v in uni}
-    for par in CESTA:                                   # la cesta del rebalanceo, aunque no este entre las de mas volumen
+    for par in list(dict.fromkeys(list(CESTA) + list(extra))):   # cesta del rebalanceo y de la referencia, aunque no esten en el top
         if par not in velas:
             try:
                 v = velas_kraken(par)
@@ -276,7 +289,7 @@ def obtener_datos(demo):
                     velas[par] = v
                     vol[par] = _VOLUMENES_TODOS.get(par, 0.0)
             except Exception as e:
-                print(f"{par} (cesta): sin datos esta vez ({e})")
+                print(f"{par} (cesta o referencia): sin datos esta vez ({e})")
             time.sleep(PAUSA_API)
     if BTC not in velas:
         print("Kraken no dio BTC; se usa Coinbase para BTC")
@@ -293,7 +306,21 @@ def agente_nuevo(nombre, precio_btc):
             "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"), "precio_inicio": precio_btc}
 
 
-def estado_nuevo(velas, ahora_ts):
+def referencia_cesta(velas, orden):
+    """Unidades de cada moneda compradas al empezar, START EUR a partes iguales, con los mismos costes que los agentes."""
+    pares = [p for p in (orden or list(velas)) if p in velas]
+    if not pares:
+        return {}
+    parte = START / len(pares)
+    return {p: parte * (1 - FEE) / (velas[p][-1][1] * (1 + SLIP)) for p in pares}
+
+
+def valor_referencia(estado, precios):
+    ref = estado.get("referencia_cesta") or {}
+    return sum(u * precios.get(p, estado["precios"].get(p, 0.0)) for p, u in ref.items()) if ref else None
+
+
+def estado_nuevo(velas, ahora_ts, orden=None):
     cerradas = [c for c in velas[BTC] if c[0] + 3600 <= ahora_ts]
     return {
         "version": VERSION,
@@ -306,6 +333,7 @@ def estado_nuevo(velas, ahora_ts):
         "precios": {p: v[-1][1] for p, v in velas.items()},
         "agentes": [agente_nuevo(n, velas[BTC][-1][1]) for n, _ in AGENTES],
         "cesta": cesta_para(velas),
+        "referencia_cesta": referencia_cesta(velas, orden),
     }
 
 
@@ -397,6 +425,7 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo="", importe=None):
         a.setdefault("ultima_venta", {})[par] = fecha
         coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
     a["operaciones"] += 1
+    a["costes"] = a.get("costes", 0.0) + coste
     anotar(OPERACIONES, CAB_OPERACIONES,
            [fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4)])
     print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR ({motivo})")
@@ -547,10 +576,12 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     eqs = [equity(a, precios) for a in estado["agentes"]]
     mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
     eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
-    cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"]
+    cesta_ref = valor_referencia(estado, precios)
+    cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"] + ([REF_CESTA] if cesta_ref is not None else [])
     ajustar_historial(cab_hist)
     anotar(HISTORIAL, cab_hist,
-           [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)])
+           [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)]
+           + ([round(cesta_ref, 2)] if cesta_ref is not None else []))
     with open(ESTADO, "w") as f:
         json.dump(estado, f, indent=2)
     dias = (datetime.fromisoformat(ahora) - datetime.fromisoformat(estado["inicio"])).total_seconds() / 86400
@@ -564,8 +595,8 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
         f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",
-        "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |",
-        "|---|---:|---:|---:|---:|---:|---|---|",
+        "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Costes pagados (EUR) | Desde | Estado |",
+        "|---|---:|---:|---:|---:|---:|---:|---|---|",
     ]
     for a, e in zip(estado["agentes"], eqs):
         if a["apagado"]:
@@ -576,8 +607,14 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
             est = "En efectivo"
         hold_a = START * (1 - FEE) * precio / (a["precio_inicio"] * (1 + SLIP))   # mantener BTC desde que empezo ESTE agente
         lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - hold_a:+.2f} | "
-                      f"{a['operaciones']} | {a['inicio'][:10]} | {est} |")
-    lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | {estado['inicio'][:10]} | Referencia |")
+                      f"{a['operaciones']} | {a.get('costes', 0.0):.2f} | {a['inicio'][:10]} | {est} |")
+    lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | "
+                  f"{START - START * (1 - FEE) / (1 + SLIP):.2f} | {estado['inicio'][:10]} | Referencia |")
+    if cesta_ref is not None:
+        n_ref = len(estado["referencia_cesta"])
+        lineas.append(f"| {REF_CESTA} | {cesta_ref:.2f} | {cesta_ref - START:+.2f} | {(cesta_ref / START - 1) * 100:+.2f} % | "
+                      f"{cesta_ref - mantener:+.2f} | {n_ref} | {START - START * (1 - FEE) / (1 + SLIP):.2f} | {estado['inicio'][:10]} | "
+                      f"Referencia: {n_ref} monedas del inicio a partes iguales |")
     nombres = [n for n, _ in AGENTES]
     try:
         met = informe.metricas(HISTORIAL, OPERACIONES, nombres + ["Comprar y mantener"])
@@ -623,7 +660,7 @@ def archivar(etiqueta):
 
 def main():
     demo = int(sys.argv[sys.argv.index("--demo") + 1]) if "--demo" in sys.argv else 0
-    velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
+    velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo, pares_referencia())
     os.makedirs(DATOS, exist_ok=True)
     if os.path.exists(ESTADO):
         with open(ESTADO) as f:
@@ -631,12 +668,12 @@ def main():
         cap_ant, ver_ant = estado.get("capital_inicial", 50.0), estado.get("version", 1)
         if cap_ant != START or ver_ant != VERSION:
             archivar(f"{cap_ant:g}eur" if cap_ant != START else f"{cap_ant:g}eur_v{ver_ant}")
-            estado = estado_nuevo(velas, ahora_ts)
+            estado = estado_nuevo(velas, ahora_ts, orden)
             print("Cambio de capital o de reglas: simulacion anterior archivada; los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
         else:
             migrar(estado, velas)
     else:
-        estado = estado_nuevo(velas, ahora_ts)
+        estado = estado_nuevo(velas, ahora_ts, orden)
         print("Primera ejecucion: los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
     parametros(estado)
     asegurar_operaciones()                    # antes de operar, para que el archivo tenga la cabecera nueva
