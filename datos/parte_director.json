@@ -1,20 +1,20 @@
 {
- "generado": "2026-11-08T13:34:33Z",
+ "generado": "2026-11-08T13:55:34Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 69,29 € (-20,71 €).",
-  "Capital total 69,29 € (-20,71 €, -23,01 %).",
-  "Mejor agente: Rebote (-0,58 €). Peor: Momentum (-3,05 €).",
-  "1 de 9 agentes van por encima de «Comprar y mantener» (9,14 €).",
+  "Fondo de 90,00 € (10,00 € por agente): vale 69,22 € (-20,78 €).",
+  "Capital total 69,22 € (-20,78 €, -23,09 %).",
+  "Mejor agente: Rebote (-0,60 €). Peor: Momentum (-3,05 €).",
+  "1 de 9 agentes van por encima de «Comprar y mantener» (9,13 €).",
   "7 con monedas, 0 en efectivo, 2 apagados.",
   "Operaciones en las últimas 24 h: 19."
  ],
  "alertas": [
-  "Cruce 10/30 está cerca del límite de 7 € (7,73 €).",
+  "Cruce 10/30 está cerca del límite de 7 € (7,71 €).",
   "Cruce 5/20 acumula una caída máxima del 22,5 %.",
   "Momentum está apagado por riesgo.",
-  "Cruce 10/30 + filtro está cerca del límite de 7 € (7,49 €).",
-  "Consenso 2 de 3 está cerca del límite de 7 € (7,06 €).",
+  "Cruce 10/30 + filtro está cerca del límite de 7 € (7,48 €).",
+  "Consenso 2 de 3 está cerca del límite de 7 € (7,04 €).",
   "Cruce 3/8 rapido acumula una caída máxima del 13,5 %.",
   "Momentum rapido está apagado por riesgo.",
   "Rebote rapido está cerca del límite de 7 € (7,17 €)."
