@@ -1349,3 +1349,8 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-08T03:00+00:00,Rebote rapido,BCHEUR,VENTA,223.118385,1.47,senal vendedora,0.0066
 2026-11-08T03:00+00:00,Rebote rapido,ENAEUR,COMPRA,0.138369,1.47,senal compradora,0.0066
 2026-11-08T04:00+00:00,Cruce 3/8 rapido,NEAREUR,VENTA,3.285057,1.94,stop de perdida (-2.0 %),0.0088
+2026-11-08T08:00+00:00,Cruce 10/30,NEAREUR,COMPRA,3.320359,2.0,senal compradora,0.009
+2026-11-08T10:00+00:00,Cruce 10/30,EURCEUR,COMPRA,1.0008,1.9,senal compradora,0.0086
+2026-11-08T10:00+00:00,Cruce 10/30 + filtro,EURCEUR,COMPRA,1.0008,2.0,senal compradora,0.009
+2026-11-08T11:00+00:00,Cruce 10/30 + filtro,PEPEEUR,COMPRA,4e-06,1.92,senal compradora,0.0086
+2026-11-08T11:00+00:00,Rebote rapido,ENAEUR,VENTA,0.138931,1.47,senal vendedora,0.0066
