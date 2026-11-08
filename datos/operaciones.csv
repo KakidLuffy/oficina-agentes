@@ -1364,3 +1364,8 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-08T18:00+00:00,Cruce 10/30,PUMPEUR,COMPRA,0.003361,1.93,senal compradora,0.0087
 2026-11-08T18:00+00:00,Cruce 5/20,XDGEUR,COMPRA,0.064076,1.78,senal compradora,0.008
 2026-11-08T18:00+00:00,Rebote,BCHEUR,VENTA,220.98945,1.7,senal vendedora,0.0077
+2026-11-08T20:00+00:00,Cruce 5/20,XDGEUR,VENTA,0.063795,1.76,senal vendedora,0.008
+2026-11-08T20:00+00:00,Rebote,ZECEUR,COMPRA,1114.766104,1.7,senal compradora,0.0076
+2026-11-08T21:00+00:00,Rebote rapido,ZECEUR,VENTA,1084.888285,1.41,stop de perdida (-3.3 %),0.0063
+2026-11-08T21:00+00:00,Rebote rapido,XBTEUR,COMPRA,66515.6412,1.41,senal compradora,0.0063
+2026-11-08T22:00+00:00,Cruce 10/30,PUMPEUR,VENTA,0.003174,1.81,senal vendedora,0.0082
