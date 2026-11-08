@@ -1342,3 +1342,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-07T19:00+00:00,Consenso 2 de 3,LINKEUR,VENTA,9.713891,1.78,senal vendedora,0.0081
 2026-11-07T21:00+00:00,Cruce 5/20,LINKEUR,VENTA,9.668733,1.84,senal vendedora,0.0083
 2026-11-07T23:00+00:00,Cruce 3/8 rapido,NEAREUR,COMPRA,3.352575,2.0,senal compradora,0.009
+2026-11-08T00:00+00:00,Rebote rapido,ARBEUR,VENTA,0.150425,1.48,senal vendedora,0.0067
+2026-11-08T00:00+00:00,Rebote rapido,BCHEUR,COMPRA,223.081485,1.48,senal compradora,0.0067
+2026-11-08T01:00+00:00,Cruce 5/20,NEAREUR,COMPRA,3.315357,1.84,senal compradora,0.0083
+2026-11-08T02:00+00:00,Consenso 2 de 3,NEAREUR,COMPRA,3.330064,1.78,senal compradora,0.008
+2026-11-08T03:00+00:00,Rebote rapido,BCHEUR,VENTA,223.118385,1.47,senal vendedora,0.0066
+2026-11-08T03:00+00:00,Rebote rapido,ENAEUR,COMPRA,0.138369,1.47,senal compradora,0.0066
+2026-11-08T04:00+00:00,Cruce 3/8 rapido,NEAREUR,VENTA,3.285057,1.94,stop de perdida (-2.0 %),0.0088
