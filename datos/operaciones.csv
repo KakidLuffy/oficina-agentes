@@ -1354,3 +1354,13 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-08T10:00+00:00,Cruce 10/30 + filtro,EURCEUR,COMPRA,1.0008,2.0,senal compradora,0.009
 2026-11-08T11:00+00:00,Cruce 10/30 + filtro,PEPEEUR,COMPRA,4e-06,1.92,senal compradora,0.0086
 2026-11-08T11:00+00:00,Rebote rapido,ENAEUR,VENTA,0.138931,1.47,senal vendedora,0.0066
+2026-11-08T16:00+00:00,Cruce 5/20,NEAREUR,VENTA,3.233383,1.78,senal vendedora,0.0081
+2026-11-08T16:00+00:00,Consenso 2 de 3,NEAREUR,VENTA,3.233383,1.72,senal vendedora,0.0078
+2026-11-08T16:00+00:00,Consenso 2 de 3,DOTEUR,VENTA,0.808667,1.76,apagado por riesgo,0.0124
+2026-11-08T16:00+00:00,Consenso 2 de 3,UNIEUR,VENTA,6.253782,1.47,apagado por riesgo,0.0104
+2026-11-08T16:00+00:00,Consenso 2 de 3,TRXEUR,VENTA,0.28707,1.99,apagado por riesgo,0.009
+2026-11-08T16:00+00:00,Rebote rapido,ZECEUR,COMPRA,1122.827133,1.47,senal compradora,0.0066
+2026-11-08T17:00+00:00,Cruce 10/30,NEAREUR,VENTA,3.231683,1.93,senal vendedora,0.0087
+2026-11-08T18:00+00:00,Cruce 10/30,PUMPEUR,COMPRA,0.003361,1.93,senal compradora,0.0087
+2026-11-08T18:00+00:00,Cruce 5/20,XDGEUR,COMPRA,0.064076,1.78,senal compradora,0.008
+2026-11-08T18:00+00:00,Rebote,BCHEUR,VENTA,220.98945,1.7,senal vendedora,0.0077
