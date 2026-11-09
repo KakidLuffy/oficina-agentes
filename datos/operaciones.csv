@@ -1383,3 +1383,8 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-09T09:00+00:00,Cruce 5/20,PEPEEUR,COMPRA,5e-06,1.68,senal compradora,0.0076
 2026-11-09T09:00+00:00,Cruce 3/8 rapido,PEPEEUR,COMPRA,5e-06,2.0,senal compradora,0.009
 2026-11-09T11:00+00:00,Cruce 3/8 rapido,PEPEEUR,VENTA,4e-06,1.94,stop de perdida (-2.0 %),0.0088
+2026-11-09T12:00+00:00,Rebote rapido,XRPEUR,VENTA,0.986317,1.41,senal vendedora,0.0064
+2026-11-09T14:00+00:00,Cruce 10/30,AVAXEUR,COMPRA,7.921959,1.7,senal compradora,0.0076
+2026-11-09T15:00+00:00,Rebote,ZECEUR,VENTA,1092.566444,1.65,senal vendedora,0.0075
+2026-11-09T16:00+00:00,Rebote,ZECEUR,COMPRA,1066.25386,1.65,senal compradora,0.0074
+2026-11-09T16:00+00:00,Rebote rapido,ZECEUR,COMPRA,1066.25386,1.41,senal compradora,0.0063
