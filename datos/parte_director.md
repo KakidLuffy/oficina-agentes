@@ -1,6 +1,6 @@
 # Parte del director
 
-Actualizado: 2026-11-09T12:12:00Z
+Actualizado: 2026-11-09T14:03:18Z
 
 **Hay avisos de riesgo.**
 
@@ -24,14 +24,14 @@ Avisos:
 Revisión de datos: sin errores.
 
 Progreso hacia la evaluación (21 días y 30 cierres):
-- Cruce 10/30: 19.0 días, 52 cierres
-- Cruce 5/20: 19.0 días, 72 cierres
-- Momentum: 19.0 días, 74 cierres
-- Rebote: 19.0 días, 28 cierres
-- Cruce 10/30 + filtro: 19.0 días, 37 cierres
-- Consenso 2 de 3: 19.0 días, 98 cierres
-- Cruce 3/8 rapido: 19.0 días, 68 cierres
-- Momentum rapido: 19.0 días, 159 cierres
-- Rebote rapido: 19.0 días, 94 cierres
+- Cruce 10/30: 19.1 días, 52 cierres
+- Cruce 5/20: 19.1 días, 72 cierres
+- Momentum: 19.1 días, 74 cierres
+- Rebote: 19.1 días, 28 cierres
+- Cruce 10/30 + filtro: 19.1 días, 37 cierres
+- Consenso 2 de 3: 19.1 días, 98 cierres
+- Cruce 3/8 rapido: 19.1 días, 68 cierres
+- Momentum rapido: 19.1 días, 159 cierres
+- Rebote rapido: 19.1 días, 94 cierres
 
 Laboratorio: NINGUNA (ver propuestas.md).
