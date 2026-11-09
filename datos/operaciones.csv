@@ -1388,3 +1388,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-09T15:00+00:00,Rebote,ZECEUR,VENTA,1092.566444,1.65,senal vendedora,0.0075
 2026-11-09T16:00+00:00,Rebote,ZECEUR,COMPRA,1066.25386,1.65,senal compradora,0.0074
 2026-11-09T16:00+00:00,Rebote rapido,ZECEUR,COMPRA,1066.25386,1.41,senal compradora,0.0063
+2026-11-09T17:00+00:00,Rebote rapido,ZECEUR,VENTA,1042.105687,1.37,stop de perdida (-2.2 %),0.0062
+2026-11-09T17:00+00:00,Rebote rapido,ARBEUR,COMPRA,0.158879,1.37,senal compradora,0.0062
+2026-11-09T19:00+00:00,Cruce 10/30,EURCEUR,VENTA,0.9993,1.98,senal vendedora,0.009
+2026-11-09T19:00+00:00,Cruce 10/30,UNIEUR,COMPRA,6.299748,1.98,senal compradora,0.0089
+2026-11-09T19:00+00:00,Cruce 10/30 + filtro,EURCEUR,VENTA,0.9993,1.96,senal vendedora,0.0089
+2026-11-09T21:00+00:00,Rebote rapido,ARBEUR,VENTA,0.155822,1.33,stop de perdida (-1.9 %),0.006
+2026-11-09T21:00+00:00,Rebote rapido,PEPEEUR,COMPRA,5e-06,1.33,senal compradora,0.006
