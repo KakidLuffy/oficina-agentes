@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-09T17:25:41+00:00 UTC · Precio BTC/EUR: 66690 (Kraken)
+Ultima actualizacion: 2026-11-09T17:32:03+00:00 UTC · Precio BTC/EUR: 66698 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (19.2 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 7.58 | -2.42 | -24.22 % | -1.37 | 108 | 2026-10-21 | Con AAVE, ARB, AVAX, EURC |
-| Cruce 5/20 | 7.65 | -2.35 | -23.47 % | -1.29 | 148 | 2026-10-21 | Con AAVE, PEPE, TIA, UNI |
+| Cruce 10/30 | 7.57 | -2.43 | -24.27 % | -1.37 | 108 | 2026-10-21 | Con AAVE, ARB, AVAX, EURC |
+| Cruce 5/20 | 7.66 | -2.34 | -23.45 % | -1.29 | 148 | 2026-10-21 | Con AAVE, PEPE, TIA, UNI |
 | Momentum | 6.95 | -3.05 | -30.53 % | -2.00 | 148 | 2026-10-21 | Apagado por riesgo |
-| Rebote | 9.33 | -0.67 | -6.73 % | +0.38 | 63 | 2026-10-21 | Con COMP, TRUMP, W, WLD, ZEC |
-| Cruce 10/30 + filtro | 7.61 | -2.39 | -23.86 % | -1.33 | 78 | 2026-10-21 | Con ARB, EURC, PEPE, VVV |
+| Rebote | 9.32 | -0.68 | -6.75 % | +0.38 | 63 | 2026-10-21 | Con COMP, TRUMP, W, WLD, ZEC |
+| Cruce 10/30 + filtro | 7.62 | -2.38 | -23.77 % | -1.32 | 78 | 2026-10-21 | Con ARB, EURC, PEPE, VVV |
 | Consenso 2 de 3 | 6.94 | -3.06 | -30.57 % | -2.00 | 196 | 2026-10-21 | Apagado por riesgo |
-| Cruce 3/8 rapido | 8.48 | -1.52 | -15.20 % | -0.46 | 136 | 2026-10-21 | En efectivo |
+| Cruce 3/8 rapido | 8.48 | -1.52 | -15.20 % | -0.47 | 136 | 2026-10-21 | En efectivo |
 | Momentum rapido | 6.95 | -3.05 | -30.47 % | -1.99 | 318 | 2026-10-21 | Apagado por riesgo |
-| Rebote rapido | 7.08 | -2.92 | -29.16 % | -1.86 | 194 | 2026-10-21 | Con LSK, WLD, XMR, ZEC |
-| Comprar y mantener (solo BTC) | 8.94 | -1.06 | -10.55 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Rebote rapido | 7.08 | -2.92 | -29.18 % | -1.86 | 194 | 2026-10-21 | Con LSK, WLD, XMR, ZEC |
+| Comprar y mantener (solo BTC) | 8.95 | -1.05 | -10.54 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
