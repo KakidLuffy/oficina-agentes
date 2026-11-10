@@ -1401,3 +1401,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-10T03:00+00:00,Cruce 10/30,ARBEUR,VENTA,0.152524,2.04,senal vendedora,0.0092
 2026-11-10T03:00+00:00,Cruce 10/30 + filtro,ARBEUR,VENTA,0.152524,1.89,senal vendedora,0.0086
 2026-11-10T03:00+00:00,Rebote rapido,ZECEUR,COMPRA,1026.086787,1.32,senal compradora,0.0059
+2026-11-10T04:00+00:00,Cruce 5/20,XBTEUR,VENTA,66514.9259,1.64,senal vendedora,0.0074
+2026-11-10T04:00+00:00,Cruce 5/20,PEPEEUR,COMPRA,5e-06,1.64,senal compradora,0.0074
+2026-11-10T06:00+00:00,Cruce 10/30,XDCEUR,COMPRA,0.027944,2.0,senal compradora,0.009
+2026-11-10T06:00+00:00,Cruce 10/30 + filtro,XDCEUR,COMPRA,0.027944,2.0,senal compradora,0.009
+2026-11-10T06:00+00:00,Cruce 3/8 rapido,NEAREUR,COMPRA,3.243221,2.0,senal compradora,0.009
+2026-11-10T06:00+00:00,Cruce 3/8 rapido,ENAEUR,COMPRA,0.137769,2.0,senal compradora,0.009
+2026-11-10T08:00+00:00,Cruce 10/30 + filtro,EURCEUR,COMPRA,1.0007,1.86,senal compradora,0.0084
