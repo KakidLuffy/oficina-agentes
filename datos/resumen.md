@@ -1,22 +1,22 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-10T17:43:15+00:00 UTC · Precio BTC/EUR: 65353 (Kraken)
+Ultima actualizacion: 2026-11-10T17:52:30+00:00 UTC · Precio BTC/EUR: 65513 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (20.3 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 7.05 | -2.95 | -29.45 % | -1.71 | 115 | 2026-10-21 | Con AAVE, EURC, XDC |
-| Cruce 5/20 | 7.35 | -2.65 | -26.46 % | -1.41 | 152 | 2026-10-21 | Con AAVE, PEPE, TIA, UNI |
-| Momentum | 6.95 | -3.05 | -30.53 % | -1.82 | 148 | 2026-10-21 | Apagado por riesgo |
-| Rebote | 9.27 | -0.73 | -7.28 % | +0.51 | 65 | 2026-10-21 | Con COMP, ETH, TRUMP, W, WLD |
-| Cruce 10/30 + filtro | 7.43 | -2.57 | -25.75 % | -1.34 | 84 | 2026-10-21 | Con EURC, PEPE, VVV, XDC |
-| Consenso 2 de 3 | 6.94 | -3.06 | -30.57 % | -1.82 | 196 | 2026-10-21 | Apagado por riesgo |
-| Cruce 3/8 rapido | 8.39 | -1.61 | -16.09 % | -0.37 | 140 | 2026-10-21 | En efectivo |
-| Momentum rapido | 6.95 | -3.05 | -30.47 % | -1.81 | 318 | 2026-10-21 | Apagado por riesgo |
-| Rebote rapido | 7.01 | -2.99 | -29.89 % | -1.75 | 204 | 2026-10-21 | Con ETH, LSK, WLD, XMR |
-| Comprar y mantener (solo BTC) | 8.77 | -1.23 | -12.34 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Cruce 10/30 | 7.06 | -2.94 | -29.41 % | -1.73 | 115 | 2026-10-21 | Con AAVE, EURC, XDC |
+| Cruce 5/20 | 7.37 | -2.63 | -26.30 % | -1.42 | 152 | 2026-10-21 | Con AAVE, PEPE, TIA, UNI |
+| Momentum | 6.95 | -3.05 | -30.53 % | -1.84 | 148 | 2026-10-21 | Apagado por riesgo |
+| Rebote | 9.28 | -0.72 | -7.23 % | +0.49 | 65 | 2026-10-21 | Con COMP, ETH, TRUMP, W, WLD |
+| Cruce 10/30 + filtro | 7.44 | -2.56 | -25.62 % | -1.35 | 84 | 2026-10-21 | Con EURC, PEPE, VVV, XDC |
+| Consenso 2 de 3 | 6.94 | -3.06 | -30.57 % | -1.84 | 196 | 2026-10-21 | Apagado por riesgo |
+| Cruce 3/8 rapido | 8.39 | -1.61 | -16.09 % | -0.40 | 140 | 2026-10-21 | En efectivo |
+| Momentum rapido | 6.95 | -3.05 | -30.47 % | -1.83 | 318 | 2026-10-21 | Apagado por riesgo |
+| Rebote rapido | 7.02 | -2.98 | -29.84 % | -1.77 | 204 | 2026-10-21 | Con ETH, LSK, WLD, XMR |
+| Comprar y mantener (solo BTC) | 8.79 | -1.21 | -12.13 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
