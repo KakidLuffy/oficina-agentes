@@ -1395,3 +1395,5 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-09T19:00+00:00,Cruce 10/30 + filtro,EURCEUR,VENTA,0.9993,1.96,senal vendedora,0.0089
 2026-11-09T21:00+00:00,Rebote rapido,ARBEUR,VENTA,0.155822,1.33,stop de perdida (-1.9 %),0.006
 2026-11-09T21:00+00:00,Rebote rapido,PEPEEUR,COMPRA,5e-06,1.33,senal compradora,0.006
+2026-11-09T22:00+00:00,Cruce 5/20,PEPEEUR,VENTA,5e-06,1.66,senal vendedora,0.0075
+2026-11-09T22:00+00:00,Cruce 5/20,XBTEUR,COMPRA,67068.81765,1.66,senal compradora,0.0075
