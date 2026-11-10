@@ -1414,3 +1414,10 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-10T11:00+00:00,Rebote rapido,ZECEUR,VENTA,1025.158165,1.31,senal vendedora,0.0059
 2026-11-10T11:00+00:00,Rebote rapido,AVAXEUR,COMPRA,7.406701,1.31,senal compradora,0.0059
 2026-11-10T12:00+00:00,Cruce 10/30 + filtro,EURCEUR,VENTA,0.9993,1.84,senal vendedora,0.0083
+2026-11-10T13:00+00:00,Cruce 10/30,EURCEUR,COMPRA,1.0007,1.61,senal compradora,0.0072
+2026-11-10T13:00+00:00,Rebote,ZECEUR,VENTA,1039.569955,1.6,senal vendedora,0.0072
+2026-11-10T13:00+00:00,Rebote,ETHEUR,COMPRA,1845.752415,1.6,senal compradora,0.0072
+2026-11-10T13:00+00:00,Cruce 10/30 + filtro,EURCEUR,COMPRA,1.0007,1.84,senal compradora,0.0083
+2026-11-10T14:00+00:00,Rebote rapido,AVAXEUR,VENTA,7.491253,1.32,senal vendedora,0.0059
+2026-11-10T15:00+00:00,Rebote rapido,ETHEUR,COMPRA,1813.60635,1.32,senal compradora,0.0059
+2026-11-10T16:00+00:00,Cruce 10/30,UNIEUR,VENTA,6.008894,1.87,senal vendedora,0.0085
