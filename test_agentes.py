@@ -44,6 +44,10 @@ class TestV4(unittest.TestCase):
         self.assertEqual(a.VERSION, 5)
         self.assertEqual(a.SLOT, 5.0)                                  # v5: 2 compras de 5 EUR (100 % invertible)
         self.assertEqual(a.AGENTE_PRINCIPAL, a.H1)
+
+    def test_maximo_9_agentes(self):
+        # CRITERIOS.md: maximo 9 agentes; para anadir uno hay que retirar otro antes (menos comparaciones multiples)
+        self.assertLessEqual(len(a.AGENTES), 9)
         nombres = [n for n, _ in a.AGENTES]
         self.assertNotIn("Momentum rapido", nombres)
         self.assertNotIn("Consenso 2 de 3", nombres)
