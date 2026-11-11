@@ -26,3 +26,8 @@
 {"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 3/8 rapido", "texto": "Cruce 3/8 rapido ya es evaluable (21 días y 70 cierres). Resultado actual -1,61 €."}
 {"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Momentum rapido", "texto": "Momentum rapido ya es evaluable (21 días y 159 cierres). Resultado actual -3,05 €."}
 {"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Rebote rapido", "texto": "Rebote rapido ya es evaluable (21 días y 106 cierres). Resultado actual -3,05 €."}
+{"fecha": "2026-11-11T22:01:52Z", "tipo": "decision", "agente": "Consenso 2 de 3", "texto": "Consenso 2 de 3 vuelve a estar activo."}
+{"fecha": "2026-11-11T22:01:52Z", "tipo": "decision", "agente": "Cruce 10/30", "texto": "Cruce 10/30 vuelve a estar activo."}
+{"fecha": "2026-11-11T22:01:52Z", "tipo": "decision", "agente": "Momentum", "texto": "Momentum vuelve a estar activo."}
+{"fecha": "2026-11-11T22:01:52Z", "tipo": "decision", "agente": "Momentum rapido", "texto": "Momentum rapido vuelve a estar activo."}
+{"fecha": "2026-11-11T22:01:52Z", "tipo": "decision", "agente": "Rebote rapido", "texto": "Rebote rapido vuelve a estar activo."}

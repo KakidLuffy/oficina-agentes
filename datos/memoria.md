@@ -12,6 +12,11 @@ Aquí quedan las reglas y las decisiones. El director y el laboratorio la leen p
 
 ## Registro de decisiones y cambios (lo más reciente primero)
 
+- 2026-11-11 22:01 · **decision** · Rebote rapido vuelve a estar activo.
+- 2026-11-11 22:01 · **decision** · Momentum rapido vuelve a estar activo.
+- 2026-11-11 22:01 · **decision** · Momentum vuelve a estar activo.
+- 2026-11-11 22:01 · **decision** · Cruce 10/30 vuelve a estar activo.
+- 2026-11-11 22:01 · **decision** · Consenso 2 de 3 vuelve a estar activo.
 - 2026-11-11 15:15 · **hito** · Rebote rapido ya es evaluable (21 días y 106 cierres). Resultado actual -3,05 €.
 - 2026-11-11 15:15 · **hito** · Momentum rapido ya es evaluable (21 días y 159 cierres). Resultado actual -3,05 €.
 - 2026-11-11 15:15 · **hito** · Cruce 3/8 rapido ya es evaluable (21 días y 70 cierres). Resultado actual -1,61 €.
