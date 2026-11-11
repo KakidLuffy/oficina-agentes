@@ -13,7 +13,7 @@ Esta oficina es una **simulación con dinero ficticio**. Este documento dice qui
 
 ## Qué puede hacer cada uno por su cuenta
 
-- Los agentes compran y venden dinero ficticio dentro de los límites: 2 € por moneda, hasta 5 monedas a la vez, 0,40 € de pérdida diaria, apagado bajo 7 €.
+- Los agentes compran y venden dinero ficticio dentro de los límites: solo compran BTC y ETH (desde el 11-nov-2026), 2 € por moneda, 0,40 € de pérdida diaria, apagado bajo 7 €.
 - El laboratorio y el director escriben solo en la carpeta `datos/`.
 
 ## Qué necesita tu aprobación

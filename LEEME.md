@@ -1,6 +1,6 @@
 # Oficina de agentes en la nube (gratis, sin tu PC)
 
-Diez agentes de trading con **dinero ficticio** (10 € cada uno, 100 € en total) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
+Diez agentes de trading con **dinero ficticio** (10 € cada uno, 100 € en total) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Desde el 11-nov-2026 solo **compran BTC y ETH** (antes operaban las 20 monedas de mayor volumen contra el euro; las que aún tienen se venden con su regla normal), porque el deslizamiento y el número de operaciones en monedas pequeñas se comían el capital. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
 
 **Es una simulación:** no opera en ningún exchange ni toca dinero real, y nada de esto garantiza beneficios.
 
