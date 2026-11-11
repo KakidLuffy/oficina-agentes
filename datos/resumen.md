@@ -1,6 +1,6 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-11T08:27:02+00:00 UTC · Precio BTC/EUR: 66260 (Kraken)
+Ultima actualizacion: 2026-11-11T08:28:05+00:00 UTC · Precio BTC/EUR: 66220 (Kraken)
 En marcha desde: 2026-10-21T11:37:53+00:00 UTC (20.9 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 5 a la vez, 2.00 EUR en cada una
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
@@ -8,15 +8,16 @@ Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---|---|
 | Cruce 10/30 | 6.97 | -3.03 | -30.35 % | -1.92 | 122 | 2026-10-21 | Apagado por riesgo |
-| Cruce 5/20 | 7.28 | -2.72 | -27.21 % | -1.61 | 155 | 2026-10-21 | Con TIA, UNI, XRP |
-| Momentum | 6.95 | -3.05 | -30.53 % | -1.94 | 148 | 2026-10-21 | Apagado por riesgo |
-| Rebote | 9.22 | -0.78 | -7.80 % | +0.33 | 67 | 2026-10-21 | Con COMP, TRUMP, W, WLD, ZEC |
-| Cruce 10/30 + filtro | 7.42 | -2.58 | -25.85 % | -1.47 | 86 | 2026-10-21 | Con AVAX, EURC, PEPE, VVV |
+| Cruce 5/20 | 7.28 | -2.72 | -27.24 % | -1.61 | 155 | 2026-10-21 | Con TIA, UNI, XRP |
+| Momentum | 6.95 | -3.05 | -30.53 % | -1.93 | 148 | 2026-10-21 | Apagado por riesgo |
+| Rebote | 9.22 | -0.78 | -7.81 % | +0.34 | 67 | 2026-10-21 | Con COMP, TRUMP, W, WLD, ZEC |
+| Cruce 10/30 + filtro | 7.42 | -2.58 | -25.83 % | -1.46 | 86 | 2026-10-21 | Con AVAX, EURC, PEPE, VVV |
 | Consenso 2 de 3 | 6.94 | -3.06 | -30.57 % | -1.94 | 196 | 2026-10-21 | Apagado por riesgo |
-| Cruce 3/8 rapido | 8.39 | -1.61 | -16.09 % | -0.50 | 140 | 2026-10-21 | En efectivo |
+| Cruce 3/8 rapido | 8.39 | -1.61 | -16.09 % | -0.49 | 140 | 2026-10-21 | En efectivo |
 | Momentum rapido | 6.95 | -3.05 | -30.47 % | -1.93 | 318 | 2026-10-21 | Apagado por riesgo |
 | Rebote rapido | 6.95 | -3.05 | -30.47 % | -1.93 | 212 | 2026-10-21 | Apagado por riesgo |
-| Comprar y mantener (solo BTC) | 8.89 | -1.11 | -11.13 % | 0.00 | 1 | 2026-10-21 | Referencia |
+| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +0.05 | 0 | 2026-11-11 | En efectivo |
+| Comprar y mantener (solo BTC) | 8.88 | -1.12 | -11.18 % | 0.00 | 1 | 2026-10-21 | Referencia |
 
 Riesgo (calculado con el historial guardado):
 
@@ -31,11 +32,12 @@ Riesgo (calculado con el historial guardado):
 | Cruce 3/8 rapido | -16.43 % | 15 | 55 |
 | Momentum rapido | -31.93 % | 36 | 123 |
 | Rebote rapido | -30.50 % | 22 | 84 |
+| Tendencia H1 (diaria) | 0.00 % | 0 | 0 |
 | Comprar y mantener | -13.25 % | 0 | 0 |
 
 Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una operacion cuenta cuando se cierra con su venta.
 
-⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (61 cerradas, 21 dias); Cruce 5/20 (76 cerradas, 21 dias); Momentum (74 cerradas, 21 dias); Rebote (31 cerradas, 21 dias); Cruce 10/30 + filtro (41 cerradas, 21 dias); Consenso 2 de 3 (98 cerradas, 21 dias); Cruce 3/8 rapido (70 cerradas, 21 dias); Momentum rapido (159 cerradas, 21 dias); Rebote rapido (106 cerradas, 21 dias). Antes de eso, el resultado puede ser pura suerte.
+⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (61 cerradas, 21 dias); Cruce 5/20 (76 cerradas, 21 dias); Momentum (74 cerradas, 21 dias); Rebote (31 cerradas, 21 dias); Cruce 10/30 + filtro (41 cerradas, 21 dias); Consenso 2 de 3 (98 cerradas, 21 dias); Cruce 3/8 rapido (70 cerradas, 21 dias); Momentum rapido (159 cerradas, 21 dias); Rebote rapido (106 cerradas, 21 dias); Tendencia H1 (diaria) (0 cerradas, 0 dias). Antes de eso, el resultado puede ser pura suerte.
 
 ![Evolucion del capital](grafico.svg)
 
