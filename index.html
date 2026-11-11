@@ -850,10 +850,12 @@ function pintarFicha(){
 function st(l, v){ return '<div class="st"><small>' + l + '</small><b>' + v + '</b></div>'; }
 function pintarEvolucion(){
   var svg = $("evchart"), H = D.hist;
-  var nombres = D.agentes.map(function(a){ return a.nombre; }).concat(["Comprar y mantener"]);
-  var col = {}; D.agentes.forEach(function(a){ col[a.nombre] = a.color; }); col["Comprar y mantener"] = "#8a97a3";
+  var CESTA_REF = "Comprar y mantener (cesta)", hayCesta = H.some(function(r){ return isFinite(parseFloat(r[CESTA_REF])); });
+  var nombres = D.agentes.map(function(a){ return a.nombre; }).concat(["Comprar y mantener"]).concat(hayCesta ? [CESTA_REF] : []);
+  var col = {}; D.agentes.forEach(function(a){ col[a.nombre] = a.color; }); col["Comprar y mantener"] = "#8a97a3"; col[CESTA_REF] = "#f0a43a";
   $("leg").innerHTML = D.agentes.map(function(a){ return '<button data-i="' + a.i + '" aria-pressed="' + (a.i === SEL) + '"><i style="background:' + a.color + '"></i>' + esc(a.nombre) + '</button>'; }).join("") +
-    '<button disabled><i style="background:#8a97a3"></i>Comprar y mantener (BTC, línea de puntos)</button>';
+    '<button disabled><i style="background:#8a97a3"></i>Mantener BTC (puntos)</button>' +
+    (hayCesta ? '<button disabled><i style="background:#f0a43a"></i>Mantener la cesta de monedas del inicio (puntos)</button>' : '');
   Array.prototype.forEach.call(document.querySelectorAll("#leg button[data-i]"), function(b){ b.onclick = function(){ seleccionar(+b.dataset.i); }; });
   var ts = H.map(function(r){ return Date.parse(r.fecha_utc); });
   if (H.length < 2){
@@ -887,7 +889,7 @@ function pintarEvolucion(){
     var pts = [], last = null;
     H.forEach(function(r, j){ var v = parseFloat(r[n]); if (isFinite(v)){ pts.push(X(ts[j]).toFixed(1) + "," + Y(v).toFixed(1)); last = v; } });
     if (pts.length < 2) return;
-    var esSel = (D.agentes[SEL] && D.agentes[SEL].nombre === n), hold = n === "Comprar y mantener";
+    var esSel = (D.agentes[SEL] && D.agentes[SEL].nombre === n), hold = n.indexOf("Comprar y mantener") === 0;
     s += '<polyline points="' + pts.join(" ") + '" fill="none" stroke="' + col[n] + '" stroke-width="' + (esSel ? 3.2 : 1.6) + '" opacity="' + (esSel || hold ? 1 : .55) + '" ' + (hold ? 'stroke-dasharray="3 5"' : "") + ' stroke-linejoin="round" stroke-linecap="round"/>';
     fin.push({n: n, v: last, y: Y(last), sel: esSel});
   });
@@ -895,7 +897,7 @@ function pintarEvolucion(){
   fin.sort(function(a, b){ return a.y - b.y; });
   for (var q = 1; q < fin.length; q++) if (fin[q].y - fin[q - 1].y < 15) fin[q].y = fin[q - 1].y + 15;
   fin.forEach(function(f){
-    s += '<text x="' + (W - R + 8) + '" y="' + (f.y + 4).toFixed(1) + '" fill="' + col[f.n] + '" font-size="12" font-weight="' + (f.sel ? 700 : 500) + '" font-family="Archivo,sans-serif">' + esc(f.n === "Comprar y mantener" ? "Mantener BTC" : f.n.length > 19 ? f.n.slice(0, 18) + "…" : f.n) + ' ' + f.v.toFixed(2).replace(".", ",") + '</text>';
+    s += '<text x="' + (W - R + 8) + '" y="' + (f.y + 4).toFixed(1) + '" fill="' + col[f.n] + '" font-size="12" font-weight="' + (f.sel ? 700 : 500) + '" font-family="Archivo,sans-serif">' + esc(f.n === "Comprar y mantener" ? "Mantener BTC" : f.n === CESTA_REF ? "Mantener cesta" : f.n.length > 19 ? f.n.slice(0, 18) + "…" : f.n) + ' ' + f.v.toFixed(2).replace(".", ",") + '</text>';
   });
   svg.innerHTML = s;
   $("evnote").textContent = "Capital de cada agente hora a hora (desde que se guarda el historial nuevo). Pulsa un nombre para resaltarlo.";

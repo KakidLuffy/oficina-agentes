@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 import informe
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
-VERSION = 3           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
+VERSION = 4           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
 FEE = 0.004           # comision 0,40 % por operacion: tarifa "maker" de Kraken Pro en el nivel mas bajo (con ordenes a mercado seria "taker", 0,80 %)
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
 PERDIDA_DIA = START * 0.04   # si un agente pierde esto (EUR, el 4 % de su capital) en un dia, no vuelve a comprar ese dia
@@ -43,11 +43,25 @@ MIN_DIAS = 21                           # ...y 3 semanas de simulacion antes de 
 PERMITIDAS = ("XBTEUR", "ETHEUR")
 BTC = "XBTEUR"                          # moneda de referencia para 'Comprar y mantener' y la columna precio_eur
 # Stablecoins y monedas fiat: su precio casi no se mueve, asi que no tiene sentido operarlas
+# v4: faltaba EURC (euro estable de Circle): en la v3 (21 dias) los agentes hicieron 80 operaciones con ella pagando 0,70 EUR en costes.
 EXCLUIR_BASES = {"USDT", "USDC", "DAI", "PYUSD", "TUSD", "EURT", "EURR", "EURQ", "USDG", "RLUSD", "USDD", "USDQ",
+                 "EURC", "EUROC", "EURCV", "EURI", "EURE", "EURAU", "USDE", "USDS", "FDUSD", "USD1",
                  "USD", "GBP", "AUD", "CAD", "CHF", "JPY", "EUR"}
 # Lista de emergencia: solo se usa si Kraken no da los volumenes
 RESPALDO = ["XBTEUR", "ETHEUR", "SOLEUR", "XRPEUR", "ADAEUR", "DOGEEUR", "DOTEUR", "LINKEUR", "LTCEUR", "AVAXEUR",
             "TRXEUR", "ATOMEUR", "XLMEUR", "BCHEUR", "UNIEUR", "NEAREUR", "AAVEEUR", "ETCEUR", "ALGOEUR", "FILEUR"]
+# Agente "Rebalanceo semanal" (v4): cesta FIJA de 5 monedas grandes (las 5 primeras de la lista de respaldo, que ya existia
+# antes de ver resultados) a partes iguales. Cada 7 dias vende lo que no es de la cesta y rehace solo las posiciones que se
+# hayan apartado mas de un DESVIO_MAX de su peso: opera muy poco a proposito. No opera ninguna otra moneda.
+REBALANCEO = "Rebalanceo semanal"
+CESTA = RESPALDO[:5]                    # XBT, ETH, SOL, XRP, ADA
+REBALANCEO_DIAS = 7
+DESVIO_MAX = 0.35
+# Referencia "Comprar y mantener (cesta)" (v4): al empezar se reparten START EUR a partes iguales entre las monedas que
+# pueden comprar los agentes de senales (PERMITIDAS: BTC y ETH) y se mantienen sin tocar. Es una comparacion mas justa
+# que solo BTC: en la v3 los agentes operaban sobre todo monedas pequenas, que cayeron mas que BTC.
+REF_CESTA = "Comprar y mantener (cesta)"
+_VOLUMENES_TODOS = {}                   # volumen 24 h (EUR) de todos los pares EUR, para el deslizamiento de la cesta
 # Agente "Tendencia H1 (diaria)": hipotesis H1 y reglas de riesgo selladas de JANUS Crypto (v1, 27-oct-2026),
 # reconstruidas desde su documentacion. Solo BTC y ETH, velas DIARIAS, solo largos, sin apalancamiento.
 H1 = "Tendencia H1 (diaria)"
@@ -147,20 +161,31 @@ AGENTES = [
     ("Momentum", momentum),
     ("Rebote", rebote),
     ("Cruce 10/30 + filtro", filtro(lambda p: cruce(p, 10, 30))),
-    ("Consenso 2 de 3", consenso),
     # agentes rapidos: senales de pocas horas, para que operen varias veces al dia
     ("Cruce 3/8 rapido", filtro(lambda p: cruce(p, 3, 8, 0.002), 48)),
-    ("Momentum rapido", momentum_rapido),
     ("Rebote rapido", rebote_rapido),
+    (REBALANCEO, lambda p: None),       # no usa senales: ver rebalancear()
     # agente de velas diarias con reglas propias de riesgo (ver paso_h1); no usa la decision por hora
     (H1, None),
 ]
 DECIDIR = dict(AGENTES)
-# Reglas de salida y de entrada propias de los agentes rapidos (los 6 originales no llevan ninguna: se mantienen tal cual):
+# Reglas de salida y de entrada:
 #   espera_h: horas sin volver a comprar una moneda tras venderla · stop / objetivo: venta automatica al perder / ganar ese %
 #   solo_liquidas: no compra monedas de poco volumen (donde el deslizamiento real es mayor)
-OPCIONES = {n: {"espera_h": 6, "stop": 0.015, "objetivo": 0.03, "solo_liquidas": True}
-            for n in ("Cruce 3/8 rapido", "Momentum rapido", "Rebote rapido")}
+#   min_horas (v4, EXPERIMENTO en la mitad de los agentes): no se vende por senal antes de ese tiempo desde la compra
+#   (stop y objetivo si actuan). En la v3 (21 dias) las 295 operaciones cerradas en menos de 6 h perdieron 9,09 EUR, pero las
+#   de 6 h o mas perdieron mas por operacion (-0,040 frente a -0,031 EUR): no esta claro que ayude, por eso solo se aplica a
+#   CON_MIN_HORAS y el resto sirve de comparacion. espera_h se queda como en la v3 (solo en los rapidos): en la v3 solo
+#   47 de 508 recompras fueron en menos de 6 h, asi que extenderla a todos casi no cambiaria nada.
+# v4 retira "Momentum rapido" (318 operaciones, 2,77 EUR en costes, -30 %) y "Consenso 2 de 3" (196 operaciones, -31 %):
+# menos agentes = menos comparaciones y menos riesgo de que uno "gane" por casualidad.
+MIN_HORAS = 6
+ESPERA_H = 6
+CON_MIN_HORAS = ("Cruce 10/30", "Momentum", "Cruce 3/8 rapido")   # sin ella (comparacion): Cruce 5/20, Rebote,
+                                                                  # Cruce 10/30 + filtro, Rebote rapido
+OPCIONES = {n: ({"min_horas": MIN_HORAS} if n in CON_MIN_HORAS else {}) for n, _ in AGENTES}
+for _n in ("Cruce 3/8 rapido", "Rebote rapido"):
+    OPCIONES[_n].update({"espera_h": ESPERA_H, "stop": 0.015, "objetivo": 0.03, "solo_liquidas": True})
 
 
 # ---------------- precios ----------------
@@ -211,6 +236,7 @@ def universo_kraken():
             time.sleep(PAUSA_API)
     except Exception as e:
         print("No se pudo leer el volumen de las monedas:", e)
+    _VOLUMENES_TODOS.update({pares[c]: v for c, v in volumenes.items() if c in pares})
     disponibles = set(pares.values())
     if volumenes:
         salida = sorted(((pares[c], volumenes.get(c, 0.0)) for c in pares), key=lambda x: (-x[1], x[0]))
@@ -254,7 +280,16 @@ def velas_demo(n, k, paso_s=3600, fin=None):
     return salida
 
 
-def obtener_datos(demo):
+def pares_referencia():
+    """Monedas de la referencia en cesta ya guardada (hay que seguir descargandolas aunque salgan del top)."""
+    try:
+        with open(ESTADO) as f:
+            return list(json.load(f).get("referencia_cesta", {}))
+    except (OSError, ValueError):
+        return []
+
+
+def obtener_datos(demo, extra=()):
     """Devuelve (velas {par: [(ts, cierre)]}, diarias {par: [(ts, cierre)]}, volumenes {par: EUR}, orden [pares],
     fuente, ahora_ts)."""
     if demo:
@@ -277,11 +312,22 @@ def obtener_datos(demo):
         except Exception as e:
             print(f"{par}: sin datos esta vez ({e})")
         time.sleep(PAUSA_API)
+    vol = {p: v for p, v in uni}
+    for par in list(dict.fromkeys(list(CESTA) + list(extra))):   # cesta del rebalanceo y de la referencia, aunque no esten en el top
+        if par not in velas:
+            try:
+                v = velas_kraken(par)
+                if v:
+                    velas[par] = v
+                    vol[par] = _VOLUMENES_TODOS.get(par, 0.0)
+            except Exception as e:
+                print(f"{par} (cesta o referencia): sin datos esta vez ({e})")
+            time.sleep(PAUSA_API)
     if BTC not in velas:
         print("Kraken no dio BTC; se usa Coinbase para BTC")
         velas[BTC], fuente = velas_coinbase(), "Coinbase (BTC) + Kraken"
     print(f"Se descargaron velas de {len(velas)} de {len(uni)} monedas.")
-    orden = [p for p, _ in uni if p in velas]
+    orden = [p for p, _ in uni if p in velas]          # solo estas las operan los agentes de senales
     diarias = {}
     for par in H1_PARES:                                  # velas diarias solo para el agente H1
         try:
@@ -289,7 +335,7 @@ def obtener_datos(demo):
         except Exception as e:
             print(f"{par} (diarias): sin datos esta vez ({e})")
         time.sleep(PAUSA_API)
-    return velas, diarias, {p: v for p, v in uni}, orden, fuente, int(time.time())
+    return velas, diarias, vol, orden, fuente, int(time.time())
 
 
 # ---------------- estado ----------------
@@ -299,7 +345,21 @@ def agente_nuevo(nombre, precio_btc):
             "inicio": datetime.now(timezone.utc).isoformat(timespec="seconds"), "precio_inicio": precio_btc}
 
 
-def estado_nuevo(velas, ahora_ts):
+def referencia_cesta(velas, orden):
+    """Unidades de cada moneda compradas al empezar, START EUR a partes iguales, con los mismos costes que los agentes."""
+    pares = [p for p in (orden or list(velas)) if p in velas and p in PERMITIDAS]   # las mismas que pueden comprar
+    if not pares:
+        return {}
+    parte = START / len(pares)
+    return {p: parte * (1 - FEE) / (velas[p][-1][1] * (1 + SLIP)) for p in pares}
+
+
+def valor_referencia(estado, precios):
+    ref = estado.get("referencia_cesta") or {}
+    return sum(u * precios.get(p, estado["precios"].get(p, 0.0)) for p, u in ref.items()) if ref else None
+
+
+def estado_nuevo(velas, ahora_ts, orden=None):
     cerradas = [c for c in velas[BTC] if c[0] + 3600 <= ahora_ts]
     return {
         "version": VERSION,
@@ -311,7 +371,16 @@ def estado_nuevo(velas, ahora_ts):
         "slip": SLIP,
         "precios": {p: v[-1][1] for p, v in velas.items()},
         "agentes": [agente_nuevo(n, velas[BTC][-1][1]) for n, _ in AGENTES],
+        "cesta": cesta_para(velas),
+        "referencia_cesta": referencia_cesta(velas, orden),
     }
+
+
+def cesta_para(velas):
+    """La cesta fija; con precios inventados (--demo) usa las 5 primeras monedas de la prueba."""
+    if any(p.startswith("DEMO") for p in velas):
+        return sorted(velas, key=lambda p: (p != BTC, p))[:len(CESTA)]
+    return list(CESTA)
 
 
 def migrar(estado, velas):
@@ -374,16 +443,16 @@ def deslizamiento(par, volumenes):
     return SLIP if volumenes.get(par, 0) >= VOLUMEN_ALTO or par == BTC else max(SLIP, SLIP_POCO_VOLUMEN)
 
 
-def operar(a, tipo, par, precio, fecha, volumenes, motivo="", importe_compra=SLOT):
-    """Compra un 'slot' (o 'importe_compra') o vende toda la moneda. El precio ejecutado incluye el deslizamiento
-    y se paga la comision."""
+def operar(a, tipo, par, precio, fecha, volumenes, motivo="", importe_compra=None):
+    """Compra un 'slot' (o `importe_compra` EUR) o vende toda la moneda. El precio ejecutado incluye el deslizamiento y se paga la comision."""
     slip = deslizamiento(par, volumenes)
     if tipo == "COMPRA":
         ejecutado = precio * (1 + slip)
-        importe = min(a["efectivo"], importe_compra)
+        importe = min(a["efectivo"], SLOT if importe_compra is None else importe_compra)
         a["posiciones"][par] = importe * (1 - FEE) / ejecutado
         a["efectivo"] -= importe
         a.setdefault("entradas", {})[par] = ejecutado
+        a.setdefault("compras", {})[par] = fecha
         coste = importe - a["posiciones"][par] * precio                 # comision + deslizamiento pagados al comprar
     else:
         unidades = a["posiciones"].pop(par)
@@ -391,10 +460,12 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo="", importe_compra=SLO
         importe = unidades * ejecutado * (1 - FEE)    # lo que realmente se cobra, ya sin comision
         a["efectivo"] += importe
         a.setdefault("entradas", {}).pop(par, None)
+        a.setdefault("compras", {}).pop(par, None)
         a.setdefault("stops", {}).pop(par, None)
         a.setdefault("ultima_venta", {})[par] = fecha
         coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
     a["operaciones"] += 1
+    a["costes"] = a.get("costes", 0.0) + coste
     anotar(OPERACIONES, CAB_OPERACIONES,
            [fecha, a["nombre"], par, tipo, round(ejecutado, 6), round(importe, 2), motivo, round(coste, 4)])
     print(f"{a['nombre']}: {tipo} {par} a {ejecutado:.6g} EUR ({motivo})")
@@ -410,6 +481,35 @@ def apagar_si_toca(a, precios, fecha, volumenes):
             operar(a, "VENTA", par, precios[par], fecha, volumenes, "apagado por riesgo")
         a["apagado"] = True
         print(f"RIESGO: {a['nombre']} apagado por superar el limite de perdida")
+
+
+def horas_desde(desde, fecha):
+    return (datetime.fromisoformat(fecha) - datetime.fromisoformat(desde)).total_seconds() / 3600
+
+
+def retenida(a, par, fecha, op):
+    """True si la moneda se compro hace menos de op['min_horas']: la senal vendedora se ignora (el stop no)."""
+    comprada = a.get("compras", {}).get(par)
+    return bool(op.get("min_horas") and comprada and horas_desde(comprada, fecha) < op["min_horas"])
+
+
+def rebalancear(a, t, fecha, precios, volumenes, cesta):
+    """Cada REBALANCEO_DIAS: vende lo que no es de la cesta, rehace las posiciones desviadas y compra lo que falte a partes iguales."""
+    if a.get("ultimo_rebalanceo") is not None and t - a["ultimo_rebalanceo"] < REBALANCEO_DIAS * 86400:
+        return False
+    if a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA:
+        return False                                     # mismo limite de perdida diaria que el resto: se aplaza
+    objetivo = equity(a, precios) / len(cesta)
+    for par in list(a["posiciones"]):
+        if par not in cesta:
+            operar(a, "VENTA", par, precios[par], fecha, volumenes, "rebalanceo: fuera de la cesta")
+        elif abs(a["posiciones"][par] * precios[par] / objetivo - 1) > DESVIO_MAX:
+            operar(a, "VENTA", par, precios[par], fecha, volumenes, "rebalanceo: peso desviado")
+    for par in cesta:
+        if par not in a["posiciones"] and a["efectivo"] >= objetivo * 0.5:
+            operar(a, "COMPRA", par, precios[par], fecha, volumenes, "rebalanceo", importe_compra=objetivo)
+    a["ultimo_rebalanceo"] = t
+    return True
 
 
 def paso_h1(a, diarias, precios, ahora_ts, fecha, volumenes):
@@ -474,6 +574,8 @@ def paso(estado, velas, diarias, volumenes, orden, ahora_ts):
         print(f"Aviso: {len(tiempos)} velas nuevas (la ejecucion anterior se retraso); se procesan todas en orden.")
     precios = estado["precios"]
     rango = {p: i for i, p in enumerate(orden)}
+    universo = set(orden)
+    cesta = estado.setdefault("cesta", cesta_para(velas))
     for t in tiempos:
         fecha = datetime.fromtimestamp(t, timezone.utc).isoformat(timespec="minutes")
         pares_t = sorted(cerr_por_t[t], key=lambda p: rango.get(p, 10 ** 6))
@@ -486,8 +588,15 @@ def paso(estado, velas, diarias, volumenes, orden, ahora_ts):
             dia = t // 86400
             if a.get("dia") != dia:                      # nuevo dia: se anota con cuanto empieza
                 a["dia"], a["eq_dia"] = dia, equity(a, precios)
+            if a["nombre"] == REBALANCEO:
+                if all(par in pares_t for par in cesta):     # solo con precio de esta hora en TODA la cesta
+                    rebalancear(a, t, fecha, precios, volumenes, cesta)
+                apagar_si_toca(a, precios, fecha, volumenes)
+                continue
             op = OPCIONES.get(a["nombre"], {})
-            senales = {par: decidir(cierres[par][:indice[(par, t)] + 1]) for par in pares_t}
+            pares_t_ag = [par for par in pares_t if par in universo]   # la cesta del rebalanceo no entra si no esta en el top
+            senales = {par: decidir(cierres[par][:indice[(par, t)] + 1])
+                       for par in pares_t if par in universo or par in a["posiciones"]}
             for par in pares_t:                          # primero se vende (stop y objetivo, y luego la senal vendedora)...
                 if par not in a["posiciones"]:
                     continue
@@ -497,10 +606,10 @@ def paso(estado, velas, diarias, volumenes, orden, ahora_ts):
                     operar(a, "VENTA", par, precios[par], fecha, volumenes, f"stop de perdida ({cambio * 100:.1f} %)")
                 elif op.get("objetivo") and entrada and cambio >= op["objetivo"]:
                     operar(a, "VENTA", par, precios[par], fecha, volumenes, f"objetivo de ganancia ({cambio * 100:+.1f} %)")
-                elif senales[par] == "s":
+                elif senales.get(par) == "s" and not retenida(a, par, fecha, op):
                     operar(a, "VENTA", par, precios[par], fecha, volumenes, "senal vendedora")
             bloqueado = a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA
-            for par in pares_t:                          # ...y luego se compra, por orden de volumen
+            for par in pares_t_ag:                       # ...y luego se compra, por orden de volumen
                 if senales[par] == "b" and par not in a["posiciones"] and par in PERMITIDAS:
                     if len(a["posiciones"]) >= MAX_POS or a["efectivo"] < SLOT * 0.5:
                         break
@@ -557,10 +666,12 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
     eqs = [equity(a, precios) for a in estado["agentes"]]
     mantener = START * (1 - FEE) * precio / (estado["precio_inicio"] * (1 + SLIP))
     eq_por_nombre = {a["nombre"]: e for a, e in zip(estado["agentes"], eqs)}
-    cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"]
+    cesta_ref = valor_referencia(estado, precios)
+    cab_hist = ["fecha_utc", "precio_eur"] + [n for n, _ in AGENTES] + ["Comprar y mantener"] + ([REF_CESTA] if cesta_ref is not None else [])
     ajustar_historial(cab_hist)
     anotar(HISTORIAL, cab_hist,
-           [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)])
+           [ahora, round(precio, 2)] + [round(eq_por_nombre[n], 2) for n, _ in AGENTES] + [round(mantener, 2)]
+           + ([round(cesta_ref, 2)] if cesta_ref is not None else []))
     with open(ESTADO, "w") as f:
         json.dump(estado, f, indent=2)
     dias = (datetime.fromisoformat(ahora) - datetime.fromisoformat(estado["inicio"])).total_seconds() / 86400
@@ -571,12 +682,12 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"En marcha desde: {estado['inicio']} UTC ({dias:.1f} dias)",
         f"Monedas vigiladas: las {n_monedas} de mayor volumen contra EUR (con datos en esta ejecucion: {n_con_datos}) · "
         f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una · "
-        f"desde el 11-nov-2026 solo compran {', '.join(nombre_corto(p) for p in PERMITIDAS)}",
+        f"los agentes de senales solo compran {', '.join(nombre_corto(p) for p in PERMITIDAS)}",
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
         f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",
-        "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Desde | Estado |",
-        "|---|---:|---:|---:|---:|---:|---|---|",
+        "| Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Costes pagados (EUR) | Antes de costes (EUR) | Desde | Estado |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---|---|",
     ]
     for a, e in zip(estado["agentes"], eqs):
         if a["apagado"]:
@@ -587,8 +698,15 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
             est = "En efectivo"
         hold_a = START * (1 - FEE) * precio / (a["precio_inicio"] * (1 + SLIP))   # mantener BTC desde que empezo ESTE agente
         lineas.append(f"| {a['nombre']} | {e:.2f} | {e - START:+.2f} | {(e / START - 1) * 100:+.2f} % | {e - hold_a:+.2f} | "
-                      f"{a['operaciones']} | {a['inicio'][:10]} | {est} |")
-    lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | {estado['inicio'][:10]} | Referencia |")
+                      f"{a['operaciones']} | {a.get('costes', 0.0):.2f} | {e - START + a.get('costes', 0.0):+.2f} | {a['inicio'][:10]} | {est} |")
+    lineas.append(f"| Comprar y mantener (solo BTC) | {mantener:.2f} | {mantener - START:+.2f} | {(mantener / START - 1) * 100:+.2f} % | 0.00 | 1 | "
+                  f"{START - START * (1 - FEE) / (1 + SLIP):.2f} | {mantener - START * (1 - FEE) / (1 + SLIP):+.2f} | {estado['inicio'][:10]} | Referencia |")
+    if cesta_ref is not None:
+        n_ref = len(estado["referencia_cesta"])
+        lineas.append(f"| {REF_CESTA} | {cesta_ref:.2f} | {cesta_ref - START:+.2f} | {(cesta_ref / START - 1) * 100:+.2f} % | "
+                      f"{cesta_ref - mantener:+.2f} | {n_ref} | {START - START * (1 - FEE) / (1 + SLIP):.2f} | "
+                      f"{cesta_ref - START * (1 - FEE) / (1 + SLIP):+.2f} | {estado['inicio'][:10]} | "
+                      f"Referencia: {n_ref} monedas del inicio a partes iguales |")
     nombres = [n for n, _ in AGENTES]
     try:
         met = informe.metricas(HISTORIAL, OPERACIONES, nombres + ["Comprar y mantener"])
@@ -634,7 +752,7 @@ def archivar(etiqueta):
 
 def main():
     demo = int(sys.argv[sys.argv.index("--demo") + 1]) if "--demo" in sys.argv else 0
-    velas, diarias, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
+    velas, diarias, volumenes, orden, fuente, ahora_ts = obtener_datos(demo, pares_referencia())
     os.makedirs(DATOS, exist_ok=True)
     if os.path.exists(ESTADO):
         with open(ESTADO) as f:
@@ -642,12 +760,12 @@ def main():
         cap_ant, ver_ant = estado.get("capital_inicial", 50.0), estado.get("version", 1)
         if cap_ant != START or ver_ant != VERSION:
             archivar(f"{cap_ant:g}eur" if cap_ant != START else f"{cap_ant:g}eur_v{ver_ant}")
-            estado = estado_nuevo(velas, ahora_ts)
+            estado = estado_nuevo(velas, ahora_ts, orden)
             print("Cambio de capital o de reglas: simulacion anterior archivada; los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
         else:
             migrar(estado, velas)
     else:
-        estado = estado_nuevo(velas, ahora_ts)
+        estado = estado_nuevo(velas, ahora_ts, orden)
         print("Primera ejecucion: los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
     parametros(estado)
     asegurar_operaciones()                    # antes de operar, para que el archivo tenga la cabecera nueva
