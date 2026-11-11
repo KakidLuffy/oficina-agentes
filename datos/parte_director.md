@@ -1,21 +1,21 @@
 # Parte del director
 
-Actualizado: 2026-11-11T08:28:16Z
+Actualizado: 2026-11-11T08:32:47Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 100,00 € (10,00 € por agente): vale 77,07 € (-22,93 €).
-- Capital total 77,07 € (-22,93 €, -22,93 %).
+- Fondo de 100,00 € (10,00 € por agente): vale 77,05 € (-22,95 €).
+- Capital total 77,05 € (-22,95 €, -22,95 %).
 - Mejor agente: Tendencia H1 (diaria) (+0,00 €). Peor: Consenso 2 de 3 (-3,06 €).
-- 2 de 10 agentes van por encima de «Comprar y mantener» (8,88 €).
+- 2 de 10 agentes van por encima de «Comprar y mantener» (8,87 €).
 - 3 con monedas, 2 en efectivo, 5 apagados.
 - Operaciones en las últimas 24 h: 35.
 
 Avisos:
 - Cruce 10/30 está apagado por riesgo.
-- Cruce 5/20 está cerca del límite de 7 € (7,28 €).
+- Cruce 5/20 está cerca del límite de 7 € (7,27 €).
 - Momentum está apagado por riesgo.
-- Cruce 10/30 + filtro está cerca del límite de 7 € (7,42 €).
+- Cruce 10/30 + filtro está cerca del límite de 7 € (7,41 €).
 - Consenso 2 de 3 está apagado por riesgo.
 - Cruce 3/8 rapido acumula una caída máxima del 16,4 %.
 - Momentum rapido está apagado por riesgo.
