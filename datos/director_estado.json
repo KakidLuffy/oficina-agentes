@@ -6,9 +6,19 @@
   "Momentum rapido",
   "Rebote rapido"
  ],
- "evaluables": [],
+ "evaluables": [
+  "Cruce 10/30",
+  "Cruce 5/20",
+  "Momentum",
+  "Rebote",
+  "Cruce 10/30 + filtro",
+  "Consenso 2 de 3",
+  "Cruce 3/8 rapido",
+  "Momentum rapido",
+  "Rebote rapido"
+ ],
  "lab_generado": "2026-11-09T14:03:03Z",
  "semanas_candidatas": {},
  "estado_prop": {},
- "actualizado": "2026-11-11T08:32:47Z"
+ "actualizado": "2026-11-11T15:15:15Z"
 }

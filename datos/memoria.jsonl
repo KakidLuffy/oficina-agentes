@@ -17,3 +17,12 @@
 {"fecha": "2026-11-11T06:25:37Z", "tipo": "decision", "agente": "Cruce 10/30", "texto": "Cruce 10/30 se apaga por riesgo (capital bajo 7 €)."}
 {"fecha": "2026-11-11T08:27:17Z", "tipo": "decision", "agente": "Rebote rapido", "texto": "Rebote rapido se apaga por riesgo (capital bajo 7 €)."}
 {"fecha": "2026-11-11T08:40:00Z", "tipo": "cambio", "agente": "", "texto": "Cambio aprobado por el usuario: desde ahora los agentes solo compran BTC y ETH para reducir costes. Las posiciones en otras monedas se venden con su regla normal. Los resultados anteriores y posteriores a esta fecha no son comparables."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 10/30", "texto": "Cruce 10/30 ya es evaluable (21 días y 61 cierres). Resultado actual -3,03 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 5/20", "texto": "Cruce 5/20 ya es evaluable (21 días y 76 cierres). Resultado actual -2,68 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Momentum", "texto": "Momentum ya es evaluable (21 días y 74 cierres). Resultado actual -3,05 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Rebote", "texto": "Rebote ya es evaluable (21 días y 31 cierres). Resultado actual -0,78 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 10/30 + filtro", "texto": "Cruce 10/30 + filtro ya es evaluable (21 días y 43 cierres). Resultado actual -2,67 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Consenso 2 de 3", "texto": "Consenso 2 de 3 ya es evaluable (21 días y 98 cierres). Resultado actual -3,06 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 3/8 rapido", "texto": "Cruce 3/8 rapido ya es evaluable (21 días y 70 cierres). Resultado actual -1,61 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Momentum rapido", "texto": "Momentum rapido ya es evaluable (21 días y 159 cierres). Resultado actual -3,05 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Rebote rapido", "texto": "Rebote rapido ya es evaluable (21 días y 106 cierres). Resultado actual -3,05 €."}

@@ -12,6 +12,16 @@ Aquí quedan las reglas y las decisiones. El director y el laboratorio la leen p
 
 ## Registro de decisiones y cambios (lo más reciente primero)
 
+- 2026-11-11 15:15 · **hito** · Rebote rapido ya es evaluable (21 días y 106 cierres). Resultado actual -3,05 €.
+- 2026-11-11 15:15 · **hito** · Momentum rapido ya es evaluable (21 días y 159 cierres). Resultado actual -3,05 €.
+- 2026-11-11 15:15 · **hito** · Cruce 3/8 rapido ya es evaluable (21 días y 70 cierres). Resultado actual -1,61 €.
+- 2026-11-11 15:15 · **hito** · Consenso 2 de 3 ya es evaluable (21 días y 98 cierres). Resultado actual -3,06 €.
+- 2026-11-11 15:15 · **hito** · Cruce 10/30 + filtro ya es evaluable (21 días y 43 cierres). Resultado actual -2,67 €.
+- 2026-11-11 15:15 · **hito** · Rebote ya es evaluable (21 días y 31 cierres). Resultado actual -0,78 €.
+- 2026-11-11 15:15 · **hito** · Momentum ya es evaluable (21 días y 74 cierres). Resultado actual -3,05 €.
+- 2026-11-11 15:15 · **hito** · Cruce 5/20 ya es evaluable (21 días y 76 cierres). Resultado actual -2,68 €.
+- 2026-11-11 15:15 · **hito** · Cruce 10/30 ya es evaluable (21 días y 61 cierres). Resultado actual -3,03 €.
+- 2026-11-11 08:40 · **cambio** · Cambio aprobado por el usuario: desde ahora los agentes solo compran BTC y ETH para reducir costes. Las posiciones en otras monedas se venden con su regla normal. Los resultados anteriores y posteriores a esta fecha no son comparables.
 - 2026-11-11 08:27 · **decision** · Rebote rapido se apaga por riesgo (capital bajo 7 €).
 - 2026-11-11 06:25 · **decision** · Cruce 10/30 se apaga por riesgo (capital bajo 7 €).
 - 2026-11-09 14:03 · **laboratorio** · Laboratorio del 2026-11-09: veredicto NINGUNA; candidatas: ninguna.
