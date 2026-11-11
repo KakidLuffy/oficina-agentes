@@ -10,3 +10,19 @@
 {"fecha": "2026-10-26T11:17:50Z", "tipo": "laboratorio", "agente": "", "texto": "Laboratorio del 2026-10-26: veredicto NINGUNA; candidatas: ninguna."}
 {"fecha": "2026-11-02T13:39:56Z", "tipo": "revision", "agente": "", "texto": "Los datos llevan 5,3 h sin actualizarse (GitHub a veces se retrasa),"}
 {"fecha": "2026-11-02T13:39:56Z", "tipo": "laboratorio", "agente": "", "texto": "Laboratorio del 2026-11-02: veredicto NINGUNA; candidatas: ninguna."}
+{"fecha": "2026-11-06T10:56:06Z", "tipo": "decision", "agente": "Momentum", "texto": "Momentum se apaga por riesgo (capital bajo 7 €)."}
+{"fecha": "2026-11-07T10:14:09Z", "tipo": "decision", "agente": "Momentum rapido", "texto": "Momentum rapido se apaga por riesgo (capital bajo 7 €)."}
+{"fecha": "2026-11-08T19:12:39Z", "tipo": "decision", "agente": "Consenso 2 de 3", "texto": "Consenso 2 de 3 se apaga por riesgo (capital bajo 7 €)."}
+{"fecha": "2026-11-09T14:03:18Z", "tipo": "laboratorio", "agente": "", "texto": "Laboratorio del 2026-11-09: veredicto NINGUNA; candidatas: ninguna."}
+{"fecha": "2026-11-11T06:25:37Z", "tipo": "decision", "agente": "Cruce 10/30", "texto": "Cruce 10/30 se apaga por riesgo (capital bajo 7 €)."}
+{"fecha": "2026-11-11T08:27:17Z", "tipo": "decision", "agente": "Rebote rapido", "texto": "Rebote rapido se apaga por riesgo (capital bajo 7 €)."}
+{"fecha": "2026-11-11T08:40:00Z", "tipo": "cambio", "agente": "", "texto": "Cambio aprobado por el usuario: desde ahora los agentes solo compran BTC y ETH para reducir costes. Las posiciones en otras monedas se venden con su regla normal. Los resultados anteriores y posteriores a esta fecha no son comparables."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 10/30", "texto": "Cruce 10/30 ya es evaluable (21 días y 61 cierres). Resultado actual -3,03 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 5/20", "texto": "Cruce 5/20 ya es evaluable (21 días y 76 cierres). Resultado actual -2,68 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Momentum", "texto": "Momentum ya es evaluable (21 días y 74 cierres). Resultado actual -3,05 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Rebote", "texto": "Rebote ya es evaluable (21 días y 31 cierres). Resultado actual -0,78 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 10/30 + filtro", "texto": "Cruce 10/30 + filtro ya es evaluable (21 días y 43 cierres). Resultado actual -2,67 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Consenso 2 de 3", "texto": "Consenso 2 de 3 ya es evaluable (21 días y 98 cierres). Resultado actual -3,06 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Cruce 3/8 rapido", "texto": "Cruce 3/8 rapido ya es evaluable (21 días y 70 cierres). Resultado actual -1,61 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Momentum rapido", "texto": "Momentum rapido ya es evaluable (21 días y 159 cierres). Resultado actual -3,05 €."}
+{"fecha": "2026-11-11T15:15:15Z", "tipo": "hito", "agente": "Rebote rapido", "texto": "Rebote rapido ya es evaluable (21 días y 106 cierres). Resultado actual -3,05 €."}

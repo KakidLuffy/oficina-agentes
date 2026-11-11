@@ -5,24 +5,28 @@ import io
 import os
 import tempfile
 import unittest
+from unittest import mock
 
 import agentes_nube as a
 
 
+X = "ETHEUR"   # moneda de prueba: desde el 11-nov los agentes de senales solo compran PERMITIDAS (BTC y ETH)
+
+
 def simular(precios_btc, precios_x, nombre="Rebote"):
-    """Recorre velas de 1 h de BTC y de una moneda XEUR y devuelve las operaciones del agente `nombre`."""
+    """Recorre velas de 1 h de BTC y de ETH y devuelve las operaciones de ETH del agente `nombre`."""
     t0 = 1_700_000_000
     velas = {a.BTC: [(t0 + i * 3600, p) for i, p in enumerate(precios_btc)],
-             "XEUR": [(t0 + i * 3600, p) for i, p in enumerate(precios_x)]}
+             X: [(t0 + i * 3600, p) for i, p in enumerate(precios_x)]}
     vol = {p: 1e6 for p in velas}
     ini = {p: v[:25] for p, v in velas.items()}
     est = a.estado_nuevo(ini, ini[a.BTC][-1][0] + 3600)
     a.parametros(est)
     a.asegurar_operaciones()
     with contextlib.redirect_stdout(io.StringIO()):
-        a.paso(est, velas, vol, [a.BTC, "XEUR"], velas[a.BTC][-1][0] + 3600)
+        a.paso(est, velas, {}, vol, [a.BTC, X], velas[a.BTC][-1][0] + 3600)
     with open(a.OPERACIONES, newline="") as f:
-        return [r for r in csv.DictReader(f) if r["agente"] == nombre and r["moneda"] == "XEUR"]
+        return [r for r in csv.DictReader(f) if r["agente"] == nombre and r["moneda"] == X]
 
 
 class TestV4(unittest.TestCase):
@@ -41,9 +45,18 @@ class TestV4(unittest.TestCase):
         nombres = [n for n, _ in a.AGENTES]
         self.assertNotIn("Momentum rapido", nombres)
         self.assertNotIn("Consenso 2 de 3", nombres)
-        self.assertEqual(len(nombres), 8)
+        self.assertEqual(len(nombres), 9)
         self.assertIn(a.REBALANCEO, nombres)
-        self.assertTrue(all(a.OPCIONES[n]["min_horas"] == 6 for n in nombres))
+        self.assertIn(a.H1, nombres)                                   # el agente de main (11-nov) se conserva
+        self.assertEqual(a.PERMITIDAS, ("XBTEUR", "ETHEUR"))
+
+    def test_min_horas_solo_en_la_mitad(self):
+        con = {n for n in a.OPCIONES if a.OPCIONES[n].get("min_horas") == 6}
+        self.assertEqual(con, {"Cruce 10/30", "Momentum", "Cruce 3/8 rapido"})
+        for n in ("Cruce 5/20", "Rebote", "Cruce 10/30 + filtro", "Rebote rapido"):
+            self.assertNotIn("min_horas", a.OPCIONES[n])               # grupo de comparacion
+        con_espera = {n for n in a.OPCIONES if a.OPCIONES[n].get("espera_h")}
+        self.assertEqual(con_espera, {"Cruce 3/8 rapido", "Rebote rapido"})   # como en la v3
 
     def test_monedas_estables_excluidas(self):
         for base in ("EURC", "USDC", "USDT", "EURCV", "USDE"):
@@ -52,10 +65,31 @@ class TestV4(unittest.TestCase):
     def test_no_vende_por_senal_antes_de_6_horas(self):
         # Rebote compra al caer un 1,5 % bajo su media de 20 velas y vende al volver por encima de la media.
         x = [100.0] * 30 + [98.0] + [101.0] * 10        # senal vendedora ya 1 h despues de comprar
-        ops = simular([60000.0] * len(x), x)
+        with mock.patch.dict(a.OPCIONES, {"Rebote": {"min_horas": 6}}):
+            ops = simular([60000.0] * len(x), x)
         self.assertEqual([o["tipo"] for o in ops][:2], ["COMPRA", "VENTA"])
         horas = (a.datetime.fromisoformat(ops[1]["fecha_utc"]) - a.datetime.fromisoformat(ops[0]["fecha_utc"])).total_seconds() / 3600
         self.assertEqual(horas, 6)                       # en v3 habria vendido a la hora
+
+    def test_sin_min_horas_vende_a_la_hora(self):
+        x = [100.0] * 30 + [98.0] + [101.0] * 10         # Rebote no lleva min_horas en la v4 (grupo de comparacion)
+        ops = simular([60000.0] * len(x), x)
+        horas = (a.datetime.fromisoformat(ops[1]["fecha_utc"]) - a.datetime.fromisoformat(ops[0]["fecha_utc"])).total_seconds() / 3600
+        self.assertEqual(horas, 1)
+
+    def test_no_compra_monedas_no_permitidas(self):
+        t0 = 1_700_000_000
+        x = [100.0] * 30 + [98.0] + [101.0] * 10
+        velas = {a.BTC: [(t0 + i * 3600, 60000.0) for i in range(len(x))],
+                 "XEUR": [(t0 + i * 3600, p) for i, p in enumerate(x)]}
+        ini = {p: v[:25] for p, v in velas.items()}
+        est = a.estado_nuevo(ini, ini[a.BTC][-1][0] + 3600)
+        a.parametros(est)
+        a.asegurar_operaciones()
+        with contextlib.redirect_stdout(io.StringIO()):
+            a.paso(est, velas, {}, {p: 1e6 for p in velas}, [a.BTC, "XEUR"], velas[a.BTC][-1][0] + 3600)
+        with open(a.OPERACIONES, newline="") as f:
+            self.assertFalse([r for r in csv.DictReader(f) if r["moneda"] == "XEUR"])
 
     def test_el_stop_actua_aunque_no_hayan_pasado_6_horas(self):
         x = [100.0] * 30 + [98.0] * 3 + [95.0] * 10     # Rebote rapido: stop del 1,5 %
@@ -98,7 +132,7 @@ class TestRebalanceo(unittest.TestCase):
         a.parametros(est)
         a.asegurar_operaciones()
         with contextlib.redirect_stdout(io.StringIO()):
-            a.paso(est, velas, vol, orden, velas[a.BTC][-1][0] + 3600)
+            a.paso(est, velas, {}, vol, orden, velas[a.BTC][-1][0] + 3600)
         with open(a.OPERACIONES, newline="") as f:
             ops = list(csv.DictReader(f))
         ag = next(x for x in est["agentes"] if x["nombre"] == a.REBALANCEO)
@@ -143,26 +177,26 @@ class TestReferenciaYCostes(unittest.TestCase):
         self.dir.cleanup()
 
     def test_cesta_a_partes_iguales_con_costes(self):
-        velas = {a.BTC: [(0, 60000.0)], "XEUR": [(0, 2.0)], "YEUR": [(0, 50.0)], "FUERAEUR": [(0, 1.0)]}
-        ref = a.referencia_cesta(velas, [a.BTC, "XEUR", "YEUR"])
-        self.assertEqual(sorted(ref), sorted([a.BTC, "XEUR", "YEUR"]))                     # solo el universo de senales
-        self.assertAlmostEqual(ref["XEUR"] * 2.0, ref["YEUR"] * 50.0)
-        est = {"referencia_cesta": ref, "precios": {a.BTC: 60000.0, "XEUR": 2.0, "YEUR": 50.0}}
+        velas = {a.BTC: [(0, 60000.0)], "ETHEUR": [(0, 2000.0)], "YEUR": [(0, 50.0)], "FUERAEUR": [(0, 1.0)]}
+        ref = a.referencia_cesta(velas, [a.BTC, "ETHEUR", "YEUR"])
+        self.assertEqual(sorted(ref), sorted([a.BTC, "ETHEUR"]))             # solo las monedas que pueden comprar
+        self.assertAlmostEqual(ref["ETHEUR"] * 2000.0, ref[a.BTC] * 60000.0)
+        est = {"referencia_cesta": ref, "precios": {a.BTC: 60000.0, "ETHEUR": 2000.0}}
         self.assertAlmostEqual(a.valor_referencia(est, est["precios"]), a.START * (1 - a.FEE) / (1 + a.SLIP))
         # si una moneda no tiene precio en esta ronda, vale su ultimo precio conocido
-        self.assertAlmostEqual(a.valor_referencia(est, {a.BTC: 60000.0, "XEUR": 4.0}),
-                               a.START / 3 * (1 - a.FEE) / (1 + a.SLIP) * 4)
+        self.assertAlmostEqual(a.valor_referencia(est, {a.BTC: 60000.0, "ETHEUR": 4000.0}),
+                               a.START / 2 * (1 - a.FEE) / (1 + a.SLIP) * 3)
 
     def test_resumen_e_historial_con_cesta_y_costes(self):
         t0 = 1_700_000_000
         x = [100.0] * 30 + [98.0] + [101.0] * 10
-        velas = {a.BTC: [(t0 + i * 3600, 60000.0) for i in range(len(x))], "XEUR": [(t0 + i * 3600, p) for i, p in enumerate(x)]}
+        velas = {a.BTC: [(t0 + i * 3600, 60000.0) for i in range(len(x))], "ETHEUR": [(t0 + i * 3600, p) for i, p in enumerate(x)]}
         ini = {p: v[:25] for p, v in velas.items()}
-        est = a.estado_nuevo(ini, ini[a.BTC][-1][0] + 3600, [a.BTC, "XEUR"])
+        est = a.estado_nuevo(ini, ini[a.BTC][-1][0] + 3600, [a.BTC, "ETHEUR"])
         a.parametros(est)
         a.asegurar_operaciones()
         with contextlib.redirect_stdout(io.StringIO()):
-            ahora, precios = a.paso(est, velas, {p: 1e6 for p in velas}, [a.BTC, "XEUR"], velas[a.BTC][-1][0] + 3600)
+            ahora, precios = a.paso(est, velas, {}, {p: 1e6 for p in velas}, [a.BTC, "ETHEUR"], velas[a.BTC][-1][0] + 3600)
             a.guardar(est, ahora, precios, "prueba", 2, 2)
         with open(a.OPERACIONES, newline="") as f:
             ops = list(csv.DictReader(f))
@@ -176,6 +210,7 @@ class TestReferenciaYCostes(unittest.TestCase):
         with open(a.RESUMEN, encoding="utf-8") as f:
             resumen = f.read()
         self.assertIn("Costes pagados (EUR)", resumen)
+        self.assertIn("Antes de costes (EUR)", resumen)
         self.assertIn("| " + a.REF_CESTA + " |", resumen)
 
 

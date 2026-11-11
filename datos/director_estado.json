@@ -1,8 +1,24 @@
 {
- "apagados": [],
- "evaluables": [],
- "lab_generado": "2026-11-02T13:39:42Z",
+ "apagados": [
+  "Consenso 2 de 3",
+  "Cruce 10/30",
+  "Momentum",
+  "Momentum rapido",
+  "Rebote rapido"
+ ],
+ "evaluables": [
+  "Cruce 10/30",
+  "Cruce 5/20",
+  "Momentum",
+  "Rebote",
+  "Cruce 10/30 + filtro",
+  "Consenso 2 de 3",
+  "Cruce 3/8 rapido",
+  "Momentum rapido",
+  "Rebote rapido"
+ ],
+ "lab_generado": "2026-11-09T14:03:03Z",
  "semanas_candidatas": {},
  "estado_prop": {},
- "actualizado": "2026-11-05T15:50:38Z"
+ "actualizado": "2026-11-11T16:39:34Z"
 }
