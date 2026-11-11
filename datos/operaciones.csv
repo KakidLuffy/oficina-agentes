@@ -1431,3 +1431,7 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-11T03:00+00:00,Rebote,ZECEUR,COMPRA,920.779159,1.59,senal compradora,0.0071
 2026-11-11T05:00+00:00,Cruce 10/30,AVAXEUR,COMPRA,7.606801,1.79,senal compradora,0.008
 2026-11-11T05:00+00:00,Cruce 10/30 + filtro,AVAXEUR,COMPRA,7.606801,1.91,senal compradora,0.0086
+2026-11-11T06:25:24+00:00,Cruce 10/30,AAVEEUR,VENTA,110.274835,1.66,apagado por riesgo,0.0075
+2026-11-11T06:25:24+00:00,Cruce 10/30,EURCEUR,VENTA,0.9996,1.59,apagado por riesgo,0.0072
+2026-11-11T06:25:24+00:00,Cruce 10/30,NEAREUR,VENTA,3.247975,1.95,apagado por riesgo,0.0088
+2026-11-11T06:25:24+00:00,Cruce 10/30,AVAXEUR,VENTA,7.581208,1.77,apagado por riesgo,0.008
