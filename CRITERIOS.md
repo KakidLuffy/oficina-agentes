@@ -40,3 +40,7 @@ Además:
 - **No se retocan parámetros después de ver resultados.** Cualquier variante es una hipótesis nueva y cuenta como una comparación más.
 - **Máximo 9 agentes.** Para añadir uno hay que retirar otro antes. Hay una prueba en `test_agentes.py` que lo vigila.
 - **Cambiar reglas en vivo reinicia el reloj** (`VERSION`). Solo se cambia algo cuando se ha cumplido un plazo de evaluación o si hay un fallo de código.
+
+## Registro de resultados
+
+- **11-nov-2026, prueba histórica de H1: NO PASA** (`datos/backtest_h1.md`). Con datos de Coinbase desde el 2-sep-2017, H1 se apagó por su propia regla del −15 % el 30-dic-2017, a los 4 meses. Hasta ese día ganó un +65,4 %, frente al +72,4 % de la cesta al 50 %, y su caída máxima fue mayor (−19,3 % frente a −17,6 %). Las medias de 50, 150 y 200 días tampoco superan a la cesta. Sin la regla del −15 % (dato solo informativo) habría ganado un +328 %, frente al +525 % de la cesta al 50 %, aunque con menos caída (−43 % frente a −69 %). **Conforme a la sección 2, H1 queda descartada como hipótesis principal.** La v5 sigue en marcha como exploración. Una variante de H1 sin la regla del −15 % sería una hipótesis NUEVA y contaría como una comparación más.
