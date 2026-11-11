@@ -1,14 +1,14 @@
 # Parte del director
 
-Actualizado: 2026-11-11T08:27:17Z
+Actualizado: 2026-11-11T08:28:16Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 67,07 € (-22,93 €).
-- Capital total 67,07 € (-22,93 €, -25,48 %).
-- Mejor agente: Rebote (-0,78 €). Peor: Consenso 2 de 3 (-3,06 €).
-- 1 de 9 agentes van por encima de «Comprar y mantener» (8,89 €).
-- 3 con monedas, 1 en efectivo, 5 apagados.
+- Fondo de 100,00 € (10,00 € por agente): vale 77,07 € (-22,93 €).
+- Capital total 77,07 € (-22,93 €, -22,93 %).
+- Mejor agente: Tendencia H1 (diaria) (+0,00 €). Peor: Consenso 2 de 3 (-3,06 €).
+- 2 de 10 agentes van por encima de «Comprar y mantener» (8,88 €).
+- 3 con monedas, 2 en efectivo, 5 apagados.
 - Operaciones en las últimas 24 h: 35.
 
 Avisos:
@@ -33,5 +33,6 @@ Progreso hacia la evaluación (21 días y 30 cierres):
 - Cruce 3/8 rapido: 20.9 días, 70 cierres
 - Momentum rapido: 20.9 días, 159 cierres
 - Rebote rapido: 20.9 días, 106 cierres
+- Tendencia H1 (diaria): 0.0 días, 0 cierres
 
 Laboratorio: NINGUNA (ver propuestas.md).
