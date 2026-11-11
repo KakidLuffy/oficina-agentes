@@ -1,6 +1,6 @@
 # Oficina de agentes en la nube (gratis, sin tu PC)
 
-Nueve agentes de trading con **dinero ficticio** (10 € cada uno, 90 € en total) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
+Diez agentes de trading con **dinero ficticio** (10 € cada uno, 100 € en total) que se ejecutan **cada hora en los servidores de GitHub**, con precios reales de Kraken. Pueden operar las **20 monedas de mayor volumen contra el euro** (BTC, ETH, SOL, XRP…), hasta 5 a la vez por agente. Los resultados se guardan solos en este repositorio y se ven en un panel web. El ordenador puede estar apagado.
 
 **Es una simulación:** no opera en ningún exchange ni toca dinero real, y nada de esto garantiza beneficios.
 
@@ -32,6 +32,7 @@ Nueve agentes de trading con **dinero ficticio** (10 € cada uno, 90 € en tot
 | Cruce 3/8 rapido | Como el cruce de medias, pero con medias de 3 y 8 horas: reacciona en pocas horas y opera mucho más. |
 | Momentum rapido | Compra si el precio sube un 0,6 % en 4 horas; vende si baja un 0,6 %. |
 | Rebote rapido | Compra si el precio cae un 0,8 % bajo su media de 8 horas; vende al volver a la media. |
+| Tendencia H1 (diaria) | Solo BTC y ETH, con velas diarias: está dentro si el cierre del día supera la media de 100 días y sale cuando cae por debajo. Reglas de riesgo de JANUS Crypto: 2,50 € por moneda como máximo (25 %, 50 % en total), stop que limita cada operación a perder 0,20 € (2 % del capital), no compra si el mes va un 6 % abajo y se apaga si cae un 15 % desde su máximo. Opera pocas veces al mes. |
 
 Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pasar horas sin ninguna operación.
 

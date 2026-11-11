@@ -1,6 +1,6 @@
 # Oficina de agentes de trading (simulación)
 
-Nueve agentes con **dinero ficticio** (10 € cada uno, 90 € en total) operan las 20 monedas de mayor volumen contra el euro con precios reales de Kraken. Se ejecutan solos en GitHub Actions, aproximadamente cada hora, y un laboratorio prueba cada semana nuevas estrategias.
+Diez agentes con **dinero ficticio** (10 € cada uno, 100 € en total) operan las 20 monedas de mayor volumen contra el euro con precios reales de Kraken. Se ejecutan solos en GitHub Actions, aproximadamente cada hora, y un laboratorio prueba cada semana nuevas estrategias.
 
 - **Panel:** https://kakidluffy.github.io/oficina-agentes/
 - **Guía completa:** [LEEME.md](LEEME.md)

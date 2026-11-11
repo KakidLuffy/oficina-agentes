@@ -45,6 +45,15 @@ EXCLUIR_BASES = {"USDT", "USDC", "DAI", "PYUSD", "TUSD", "EURT", "EURR", "EURQ",
 # Lista de emergencia: solo se usa si Kraken no da los volumenes
 RESPALDO = ["XBTEUR", "ETHEUR", "SOLEUR", "XRPEUR", "ADAEUR", "DOGEEUR", "DOTEUR", "LINKEUR", "LTCEUR", "AVAXEUR",
             "TRXEUR", "ATOMEUR", "XLMEUR", "BCHEUR", "UNIEUR", "NEAREUR", "AAVEEUR", "ETCEUR", "ALGOEUR", "FILEUR"]
+# Agente "Tendencia H1 (diaria)": hipotesis H1 y reglas de riesgo selladas de JANUS Crypto (v1, 27-oct-2026),
+# reconstruidas desde su documentacion. Solo BTC y ETH, velas DIARIAS, solo largos, sin apalancamiento.
+H1 = "Tendencia H1 (diaria)"
+H1_PARES = ("XBTEUR", "ETHEUR")
+H1_SMA = 100                            # dentro si el cierre diario esta por encima de su media de 100 dias
+H1_MAX_ACTIVO = 0.25                    # maximo 25 % del capital por activo (50 % en total con 2 activos)
+H1_RIESGO_OP = 0.02                     # perdida maxima por operacion: 2 % del capital, con stop obligatorio
+H1_PARADA_MES = 0.06                    # si el mes va un 6 % abajo, no abre posiciones nuevas hasta el mes siguiente
+H1_PARADA_PICO = 0.15                   # caida del 15 % desde su maximo: cierra todo y se apaga (revision humana)
 DATOS = "datos"
 ESTADO = os.path.join(DATOS, "estado.json")
 HISTORIAL = os.path.join(DATOS, "historial_v2.csv")   # v2: 6 agentes. El historial.csv antiguo (4 agentes) se conserva sin tocar
@@ -140,6 +149,8 @@ AGENTES = [
     ("Cruce 3/8 rapido", filtro(lambda p: cruce(p, 3, 8, 0.002), 48)),
     ("Momentum rapido", momentum_rapido),
     ("Rebote rapido", rebote_rapido),
+    # agente de velas diarias con reglas propias de riesgo (ver paso_h1); no usa la decision por hora
+    (H1, None),
 ]
 DECIDIR = dict(AGENTES)
 # Reglas de salida y de entrada propias de los agentes rapidos (los 6 originales no llevan ninguna: se mantienen tal cual):
@@ -221,23 +232,35 @@ def velas_coinbase():
     return sorted((int(v[0]), float(v[4])) for v in d)
 
 
-def velas_demo(n, k):
-    random.seed(7 + 13 * k)
-    precio, t, salida = 60000.0 / (k + 1), 1_700_000_000, []
+def velas_diarias_kraken(par):
+    """Ultimas 720 velas diarias (Kraken no da mas); H1 necesita 101."""
+    res = kraken(f"https://api.kraken.com/0/public/OHLC?pair={par}&interval=1440")
+    clave = [k for k in res if k != "last"][0]
+    return [(int(v[0]), float(v[4])) for v in res[clave]]
+
+
+def velas_demo(n, k, paso_s=3600, fin=None):
+    random.seed(7 + 13 * k + (0 if paso_s == 3600 else 1000))
+    precio, salida = 60000.0 / (k + 1), []
+    t = (fin - n * paso_s) if fin else 1_700_000_000
     for _ in range(n):
-        precio *= 1 + random.gauss(0, 0.007 + 0.002 * k)
+        precio *= 1 + random.gauss(0, (0.007 + 0.002 * k) * (1 if paso_s == 3600 else 4))
         salida.append((t, precio))
-        t += 3600
+        t += paso_s
     return salida
 
 
 def obtener_datos(demo):
-    """Devuelve (velas {par: [(ts, cierre)]}, volumenes {par: EUR}, orden [pares], fuente, ahora_ts)."""
+    """Devuelve (velas {par: [(ts, cierre)]}, diarias {par: [(ts, cierre)]}, volumenes {par: EUR}, orden [pares],
+    fuente, ahora_ts)."""
     if demo:
-        nombres = [BTC] + [f"DEMO{k}EUR" for k in range(1, 8)]
+        nombres = [BTC, "ETHEUR"] + [f"DEMO{k}EUR" for k in range(2, 8)]
         velas = {p: velas_demo(demo, k) for k, p in enumerate(nombres)}
         vol = {p: (500_000 if k % 3 else 20_000) for k, p in enumerate(nombres)}
-        return velas, vol, nombres, "demo", velas[BTC][-1][0] + 1800
+        ahora_ts = velas[BTC][-1][0] + 1800
+        dia_fin = ahora_ts // 86400 * 86400 + 86400
+        diarias = {p: velas_demo(200, k, 86400, dia_fin) for k, p in enumerate(nombres[:2])}
+        return velas, diarias, vol, nombres, "demo", ahora_ts
     uni = universo_kraken()
     print(f"Se vigilan {len(uni)} monedas (las de mayor volumen contra EUR en Kraken): "
           + ", ".join(p for p, _ in uni))
@@ -255,7 +278,14 @@ def obtener_datos(demo):
         velas[BTC], fuente = velas_coinbase(), "Coinbase (BTC) + Kraken"
     print(f"Se descargaron velas de {len(velas)} de {len(uni)} monedas.")
     orden = [p for p, _ in uni if p in velas]
-    return velas, {p: v for p, v in uni}, orden, fuente, int(time.time())
+    diarias = {}
+    for par in H1_PARES:                                  # velas diarias solo para el agente H1
+        try:
+            diarias[par] = velas_diarias_kraken(par)
+        except Exception as e:
+            print(f"{par} (diarias): sin datos esta vez ({e})")
+        time.sleep(PAUSA_API)
+    return velas, diarias, {p: v for p, v in uni}, orden, fuente, int(time.time())
 
 
 # ---------------- estado ----------------
@@ -340,12 +370,13 @@ def deslizamiento(par, volumenes):
     return SLIP if volumenes.get(par, 0) >= VOLUMEN_ALTO or par == BTC else max(SLIP, SLIP_POCO_VOLUMEN)
 
 
-def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
-    """Compra un 'slot' o vende toda la moneda. El precio ejecutado incluye el deslizamiento y se paga la comision."""
+def operar(a, tipo, par, precio, fecha, volumenes, motivo="", importe_compra=SLOT):
+    """Compra un 'slot' (o 'importe_compra') o vende toda la moneda. El precio ejecutado incluye el deslizamiento
+    y se paga la comision."""
     slip = deslizamiento(par, volumenes)
     if tipo == "COMPRA":
         ejecutado = precio * (1 + slip)
-        importe = min(a["efectivo"], SLOT)
+        importe = min(a["efectivo"], importe_compra)
         a["posiciones"][par] = importe * (1 - FEE) / ejecutado
         a["efectivo"] -= importe
         a.setdefault("entradas", {})[par] = ejecutado
@@ -356,6 +387,7 @@ def operar(a, tipo, par, precio, fecha, volumenes, motivo=""):
         importe = unidades * ejecutado * (1 - FEE)    # lo que realmente se cobra, ya sin comision
         a["efectivo"] += importe
         a.setdefault("entradas", {}).pop(par, None)
+        a.setdefault("stops", {}).pop(par, None)
         a.setdefault("ultima_venta", {})[par] = fecha
         coste = unidades * precio - importe                              # comision + deslizamiento pagados al vender
     a["operaciones"] += 1
@@ -376,7 +408,54 @@ def apagar_si_toca(a, precios, fecha, volumenes):
         print(f"RIESGO: {a['nombre']} apagado por superar el limite de perdida")
 
 
-def paso(estado, velas, volumenes, orden, ahora_ts):
+def paso_h1(a, diarias, precios, ahora_ts, fecha, volumenes):
+    """Hipotesis H1 con las reglas de riesgo de JANUS Crypto. Decide una vez por vela diaria cerrada; el stop
+    se vigila en cada ejecucion con el precio actual."""
+    if a["apagado"]:
+        return
+    for par, d in diarias.items():                       # precio actual de BTC/ETH (la vela diaria abierta)
+        if d:
+            precios[par] = d[-1][1]
+    for par in list(a["posiciones"]):                    # 1) stop obligatorio de cada posicion
+        stop = a.get("stops", {}).get(par)
+        if stop and precios.get(par, stop) <= stop:
+            operar(a, "VENTA", par, precios[par], fecha, volumenes, "stop (2 % del capital)")
+    eq = equity(a, precios)
+    a["pico"] = max(a.get("pico", START), eq)
+    if eq <= a["pico"] * (1 - H1_PARADA_PICO):           # 2) caida del 15 % desde el maximo: se apaga
+        for par in list(a["posiciones"]):
+            operar(a, "VENTA", par, precios[par], fecha, volumenes, "caida del 15 % desde el maximo")
+        a["apagado"] = True
+        print(f"RIESGO: {a['nombre']} apagado (caida del 15 % desde su maximo): necesita revision humana")
+        return
+    mes = fecha[:7]
+    if a.get("mes") != mes:
+        a["mes"], a["eq_mes"] = mes, eq
+    pausa_mes = eq <= a["eq_mes"] * (1 - H1_PARADA_MES)  # 3) mes con -6 %: no abre posiciones nuevas
+    importe = START * H1_MAX_ACTIVO
+    for par in H1_PARES:                                 # 4) la regla H1, una vez por cada cierre diario
+        cer = [(t, c) for t, c in diarias.get(par, []) if t + 86400 <= ahora_ts]
+        if len(cer) < H1_SMA + 1:
+            continue
+        t_ult = cer[-1][0]
+        vistas = a.setdefault("ultima_diaria", {})
+        if vistas.get(par) == t_ult:
+            continue
+        vistas[par] = t_ult
+        cierre, sma = cer[-1][1], media([c for _, c in cer[-H1_SMA:]])
+        if par in a["posiciones"] and cierre < sma:
+            operar(a, "VENTA", par, precios[par], fecha, volumenes, f"cierre diario bajo la media de {H1_SMA} dias")
+        elif par not in a["posiciones"] and cierre > sma:
+            if pausa_mes:
+                print(f"{a['nombre']}: compra de {par} bloqueada (perdida del mes >= {H1_PARADA_MES * 100:.0f} %)")
+            elif a["efectivo"] >= importe * 0.5:
+                operar(a, "COMPRA", par, precios[par], fecha, volumenes,
+                       f"cierre diario sobre la media de {H1_SMA} dias", importe_compra=importe)
+                riesgo_pct = START * H1_RIESGO_OP / importe   # 0,20 EUR sobre 2,50 EUR -> stop al -8 %
+                a.setdefault("stops", {})[par] = a["entradas"][par] * (1 - riesgo_pct)
+
+
+def paso(estado, velas, diarias, volumenes, orden, ahora_ts):
     ahora = datetime.now(timezone.utc).isoformat(timespec="seconds")
     cierres, indice, cerr_por_t = {}, {}, {}
     for par, v in velas.items():
@@ -397,8 +476,8 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
         for par in pares_t:
             precios[par] = cierres[par][indice[(par, t)]]
         for a in estado["agentes"]:
-            decidir = DECIDIR[a["nombre"]]
-            if a["apagado"]:
+            decidir = DECIDIR.get(a["nombre"])
+            if a["apagado"] or decidir is None:
                 continue
             dia = t // 86400
             if a.get("dia") != dia:                      # nuevo dia: se anota con cuanto empieza
@@ -435,6 +514,9 @@ def paso(estado, velas, volumenes, orden, ahora_ts):
         estado["ultima_vela"] = tiempos[-1]
     for par, v in velas.items():                        # precio actual (la ultima vela puede seguir abierta)
         precios[par] = v[-1][1]
+    for a in estado["agentes"]:
+        if a["nombre"] == H1:
+            paso_h1(a, diarias, precios, ahora_ts, ahora, volumenes)
     for a in estado["agentes"]:
         apagar_si_toca(a, precios, ahora, volumenes)
     return ahora, precios
@@ -547,7 +629,7 @@ def archivar(etiqueta):
 
 def main():
     demo = int(sys.argv[sys.argv.index("--demo") + 1]) if "--demo" in sys.argv else 0
-    velas, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
+    velas, diarias, volumenes, orden, fuente, ahora_ts = obtener_datos(demo)
     os.makedirs(DATOS, exist_ok=True)
     if os.path.exists(ESTADO):
         with open(ESTADO) as f:
@@ -564,7 +646,7 @@ def main():
         print("Primera ejecucion: los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
     parametros(estado)
     asegurar_operaciones()                    # antes de operar, para que el archivo tenga la cabecera nueva
-    ahora, precios = paso(estado, velas, volumenes, orden, ahora_ts)
+    ahora, precios = paso(estado, velas, diarias, volumenes, orden, ahora_ts)
     guardar(estado, ahora, precios, fuente, len(orden), len(velas))
 
 
