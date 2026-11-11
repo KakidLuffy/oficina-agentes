@@ -1,1 +1,6 @@
 fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
+2026-11-11T22:00+00:00,Rebalanceo semanal,XBTEUR,COMPRA,66658.5126,2.0,rebalanceo,0.009
+2026-11-11T22:00+00:00,Rebalanceo semanal,ETHEUR,COMPRA,1854.196635,2.0,rebalanceo,0.009
+2026-11-11T22:00+00:00,Rebalanceo semanal,SOLEUR,COMPRA,75.287625,2.0,rebalanceo,0.009
+2026-11-11T22:00+00:00,Rebalanceo semanal,XRPEUR,COMPRA,0.950795,2.0,rebalanceo,0.009
+2026-11-11T22:00+00:00,Rebalanceo semanal,ADAEUR,COMPRA,0.157297,2.0,rebalanceo,0.009
