@@ -1,3 +1,14 @@
+# Versión 5 (11-nov-2026, noche): la v4 con dos correcciones
+
+La v4 solo estuvo 1 hora en marcha (archivada en `datos/archivo_10eur_v4_20261111/`). La v5 es igual salvo:
+
+- **Compras de 5 € (`MAX_POS = 2`)**: con solo BTC y ETH y compras de 2 €, los agentes de señales nunca pasaban del 40 %
+  invertido; frente a «Comprar y mantener» (100 %) ganaban en las caídas y perdían en las subidas sin acertar más.
+- **Agente principal elegido de antemano: «Tendencia H1 (diaria)»**. El veredicto de la v5 (a los 21 días, ~2-dic-2026)
+  se basa solo en él; los demás son exploratorios (con 9 agentes, que uno gane puede ser casualidad). Se eligió H1 porque
+  sus reglas se fijaron (JANUS Crypto, 27-oct) antes de ver estos datos. Ojo: sus reglas selladas limitan cada activo al
+  25 % (máximo 50 % invertido), así que también hay que mirarlo frente a la mitad del movimiento de la cesta BTC + ETH.
+
 # Versión 4
 
 Preparada el 5-nov-2026 y **ajustada el 11-nov-2026** con los 21 días completos de la v3 (21-oct a 11-nov). Al fusionarla,

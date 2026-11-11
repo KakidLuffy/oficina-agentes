@@ -24,13 +24,15 @@ from datetime import datetime, timezone
 import informe
 
 START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
-VERSION = 4           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
+VERSION = 5           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
 FEE = 0.004           # comision 0,40 % por operacion: tarifa "maker" de Kraken Pro en el nivel mas bajo (con ordenes a mercado seria "taker", 0,80 %)
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
 PERDIDA_DIA = START * 0.04   # si un agente pierde esto (EUR, el 4 % de su capital) en un dia, no vuelve a comprar ese dia
 STOP = START * 0.7    # el responsable de riesgo apaga al agente que baja de aqui
 TOP_MONEDAS = 20      # cuantas monedas se vigilan: las de mayor volumen en 24 h (cambia este numero si quieres mas o menos)
-MAX_POS = 5           # maximo de monedas que un agente puede tener a la vez
+MAX_POS = 2           # maximo de monedas a la vez (v5: solo se compran BTC y ETH, asi que 2 compras de 5 EUR = 100 %
+                      # invertible; con 5 de 2 EUR los agentes nunca pasaban del 40 % y la comparacion con
+                      # "Comprar y mantener" premiaba estar en efectivo en las caidas)
 SLOT = START / MAX_POS                  # euros ficticios que se invierten en cada compra
 SLIP_POCO_VOLUMEN = 0.003               # deslizamiento (0,3 %) en monedas con poco volumen diario
 VOLUMEN_ALTO = 100_000                  # EUR de volumen en 24 h a partir del cual se usa el deslizamiento normal
@@ -65,6 +67,9 @@ _VOLUMENES_TODOS = {}                   # volumen 24 h (EUR) de todos los pares 
 # Agente "Tendencia H1 (diaria)": hipotesis H1 y reglas de riesgo selladas de JANUS Crypto (v1, 27-oct-2026),
 # reconstruidas desde su documentacion. Solo BTC y ETH, velas DIARIAS, solo largos, sin apalancamiento.
 H1 = "Tendencia H1 (diaria)"
+# Agente PRINCIPAL elegido de antemano (11-nov-2026, antes de ver resultados de la v5): el veredicto de la v5 se basa
+# solo en el. Los demas son exploratorios: con 9 agentes, que alguno gane puede ser casualidad.
+AGENTE_PRINCIPAL = H1
 H1_PARES = ("XBTEUR", "ETHEUR")
 H1_SMA = 100                            # dentro si el cierre diario esta por encima de su media de 100 dias
 H1_MAX_ACTIVO = 0.25                    # maximo 25 % del capital por activo (50 % en total con 2 activos)
@@ -683,6 +688,8 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"Monedas vigiladas: las {n_monedas} de mayor volumen contra EUR (con datos en esta ejecucion: {n_con_datos}) · "
         f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una · "
         f"los agentes de senales solo compran {', '.join(nombre_corto(p) for p in PERMITIDAS)}",
+        f"Agente principal (elegido antes de empezar; el veredicto se basa solo en el): {AGENTE_PRINCIPAL}. "
+        "Los demas son exploratorios.",
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
         f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",

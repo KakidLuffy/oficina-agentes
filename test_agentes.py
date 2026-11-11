@@ -41,7 +41,9 @@ class TestV4(unittest.TestCase):
         self.dir.cleanup()
 
     def test_version_y_agentes(self):
-        self.assertEqual(a.VERSION, 4)
+        self.assertEqual(a.VERSION, 5)
+        self.assertEqual(a.SLOT, 5.0)                                  # v5: 2 compras de 5 EUR (100 % invertible)
+        self.assertEqual(a.AGENTE_PRINCIPAL, a.H1)
         nombres = [n for n, _ in a.AGENTES]
         self.assertNotIn("Momentum rapido", nombres)
         self.assertNotIn("Consenso 2 de 3", nombres)
