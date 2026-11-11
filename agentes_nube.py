@@ -38,6 +38,9 @@ PAUSA_API = 1.1                         # segundos entre peticiones a Kraken (pa
 HISTORIA_HORAS = 220                    # velas de 1 hora que se descargan por moneda (el filtro de tendencia necesita 200)
 MIN_CERRADAS = 30                       # criterio acordado: al menos 30 operaciones cerradas...
 MIN_DIAS = 21                           # ...y 3 semanas de simulacion antes de fiarse de un agente
+# Desde el 11-nov-2026 los agentes solo COMPRAN estas monedas (mas liquidas: menos deslizamiento y menos
+# operaciones). Las posiciones que ya tenian en otras monedas se venden con su regla normal, sin forzar.
+PERMITIDAS = ("XBTEUR", "ETHEUR")
 BTC = "XBTEUR"                          # moneda de referencia para 'Comprar y mantener' y la columna precio_eur
 # Stablecoins y monedas fiat: su precio casi no se mueve, asi que no tiene sentido operarlas
 EXCLUIR_BASES = {"USDT", "USDC", "DAI", "PYUSD", "TUSD", "EURT", "EURR", "EURQ", "USDG", "RLUSD", "USDD", "USDQ",
@@ -215,8 +218,9 @@ def universo_kraken():
     else:
         print("Sin volumenes: se usa la lista de respaldo.")
         salida = [(p, 0.0) for p in RESPALDO if p in disponibles][:TOP_MONEDAS]
-    if BTC not in [p for p, _ in salida]:
-        salida.insert(0, (BTC, 0.0))
+    for par in reversed(PERMITIDAS):                     # BTC y ETH siempre se descargan
+        if par not in [p for p, _ in salida] and (par in disponibles or par == BTC):
+            salida.insert(0, (par, 0.0))
     return salida
 
 
@@ -497,7 +501,7 @@ def paso(estado, velas, diarias, volumenes, orden, ahora_ts):
                     operar(a, "VENTA", par, precios[par], fecha, volumenes, "senal vendedora")
             bloqueado = a["eq_dia"] - equity(a, precios) >= PERDIDA_DIA
             for par in pares_t:                          # ...y luego se compra, por orden de volumen
-                if senales[par] == "b" and par not in a["posiciones"]:
+                if senales[par] == "b" and par not in a["posiciones"] and par in PERMITIDAS:
                     if len(a["posiciones"]) >= MAX_POS or a["efectivo"] < SLOT * 0.5:
                         break
                     if bloqueado:
@@ -566,7 +570,8 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"Ultima actualizacion: {ahora} UTC · Precio BTC/EUR: {precio:.0f} ({fuente})",
         f"En marcha desde: {estado['inicio']} UTC ({dias:.1f} dias)",
         f"Monedas vigiladas: las {n_monedas} de mayor volumen contra EUR (con datos en esta ejecucion: {n_con_datos}) · "
-        f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una",
+        f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una · "
+        f"desde el 11-nov-2026 solo compran {', '.join(nombre_corto(p) for p in PERMITIDAS)}",
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
         f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",
