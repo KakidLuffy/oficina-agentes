@@ -220,6 +220,29 @@ class TestReferenciaYCostes(unittest.TestCase):
         self.assertIn("| " + a.REF_CESTA + " |", resumen)
 
 
+class TestBacktestH1(unittest.TestCase):
+    def test_mismas_reglas_que_en_vivo(self):
+        import backtest_h1 as b
+        for k in ("START", "FEE", "SLIP", "H1_SMA", "H1_MAX_ACTIVO", "H1_RIESGO_OP", "H1_PARADA_MES", "H1_PARADA_PICO"):
+            self.assertEqual(getattr(b, k), getattr(a, k), k)
+        self.assertEqual(tuple(b.PARES), a.H1_PARES)
+
+    def test_demo_y_stop(self):
+        import backtest_h1 as b
+        ev = b.evaluar(b.diarias_demo())
+        self.assertIn("pasa", ev)
+        # una caida en un dia por debajo del stop vende al stop (o a la apertura si abre por debajo)
+        t0 = 1_600_000_000 // 86400 * 86400
+        serie = {t0 + i * 86400: (100.0, 100.0, 100.0) for i in range(101)}
+        serie[t0 + 101 * 86400] = (101.0, 101.0, 101.0)            # cierra sobre la media: compra
+        serie[t0 + 102 * 86400] = (100.0, 80.0, 99.0)              # minimo -20 %: salta el stop del -8 %
+        datos = {"XBTEUR": serie, "ETHEUR": {t: (50.0, 50.0, 50.0) for t in serie}}
+        r = b.simular(datos)
+        ventas = [o for o in r["ops"] if o["tipo"] == "VENTA"]
+        self.assertEqual(ventas[0]["motivo"], "stop")
+        self.assertAlmostEqual(ventas[0]["precio"], 101.0 * (1 + b.SLIP) * 0.92 * (1 - b.SLIP), places=6)
+
+
 class TestDirector(unittest.TestCase):
     def test_aviso_de_limite_solo_cerca_del_limite(self):
         import director

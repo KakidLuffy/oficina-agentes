@@ -27,7 +27,7 @@ Todo es con dinero **ficticio**. Que una estrategia pase estos criterios no la c
 Además:
 
 - Si se apaga por la regla del −15 %, la prueba se da por terminada en ese momento y la comparación se hace hasta ese día. Una regla de riesgo no se ignora a posteriori.
-- Las medias de 50, 150 y 200 días se calculan **solo para ver si el resultado es robusto**. No sirven para elegir otra media. Si H1 solo funciona con la media de 100 días y no con sus vecinas, se considera frágil y no pasa.
+- Las medias de 50, 150 y 200 días se calculan **solo para ver si el resultado es robusto**. No sirven para elegir otra media. Si H1 solo funciona con la media de 100 días y no con sus vecinas, se considera frágil y no pasa. Precisado el 11-nov, antes de ejecutar la prueba: «funciona con sus vecinas» quiere decir que **al menos 2 de las 3** (50, 150 y 200) superan también a la cesta al 50 % en rentabilidad total.
 
 ## 2. Simulación en vivo v5 (desde el 11-nov-2026)
 
