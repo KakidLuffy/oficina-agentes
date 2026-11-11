@@ -43,7 +43,7 @@ class TestV4(unittest.TestCase):
     def test_version_y_agentes(self):
         self.assertEqual(a.VERSION, 5)
         self.assertEqual(a.SLOT, 5.0)                                  # v5: 2 compras de 5 EUR (100 % invertible)
-        self.assertEqual(a.AGENTE_PRINCIPAL, a.H1)
+        self.assertIsNone(a.AGENTE_PRINCIPAL)                          # H1 no paso la prueba historica (CRITERIOS.md)
 
     def test_maximo_9_agentes(self):
         # CRITERIOS.md: maximo 9 agentes; para anadir uno hay que retirar otro antes (menos comparaciones multiples)

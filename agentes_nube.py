@@ -69,7 +69,7 @@ _VOLUMENES_TODOS = {}                   # volumen 24 h (EUR) de todos los pares 
 H1 = "Tendencia H1 (diaria)"
 # Agente PRINCIPAL elegido de antemano (11-nov-2026, antes de ver resultados de la v5): el veredicto de la v5 se basa
 # solo en el. Los demas son exploratorios: con 9 agentes, que alguno gane puede ser casualidad.
-AGENTE_PRINCIPAL = H1
+AGENTE_PRINCIPAL = None   # era H1; el 11-nov no paso la prueba historica (CRITERIOS.md): la v5 es exploratoria
 H1_PARES = ("XBTEUR", "ETHEUR")
 H1_SMA = 100                            # dentro si el cierre diario esta por encima de su media de 100 dias
 H1_MAX_ACTIVO = 0.25                    # maximo 25 % del capital por activo (50 % en total con 2 activos)
@@ -688,8 +688,10 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
         f"Monedas vigiladas: las {n_monedas} de mayor volumen contra EUR (con datos en esta ejecucion: {n_con_datos}) · "
         f"cada agente puede tener hasta {MAX_POS} a la vez, {SLOT:.2f} EUR en cada una · "
         f"los agentes de senales solo compran {', '.join(nombre_corto(p) for p in PERMITIDAS)}",
-        f"Agente principal (elegido antes de empezar; el veredicto se basa solo en el): {AGENTE_PRINCIPAL}. "
-        "Los demas son exploratorios.",
+        (f"Agente principal (elegido antes de empezar; el veredicto se basa solo en el): {AGENTE_PRINCIPAL}. "
+         "Los demas son exploratorios." if AGENTE_PRINCIPAL else
+         "Sin agente principal: Tendencia H1 no paso la prueba historica (ver CRITERIOS.md y backtest_h1.md). "
+         "Todos los agentes son exploratorios: que alguno gane puede ser casualidad."),
         f"Costes simulados por operacion: comision {FEE * 100:.2f} % + deslizamiento {SLIP * 100:.2f} % "
         f"({SLIP_POCO_VOLUMEN * 100:.1f} % en monedas de poco volumen) · limite de perdida diaria: {PERDIDA_DIA:.2f} EUR",
         "",
