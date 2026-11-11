@@ -1435,3 +1435,11 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-11T06:25:24+00:00,Cruce 10/30,EURCEUR,VENTA,0.9996,1.59,apagado por riesgo,0.0072
 2026-11-11T06:25:24+00:00,Cruce 10/30,NEAREUR,VENTA,3.247975,1.95,apagado por riesgo,0.0088
 2026-11-11T06:25:24+00:00,Cruce 10/30,AVAXEUR,VENTA,7.581208,1.77,apagado por riesgo,0.008
+2026-11-11T06:00+00:00,Rebote rapido,ZECEUR,COMPRA,882.829194,1.3,senal compradora,0.0059
+2026-11-11T07:00+00:00,Cruce 5/20,PEPEEUR,VENTA,5e-06,1.62,senal vendedora,0.0073
+2026-11-11T07:00+00:00,Cruce 5/20,AAVEEUR,VENTA,110.634655,1.85,senal vendedora,0.0084
+2026-11-11T07:00+00:00,Cruce 5/20,XRPEUR,COMPRA,0.949715,2.0,senal compradora,0.009
+2026-11-11T08:27:02+00:00,Rebote rapido,WLDEUR,VENTA,0.473874,1.97,apagado por riesgo,0.0138
+2026-11-11T08:27:02+00:00,Rebote rapido,XMREUR,VENTA,528.15078,1.97,apagado por riesgo,0.0139
+2026-11-11T08:27:02+00:00,Rebote rapido,LSKEUR,VENTA,0.205499,1.73,apagado por riesgo,0.0121
+2026-11-11T08:27:02+00:00,Rebote rapido,ZECEUR,VENTA,880.056752,1.29,apagado por riesgo,0.0058
