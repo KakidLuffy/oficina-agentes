@@ -1445,3 +1445,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-11T08:27:02+00:00,Rebote rapido,ZECEUR,VENTA,880.056752,1.29,apagado por riesgo,0.0058
 2026-11-11T09:00+00:00,Cruce 10/30 + filtro,PEPEEUR,VENTA,5e-06,1.92,senal vendedora,0.0087
 2026-11-11T13:00+00:00,Cruce 10/30 + filtro,EURCEUR,VENTA,0.9993,1.82,senal vendedora,0.0082
+2026-11-11T16:00+00:00,Rebote,ZECEUR,VENTA,907.421063,1.55,senal vendedora,0.007
