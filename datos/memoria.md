@@ -12,6 +12,7 @@ Aquí quedan las reglas y las decisiones. El director y el laboratorio la leen p
 
 ## Registro de decisiones y cambios (lo más reciente primero)
 
+- 2026-11-11 08:27 · **decision** · Rebote rapido se apaga por riesgo (capital bajo 7 €).
 - 2026-11-11 06:25 · **decision** · Cruce 10/30 se apaga por riesgo (capital bajo 7 €).
 - 2026-11-09 14:03 · **laboratorio** · Laboratorio del 2026-11-09: veredicto NINGUNA; candidatas: ninguna.
 - 2026-11-08 19:12 · **decision** · Consenso 2 de 3 se apaga por riesgo (capital bajo 7 €).
