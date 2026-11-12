@@ -1,0 +1,48 @@
+name: Relojero (rondas puntuales)
+
+# GitHub retrasa mucho las tareas programadas (rondas cada 2-6 h en vez de cada 30 min). Este flujo se queda
+# despierto casi 6 horas y lanza la ronda de los agentes en los minutos 17 y 47 de cada hora. Al terminar se vuelve
+# a lanzar a sí mismo. No necesita ningún token: usa el permiso que GitHub da a cada ejecución (que sí puede lanzar
+# flujos con workflow_dispatch). Si la cadena se corta, el horario de abajo lo vuelve a arrancar.
+# Para pararlo: Actions -> Relojero (rondas puntuales) -> ... -> Disable workflow. La ronda normal sigue de respaldo.
+
+on:
+  schedule:
+    - cron: "5 */6 * * *"   # respaldo por si la cadena se corta
+  workflow_dispatch:
+
+permissions:
+  actions: write             # solo para lanzar flujos de este repositorio
+  contents: read
+
+concurrency:
+  group: relojero            # como mucho uno despierto y otro esperando
+  cancel-in-progress: false
+
+jobs:
+  reloj:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      DURACION_S: "20400"    # 5 h 40 min despierto (el límite de GitHub son 6 h)
+    steps:
+      - name: Lanzar la ronda de los agentes en los minutos 17 y 47
+        run: |
+          fin=$(( $(date +%s) + DURACION_S ))
+          while :; do
+            ahora=$(date +%s)
+            min=$(( (ahora / 60) % 60 ))
+            if [ "$min" -lt 17 ]; then obj=17; elif [ "$min" -lt 47 ]; then obj=47; else obj=77; fi
+            siguiente=$(( ahora / 3600 * 3600 + obj * 60 ))
+            [ "$siguiente" -ge "$fin" ] && break
+            sleep $(( siguiente - ahora ))
+            gh workflow run agentes.yml --ref main \
+              && echo "$(date -u +%H:%M) ronda lanzada" \
+              || echo "$(date -u +%H:%M) no se pudo lanzar la ronda (se reintenta en la siguiente)"
+          done
+
+      - name: Volver a lanzarse (cadena)
+        if: success() || failure()   # no se relanza si lo cancelas a mano
+        run: gh workflow run relojero.yml --ref main

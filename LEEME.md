@@ -96,23 +96,19 @@ A partir de ahí corre solo. Si cambias `agentes_nube.py`, se ejecuta de nuevo a
 - **Repositorio público:** el informe diario y el panel lo leen sin claves. Por eso **nunca subas claves ni contraseñas de ningún exchange**; este programa no las usa ni las necesita.
 - **Gratis con condiciones.** En repositorios públicos GitHub no cobra las ejecuciones. Comprueba las condiciones actuales en la documentación de GitHub.
 - **Tareas programadas desactivadas.** GitHub puede desactivarlas tras un periodo largo sin actividad en el repositorio. Si las ejecuciones dejan de aparecer, entra en **Actions** y reactiva el flujo con un clic.
-- **GitHub se retrasa con los horarios.** El programa está puesto cada 30 minutos, pero GitHub lo lanza a menudo cada 2 a 6 horas. El código recupera las velas atrasadas en orden, así que no se rompe nada, pero los agentes deciden tarde. Para que las rondas sean puntuales, ver «Rondas puntuales» más abajo.
+- **GitHub se retrasa con los horarios.** El programa está puesto cada 30 minutos, pero GitHub lo lanza a menudo cada 2 a 6 horas. El código recupera las velas atrasadas en orden, así que no se rompe nada, pero los agentes deciden tarde. Para que las rondas sean puntuales está el relojero (ver «Rondas puntuales: el relojero» más abajo).
 - **Para pararlo:** **Actions → Agentes de trading (simulación) → ⋯ → Disable workflow**.
 - **Reiniciar desde cero:** borra la carpeta `datos` y deja que se ejecute de nuevo. Los agentes empiezan otra vez con 10 € (si cambias el capital en el código, la simulación anterior se archiva sola en `datos/archivo_…`).
 
-## Rondas puntuales con un aviso externo (opcional)
+## Rondas puntuales: el relojero
 
-Un servicio gratuito de tareas programadas (por ejemplo cron-job.org) puede pedirle a GitHub que lance la ronda cada 30 minutos. GitHub la pone en marcha en segundos y la ronda programada normal sigue de respaldo. Solo hace falta hacerlo una vez:
+GitHub retrasa las tareas programadas, así que `.github/workflows/relojero.yml` se queda despierto casi 6 horas y lanza la ronda de los agentes en los minutos 17 y 47 de cada hora. Al terminar se vuelve a lanzar a sí mismo, y su horario cada 6 horas lo vuelve a arrancar si la cadena se corta. **No necesita ningún token ni servicio externo**: usa el permiso que GitHub da a cada ejecución, limitado a lanzar flujos de este repositorio. La ronda programada normal sigue de respaldo.
 
-1. **Crea un token limitado** en GitHub: **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**. En *Repository access* elige **Only select repositories → oficina-agentes**. En *Permissions → Repository permissions* pon **Actions: Read and write** y deja todo lo demás sin acceso. Ponle caducidad (por ejemplo 90 días) y copia el token.
-2. **Crea la tarea** en el servicio externo, cada 30 minutos (por ejemplo en los minutos 17 y 47):
-   - Método: **POST**
-   - URL: `https://api.github.com/repos/KakidLuffy/oficina-agentes/actions/workflows/agentes.yml/dispatches`
-   - Cabeceras: `Authorization: Bearer <tu token>`, `Accept: application/vnd.github+json` y `X-GitHub-Api-Version: 2022-11-28`
-   - Cuerpo: `{"ref":"main"}`
-3. **Comprueba** en **Actions** que aparecen ejecuciones con el evento `workflow_dispatch` cada media hora.
+- **Para arrancarlo la primera vez:** **Actions → Relojero (rondas puntuales) → Run workflow** (o esperar a su horario).
+- **Para pararlo:** **Actions → Relojero (rondas puntuales) → ⋯ → Disable workflow**, y cancelar la ejecución que esté en marcha.
+- En repositorios públicos los minutos de GitHub Actions no se cobran, pero el relojero ocupa un ejecutor casi todo el día. Las condiciones de uso de GitHub piden que Actions se use para el proyecto: si GitHub pusiera pegas, se para y se usa la alternativa de abajo.
 
-El token solo puede lanzar flujos de este repositorio: no puede leer secretos ni tocar ningún exchange (aquí no hay claves de exchange). Guárdalo solo en el servicio externo, **nunca en el repositorio**. Si lo pierdes o caduca, bórralo en GitHub y crea otro. Si dos rondas coinciden, GitHub las pone en cola (`concurrency`) y no se pisan.
+**Alternativa con un servicio externo** (por ejemplo cron-job.org): crea un token *fine-grained* limitado a este repositorio con solo **Actions: Read and write**, y programa cada 30 minutos un **POST** a `https://api.github.com/repos/KakidLuffy/oficina-agentes/actions/workflows/agentes.yml/dispatches` con las cabeceras `Authorization: Bearer <token>`, `Accept: application/vnd.github+json` y `X-GitHub-Api-Version: 2022-11-28`, y el cuerpo `{"ref":"main"}`. El token se guarda solo en ese servicio, **nunca en el repositorio**.
 
 ## Probarlo en tu PC (opcional)
 
