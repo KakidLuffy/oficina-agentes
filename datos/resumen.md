@@ -1,6 +1,6 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-12T10:56:36+00:00 UTC · Precio BTC/EUR: 66106 (Kraken)
+Ultima actualizacion: 2026-11-12T11:15:18+00:00 UTC · Precio BTC/EUR: 66094 (Kraken)
 En marcha desde: 2026-11-11T23:09:56+00:00 UTC (0.5 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 2 a la vez, 5.00 EUR en cada una · los agentes de senales solo compran XBT, ETH
 Sin agente principal: Tendencia H1 no paso la prueba historica (ver CRITERIOS.md y backtest_h1.md). Todos los agentes son exploratorios: que alguno gane puede ser casualidad.
@@ -15,10 +15,10 @@ Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en
 | Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +0.08 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
 | Cruce 3/8 rapido | 10.00 | +0.00 | +0.00 % | +0.08 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
 | Rebote rapido | 10.00 | +0.00 | +0.00 % | +0.08 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Rebalanceo semanal | 9.89 | -0.11 | -1.07 % | -0.03 | 5 | 0.04 | -0.06 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
+| Rebalanceo semanal | 9.90 | -0.10 | -1.04 % | -0.02 | 5 | 0.04 | -0.06 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
 | Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +0.08 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Comprar y mantener (solo BTC) | 9.92 | -0.08 | -0.80 % | 0.00 | 1 | 0.04 | -0.04 | 2026-11-11 | Referencia |
-| Comprar y mantener (cesta) | 9.93 | -0.07 | -0.67 % | +0.01 | 2 | 0.04 | -0.02 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
+| Comprar y mantener (solo BTC) | 9.92 | -0.08 | -0.82 % | 0.00 | 1 | 0.04 | -0.04 | 2026-11-11 | Referencia |
+| Comprar y mantener (cesta) | 9.93 | -0.07 | -0.71 % | +0.01 | 2 | 0.04 | -0.03 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
 
 Riesgo (calculado con el historial guardado):
 
@@ -37,7 +37,7 @@ Riesgo (calculado con el historial guardado):
 
 Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una operacion cuenta cuando se cierra con su venta.
 
-⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (0 cerradas, 0 dias); Cruce 5/20 (0 cerradas, 0 dias); Momentum (0 cerradas, 0 dias); Rebote (0 cerradas, 0 dias); Cruce 10/30 + filtro (0 cerradas, 0 dias); Cruce 3/8 rapido (0 cerradas, 0 dias); Rebote rapido (0 cerradas, 0 dias); Rebalanceo semanal (0 cerradas, 0 dias); Tendencia H1 (diaria) (0 cerradas, 0 dias). Antes de eso, el resultado puede ser pura suerte.
+⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (0 cerradas, 1 dias); Cruce 5/20 (0 cerradas, 1 dias); Momentum (0 cerradas, 1 dias); Rebote (0 cerradas, 1 dias); Cruce 10/30 + filtro (0 cerradas, 1 dias); Cruce 3/8 rapido (0 cerradas, 1 dias); Rebote rapido (0 cerradas, 1 dias); Rebalanceo semanal (0 cerradas, 1 dias); Tendencia H1 (diaria) (0 cerradas, 1 dias). Antes de eso, el resultado puede ser pura suerte.
 
 ![Evolucion del capital](grafico.svg)
 
