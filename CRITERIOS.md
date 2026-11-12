@@ -71,6 +71,38 @@ se retoca después de ver resultados (cualquier ajuste posterior es una hipótes
 - Una candidata, como antes, **no opera sola**: se propone, y antes de entrar en simulación hay que registrarla aquí como
   hipótesis nueva.
 
+### 4.1 Corrección del 12-nov-2026: candidatas casi iguales cuentan como una sola idea
+
+Registrada **después** de ver el primer resultado del laboratorio v2 (ver el registro de abajo), así que es un cambio de
+criterio y se declara como tal. Va en el sentido de exigir más, no menos: el cálculo del azar supone que las 101 variantes
+son independientes, y muchas son la misma estrategia con otro parámetro.
+
+- Dos candidatas son **la misma idea** si sus resultados de examen (frente a mantener con la misma exposición, serie a serie
+  y año a año) tienen una correlación mayor que **0,7** con la primera candidata de su grupo.
+- El veredicto POSIBLE exige ahora **al menos 2 ideas distintas** y que sean más del doble de las candidatas esperadas por
+  azar más una. El resto de la sección 4 no cambia.
+
+## 5. Cuándo se juzga a cada agente de la v5 (registrado el 12-nov-2026, sin mirar resultados)
+
+Con solo BTC y ETH y señales lentas, algunos agentes harán muy pocas operaciones. Para que esperar no sea indefinido:
+
+- Un agente es **evaluable** cuando lleva 30 operaciones cerradas y 21 días (como hasta ahora).
+- **Revisión de calendario a los 90 días (9-feb-2027)**: el agente que entonces tenga menos de 30 operaciones cerradas se
+  declara **«no evaluable con esta muestra»**, gane o pierda. Ese resultado no cuenta ni a favor ni en contra, y su puesto
+  queda libre para una hipótesis nueva registrada antes aquí.
+- Esa revisión cuenta solo operaciones cerradas, nunca el resultado en euros, para no elegir por lo que ha salido.
+
+## 6. Referencias de comparación (registrado el 12-nov-2026)
+
+- «Rebalanceo semanal» invierte en 5 monedas, así que además de compararse con mantener BTC se compara con **mantener sus
+  mismas 5 monedas a partes iguales sin rebalancear** (desde sus primeras compras del 11-nov a las 23:00 UTC). Es la
+  referencia que dice si rebalancear aporta algo. Es solo una medida: no cambia ninguna regla de trading ni reinicia la v5.
+
 ## Registro de resultados
 
 - **11-nov-2026, prueba histórica de H1: NO PASA** (`datos/backtest_h1.md`). Con datos de Coinbase desde el 2-sep-2017, H1 se apagó por su propia regla del −15 % el 30-dic-2017, a los 4 meses. Hasta ese día ganó un +65,4 %, frente al +72,4 % de la cesta al 50 %, y su caída máxima fue mayor (−19,3 % frente a −17,6 %). Las medias de 50, 150 y 200 días tampoco superan a la cesta. Sin la regla del −15 % (dato solo informativo) habría ganado un +328 %, frente al +525 % de la cesta al 50 %, aunque con menos caída (−43 % frente a −69 %). **Conforme a la sección 2, H1 queda descartada como hipótesis principal.** La v5 sigue en marcha como exploración. Una variante de H1 sin la regla del −15 % sería una hipótesis NUEVA y contaría como una comparación más.
+- **12-nov-2026, primera ejecución del laboratorio v2** (rama `laboratorio-v2`, commit 64ffaef, `datos/laboratorio.md`):
+  velas de 1 día **RUIDO** (1 candidata, el azar daría ~1,1); velas de 6 h **POSIBLE** (2 candidatas, «Cruce 10/80 + filtro»
+  y «Ruptura 40/20 + filtro», que aprueban 5 de 8 años; el azar daría ~0,2). Las dos son tendencia con filtro de 200 y
+  fallan los mismos años (2022, 2023 y 2025); ninguna gana a comprar y mantener a secas. Por eso se añadió la sección 4.1.
+  Ninguna entra en simulación sin registrarse antes como hipótesis.
