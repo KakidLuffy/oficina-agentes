@@ -1,10 +1,10 @@
 # Laboratorio de estrategias (v2)
 
-Actualizado: 2026-11-12T22:01:51Z · datos: Coinbase · 22 series (BTC 1 día, BTC 6 h, ETH 1 día, ETH 6 h, SOL 1 día, SOL 6 h, XRP 1 día, XRP 6 h, ADA 1 día, ADA 6 h, DOGE 1 día, DOGE 6 h, LINK 1 día, LINK 6 h, DOT 1 día, DOT 6 h, LTC 1 día, LTC 6 h, AVAX 1 día, AVAX 6 h, ATOM 1 día, ATOM 6 h)
+Actualizado: 2026-11-12T22:49:35Z · datos: Coinbase · 22 series (BTC 1 día, BTC 6 h, ETH 1 día, ETH 6 h, SOL 1 día, SOL 6 h, XRP 1 día, XRP 6 h, ADA 1 día, ADA 6 h, DOGE 1 día, DOGE 6 h, LINK 1 día, LINK 6 h, DOT 1 día, DOT 6 h, LTC 1 día, LTC 6 h, AVAX 1 día, AVAX 6 h, ATOM 1 día, ATOM 6 h)
 
 Sin datos suficientes: TRX 1 día, TRX 6 h.
 
-**Veredicto: POSIBLE.** Velas de 1 día: 1 candidata(s) en 8 años de examen (2019–2026), pero el azar ya daría unas 1.1. No se distingue de la casualidad: tomar solo como pista. Velas de 6 h: 2 candidatas en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.
+**Veredicto: POSIBLE.** Velas de 1 día: 1 candidata(s) en 8 años de examen (2019–2026), pero el azar ya daría unas 1.1. No se distingue de la casualidad: tomar solo como pista. Velas de 6 h: 2 candidatas (2 ideas distintas) en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.
 
 Variantes probadas: 101 en cada duración de vela. Criterio (CRITERIOS.md, sección 4): examen año a año (se elige con el año anterior); una serie aprueba un año con ≥2 operaciones, superando a mantener con la misma exposición y sin caer más que mantener; aprueba el año con ≥60 % de las series; candidata si aprueba ≥60 % de los años y gana dinero de media. Velas de 1 día y de 6 h por separado.
 
@@ -29,11 +29,11 @@ Las mejores en el entrenamiento (medias por año de examen, en € sobre 50 € 
 | Cruce 5/50 | Analista de tendencia | -5.50 | +25.87 | -11.59 | -0.28 | 46 % / 68 % | 9 | 3/8 | ✘ |
 | Cruce 3/50 | Analista de tendencia | -5.67 | +27.92 | -9.54 | +1.88 | 47 % / 68 % | 11 | 3/8 | ✘ |
 
-Candidatas, año a año (✔ = aprueba ese año):
+Candidatas, año a año (✔ = aprueba ese año). «Idea»: candidatas casi iguales (correlación > 0.7) cuentan como una sola:
 
-| Variante | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| Ruptura 40/20 + filtro | ✔ +22.8 | ✔ +81.1 | ✔ +38.3 | ✘ -14.5 | ✘ +3.3 | ✔ +40.7 | ✘ -5.6 | ✔ +0.6 |
+| Variante | Idea | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Ruptura 40/20 + filtro | Ruptura 40/20 + filtro | ✔ +22.8 | ✔ +81.1 | ✔ +38.3 | ✘ -14.5 | ✘ +3.3 | ✔ +40.7 | ✘ -5.6 | ✔ +0.6 |
 
 ## Velas de 6 h
 
@@ -56,12 +56,12 @@ Las mejores en el entrenamiento (medias por año de examen, en € sobre 50 € 
 | Cruce 20/80 + filtro | Analista de filtros | -13.83 | +21.25 | -16.57 | +5.11 | 40 % / 71 % | 10 | 3/8 | ✘ |
 | Cruce 15/80 + filtro | Analista de filtros | -13.94 | +22.17 | -15.66 | +8.09 | 40 % / 70 % | 10 | 4/8 | ✘ |
 
-Candidatas, año a año (✔ = aprueba ese año):
+Candidatas, año a año (✔ = aprueba ese año). «Idea»: candidatas casi iguales (correlación > 0.7) cuentan como una sola:
 
-| Variante | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| Cruce 10/80 + filtro | ✔ +52.3 | ✔ +56.9 | ✔ +37.3 | ✘ -9.0 | ✘ +34.4 | ✔ +44.1 | ✘ -14.4 | ✔ +0.6 |
-| Ruptura 40/20 + filtro | ✔ +17.1 | ✔ +59.7 | ✔ +60.1 | ✘ -14.3 | ✘ +42.0 | ✔ +21.4 | ✘ -8.4 | ✔ -3.8 |
+| Variante | Idea | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Cruce 10/80 + filtro | Cruce 10/80 + filtro | ✔ +52.3 | ✔ +56.9 | ✔ +37.3 | ✘ -9.0 | ✘ +34.4 | ✔ +44.1 | ✘ -14.4 | ✔ +0.6 |
+| Ruptura 40/20 + filtro | Ruptura 40/20 + filtro | ✔ +17.1 | ✔ +59.7 | ✔ +60.1 | ✘ -14.3 | ✘ +42.0 | ✔ +21.4 | ✘ -8.4 | ✔ -3.8 |
 
 Resultado medio por familia en el examen (por año, tras costes):
 

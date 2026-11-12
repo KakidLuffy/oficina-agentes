@@ -1,6 +1,6 @@
 {
  "version": 2,
- "generado": "2026-11-12T22:01:51Z",
+ "generado": "2026-11-12T22:49:35Z",
  "fuente": "Coinbase",
  "series": [
   "BTC 1 día",
@@ -33,7 +33,7 @@
  "probadas": 202,
  "tasa_azar": 0.171,
  "veredicto": "posible",
- "texto": "Velas de 1 día: 1 candidata(s) en 8 años de examen (2019–2026), pero el azar ya daría unas 1.1. No se distingue de la casualidad: tomar solo como pista. Velas de 6 h: 2 candidatas en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.",
+ "texto": "Velas de 1 día: 1 candidata(s) en 8 años de examen (2019–2026), pero el azar ya daría unas 1.1. No se distingue de la casualidad: tomar solo como pista. Velas de 6 h: 2 candidatas (2 ideas distintas) en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.",
  "criterio": "examen año a año (se elige con el año anterior); una serie aprueba un año con ≥2 operaciones, superando a mantener con la misma exposición y sin caer más que mantener; aprueba el año con ≥60 % de las series; candidata si aprueba ≥60 % de los años y gana dinero de media. Velas de 1 día y de 6 h por separado",
  "por_vela": {
   "1 día": {
@@ -63,11 +63,12 @@
    "tasa_azar": 0.2,
    "candidatas_por_azar": 1.06,
    "tasa_aprobado_elegidas": 0.188,
-   "candidatas": 1
+   "candidatas": 1,
+   "ideas_distintas": 1
   },
   "6 h": {
    "veredicto": "posible",
-   "texto": "Velas de 6 h: 2 candidatas en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.",
+   "texto": "Velas de 6 h: 2 candidatas (2 ideas distintas) en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.",
    "variantes": 101,
    "anios_examen": [
     2019,
@@ -92,7 +93,8 @@
    "tasa_azar": 0.141,
    "candidatas_por_azar": 0.22,
    "tasa_aprobado_elegidas": 0.135,
-   "candidatas": 2
+   "candidatas": 2,
+   "ideas_distintas": 2
   }
  },
  "analistas": [
@@ -229,6 +231,7 @@
    "elegida": 2,
    "ok_elegida": 1,
    "pasa": true,
+   "idea": "Ruptura 40/20 + filtro",
    "variante": "Ruptura 40/20 + filtro",
    "vela": "1 día",
    "anios": [
@@ -313,6 +316,7 @@
    "elegida": 4,
    "ok_elegida": 1,
    "pasa": true,
+   "idea": "Cruce 10/80 + filtro",
    "variante": "Cruce 10/80 + filtro",
    "vela": "6 h",
    "anios": [
@@ -397,6 +401,7 @@
    "elegida": 2,
    "ok_elegida": 1,
    "pasa": true,
+   "idea": "Ruptura 40/20 + filtro",
    "variante": "Ruptura 40/20 + filtro",
    "vela": "6 h",
    "anios": [
@@ -1659,6 +1664,7 @@
    "elegida": 4,
    "ok_elegida": 1,
    "pasa": true,
+   "idea": "Cruce 10/80 + filtro",
    "variante": "Cruce 10/80 + filtro",
    "vela": "6 h",
    "anios": [
