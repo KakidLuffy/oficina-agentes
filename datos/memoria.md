@@ -12,6 +12,7 @@ Aquí quedan las reglas y las decisiones. El director y el laboratorio la leen p
 
 ## Registro de decisiones y cambios (lo más reciente primero)
 
+- 2026-11-12 22:57 · **laboratorio** · Laboratorio del 2026-11-12: veredicto POSIBLE; candidatas: Ruptura 40/20 + filtro (1 día), Cruce 10/80 + filtro (6 h), Ruptura 40/20 + filtro (6 h).
 - 2026-11-11 22:01 · **decision** · Rebote rapido vuelve a estar activo.
 - 2026-11-11 22:01 · **decision** · Momentum rapido vuelve a estar activo.
 - 2026-11-11 22:01 · **decision** · Momentum vuelve a estar activo.
