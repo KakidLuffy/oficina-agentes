@@ -1,5 +1,5 @@
 {
- "generado": "2026-11-12T21:09:06Z",
+ "generado": "2026-11-12T22:02:06Z",
  "titular": "Todo en orden.",
  "lineas": [
   "Fondo de 90,00 € (10,00 € por agente): vale 89,64 € (-0,36 €).",
@@ -19,55 +19,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Rebalanceo semanal",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Tendencia H1 (diaria)",
-   "dias": 0.9,
+   "dias": 1.0,
    "cierres": 0,
    "evaluable": false
   }
