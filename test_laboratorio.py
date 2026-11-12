@@ -132,5 +132,15 @@ class TestLaboratorio(unittest.TestCase):
         self.assertIn("granularity=86400", g.call_args_list[0].args[0])
 
 
+    def test_candidatas_casi_iguales_cuentan_como_una_idea(self):
+        base = [1.0, -2.0, 3.0, 0.5, -1.0, 2.0]
+        casi = [x * 1.1 + 0.01 for x in base]                    # la misma estrategia con otro parámetro
+        otra = [0.2, 1.0, -0.5, 2.0, 1.5, -2.0]                   # una idea distinta
+        fs = [{"nombre": "A", "vec": base}, {"nombre": "A'", "vec": casi}, {"nombre": "B", "vec": otra}]
+        ideas = lab.agrupar_ideas(fs)
+        self.assertEqual([[f["nombre"] for f in g] for g in ideas], [["A", "A'"], ["B"]])
+        self.assertEqual(fs[1]["idea"], "A")
+
+
 if __name__ == "__main__":
     unittest.main()

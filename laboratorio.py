@@ -37,6 +37,7 @@ WARM = 200                      # velas de calentamiento (el filtro de tendencia
 MIN_OPS_ANUAL = 2               # operaciones minimas en cada año de examen
 FRACCION_SERIES = 0.6           # aprueba el año si aprueba al menos el 60 % de las series
 FRACCION_ANIOS = 0.6            # candidata si aprueba al menos el 60 % de los años de examen
+CORRELACION_IDEA = 0.7          # candidatas cuyos resultados de examen se parecen más que esto cuentan como UNA idea
 COBERTURA_ENTRENO = 0.75        # una serie entra en un año si tiene el 75 % de las velas del año de entrenamiento
 COBERTURA_EXAMEN = 0.5          # ... y el 50 % de las del año de examen (el año en curso cuenta si va por la mitad)
 MIN_SERIES_ANIO = 3
@@ -364,11 +365,12 @@ def examinar(series, todas, minutos):
 
     filas = []
     for k, (analista, nombre, fn, opc) in enumerate(todas):
-        por_pliegue = []
+        por_pliegue, vec = [], []
         for ye, yx, dentro in pliegues:
             tr = [sim(k, s, a, fn, opc) for s, a, _ in dentro]
             ex = [sim(k, s, b, fn, opc) for s, _, b in dentro]
             ok = sum(aprueba(r) for r in ex)
+            vec += [r["res"] - r["expo"] * r["hold"] for r in ex]
             por_pliegue.append({
                 "anio": yx, "series": len(ex), "ok": ok,
                 "pasa": ok >= math.ceil(FRACCION_SERIES * len(ex)),
@@ -387,7 +389,7 @@ def examinar(series, todas, minutos):
                       "test_dif_expo": sum(p["test_dif_expo"] for p in por_pliegue) / n,
                       "ops": sum(p["ops"] for p in por_pliegue) / n,
                       "dd": sum(p["dd"] for p in por_pliegue) / n, "dd_hold": sum(p["dd_hold"] for p in por_pliegue) / n,
-                      "ok": sum(p["pasa"] for p in por_pliegue), "total": n, "elegida": 0, "ok_elegida": 0})
+                      "ok": sum(p["pasa"] for p in por_pliegue), "total": n, "elegida": 0, "ok_elegida": 0, "vec": vec})
     for j in range(len(pliegues)):                     # las 12 mejores del entrenamiento de cada año
         for f in sorted(filas, key=lambda f: f["pp"][j]["train_dif"], reverse=True)[:N_CANDIDATAS]:
             f["elegida"] += 1
@@ -402,25 +404,54 @@ def examinar(series, todas, minutos):
     elegidas_total = sum(f["elegida"] for f in filas)
     tasa_sel = sum(f["ok_elegida"] for f in filas) / elegidas_total if elegidas_total else 0.0
     candidatas = sorted([f for f in filas if f["pasa"]], key=lambda f: f["test_dif_expo"], reverse=True)
+    ideas = agrupar_ideas(candidatas)
     if not candidatas:
         veredicto = "ninguna"
-    elif len(candidatas) >= 2 and len(candidatas) > 2 * esperadas + 1:
+    elif len(ideas) >= 2 and len(ideas) > 2 * esperadas + 1:
         veredicto = "posible"
     else:
         veredicto = "ruido"
     return {"minutos": minutos, "pliegues": [(a, b, len(d)) for a, b, d in pliegues], "filas": filas,
-            "candidatas": candidatas, "azar": azar, "esperadas": esperadas, "tasa_sel": tasa_sel,
+            "candidatas": candidatas, "ideas": ideas, "azar": azar, "esperadas": esperadas, "tasa_sel": tasa_sel,
             "minimo": minimo, "veredicto": veredicto, "series": [f"{s['moneda']}" for s in sel]}
 
 
+def correlacion(x, y):
+    n = len(x)
+    mx, my = sum(x) / n, sum(y) / n
+    sxy = sum((a - mx) * (b - my) for a, b in zip(x, y))
+    sx = math.sqrt(sum((a - mx) ** 2 for a in x))
+    sy = math.sqrt(sum((b - my) ** 2 for b in y))
+    return sxy / (sx * sy) if sx > 0 and sy > 0 else 0.0
+
+
+def agrupar_ideas(candidatas):
+    """Agrupa candidatas que son casi la misma estrategia (sus resultados de examen, serie a serie y año a año,
+    tienen correlación > CORRELACION_IDEA con la primera del grupo). Cada grupo cuenta como UNA idea."""
+    ideas = []
+    for f in candidatas:                                # ya vienen ordenadas de mejor a peor
+        for g in ideas:
+            if correlacion(f["vec"], g[0]["vec"]) > CORRELACION_IDEA:
+                g.append(f)
+                f["idea"] = g[0]["nombre"]
+                break
+        else:
+            ideas.append([f])
+            f["idea"] = f["nombre"]
+    return ideas
+
+
 def texto_veredicto(r, nom):
-    n, pl = len(r["candidatas"]), r["pliegues"]
+    n, pl, ni = len(r["candidatas"]), r["pliegues"], len(r["ideas"])
     anios = f"{len(pl)} años de examen ({pl[0][1]}–{pl[-1][1]})"
     if r["veredicto"] == "ninguna":
         return f"Velas de {nom}: ninguna variante aprueba al menos {r['minimo']} de los {anios} ganando dinero de media."
     if r["veredicto"] == "posible":
-        return (f"Velas de {nom}: {n} candidatas en {anios}, más del doble de las {r['esperadas']:.1f} que daría el azar. "
+        return (f"Velas de {nom}: {n} candidatas ({ni} ideas distintas) en {anios}, más del doble de las {r['esperadas']:.1f} que daría el azar. "
                 "Son candidatas para registrar como hipótesis y probar en simulación.")
+    if n > ni:
+        return (f"Velas de {nom}: {n} candidatas en {anios}, pero son {ni} idea(s) distinta(s) (las demás son casi la misma estrategia) "
+                f"y el azar daría unas {r['esperadas']:.1f}. No se distingue de la casualidad: tomar solo como pista.")
     return (f"Velas de {nom}: {n} candidata(s) en {anios}, pero el azar ya daría unas {r['esperadas']:.1f}. "
             "No se distingue de la casualidad: tomar solo como pista.")
 
@@ -449,7 +480,7 @@ def main():
     txt = " ".join(texto_veredicto(r, nom) for nom, r in por_vela.items())
 
     def limpia(f, nom):
-        d = {k: (round(v, 2) if isinstance(v, float) else v) for k, v in f.items() if k != "pp"}
+        d = {k: (round(v, 2) if isinstance(v, float) else v) for k, v in f.items() if k not in ("pp", "vec")}
         d["nombre"], d["variante"], d["vela"] = f"{f['nombre']} ({nom})", f["nombre"], nom
         d["anios"] = [{"anio": p["anio"], "pasa": p["pasa"], "ok": p["ok"], "series": p["series"],
                        "test_res": round(p["test_res"], 2), "test_dif_expo": round(p["test_dif_expo"], 2)} for p in f["pp"]]
@@ -485,7 +516,8 @@ def main():
         "por_vela": {nom: {"veredicto": r["veredicto"], "texto": texto_veredicto(r, nom), "variantes": len(r["filas"]),
                            "anios_examen": [b for _, b, _ in r["pliegues"]], "series_por_anio": [n for _, _, n in r["pliegues"]],
                            "tasa_azar": round(r["azar"], 3), "candidatas_por_azar": round(r["esperadas"], 2),
-                           "tasa_aprobado_elegidas": round(r["tasa_sel"], 3), "candidatas": len(r["candidatas"])}
+                           "tasa_aprobado_elegidas": round(r["tasa_sel"], 3), "candidatas": len(r["candidatas"]),
+                           "ideas_distintas": len(r["ideas"])}
                      for nom, r in por_vela.items()},
         "analistas": list(analistas.values()),
         "familias": {n: {"variantes": d["variantes"], "dif_media_examen": round(d["dif"] / d["variantes"], 2),
@@ -517,11 +549,12 @@ def main():
             md.append(f"| {f['nombre']} | {f['analista']} | {f['train_dif']:+.2f} | {f['test_res']:+.2f} | {f['test_dif']:+.2f} | "
                       f"{f['test_dif_expo']:+.2f} | {f['dd']:.0f} % / {f['dd_hold']:.0f} % | {f['ops']:.0f} | {f['ok']}/{f['total']} | {'✔' if f['pasa'] else '✘'} |")
         if r["candidatas"]:
-            md += ["", "Candidatas, año a año (✔ = aprueba ese año):", "",
-                   "| Variante | " + " | ".join(str(b) for _, b, _ in r["pliegues"]) + " |",
-                   "|---|" + "|".join(":-:" for _ in r["pliegues"]) + "|"]
+            md += ["", "Candidatas, año a año (✔ = aprueba ese año). «Idea»: candidatas casi iguales (correlación > "
+                   f"{CORRELACION_IDEA:g}) cuentan como una sola:", "",
+                   "| Variante | Idea | " + " | ".join(str(b) for _, b, _ in r["pliegues"]) + " |",
+                   "|---|---|" + "|".join(":-:" for _ in r["pliegues"]) + "|"]
             for f in r["candidatas"]:
-                md.append(f"| {f['nombre']} | " + " | ".join(f"{'✔' if p['pasa'] else '✘'} {p['test_res']:+.1f}" for p in f["pp"]) + " |")
+                md.append(f"| {f['nombre']} | {f['idea']} | " + " | ".join(f"{'✔' if p['pasa'] else '✘'} {p['test_res']:+.1f}" for p in f["pp"]) + " |")
         md.append("")
     md += ["Resultado medio por familia en el examen (por año, tras costes):", "",
            "| Familia | Variantes | Vs mantener (€) | Vs misma exposición (€) | Op./año | Candidatas |", "|---|---:|---:|---:|---:|---:|"]

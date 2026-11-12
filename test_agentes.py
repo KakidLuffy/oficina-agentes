@@ -218,6 +218,39 @@ class TestReferenciaYCostes(unittest.TestCase):
         self.assertIn("Costes pagados (EUR)", resumen)
         self.assertIn("Antes de costes (EUR)", resumen)
         self.assertIn("| " + a.REF_CESTA + " |", resumen)
+        self.assertIn("| " + a.REF_REBALANCEO + " |", resumen)             # referencia justa del Rebalanceo
+        self.assertEqual(sorted(est["referencia_rebalanceo"]), sorted(p for p in est["cesta"] if p in velas))
+
+    def test_referencia_rebalanceo_desde_sus_primeras_compras(self):
+        a.asegurar_operaciones()
+        filas = [["2026-11-11T23:00+00:00", a.REBALANCEO, p, "COMPRA", precio, 2.0, "rebalanceo", 0.009]
+                 for p, precio in ((a.BTC, 66686.9268), ("ETHEUR", 1852.095585), ("SOLEUR", 75.047505))]
+        filas += [["2026-11-12T11:00+00:00", "Rebote", "ETHEUR", "COMPRA", 1822.39, 5.0, "senal compradora", 0.0225],
+                  ["2026-11-18T23:00+00:00", a.REBALANCEO, "SOLEUR", "COMPRA", 80.0, 0.3, "rebalanceo", 0.001]]
+        with open(a.OPERACIONES, "a", newline="") as f:
+            csv.writer(f).writerows(filas)
+        est = {"cesta": [a.BTC, "ETHEUR", "SOLEUR"], "precios": {}}
+        a.migrar_referencia_rebalanceo(est)
+        ref = est["referencia_rebalanceo"]
+        self.assertEqual(sorted(ref), sorted([a.BTC, "ETHEUR", "SOLEUR"]))  # solo la primera compra, no el rebalanceo posterior
+        self.assertAlmostEqual(ref["ETHEUR"], 2.0 * (1 - a.FEE) / 1852.095585)
+        self.assertEqual(est["referencia_rebalanceo_desde"], "2026-11-11T23:00+00:00")
+        antes = dict(ref)
+        a.migrar_referencia_rebalanceo(est)                                   # no se recalcula
+        self.assertEqual(est["referencia_rebalanceo"], antes)
+
+    def test_h1_guarda_su_ultimo_cierre_y_media(self):
+        t0 = 1_700_000_000 // 86400 * 86400
+        diarias = {p: [(t0 + i * 86400, 100.0 + i) for i in range(103)] for p in a.H1_PARES}
+        ag = a.agente_nuevo(a.H1, 60000.0)
+        ahora = t0 + 103 * 86400
+        with contextlib.redirect_stdout(io.StringIO()):
+            a.paso_h1(ag, diarias, {}, ahora, "2023-11-20T00:00+00:00", {p: 1e6 for p in a.H1_PARES})
+        d = ag["h1_ultimo"][a.BTC]
+        self.assertEqual(d["cierre"], 202.0)
+        self.assertAlmostEqual(d["media100"], sum(100.0 + i for i in range(3, 103)) / 100, places=2)
+        self.assertTrue(d["encima"])
+        self.assertIn(a.BTC, ag["posiciones"])                               # coherente con la regla: dentro
 
 
 class TestBacktestH1(unittest.TestCase):

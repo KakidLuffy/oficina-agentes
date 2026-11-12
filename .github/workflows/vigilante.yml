@@ -29,7 +29,7 @@ jobs:
       GH_REPO: ${{ github.repository }}
       TITULO: "La oficina está parada"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Comprobar la última ronda
         id: edad

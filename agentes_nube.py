@@ -23,7 +23,7 @@ from datetime import datetime, timezone
 
 import informe
 
-START = 10.0          # euros ficticios por agente (6 agentes = 60 EUR en total)
+START = 10.0          # euros ficticios por agente (9 agentes = 90 EUR en total)
 VERSION = 5           # si cambian las reglas o los costes, sube este numero: la simulacion anterior se archiva y empieza de cero
 FEE = 0.004           # comision 0,40 % por operacion: tarifa "maker" de Kraken Pro en el nivel mas bajo (con ordenes a mercado seria "taker", 0,80 %)
 SLIP = 0.0005         # deslizamiento: cada compra paga un 0,05 % mas y cada venta recibe un 0,05 % menos
@@ -63,6 +63,8 @@ DESVIO_MAX = 0.35
 # pueden comprar los agentes de senales (PERMITIDAS: BTC y ETH) y se mantienen sin tocar. Es una comparacion mas justa
 # que solo BTC: en la v3 los agentes operaban sobre todo monedas pequenas, que cayeron mas que BTC.
 REF_CESTA = "Comprar y mantener (cesta)"
+REF_REBALANCEO = "Mantener la cesta del Rebalanceo"
+REVISION_CALENDARIO = "9-feb-2027"     # CRITERIOS.md, seccion 5: revision a los 90 dias de la v5
 _VOLUMENES_TODOS = {}                   # volumen 24 h (EUR) de todos los pares EUR, para el deslizamiento de la cesta
 # Agente "Tendencia H1 (diaria)": hipotesis H1 y reglas de riesgo selladas de JANUS Crypto (v1, 27-oct-2026),
 # reconstruidas desde su documentacion. Solo BTC y ETH, velas DIARIAS, solo largos, sin apalancamiento.
@@ -359,6 +361,36 @@ def referencia_cesta(velas, orden):
     return {p: parte * (1 - FEE) / (velas[p][-1][1] * (1 + SLIP)) for p in pares}
 
 
+def referencia_rebalanceo(cesta, precios):
+    """Las mismas monedas que el Rebalanceo, a partes iguales y SIN rebalancear (su referencia justa)."""
+    pares = [p for p in cesta if precios.get(p)]
+    if not pares:
+        return {}
+    parte = START / len(pares)
+    return {p: parte * (1 - FEE) / (precios[p] * (1 + SLIP)) for p in pares}
+
+
+def migrar_referencia_rebalanceo(estado):
+    """Estados que no la tenian (v5 hasta el 12-nov): se reconstruye con las primeras compras del Rebalanceo,
+    que son justo la cesta a partes iguales; si aun no compro, con los precios de ahora."""
+    if "referencia_rebalanceo" in estado:
+        return
+    filas = []
+    if os.path.exists(OPERACIONES):
+        with open(OPERACIONES, newline="") as f:
+            filas = [r for r in csv.DictReader(f) if r.get("agente") == REBALANCEO and r.get("tipo") == "COMPRA"]
+    if filas:
+        primera = min(r["fecha_utc"] for r in filas)
+        ref = {}
+        for r in filas:
+            if r["fecha_utc"] == primera:
+                ref[r["moneda"]] = ref.get(r["moneda"], 0.0) + float(r["importe_eur"]) * (1 - FEE) / float(r["precio_eur"])
+        estado["referencia_rebalanceo"], estado["referencia_rebalanceo_desde"] = ref, primera
+    else:
+        estado["referencia_rebalanceo"] = referencia_rebalanceo(estado.get("cesta", []), estado.get("precios", {}))
+        estado["referencia_rebalanceo_desde"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
 def valor_referencia(estado, precios):
     ref = estado.get("referencia_cesta") or {}
     return sum(u * precios.get(p, estado["precios"].get(p, 0.0)) for p, u in ref.items()) if ref else None
@@ -378,6 +410,8 @@ def estado_nuevo(velas, ahora_ts, orden=None):
         "agentes": [agente_nuevo(n, velas[BTC][-1][1]) for n, _ in AGENTES],
         "cesta": cesta_para(velas),
         "referencia_cesta": referencia_cesta(velas, orden),
+        "referencia_rebalanceo": referencia_rebalanceo(cesta_para(velas), {p: v[-1][1] for p, v in velas.items()}),
+        "referencia_rebalanceo_desde": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
 
 
@@ -547,11 +581,14 @@ def paso_h1(a, diarias, precios, ahora_ts, fecha, volumenes):
         if len(cer) < H1_SMA + 1:
             continue
         t_ult = cer[-1][0]
+        cierre, sma = cer[-1][1], media([c for _, c in cer[-H1_SMA:]])
+        a.setdefault("h1_ultimo", {})[par] = {      # para poder revisar la regla sin descargar velas (solo informativo)
+            "dia": datetime.fromtimestamp(t_ult, timezone.utc).strftime("%Y-%m-%d"),
+            "cierre": round(cierre, 2), f"media{H1_SMA}": round(sma, 2), "encima": cierre > sma}
         vistas = a.setdefault("ultima_diaria", {})
         if vistas.get(par) == t_ult:
             continue
         vistas[par] = t_ult
-        cierre, sma = cer[-1][1], media([c for _, c in cer[-H1_SMA:]])
         if par in a["posiciones"] and cierre < sma:
             operar(a, "VENTA", par, precios[par], fecha, volumenes, f"cierre diario bajo la media de {H1_SMA} dias")
         elif par not in a["posiciones"] and cierre > sma:
@@ -716,6 +753,20 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
                       f"{cesta_ref - mantener:+.2f} | {n_ref} | {START - START * (1 - FEE) / (1 + SLIP):.2f} | "
                       f"{cesta_ref - START * (1 - FEE) / (1 + SLIP):+.2f} | {estado['inicio'][:10]} | "
                       f"Referencia: {n_ref} monedas del inicio a partes iguales |")
+    ref_reb = estado.get("referencia_rebalanceo") or {}
+    if ref_reb:
+        val = sum(u * precios.get(p, estado["precios"].get(p, 0.0)) for p, u in ref_reb.items())
+        lineas.append(f"| {REF_REBALANCEO} | {val:.2f} | {val - START:+.2f} | {(val / START - 1) * 100:+.2f} % | "
+                      f"{val - mantener:+.2f} | {len(ref_reb)} | {START - START * (1 - FEE) / (1 + SLIP):.2f} | "
+                      f"{val - START * (1 - FEE) / (1 + SLIP):+.2f} | {estado.get('referencia_rebalanceo_desde', estado['inicio'])[:10]} | "
+                      f"Referencia del Rebalanceo: sus {len(ref_reb)} monedas sin rebalancear |")
+        lineas += ["", f"{REBALANCEO} frente a mantener sus mismas {len(ref_reb)} monedas sin rebalancear: "
+                   f"{eq_por_nombre[REBALANCEO] - val:+.2f} EUR (la columna «Dif. vs Comprar y mantener» lo compara solo con BTC)."]
+    h1 = next((a for a in estado["agentes"] if a["nombre"] == H1), None)
+    if h1 and h1.get("h1_ultimo"):
+        partes = [f"{nombre_corto(p)} cierre del {d['dia']} {d['cierre']:.2f} frente a media de {H1_SMA} dias {d[f'media{H1_SMA}']:.2f} "
+                  f"({'encima: dentro' if d['encima'] else 'debajo: fuera'})" for p, d in sorted(h1["h1_ultimo"].items())]
+        lineas += ["", f"Regla de {H1} (ultimo cierre diario): " + "; ".join(partes) + "."]
     nombres = [n for n, _ in AGENTES]
     try:
         met = informe.metricas(HISTORIAL, OPERACIONES, nombres + ["Comprar y mantener"])
@@ -735,7 +786,9 @@ def guardar(estado, ahora, precios, fuente, n_monedas, n_con_datos):
                 pocos.append(f"{a['nombre']} ({cerradas} cerradas, {dias_a:.0f} dias)")
         if pocos:
             lineas += ["", f"⚠ Aun sin datos suficientes (se exigen {MIN_CERRADAS} operaciones cerradas y {MIN_DIAS} dias): "
-                       + "; ".join(pocos) + ". Antes de eso, el resultado puede ser pura suerte."]
+                       + "; ".join(pocos) + ". Antes de eso, el resultado puede ser pura suerte. "
+                       f"El {REVISION_CALENDARIO} (90 dias) el que no llegue a {MIN_CERRADAS} cerradas se declara "
+                       "«no evaluable con esta muestra» (CRITERIOS.md, seccion 5)."]
         if informe.grafico_svg(HISTORIAL, GRAFICO, [n for n, _ in AGENTES[:4]]):   # el grafico conserva sus 4 colores originales
             lineas += ["", "![Evolucion del capital](grafico.svg)"]
     except Exception as e:                      # los extras nunca deben romper la simulacion
@@ -777,6 +830,7 @@ def main():
         estado = estado_nuevo(velas, ahora_ts, orden)
         print("Primera ejecucion: los agentes empiezan ahora con", START, "EUR ficticios cada uno.")
     parametros(estado)
+    migrar_referencia_rebalanceo(estado)
     asegurar_operaciones()                    # antes de operar, para que el archivo tenga la cabecera nueva
     ahora, precios = paso(estado, velas, diarias, volumenes, orden, ahora_ts)
     guardar(estado, ahora, precios, fuente, len(orden), len(velas))
