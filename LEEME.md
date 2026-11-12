@@ -12,7 +12,7 @@ Diez agentes de trading con **dinero ficticio** (10 € cada uno, 100 € en tot
 | `informe.py` | Calcula la caída máxima, las operaciones ganadoras/perdedoras y el gráfico del resumen. |
 | `.github/workflows/agentes.yml` | La orden que ejecuta el programa cada hora (minutos 17 y 47, como respaldo). |
 | `comparar_estrategias.py` y `.github/workflows/comparar.yml` | Comparador manual de estrategias sobre el historial de BTC/EUR (se lanza a mano desde Actions). |
-| `laboratorio.py` y `.github/workflows/laboratorio.yml` | El laboratorio: cada lunes prueba ~80 variantes de estrategias y las examina (ver más abajo). |
+| `laboratorio.py` y `.github/workflows/laboratorio.yml` | El laboratorio: cada lunes prueba 101 variantes de estrategias con años de historia y las examina (ver más abajo). |
 | `index.html` | El panel «Sala de trading», publicado con GitHub Pages. |
 | `manifest.webmanifest`, `icon-192.png`, `icon-512.png` | Permiten instalar el panel en la pantalla de inicio del móvil. |
 | `director.py` y `.github/workflows/director.yml` | El director: tras cada ejecución de los agentes o del laboratorio revisa los datos y escribe el parte, la memoria y las propuestas. |
@@ -38,12 +38,13 @@ Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pa
 
 ## El laboratorio (analistas de estrategias)
 
-Un grupo de seis analistas (tendencia, filtros, rebote, volatilidad, salidas con stop/objetivo y fuerza relativa frente a BTC) prueba cada lunes unas 100 variantes de estrategias sobre el historial de Kraken (12 monedas, velas de 4 horas y de 1 día), con los mismos costes que la simulación (comisión 0,40 % + deslizamiento). Al final enseña también el resultado medio de cada familia, para ver qué ideas valen la pena.
+Un grupo de seis analistas (tendencia, filtros, rebote, volatilidad, salidas con stop/objetivo y fuerza relativa frente a BTC) prueba cada lunes 101 variantes de estrategias sobre **todo el historial de Coinbase** en euros (12 monedas, desde que existe cada una, velas de 6 horas y de 1 día), con los mismos costes que la simulación (comisión 0,40 % + deslizamiento). Las reglas exactas están en `CRITERIOS.md`, sección 4 (laboratorio v2, desde el 12-nov-2026).
 
-1. **Entrenamiento:** se eligen las 12 mejores variantes con el primer 60 % del historial.
-2. **Examen:** se las prueba en el último 40 %, que no se usó para elegir. Una variante aprueba si gana dinero y supera a comprar y mantener en al menos el 60 % de las series, con 4 operaciones o más.
-3. **Tasa de azar:** se calcula qué porcentaje de *todas* las variantes aprobaría el examen. Si las candidatas no destacan claramente sobre ese porcentaje, el veredicto es «ruido».
-4. **Director:** el veredicto (POSIBLE, RUIDO o NINGUNA) aparece en el panel, en la vista **Laboratorio**, y en el informe diario.
+1. **Examen año a año:** se eligen las 12 mejores variantes con un año (entrenamiento) y se las examina con el año siguiente, avanzando año por año.
+2. **Aprobar un año:** en cada serie hace falta al menos 2 operaciones, superar a «mantener con la misma exposición media» y no caer más que comprar y mantener. El año se aprueba con el 60 % de las series.
+3. **Candidata:** aprueba al menos el 60 % de los años y gana dinero de media. Las velas de 1 día y de 6 h se juzgan por separado.
+4. **Control del azar:** se calcula cuántas candidatas saldrían por pura casualidad. Si no hay claramente más, el veredicto es «ruido».
+5. **Director:** el veredicto (POSIBLE, RUIDO o NINGUNA) aparece en el panel, en la vista **Laboratorio**, y en el informe diario.
 
 Modo «propone, no ejecuta»: las candidatas **no operan solas**. Si alguna se repite varias semanas, se puede añadir como agente nuevo en simulación y aplicarle el mismo criterio de 3 semanas y 30 operaciones. Se lanza a mano desde **Actions → Laboratorio de estrategias (semanal) → Run workflow**.
 

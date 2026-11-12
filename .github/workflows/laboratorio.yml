@@ -9,13 +9,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: agentes
+  group: laboratorio        # aparte de los agentes: si no, una ejecución larga dejaría rondas de la simulación sin hacer
   cancel-in-progress: false
 
 jobs:
   laboratorio:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45      # descarga años de velas de Coinbase (unas 800 peticiones)
     steps:
       - uses: actions/checkout@v4
 
@@ -32,5 +32,4 @@ jobs:
           git config user.email "agentes-bot@users.noreply.github.com"
           git add datos/laboratorio.json datos/laboratorio.md
           git diff --staged --quiet || git commit -m "Actualizar laboratorio de estrategias"
-          git pull --rebase
-          git push
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 10; done; exit 1

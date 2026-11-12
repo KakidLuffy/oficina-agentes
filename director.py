@@ -264,7 +264,7 @@ def main():
             semanas = {n: semanas.get(n, 0) + 1 for n in nombres}
         prop_md += [f"Último laboratorio: {lab.get('generado', '')} · veredicto **{str(veredicto).upper()}** · {lab.get('probadas', 0)} variantes probadas (el azar aprobaría el {round(num(lab.get('tasa_azar')) * 100)} %).", ""]
         if lab.get("candidatas"):
-            prop_md += ["| Candidata | Analista | Dif. examen (€) | Series aprobadas | Semanas seguidas | Estado |", "|---|---|---:|---:|---:|---|"]
+            prop_md += ["| Candidata | Analista | Dif. examen (€) | Años aprobados | Semanas seguidas | Estado |", "|---|---|---:|---:|---:|---|"]
             for c in lab["candidatas"]:
                 est = {"aprobar": "Aprobada", "rechazar": "Rechazada"}.get(estados_user.get(c["nombre"].lower(), ""), "Pendiente")
                 prop_md.append(f"| {c['nombre']} | {c['analista']} | {num(c['test_dif']):+.2f} | {c['ok']}/{c['total']} | {semanas.get(c['nombre'], 1)} | {est} |")

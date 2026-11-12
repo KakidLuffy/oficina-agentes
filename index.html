@@ -659,11 +659,11 @@ function pintarLab(){
   $("labsvg").innerHTML = h + '</div>';
   var f = new Date(L.generado), t = "";
   t += '<p class="note">Actualizado ' + f.toLocaleString("es-ES", {day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit"}) + '. ' + L.probadas + ' variantes en ' + L.series.length + ' series (' + esc(L.fuente) + '). Tasa de azar: ' + Math.round(L.tasa_azar * 100) + ' %. Criterio: ' + esc(L.criterio) + '.</p>';
-  t += '<table class="labt"><thead><tr><th>Variante (mejores en entrenamiento)</th><th>Entrena</th><th>Examen</th><th>Series</th><th></th></tr></thead><tbody>';
+  t += '<table class="labt"><thead><tr><th>Variante (mejores en entrenamiento)</th><th>Entrena</th><th>Examen</th><th>Años</th><th></th></tr></thead><tbody>';
   L.mejores_entreno.forEach(function(x){
     t += '<tr><td>' + esc(x.nombre) + '</td><td class="' + (x.train_dif >= 0 ? "up" : "down") + '">' + eur(x.train_dif, true) + '</td><td class="' + (x.test_dif >= 0 ? "up" : "down") + '">' + eur(x.test_dif, true) + '</td><td>' + x.ok + '/' + x.total + '</td><td>' + (x.pasa ? "✔" : "✘") + '</td></tr>';
   });
-  t += '</tbody></table><p class="note">«Entrena» y «Examen» son la diferencia media frente a comprar y mantener. Las candidatas (✔) <b>no operan solas</b>: solo se proponen. Con tantas variantes probadas, algunas salen bien por azar, por eso se compara con la tasa de azar.</p>';
+  t += '</tbody></table><p class="note">«Entrena» y «Examen» son la diferencia media por año frente a comprar y mantener; «Años» son los años de examen aprobados. Las candidatas (✔) <b>no operan solas</b>: solo se proponen. Con tantas variantes probadas, algunas salen bien por azar, por eso se compara con la tasa de azar.</p>';
   $("labtxt").innerHTML = t;
 }
 
