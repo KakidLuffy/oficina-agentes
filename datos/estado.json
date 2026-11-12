@@ -2,34 +2,36 @@
   "version": 5,
   "capital_inicial": 10.0,
   "inicio": "2026-11-11T23:09:56+00:00",
-  "ultima_vela": 1794484800,
+  "ultima_vela": 1794502800,
   "precio_inicio": 66341.4,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 65385.5,
-    "ETHEUR": 1809.21,
-    "SOLEUR": 73.37,
-    "XRPEUR": 0.92654,
-    "ZECEUR": 863.962,
-    "NEAREUR": 3.0445,
-    "HYPEEUR": 63.02,
-    "PEPEEUR": 3.944e-06,
-    "LINKEUR": 8.91113,
-    "SUIEUR": 0.7155,
+    "XBTEUR": 64760.4,
+    "ETHEUR": 1818.73,
+    "SOLEUR": 73.53,
+    "XRPEUR": 0.92727,
+    "ZECEUR": 848.721,
+    "NEAREUR": 3.0877,
+    "HYPEEUR": 64.29,
+    "PEPEEUR": 3.951e-06,
+    "LINKEUR": 9.04849,
+    "SUIEUR": 0.7199,
     "XLMEUR": 0.129484,
-    "ADAEUR": 0.15335,
-    "AVAXEUR": 7.489,
-    "TAOEUR": 186.1056,
-    "XDCEUR": 0.02668,
-    "LTCEUR": 43.95,
-    "XDGEUR": 0.0591559,
+    "ADAEUR": 0.155232,
+    "AVAXEUR": 7.551,
+    "TAOEUR": 189.206,
+    "XDCEUR": 0.02678,
+    "LTCEUR": 44.93,
+    "XDGEUR": 0.0594297,
     "PUMPEUR": 0.003088,
     "ARBEUR": 0.1365,
     "ZROEUR": 1.406,
     "UNIEUR": 5.4081,
-    "TRXEUR": 0.284827,
-    "AAVEEUR": 100.36
+    "TRXEUR": 0.285666,
+    "AAVEEUR": 102.25,
+    "ENAEUR": 0.126,
+    "XMREUR": 485.1
   },
   "agentes": [
     {
@@ -67,23 +69,26 @@
     },
     {
       "nombre": "Rebote",
-      "efectivo": 5.0,
+      "efectivo": 0.0,
       "posiciones": {
-        "ETHEUR": 0.0027326741135657883
+        "ETHEUR": 0.0027326741135657883,
+        "XBTEUR": 7.619308292938685e-05
       },
       "apagado": false,
-      "operaciones": 1,
+      "operaciones": 2,
       "dia": 20769,
       "eq_dia": 10.0,
       "inicio": "2026-11-11T23:09:56+00:00",
       "precio_inicio": 66341.4,
       "entradas": {
-        "ETHEUR": 1822.3907399999998
+        "ETHEUR": 1822.3907399999998,
+        "XBTEUR": 65360.26379999999
       },
       "compras": {
-        "ETHEUR": "2026-11-12T11:00+00:00"
+        "ETHEUR": "2026-11-12T11:00+00:00",
+        "XBTEUR": "2026-11-12T13:00+00:00"
       },
-      "costes": 0.022488755622187995
+      "costes": 0.04497751124437599
     },
     {
       "nombre": "Cruce 10/30 + filtro",
@@ -109,14 +114,23 @@
     },
     {
       "nombre": "Rebote rapido",
-      "efectivo": 10.0,
-      "posiciones": {},
+      "efectivo": 5.0,
+      "posiciones": {
+        "XBTEUR": 7.701298958842142e-05
+      },
       "apagado": false,
-      "operaciones": 0,
+      "operaciones": 1,
       "dia": 20769,
       "eq_dia": 10.0,
       "inicio": "2026-11-11T23:09:56+00:00",
-      "precio_inicio": 66341.4
+      "precio_inicio": 66341.4,
+      "entradas": {
+        "XBTEUR": 64664.41604999999
+      },
+      "compras": {
+        "XBTEUR": "2026-11-12T14:00+00:00"
+      },
+      "costes": 0.022488755622187995
     },
     {
       "nombre": "Rebalanceo semanal",
