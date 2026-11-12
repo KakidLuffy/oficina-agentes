@@ -1,12 +1,12 @@
 {
- "generado": "2026-11-12T04:22:39Z",
+ "generado": "2026-11-12T11:15:33Z",
  "titular": "Todo en orden.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 89,93 € (-0,07 €).",
-  "Capital total 89,93 € (-0,07 €, -0,08 %).",
-  "Mejor agente: Cruce 10/30 (+0,00 €). Peor: Rebalanceo semanal (-0,07 €).",
-  "8 de 9 agentes van por encima de «Comprar y mantener» (9,98 €).",
-  "8 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (9,99 €).",
+  "Fondo de 90,00 € (10,00 € por agente): vale 89,90 € (-0,10 €).",
+  "Capital total 89,90 € (-0,10 €, -0,12 %).",
+  "Mejor agente: Cruce 10/30 (+0,00 €). Peor: Rebalanceo semanal (-0,10 €).",
+  "8 de 9 agentes van por encima de «Comprar y mantener» (9,92 €).",
+  "8 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (9,93 €).",
   "Costes pagados entre todos: 0,04 €.",
   "1 con monedas, 8 en efectivo, 0 apagados.",
   "Operaciones en las últimas 24 h: 5."
@@ -19,55 +19,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Rebalanceo semanal",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Tendencia H1 (diaria)",
-   "dias": 0.2,
+   "dias": 0.5,
    "cierres": 0,
    "evaluable": false
   }
