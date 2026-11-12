@@ -2,35 +2,35 @@
   "version": 5,
   "capital_inicial": 10.0,
   "inicio": "2026-11-11T23:09:56+00:00",
-  "ultima_vela": 1794513600,
+  "ultima_vela": 1794517200,
   "precio_inicio": 66341.4,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 64562.4,
-    "ETHEUR": 1820.95,
-    "SOLEUR": 73.41,
-    "XRPEUR": 0.93666,
-    "ZECEUR": 856.87,
-    "NEAREUR": 3.1011,
-    "HYPEEUR": 64.77,
-    "PEPEEUR": 4.105e-06,
-    "LINKEUR": 9.08312,
-    "SUIEUR": 0.7251,
-    "XLMEUR": 0.13281,
-    "ADAEUR": 0.155912,
-    "AVAXEUR": 7.532,
-    "TAOEUR": 190.7728,
-    "XDCEUR": 0.02693,
-    "LTCEUR": 45.29,
-    "XDGEUR": 0.0595146,
+    "XBTEUR": 64595.3,
+    "ETHEUR": 1821.25,
+    "SOLEUR": 73.63,
+    "XRPEUR": 0.93781,
+    "ZECEUR": 855.877,
+    "NEAREUR": 3.0771,
+    "HYPEEUR": 65.03,
+    "PEPEEUR": 4.098e-06,
+    "LINKEUR": 9.10959,
+    "SUIEUR": 0.7259,
+    "XLMEUR": 0.135023,
+    "ADAEUR": 0.15699,
+    "AVAXEUR": 7.537,
+    "TAOEUR": 191.1973,
+    "XDCEUR": 0.02642,
+    "LTCEUR": 45.35,
+    "XDGEUR": 0.0599561,
     "PUMPEUR": 0.003088,
     "ARBEUR": 0.1365,
     "ZROEUR": 1.406,
-    "UNIEUR": 5.4568,
-    "TRXEUR": 0.285318,
+    "UNIEUR": 5.442,
+    "TRXEUR": 0.285281,
     "AAVEEUR": 103.59,
-    "ENAEUR": 0.1269,
+    "ENAEUR": 0.1268,
     "XMREUR": 485.1
   },
   "agentes": [
@@ -181,6 +181,20 @@
       "ultima_diaria": {
         "XBTEUR": 1794355200,
         "ETHEUR": 1794355200
+      },
+      "h1_ultimo": {
+        "XBTEUR": {
+          "dia": "2026-11-11",
+          "cierre": 66653.6,
+          "media100": 68136.88,
+          "encima": false
+        },
+        "ETHEUR": {
+          "dia": "2026-11-11",
+          "cierre": 1851.17,
+          "media100": 2084.47,
+          "encima": false
+        }
       }
     }
   ],
@@ -194,5 +208,13 @@
   "referencia_cesta": {
     "XBTEUR": 7.502873385816114e-05,
     "ETHEUR": 0.0027007510780613303
-  }
+  },
+  "referencia_rebalanceo": {
+    "XBTEUR": 2.98709221670116e-05,
+    "ETHEUR": 0.0010755384420399663,
+    "SOLEUR": 0.026543187545008992,
+    "XRPEUR": 2.0994631192204163,
+    "ADAEUR": 12.656378064819462
+  },
+  "referencia_rebalanceo_desde": "2026-11-11T23:00+00:00"
 }
