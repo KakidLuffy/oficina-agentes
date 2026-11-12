@@ -1,246 +1,2488 @@
 {
- "generado": "2026-11-09T14:03:03Z",
- "fuente": "Kraken",
+ "version": 2,
+ "generado": "2026-11-12T22:01:51Z",
+ "fuente": "Coinbase",
  "series": [
-  "BTC 4 h",
   "BTC 1 día",
-  "ETH 4 h",
+  "BTC 6 h",
   "ETH 1 día",
-  "SOL 4 h",
+  "ETH 6 h",
   "SOL 1 día",
-  "XRP 4 h",
+  "SOL 6 h",
   "XRP 1 día",
-  "ADA 4 h",
+  "XRP 6 h",
   "ADA 1 día",
-  "DOGE 4 h",
+  "ADA 6 h",
   "DOGE 1 día",
-  "LINK 4 h",
+  "DOGE 6 h",
   "LINK 1 día",
-  "DOT 4 h",
+  "LINK 6 h",
   "DOT 1 día",
-  "LTC 4 h",
+  "DOT 6 h",
   "LTC 1 día",
-  "AVAX 4 h",
+  "LTC 6 h",
   "AVAX 1 día",
-  "ATOM 4 h",
+  "AVAX 6 h",
   "ATOM 1 día",
-  "TRX 4 h",
-  "TRX 1 día"
+  "ATOM 6 h"
  ],
- "probadas": 101,
- "tasa_azar": 0.0,
- "veredicto": "ninguna",
- "texto": "Ninguna de las mejores variantes del entrenamiento aprueba el examen. No hay candidatas esta semana.",
- "criterio": "examen en el último 40 % del historial, ≥4 operaciones, gana dinero y supera a comprar y mantener en ≥60 % de las series",
+ "sin_datos": [
+  "TRX 1 día",
+  "TRX 6 h"
+ ],
+ "probadas": 202,
+ "tasa_azar": 0.171,
+ "veredicto": "posible",
+ "texto": "Velas de 1 día: 1 candidata(s) en 8 años de examen (2019–2026), pero el azar ya daría unas 1.1. No se distingue de la casualidad: tomar solo como pista. Velas de 6 h: 2 candidatas en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.",
+ "criterio": "examen año a año (se elige con el año anterior); una serie aprueba un año con ≥2 operaciones, superando a mantener con la misma exposición y sin caer más que mantener; aprueba el año con ≥60 % de las series; candidata si aprueba ≥60 % de los años y gana dinero de media. Velas de 1 día y de 6 h por separado",
+ "por_vela": {
+  "1 día": {
+   "veredicto": "ruido",
+   "texto": "Velas de 1 día: 1 candidata(s) en 8 años de examen (2019–2026), pero el azar ya daría unas 1.1. No se distingue de la casualidad: tomar solo como pista.",
+   "variantes": 101,
+   "anios_examen": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "series_por_anio": [
+    3,
+    3,
+    3,
+    4,
+    8,
+    10,
+    11,
+    11
+   ],
+   "tasa_azar": 0.2,
+   "candidatas_por_azar": 1.06,
+   "tasa_aprobado_elegidas": 0.188,
+   "candidatas": 1
+  },
+  "6 h": {
+   "veredicto": "posible",
+   "texto": "Velas de 6 h: 2 candidatas en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.",
+   "variantes": 101,
+   "anios_examen": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "series_por_anio": [
+    3,
+    3,
+    3,
+    4,
+    10,
+    10,
+    11,
+    11
+   ],
+   "tasa_azar": 0.141,
+   "candidatas_por_azar": 0.22,
+   "tasa_aprobado_elegidas": 0.135,
+   "candidatas": 2
+  }
+ },
  "analistas": [
   {
    "nombre": "Analista de tendencia",
-   "probadas": 35,
+   "probadas": 70,
    "candidatas": 0
   },
   {
    "nombre": "Analista de filtros",
-   "probadas": 35,
-   "candidatas": 0
+   "probadas": 70,
+   "candidatas": 3
   },
   {
    "nombre": "Analista de rebote",
-   "probadas": 9,
+   "probadas": 18,
    "candidatas": 0
   },
   {
    "nombre": "Analista de volatilidad",
-   "probadas": 8,
+   "probadas": 16,
    "candidatas": 0
   },
   {
    "nombre": "Analista de salidas",
-   "probadas": 8,
+   "probadas": 16,
    "candidatas": 0
   },
   {
    "nombre": "Analista de fuerza relativa",
-   "probadas": 6,
+   "probadas": 12,
    "candidatas": 0
   }
  ],
  "familias": {
-  "Analista de tendencia": {
+  "Analista de tendencia (1 día)": {
    "variantes": 35,
-   "dif_media_examen": 4.44,
+   "dif_media_examen": -16.07,
+   "dif_media_misma_exposicion": -1.91,
+   "operaciones_medias_anio": 11.9,
    "aprueban": 0
   },
-  "Analista de filtros": {
+  "Analista de filtros (1 día)": {
    "variantes": 35,
-   "dif_media_examen": 6.71,
-   "aprueban": 0
+   "dif_media_examen": -25.37,
+   "dif_media_misma_exposicion": -5.06,
+   "operaciones_medias_anio": 6.6,
+   "aprueban": 1
   },
-  "Analista de rebote": {
+  "Analista de rebote (1 día)": {
    "variantes": 9,
-   "dif_media_examen": 4.31,
+   "dif_media_examen": -41.12,
+   "dif_media_misma_exposicion": -8.81,
+   "operaciones_medias_anio": 9.5,
    "aprueban": 0
   },
-  "Analista de volatilidad": {
+  "Analista de volatilidad (1 día)": {
    "variantes": 8,
-   "dif_media_examen": 4.62,
+   "dif_media_examen": -20.88,
+   "dif_media_misma_exposicion": -4.72,
+   "operaciones_medias_anio": 11.1,
    "aprueban": 0
   },
-  "Analista de salidas": {
+  "Analista de salidas (1 día)": {
    "variantes": 8,
-   "dif_media_examen": 3.95,
+   "dif_media_examen": -34.72,
+   "dif_media_misma_exposicion": -7.24,
+   "operaciones_medias_anio": 19.6,
    "aprueban": 0
   },
-  "Analista de fuerza relativa": {
+  "Analista de fuerza relativa (1 día)": {
    "variantes": 6,
-   "dif_media_examen": 4.14,
+   "dif_media_examen": -35.14,
+   "dif_media_misma_exposicion": -10.95,
+   "operaciones_medias_anio": 14.5,
+   "aprueban": 0
+  },
+  "Analista de tendencia (6 h)": {
+   "variantes": 35,
+   "dif_media_examen": -27.62,
+   "dif_media_misma_exposicion": -13.52,
+   "operaciones_medias_anio": 43.0,
+   "aprueban": 0
+  },
+  "Analista de filtros (6 h)": {
+   "variantes": 35,
+   "dif_media_examen": -24.25,
+   "dif_media_misma_exposicion": -2.58,
+   "operaciones_medias_anio": 28.8,
+   "aprueban": 2
+  },
+  "Analista de rebote (6 h)": {
+   "variantes": 9,
+   "dif_media_examen": -48.08,
+   "dif_media_misma_exposicion": -15.77,
+   "operaciones_medias_anio": 29.0,
+   "aprueban": 0
+  },
+  "Analista de volatilidad (6 h)": {
+   "variantes": 8,
+   "dif_media_examen": -34.56,
+   "dif_media_misma_exposicion": -16.55,
+   "operaciones_medias_anio": 39.1,
+   "aprueban": 0
+  },
+  "Analista de salidas (6 h)": {
+   "variantes": 8,
+   "dif_media_examen": -44.69,
+   "dif_media_misma_exposicion": -15.84,
+   "operaciones_medias_anio": 58.0,
+   "aprueban": 0
+  },
+  "Analista de fuerza relativa (6 h)": {
+   "variantes": 6,
+   "dif_media_examen": -42.88,
+   "dif_media_misma_exposicion": -15.05,
+   "operaciones_medias_anio": 43.6,
    "aprueban": 0
   }
  },
- "candidatas": [],
+ "candidatas": [
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Ruptura 40/20 + filtro (1 día)",
+   "train_dif": -10.35,
+   "test_res": 20.84,
+   "test_dif": -16.63,
+   "test_dif_expo": 2.41,
+   "ops": 5.09,
+   "dd": 41.72,
+   "dd_hold": 67.4,
+   "ok": 5,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 1,
+   "pasa": true,
+   "variante": "Ruptura 40/20 + filtro",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 22.78,
+     "test_dif_expo": 17.37
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 81.08,
+     "test_dif_expo": 7.54
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 38.33,
+     "test_dif_expo": -5.54
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -14.48,
+     "test_dif_expo": -12.61
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 8,
+     "test_res": 3.27,
+     "test_dif_expo": -17.51
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 8,
+     "series": 10,
+     "test_res": 40.7,
+     "test_dif_expo": 29.83
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -5.62,
+     "test_dif_expo": -2.88
+    },
+    {
+     "anio": 2026,
+     "pasa": true,
+     "ok": 7,
+     "series": 11,
+     "test_res": 0.62,
+     "test_dif_expo": 3.13
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 10/80 + filtro (6 h)",
+   "train_dif": -10.34,
+   "test_res": 25.28,
+   "test_dif": -12.55,
+   "test_dif_expo": 8.84,
+   "ops": 13.19,
+   "dd": 38.03,
+   "dd_hold": 70.04,
+   "ok": 5,
+   "total": 8,
+   "elegida": 4,
+   "ok_elegida": 1,
+   "pasa": true,
+   "variante": "Cruce 10/80 + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 52.33,
+     "test_dif_expo": 43.24
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 56.91,
+     "test_dif_expo": 4.06
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 37.27,
+     "test_dif_expo": -0.66
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -9.03,
+     "test_dif_expo": -4.83
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 34.42,
+     "test_dif_expo": 2.5
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 10,
+     "series": 10,
+     "test_res": 44.11,
+     "test_dif_expo": 33.55
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -14.39,
+     "test_dif_expo": -11.16
+    },
+    {
+     "anio": 2026,
+     "pasa": true,
+     "ok": 9,
+     "series": 11,
+     "test_res": 0.62,
+     "test_dif_expo": 4.01
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Ruptura 40/20 + filtro (6 h)",
+   "train_dif": -15.03,
+   "test_res": 21.72,
+   "test_dif": -16.1,
+   "test_dif_expo": 4.99,
+   "ops": 21.74,
+   "dd": 40.7,
+   "dd_hold": 71.58,
+   "ok": 5,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 1,
+   "pasa": true,
+   "variante": "Ruptura 40/20 + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 17.06,
+     "test_dif_expo": 9.78
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 59.73,
+     "test_dif_expo": 3.53
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 60.07,
+     "test_dif_expo": 22.21
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -14.29,
+     "test_dif_expo": -9.98
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 10,
+     "test_res": 42.01,
+     "test_dif_expo": 8.69
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 7,
+     "series": 10,
+     "test_res": 21.39,
+     "test_dif_expo": 10.9
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 3,
+     "series": 11,
+     "test_res": -8.44,
+     "test_dif_expo": -4.98
+    },
+    {
+     "anio": 2026,
+     "pasa": true,
+     "ok": 7,
+     "series": 11,
+     "test_res": -3.75,
+     "test_dif_expo": -0.28
+    }
+   ]
+  }
+ ],
  "mejores_entreno": [
   {
-   "analista": "Analista de filtros",
-   "nombre": "Momentum 24 velas ±2.0 % + filtro",
-   "train_dif": 3.3,
-   "test_dif": 5.8,
-   "test_res": -2.44,
-   "ops": 2.33,
-   "dd": 33.08,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Momentum 24 velas ±1.2 % + filtro",
-   "train_dif": 2.8,
-   "test_dif": 6.41,
-   "test_res": -1.83,
-   "ops": 2.83,
-   "dd": 31.28,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Cruce 15/30 + filtro",
-   "train_dif": 1.93,
-   "test_dif": 8.17,
-   "test_res": -0.07,
-   "ops": 1.75,
-   "dd": 22.78,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Ruptura 40/20 + filtro",
-   "train_dif": 1.91,
-   "test_dif": 7.11,
-   "test_res": -1.13,
-   "ops": 2.5,
-   "dd": 30.55,
+   "analista": "Analista de tendencia",
+   "nombre": "Momentum 24 velas ±0.8 % (1 día)",
+   "train_dif": -0.2,
+   "test_res": 31.92,
+   "test_dif": -5.55,
+   "test_dif_expo": 4.82,
+   "ops": 12.87,
+   "dd": 50.65,
+   "dd_hold": 68.49,
    "ok": 2,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Cruce 15/80 + filtro",
-   "train_dif": 1.67,
-   "test_dif": 6.7,
-   "test_res": -1.54,
-   "ops": 0.92,
-   "dd": 18.96,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Cruce 20/50 + filtro",
-   "train_dif": 1.6,
-   "test_dif": 7.35,
-   "test_res": -0.89,
-   "ops": 1.25,
-   "dd": 20.73,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Cruce 15/50 + filtro",
-   "train_dif": 1.29,
-   "test_dif": 7.63,
-   "test_res": -0.61,
-   "ops": 1.17,
-   "dd": 20.48,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Cruce 20/30 + filtro",
-   "train_dif": 1.13,
-   "test_dif": 6.44,
-   "test_res": -1.8,
-   "ops": 2.5,
-   "dd": 28.09,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
+   "total": 8,
+   "elegida": 3,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Momentum 24 velas ±0.8 %",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 10.95,
+     "test_dif_expo": 0.12
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 149.69,
+     "test_dif_expo": 50.9
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 58.9,
+     "test_dif_expo": 2.34
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -15.48,
+     "test_dif_expo": -7.03
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 8,
+     "test_res": 47.76,
+     "test_dif_expo": -5.62
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 2,
+     "series": 10,
+     "test_res": 18.99,
+     "test_dif_expo": 2.61
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -7.63,
+     "test_dif_expo": -2.07
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -7.85,
+     "test_dif_expo": -2.69
+    }
+   ]
   },
   {
    "analista": "Analista de tendencia",
-   "nombre": "Cruce 15/30",
-   "train_dif": 0.99,
-   "test_dif": 4.93,
-   "test_res": -3.31,
-   "ops": 6.83,
-   "dd": 31.45,
-   "ok": 8,
-   "total": 24,
-   "pasa": false
-  },
-  {
-   "analista": "Analista de filtros",
-   "nombre": "Momentum 24 velas ±0.8 % + filtro",
-   "train_dif": 0.79,
-   "test_dif": 5.69,
-   "test_res": -2.55,
-   "ops": 3.46,
-   "dd": 32.61,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
+   "nombre": "Cruce 15/20 (1 día)",
+   "train_dif": -1.0,
+   "test_res": 30.97,
+   "test_dif": -6.49,
+   "test_dif_expo": 8.75,
+   "ops": 16.79,
+   "dd": 50.04,
+   "dd_hold": 65.72,
+   "ok": 2,
+   "total": 8,
+   "elegida": 1,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 15/20",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 38.11,
+     "test_dif_expo": 28.19
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 206.23,
+     "test_dif_expo": 109.79
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 0,
+     "series": 3,
+     "test_res": -19.67,
+     "test_dif_expo": -36.89
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -16.24,
+     "test_dif_expo": -10.14
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 8,
+     "test_res": 40.0,
+     "test_dif_expo": -14.2
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 17.85,
+     "test_dif_expo": 2.85
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -13.99,
+     "test_dif_expo": -10.87
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 6,
+     "series": 11,
+     "test_res": -4.52,
+     "test_dif_expo": 1.24
+    }
+   ]
   },
   {
    "analista": "Analista de tendencia",
-   "nombre": "Momentum 24 velas ±2.0 %",
-   "train_dif": 0.76,
-   "test_dif": 5.03,
-   "test_res": -3.21,
-   "ops": 4.29,
-   "dd": 34.05,
+   "nombre": "Momentum 24 velas ±2.0 % (1 día)",
+   "train_dif": -1.16,
+   "test_res": 32.13,
+   "test_dif": -5.33,
+   "test_dif_expo": 4.35,
+   "ops": 7.46,
+   "dd": 47.74,
+   "dd_hold": 69.21,
    "ok": 2,
-   "total": 24,
-   "pasa": false
+   "total": 8,
+   "elegida": 3,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Momentum 24 velas ±2.0 %",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 9.66,
+     "test_dif_expo": -0.83
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 170.52,
+     "test_dif_expo": 64.49
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 43.67,
+     "test_dif_expo": -12.54
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 2,
+     "series": 4,
+     "test_res": -11.55,
+     "test_dif_expo": -2.77
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 8,
+     "test_res": 42.07,
+     "test_dif_expo": -11.51
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 2,
+     "series": 10,
+     "test_res": 15.33,
+     "test_dif_expo": 0.05
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -4.88,
+     "test_dif_expo": 0.3
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -7.73,
+     "test_dif_expo": -2.41
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 3/30 (1 día)",
+   "train_dif": -2.3,
+   "test_res": 30.61,
+   "test_dif": -6.85,
+   "test_dif_expo": 4.68,
+   "ops": 15.6,
+   "dd": 45.36,
+   "dd_hold": 67.91,
+   "ok": 3,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Cruce 3/30",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 33.0,
+     "test_dif_expo": 22.83
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 143.1,
+     "test_dif_expo": 45.35
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 35.79,
+     "test_dif_expo": -7.37
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -16.46,
+     "test_dif_expo": -9.83
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 8,
+     "test_res": 44.21,
+     "test_dif_expo": -11.65
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 5,
+     "series": 10,
+     "test_res": 23.37,
+     "test_dif_expo": 8.24
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 2,
+     "series": 11,
+     "test_res": -11.68,
+     "test_dif_expo": -9.34
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 6,
+     "series": 11,
+     "test_res": -6.43,
+     "test_dif_expo": -0.78
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Momentum 24 velas ±1.2 % (1 día)",
+   "train_dif": -2.49,
+   "test_res": 30.88,
+   "test_dif": -6.58,
+   "test_dif_expo": 4.16,
+   "ops": 10.02,
+   "dd": 47.27,
+   "dd_hold": 69.21,
+   "ok": 2,
+   "total": 8,
+   "elegida": 3,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Momentum 24 velas ±1.2 %",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 14.94,
+     "test_dif_expo": 4.31
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 123.79,
+     "test_dif_expo": 25.32
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 71.63,
+     "test_dif_expo": 16.96
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -11.95,
+     "test_dif_expo": -3.82
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 8,
+     "test_res": 43.31,
+     "test_dif_expo": -9.03
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 2,
+     "series": 10,
+     "test_res": 20.85,
+     "test_dif_expo": 5.08
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -6.75,
+     "test_dif_expo": -2.12
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 3,
+     "series": 11,
+     "test_res": -8.79,
+     "test_dif_expo": -3.44
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Ruptura 40/20 (1 día)",
+   "train_dif": -3.56,
+   "test_res": 27.53,
+   "test_dif": -9.93,
+   "test_dif_expo": 4.76,
+   "ops": 6.08,
+   "dd": 44.34,
+   "dd_hold": 67.02,
+   "ok": 4,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Ruptura 40/20",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 34.6,
+     "test_dif_expo": 26.58
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 107.29,
+     "test_dif_expo": 22.7
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 41.21,
+     "test_dif_expo": -3.0
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -15.98,
+     "test_dif_expo": -11.01
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 8,
+     "test_res": 27.25,
+     "test_dif_expo": -18.16
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 9,
+     "series": 10,
+     "test_res": 42.31,
+     "test_dif_expo": 30.21
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -6.34,
+     "test_dif_expo": -2.31
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 2,
+     "series": 11,
+     "test_res": -10.11,
+     "test_dif_expo": -6.93
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 10/30 (1 día)",
+   "train_dif": -4.5,
+   "test_res": 26.88,
+   "test_dif": -10.58,
+   "test_dif_expo": 1.32,
+   "ops": 10.78,
+   "dd": 48.46,
+   "dd_hold": 67.5,
+   "ok": 2,
+   "total": 8,
+   "elegida": 1,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 10/30",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 32.75,
+     "test_dif_expo": 22.63
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 138.69,
+     "test_dif_expo": 41.32
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 15.92,
+     "test_dif_expo": -26.34
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -15.88,
+     "test_dif_expo": -8.92
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 4,
+     "series": 8,
+     "test_res": 39.32,
+     "test_dif_expo": -16.06
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 3,
+     "series": 10,
+     "test_res": 23.77,
+     "test_dif_expo": 8.6
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -9.16,
+     "test_dif_expo": -4.25
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 3,
+     "series": 11,
+     "test_res": -10.36,
+     "test_dif_expo": -6.45
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 3/20 (1 día)",
+   "train_dif": -4.55,
+   "test_res": 28.47,
+   "test_dif": -8.99,
+   "test_dif_expo": 2.44,
+   "ops": 21.03,
+   "dd": 46.23,
+   "dd_hold": 67.59,
+   "ok": 2,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 3/20",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 28.91,
+     "test_dif_expo": 18.82
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 130.58,
+     "test_dif_expo": 36.07
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 25.57,
+     "test_dif_expo": -24.42
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -14.12,
+     "test_dif_expo": -7.57
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 8,
+     "test_res": 48.14,
+     "test_dif_expo": -6.12
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 5,
+     "series": 10,
+     "test_res": 29.39,
+     "test_dif_expo": 14.48
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -15.17,
+     "test_dif_expo": -11.56
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 6,
+     "series": 11,
+     "test_res": -5.55,
+     "test_dif_expo": -0.17
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 10/50 (1 día)",
+   "train_dif": -5.11,
+   "test_res": 26.58,
+   "test_dif": -10.88,
+   "test_dif_expo": 0.81,
+   "ops": 7.64,
+   "dd": 48.34,
+   "dd_hold": 68.66,
+   "ok": 3,
+   "total": 8,
+   "elegida": 1,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Cruce 10/50",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 43.02,
+     "test_dif_expo": 32.45
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 114.56,
+     "test_dif_expo": 17.38
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 21.22,
+     "test_dif_expo": -22.88
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -16.96,
+     "test_dif_expo": -11.15
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 8,
+     "test_res": 38.91,
+     "test_dif_expo": -16.08
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 7,
+     "series": 10,
+     "test_res": 31.28,
+     "test_dif_expo": 15.59
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -6.86,
+     "test_dif_expo": -0.21
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -12.53,
+     "test_dif_expo": -8.61
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 8/50 (1 día)",
+   "train_dif": -5.44,
+   "test_res": 25.64,
+   "test_dif": -11.82,
+   "test_dif_expo": -0.19,
+   "ops": 8.17,
+   "dd": 48.26,
+   "dd_hold": 68.66,
+   "ok": 3,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Cruce 8/50",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 46.91,
+     "test_dif_expo": 36.29
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 106.73,
+     "test_dif_expo": 10.11
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 17.13,
+     "test_dif_expo": -26.95
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -15.93,
+     "test_dif_expo": -9.86
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 8,
+     "test_res": 40.29,
+     "test_dif_expo": -15.03
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 7,
+     "series": 10,
+     "test_res": 32.09,
+     "test_dif_expo": 16.93
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 2,
+     "series": 11,
+     "test_res": -9.77,
+     "test_dif_expo": -4.42
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -12.3,
+     "test_dif_expo": -8.53
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 5/50 (1 día)",
+   "train_dif": -5.5,
+   "test_res": 25.87,
+   "test_dif": -11.59,
+   "test_dif_expo": -0.28,
+   "ops": 8.89,
+   "dd": 45.51,
+   "dd_hold": 67.65,
+   "ok": 3,
+   "total": 8,
+   "elegida": 1,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Cruce 5/50",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 29.11,
+     "test_dif_expo": 18.41
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 114.55,
+     "test_dif_expo": 18.44
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 25.83,
+     "test_dif_expo": -18.45
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -16.05,
+     "test_dif_expo": -10.38
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 8,
+     "test_res": 43.8,
+     "test_dif_expo": -11.43
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 7,
+     "series": 10,
+     "test_res": 30.97,
+     "test_dif_expo": 15.34
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 3,
+     "series": 11,
+     "test_res": -9.88,
+     "test_dif_expo": -5.7
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 2,
+     "series": 11,
+     "test_res": -11.35,
+     "test_dif_expo": -8.48
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 3/50 (1 día)",
+   "train_dif": -5.67,
+   "test_res": 27.92,
+   "test_dif": -9.54,
+   "test_dif_expo": 1.88,
+   "ops": 11.4,
+   "dd": 47.29,
+   "dd_hold": 68.35,
+   "ok": 3,
+   "total": 8,
+   "elegida": 1,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 3/50",
+   "vela": "1 día",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 37.43,
+     "test_dif_expo": 26.77
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 121.23,
+     "test_dif_expo": 24.5
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 31.55,
+     "test_dif_expo": -12.97
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -17.09,
+     "test_dif_expo": -11.25
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 8,
+     "test_res": 46.4,
+     "test_dif_expo": -9.09
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 3,
+     "series": 10,
+     "test_res": 23.29,
+     "test_dif_expo": 7.9
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 3,
+     "series": 11,
+     "test_res": -8.3,
+     "test_dif_expo": -3.08
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 3,
+     "series": 11,
+     "test_res": -11.16,
+     "test_dif_expo": -7.71
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 8/80 (6 h)",
+   "train_dif": -3.96,
+   "test_res": 28.86,
+   "test_dif": -8.96,
+   "test_dif_expo": 3.61,
+   "ops": 23.42,
+   "dd": 47.12,
+   "dd_hold": 68.27,
+   "ok": 2,
+   "total": 8,
+   "elegida": 4,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Cruce 8/80",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 40.95,
+     "test_dif_expo": 29.55
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 136.11,
+     "test_dif_expo": 42.48
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 17.46,
+     "test_dif_expo": -26.05
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -12.78,
+     "test_dif_expo": -5.57
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 10,
+     "test_res": 46.27,
+     "test_dif_expo": -4.99
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 26.1,
+     "test_dif_expo": 10.12
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 0,
+     "series": 11,
+     "test_res": -14.75,
+     "test_dif_expo": -12.38
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -8.48,
+     "test_dif_expo": -4.31
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 10/80 (6 h)",
+   "train_dif": -7.27,
+   "test_res": 27.81,
+   "test_dif": -10.01,
+   "test_dif_expo": 2.62,
+   "ops": 21.92,
+   "dd": 46.22,
+   "dd_hold": 68.47,
+   "ok": 2,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 10/80",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 34.7,
+     "test_dif_expo": 23.23
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 131.83,
+     "test_dif_expo": 37.56
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 19.14,
+     "test_dif_expo": -24.11
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -13.06,
+     "test_dif_expo": -5.95
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 47.38,
+     "test_dif_expo": -3.96
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 24.37,
+     "test_dif_expo": 8.22
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 0,
+     "series": 11,
+     "test_res": -15.21,
+     "test_dif_expo": -11.98
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -6.64,
+     "test_dif_expo": -2.05
+    }
+   ]
   },
   {
    "analista": "Analista de filtros",
-   "nombre": "Cruce 20/80 + filtro",
-   "train_dif": 0.53,
-   "test_dif": 7.05,
-   "test_res": -1.19,
-   "ops": 0.67,
-   "dd": 20.12,
-   "ok": 0,
-   "total": 24,
-   "pasa": false
+   "nombre": "Cruce 10/80 + filtro (6 h)",
+   "train_dif": -10.34,
+   "test_res": 25.28,
+   "test_dif": -12.55,
+   "test_dif_expo": 8.84,
+   "ops": 13.19,
+   "dd": 38.03,
+   "dd_hold": 70.04,
+   "ok": 5,
+   "total": 8,
+   "elegida": 4,
+   "ok_elegida": 1,
+   "pasa": true,
+   "variante": "Cruce 10/80 + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 52.33,
+     "test_dif_expo": 43.24
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 56.91,
+     "test_dif_expo": 4.06
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 37.27,
+     "test_dif_expo": -0.66
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -9.03,
+     "test_dif_expo": -4.83
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 34.42,
+     "test_dif_expo": 2.5
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 10,
+     "series": 10,
+     "test_res": 44.11,
+     "test_dif_expo": 33.55
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -14.39,
+     "test_dif_expo": -11.16
+    },
+    {
+     "anio": 2026,
+     "pasa": true,
+     "ok": 9,
+     "series": 11,
+     "test_res": 0.62,
+     "test_dif_expo": 4.01
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 20/80 (6 h)",
+   "train_dif": -10.56,
+   "test_res": 24.07,
+   "test_dif": -13.75,
+   "test_dif_expo": -0.95,
+   "ops": 16.08,
+   "dd": 48.83,
+   "dd_hold": 69.5,
+   "ok": 1,
+   "total": 8,
+   "elegida": 3,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 20/80",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 26.84,
+     "test_dif_expo": 15.12
+    },
+    {
+     "anio": 2020,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 108.01,
+     "test_dif_expo": 16.94
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 15.1,
+     "test_dif_expo": -27.84
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -16.06,
+     "test_dif_expo": -10.11
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 10,
+     "test_res": 52.96,
+     "test_dif_expo": 2.03
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 3,
+     "series": 10,
+     "test_res": 22.96,
+     "test_dif_expo": 6.57
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 0,
+     "series": 11,
+     "test_res": -14.93,
+     "test_dif_expo": -13.15
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 6,
+     "series": 11,
+     "test_res": -2.32,
+     "test_dif_expo": 2.81
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 15/80 (6 h)",
+   "train_dif": -11.36,
+   "test_res": 25.0,
+   "test_dif": -12.83,
+   "test_dif_expo": 1.28,
+   "ops": 17.66,
+   "dd": 46.97,
+   "dd_hold": 69.08,
+   "ok": 2,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 15/80",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 36.13,
+     "test_dif_expo": 24.66
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 102.35,
+     "test_dif_expo": 20.64
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 17.07,
+     "test_dif_expo": -25.58
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -15.15,
+     "test_dif_expo": -8.6
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 53.61,
+     "test_dif_expo": 2.54
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 23.3,
+     "test_dif_expo": 6.9
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 0,
+     "series": 11,
+     "test_res": -14.54,
+     "test_dif_expo": -12.73
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 6,
+     "series": 11,
+     "test_res": -2.79,
+     "test_dif_expo": 2.43
+    }
+   ]
+  },
+  {
+   "analista": "Analista de tendencia",
+   "nombre": "Cruce 5/80 (6 h)",
+   "train_dif": -12.28,
+   "test_res": 21.78,
+   "test_dif": -16.05,
+   "test_dif_expo": -3.16,
+   "ops": 27.37,
+   "dd": 48.64,
+   "dd_hold": 68.36,
+   "ok": 2,
+   "total": 8,
+   "elegida": 1,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 5/80",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 31.37,
+     "test_dif_expo": 19.97
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 115.37,
+     "test_dif_expo": 22.08
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 1.13,
+     "test_dif_expo": -39.26
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -13.6,
+     "test_dif_expo": -7.22
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 10,
+     "test_res": 41.4,
+     "test_dif_expo": -10.07
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 20.51,
+     "test_dif_expo": 4.37
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -14.03,
+     "test_dif_expo": -11.31
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -7.94,
+     "test_dif_expo": -3.85
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Momentum 24 velas ±1.2 % + filtro (6 h)",
+   "train_dif": -12.29,
+   "test_res": 21.68,
+   "test_dif": -16.15,
+   "test_dif_expo": 1.26,
+   "ops": 27.31,
+   "dd": 41.66,
+   "dd_hold": 69.39,
+   "ok": 3,
+   "total": 8,
+   "elegida": 4,
+   "ok_elegida": 2,
+   "pasa": false,
+   "variante": "Momentum 24 velas ±1.2 % + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 22.69,
+     "test_dif_expo": 13.5
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 80.51,
+     "test_dif_expo": 9.57
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 46.04,
+     "test_dif_expo": 0.64
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -13.82,
+     "test_dif_expo": -8.4
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 3,
+     "series": 10,
+     "test_res": 42.52,
+     "test_dif_expo": 5.34
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 10.89,
+     "test_dif_expo": -2.26
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -8.4,
+     "test_dif_expo": -4.68
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -7.02,
+     "test_dif_expo": -3.62
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 8/80 + filtro (6 h)",
+   "train_dif": -12.39,
+   "test_res": 21.17,
+   "test_dif": -16.66,
+   "test_dif_expo": 6.18,
+   "ops": 13.65,
+   "dd": 40.06,
+   "dd_hold": 70.12,
+   "ok": 4,
+   "total": 8,
+   "elegida": 3,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Cruce 8/80 + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 56.55,
+     "test_dif_expo": 47.51
+    },
+    {
+     "anio": 2020,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 52.05,
+     "test_dif_expo": 1.19
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 15.59,
+     "test_dif_expo": -15.06
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -7.43,
+     "test_dif_expo": -3.1
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 5,
+     "series": 10,
+     "test_res": 33.32,
+     "test_dif_expo": 2.6
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 7,
+     "series": 10,
+     "test_res": 29.15,
+     "test_dif_expo": 19.69
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -13.47,
+     "test_dif_expo": -10.25
+    },
+    {
+     "anio": 2026,
+     "pasa": true,
+     "ok": 8,
+     "series": 11,
+     "test_res": 3.57,
+     "test_dif_expo": 6.81
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 20/50 + filtro (6 h)",
+   "train_dif": -12.93,
+   "test_res": 23.37,
+   "test_dif": -14.45,
+   "test_dif_expo": 5.16,
+   "ops": 14.79,
+   "dd": 39.74,
+   "dd_hold": 71.32,
+   "ok": 3,
+   "total": 8,
+   "elegida": 3,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 20/50 + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 36.9,
+     "test_dif_expo": 28.6
+    },
+    {
+     "anio": 2020,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 53.75,
+     "test_dif_expo": -11.65
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 54.99,
+     "test_dif_expo": 11.65
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -7.37,
+     "test_dif_expo": -2.76
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 10,
+     "test_res": 23.67,
+     "test_dif_expo": -5.18
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 8,
+     "series": 10,
+     "test_res": 42.3,
+     "test_dif_expo": 32.3
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 0,
+     "series": 11,
+     "test_res": -14.68,
+     "test_dif_expo": -11.95
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -2.55,
+     "test_dif_expo": 0.28
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Momentum 24 velas ±0.8 % + filtro (6 h)",
+   "train_dif": -13.63,
+   "test_res": 19.59,
+   "test_dif": -18.23,
+   "test_dif_expo": -0.67,
+   "ops": 33.53,
+   "dd": 43.77,
+   "dd_hold": 69.72,
+   "ok": 1,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Momentum 24 velas ±0.8 % + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 33.21,
+     "test_dif_expo": 24.14
+    },
+    {
+     "anio": 2020,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 70.6,
+     "test_dif_expo": 0.54
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 36.68,
+     "test_dif_expo": -8.46
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 0,
+     "series": 4,
+     "test_res": -14.36,
+     "test_dif_expo": -9.39
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 2,
+     "series": 10,
+     "test_res": 35.63,
+     "test_dif_expo": -1.62
+    },
+    {
+     "anio": 2024,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 9.46,
+     "test_dif_expo": -3.37
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 4,
+     "series": 11,
+     "test_res": -8.6,
+     "test_dif_expo": -4.69
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 5,
+     "series": 11,
+     "test_res": -5.89,
+     "test_dif_expo": -2.5
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 20/80 + filtro (6 h)",
+   "train_dif": -13.83,
+   "test_res": 21.25,
+   "test_dif": -16.57,
+   "test_dif_expo": 5.11,
+   "ops": 10.02,
+   "dd": 39.52,
+   "dd_hold": 71.08,
+   "ok": 3,
+   "total": 8,
+   "elegida": 2,
+   "ok_elegida": 0,
+   "pasa": false,
+   "variante": "Cruce 20/80 + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 48.81,
+     "test_dif_expo": 39.45
+    },
+    {
+     "anio": 2020,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 46.06,
+     "test_dif_expo": -5.68
+    },
+    {
+     "anio": 2021,
+     "pasa": true,
+     "ok": 2,
+     "series": 3,
+     "test_res": 24.2,
+     "test_dif_expo": -13.44
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 1,
+     "series": 4,
+     "test_res": -11.43,
+     "test_dif_expo": -7.05
+    },
+    {
+     "anio": 2023,
+     "pasa": false,
+     "ok": 4,
+     "series": 10,
+     "test_res": 36.51,
+     "test_dif_expo": 5.51
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 8,
+     "series": 10,
+     "test_res": 40.19,
+     "test_dif_expo": 29.83
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 1,
+     "series": 11,
+     "test_res": -14.18,
+     "test_dif_expo": -10.6
+    },
+    {
+     "anio": 2026,
+     "pasa": false,
+     "ok": 6,
+     "series": 11,
+     "test_res": -0.15,
+     "test_dif_expo": 2.87
+    }
+   ]
+  },
+  {
+   "analista": "Analista de filtros",
+   "nombre": "Cruce 15/80 + filtro (6 h)",
+   "train_dif": -13.94,
+   "test_res": 22.17,
+   "test_dif": -15.66,
+   "test_dif_expo": 8.09,
+   "ops": 10.37,
+   "dd": 39.79,
+   "dd_hold": 70.04,
+   "ok": 4,
+   "total": 8,
+   "elegida": 3,
+   "ok_elegida": 1,
+   "pasa": false,
+   "variante": "Cruce 15/80 + filtro",
+   "vela": "6 h",
+   "anios": [
+    {
+     "anio": 2019,
+     "pasa": true,
+     "ok": 3,
+     "series": 3,
+     "test_res": 63.32,
+     "test_dif_expo": 54.23
+    },
+    {
+     "anio": 2020,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 26.23,
+     "test_dif_expo": -9.34
+    },
+    {
+     "anio": 2021,
+     "pasa": false,
+     "ok": 1,
+     "series": 3,
+     "test_res": 25.45,
+     "test_dif_expo": -12.04
+    },
+    {
+     "anio": 2022,
+     "pasa": false,
+     "ok": 2,
+     "series": 4,
+     "test_res": -6.58,
+     "test_dif_expo": -2.44
+    },
+    {
+     "anio": 2023,
+     "pasa": true,
+     "ok": 6,
+     "series": 10,
+     "test_res": 41.45,
+     "test_dif_expo": 10.71
+    },
+    {
+     "anio": 2024,
+     "pasa": true,
+     "ok": 8,
+     "series": 10,
+     "test_res": 38.67,
+     "test_dif_expo": 28.31
+    },
+    {
+     "anio": 2025,
+     "pasa": false,
+     "ok": 0,
+     "series": 11,
+     "test_res": -15.15,
+     "test_dif_expo": -12.13
+    },
+    {
+     "anio": 2026,
+     "pasa": true,
+     "ok": 7,
+     "series": 11,
+     "test_res": 3.94,
+     "test_dif_expo": 7.45
+    }
+   ]
   }
  ]
 }
