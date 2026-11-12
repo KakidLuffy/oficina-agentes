@@ -1,6 +1,6 @@
 # Parte del director
 
-Actualizado: 2026-11-12T21:09:06Z
+Actualizado: 2026-11-12T22:49:50Z
 
 **Todo en orden.**
 
@@ -16,14 +16,14 @@ Actualizado: 2026-11-12T21:09:06Z
 Revisión de datos: sin errores.
 
 Progreso hacia la evaluación (21 días y 30 cierres):
-- Cruce 10/30: 0.9 días, 0 cierres
-- Cruce 5/20: 0.9 días, 0 cierres
-- Momentum: 0.9 días, 0 cierres
-- Rebote: 0.9 días, 0 cierres
-- Cruce 10/30 + filtro: 0.9 días, 0 cierres
-- Cruce 3/8 rapido: 0.9 días, 0 cierres
-- Rebote rapido: 0.9 días, 0 cierres
-- Rebalanceo semanal: 0.9 días, 0 cierres
-- Tendencia H1 (diaria): 0.9 días, 0 cierres
+- Cruce 10/30: 1.0 días, 0 cierres
+- Cruce 5/20: 1.0 días, 0 cierres
+- Momentum: 1.0 días, 0 cierres
+- Rebote: 1.0 días, 0 cierres
+- Cruce 10/30 + filtro: 1.0 días, 0 cierres
+- Cruce 3/8 rapido: 1.0 días, 0 cierres
+- Rebote rapido: 1.0 días, 0 cierres
+- Rebalanceo semanal: 1.0 días, 0 cierres
+- Tendencia H1 (diaria): 1.0 días, 0 cierres
 
 Laboratorio: NINGUNA (ver propuestas.md).
