@@ -98,6 +98,28 @@ Con solo BTC y ETH y señales lentas, algunos agentes harán muy pocas operacion
   mismas 5 monedas a partes iguales sin rebalancear** (desde sus primeras compras del 11-nov a las 23:00 UTC). Es la
   referencia que dice si rebalancear aporta algo. Es solo una medida: no cambia ninguna regla de trading ni reinicia la v5.
 
+## 7. Sala abierta (registrado el 13-nov-2026, ANTES de escribir su código)
+
+A petición del usuario: agentes nuevos que puedan comprar cualquier moneda de la lista, **sin tocar la v5**. Se hace en
+una simulación aparte para no romper el máximo de 9 agentes de la sección 3, que sigue valiendo para la simulación principal.
+
+- **Hipótesis**: las 2 ideas «POSIBLE» del laboratorio v2 en velas de 6 h, **con sus reglas exactas** (las funciones de
+  `laboratorio.py`, sin retocar parámetros): «Cruce 10/80 + filtro» y «Ruptura 40/20 + filtro» (filtro = media de 200 velas).
+- **Monedas**: las 12 del laboratorio en EUR (BTC, ETH, SOL, XRP, ADA, DOGE, LINK, DOT, LTC, AVAX, ATOM, TRX), velas de
+  6 h de Coinbase, solo velas cerradas. Cada agente puede comprar cualquiera de ellas.
+- **Dinero y tamaño**: 10 € ficticios por agente; cada compra es de 2,50 € (hasta 4 monedas a la vez). Si hay más señales
+  que huecos, se compran por el orden de la lista.
+- **Costes**: comisión 0,40 %; deslizamiento 0,05 % en BTC y ETH y 0,3 % en las demás (más prudente que el laboratorio).
+- **Riesgo**: el mismo apagado que en la oficina principal (capital por debajo de 7 €).
+- **Referencia**: mantener las 12 monedas a partes iguales desde el primer momento, con los mismos costes.
+- **Cuándo se juzga**: al menos 90 días y 30 operaciones cerradas por agente, lo que llegue más tarde. Antes de eso, nada.
+  Pasa si supera a la referencia tras costes y su caída máxima no es mayor que la de la referencia.
+- **Límites**: como mucho 2 agentes en la sala. Es **exploratoria**: aunque gane, no se convierte en agente principal ni
+  justifica dinero real; solo podría proponerse como hipótesis nueva. Cuenta como 2 comparaciones más.
+- **Pegas conocidas de antemano**: las 2 ideas son casi la misma (tendencia con filtro de 200), fallan los mismos años y
+  no ganaron a comprar y mantener a secas en el laboratorio. La v3, que operaba cualquier moneda, perdió el 25 % sobre todo
+  por costes.
+
 ## Registro de resultados
 
 - **11-nov-2026, prueba histórica de H1: NO PASA** (`datos/backtest_h1.md`). Con datos de Coinbase desde el 2-sep-2017, H1 se apagó por su propia regla del −15 % el 30-dic-2017, a los 4 meses. Hasta ese día ganó un +65,4 %, frente al +72,4 % de la cesta al 50 %, y su caída máxima fue mayor (−19,3 % frente a −17,6 %). Las medias de 50, 150 y 200 días tampoco superan a la cesta. Sin la regla del −15 % (dato solo informativo) habría ganado un +328 %, frente al +525 % de la cesta al 50 %, aunque con menos caída (−43 % frente a −69 %). **Conforme a la sección 2, H1 queda descartada como hipótesis principal.** La v5 sigue en marcha como exploración. Una variante de H1 sin la regla del −15 % sería una hipótesis NUEVA y contaría como una comparación más.
