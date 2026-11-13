@@ -112,6 +112,8 @@ una simulación aparte para no romper el máximo de 9 agentes de la sección 3, 
 - **Costes**: comisión 0,40 %; deslizamiento 0,05 % en BTC y ETH y 0,3 % en las demás (más prudente que el laboratorio).
 - **Riesgo**: el mismo apagado que en la oficina principal (capital por debajo de 7 €).
 - **Referencia**: mantener las 12 monedas a partes iguales desde el primer momento, con los mismos costes.
+  Nota del 13-nov (primera ejecución, no cambia ninguna regla): Coinbase no tiene TRX-EUR, así que en la práctica son 11
+  monedas, como en el laboratorio, que también la omite.
 - **Cuándo se juzga**: al menos 90 días y 30 operaciones cerradas por agente, lo que llegue más tarde. Antes de eso, nada.
   Pasa si supera a la referencia tras costes y su caída máxima no es mayor que la de la referencia.
 - **Límites**: como mucho 2 agentes en la sala. Es **exploratoria**: aunque gane, no se convierte en agente principal ni

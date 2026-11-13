@@ -82,7 +82,7 @@ class TestSala(unittest.TestCase):
         s.guardar(estado, self.dir)
         with open(os.path.join(self.dir, "resumen.md")) as f:
             txt = f.read()
-        self.assertIn("Mantener las 12 a partes iguales", txt)
+        self.assertIn("Mantener a partes iguales", txt)
         self.assertIn("90 días", txt)
         self.assertAlmostEqual(sum(u * p for u, p in zip(estado["referencia"].values(),
                                                          [velas[k][249][1] for k in estado["referencia"]])),

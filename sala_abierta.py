@@ -36,7 +36,7 @@ AGENTES = [
     ("Sala: Cruce 10/80 + filtro", lab.con_filtro(lab.cruce(10, 80))),
     ("Sala: Ruptura 40/20 + filtro", lab.con_filtro(lab.ruptura(40, 20))),
 ]
-REFERENCIA = "Mantener las 12 a partes iguales"
+REFERENCIA = "Mantener a partes iguales"   # las monedas con datos al empezar (Coinbase no tiene TRX-EUR: 11)
 CAB_OPS = ["fecha_utc", "agente", "moneda", "tipo", "precio_eur", "importe_eur", "motivo", "coste_eur"]
 
 
@@ -197,7 +197,8 @@ def guardar(estado, carpeta):
     l = ["# Sala abierta (dinero ficticio)", "",
          f"Actualizado: {ahora} UTC · en marcha desde {estado['inicio']} ({dias:.1f} días) · reglas: CRITERIOS.md, sección 7",
          "Simulación aparte de la oficina principal. 2 agentes con las ideas «POSIBLE» del laboratorio v2 (velas de 6 h de "
-         "Coinbase) que pueden comprar cualquiera de las 12 monedas del laboratorio; 2,50 € por compra, hasta 4 a la vez. "
+         "Coinbase) que pueden comprar cualquiera de las monedas del laboratorio (11: Coinbase no tiene TRX-EUR); "
+         "2,50 € por compra, hasta 4 a la vez. "
          f"Costes: comisión {FEE * 100:.2f} % + deslizamiento {SLIP_GRANDE * 100:.2f} % (BTC, ETH) o {SLIP_OTRAS * 100:.1f} % (resto).",
          "", "| Agente | Capital (EUR) | Resultado | Dif. vs referencia | Caída máxima | Operaciones (cerradas) | Estado |",
          "|---|---:|---:|---:|---:|---:|---|"]
