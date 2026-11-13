@@ -36,6 +36,10 @@ Diez agentes de trading con **dinero ficticio** (10 € cada uno, 100 € en tot
 
 Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pasar horas sin ninguna operación.
 
+## La Sala abierta (simulación aparte, desde el 13-nov-2026)
+
+Dos agentes más, separados de la oficina principal (que no cambia): «Sala: Cruce 10/80 + filtro» y «Sala: Ruptura 40/20 + filtro», las dos ideas «POSIBLE» del laboratorio v2. Usan velas de 6 h de Coinbase y pueden comprar **cualquiera de las 12 monedas del laboratorio** (2,50 € por compra, hasta 4 a la vez). Se comparan con mantener las 12 a partes iguales. Programa: `sala_abierta.py`; resultados en `datos_sala/resumen.md`; reglas en `CRITERIOS.md`, sección 7. No se juzgan antes de 90 días y 30 operaciones cerradas, y aunque ganen no pasan a ser agente principal.
+
 ## El laboratorio (analistas de estrategias)
 
 Un grupo de seis analistas (tendencia, filtros, rebote, volatilidad, salidas con stop/objetivo y fuerza relativa frente a BTC) prueba cada lunes 101 variantes de estrategias sobre **todo el historial de Coinbase** en euros (12 monedas, desde que existe cada una, velas de 6 horas y de 1 día), con los mismos costes que la simulación (comisión 0,40 % + deslizamiento). Las reglas exactas están en `CRITERIOS.md`, sección 4 (laboratorio v2, desde el 12-nov-2026).

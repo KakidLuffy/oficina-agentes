@@ -7,6 +7,7 @@ Esta oficina es una **simulación con dinero ficticio**. Este documento dice qui
 | Sector | Quién | Qué hace |
 |---|---|---|
 | Ejecución | Los 9 agentes de trading | Operan con 10 € ficticios cada uno (90 € en total; 2 de ellos son «rápidos» y operan varias veces al día, «Rebalanceo semanal» reparte su dinero entre 5 monedas, y «Tendencia H1» solo opera BTC y ETH con velas diarias y reglas de riesgo más estrictas), con precios reales de Kraken. Máximo 9 agentes (CRITERIOS.md). |
+| Sala abierta | 2 agentes aparte | Simulación separada (`sala_abierta.py`, `datos_sala/`): las 2 ideas «POSIBLE» del laboratorio v2, que pueden comprar cualquiera de las 12 monedas del laboratorio. Exploratoria (CRITERIOS.md, sección 7). |
 | Análisis | Los 6 analistas del laboratorio | Cada lunes prueban 101 variantes de estrategias con años de historia de Coinbase y las examinan año a año, con datos que no usaron para elegirlas (CRITERIOS.md, sección 4). |
 | Dirección | El director | Revisa los datos, escribe el parte, anota decisiones en la memoria y prepara las propuestas. Solo lee y resume. |
 | Riesgo | El vigilante (en el panel) | Avisa si un agente cae de golpe o se acerca al límite de pérdida. Solo avisa. |

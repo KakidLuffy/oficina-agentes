@@ -1,0 +1,43 @@
+name: Sala abierta (simulación aparte)
+
+on:
+  schedule:
+    - cron: "41 * * * *"   # cada hora; solo actúa cuando se cierra una vela de 6 h
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - sala_abierta.py
+      - .github/workflows/sala.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sala
+  cancel-in-progress: false
+
+jobs:
+  sala:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Pruebas de la sala
+        run: python -m unittest test_sala
+
+      - name: Un paso de la Sala abierta
+        run: python sala_abierta.py
+
+      - name: Guardar resultados en el repositorio
+        run: |
+          git config user.name "agentes-bot"
+          git config user.email "agentes-bot@users.noreply.github.com"
+          git add datos_sala
+          git diff --staged --quiet || git commit -m "Actualizar Sala abierta"
+          for i in 1 2 3; do git pull --rebase && git push && exit 0; sleep 10; done; exit 1
