@@ -2,39 +2,39 @@
   "version": 5,
   "capital_inicial": 10.0,
   "inicio": "2026-11-11T23:09:56+00:00",
-  "ultima_vela": 1794603600,
+  "ultima_vela": 1794607200,
   "precio_inicio": 66341.4,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 62084.6,
-    "ETHEUR": 1752.56,
-    "SOLEUR": 71.1,
-    "XRPEUR": 0.91696,
-    "ZECEUR": 840.519,
-    "NEAREUR": 3.1111,
-    "HYPEEUR": 65.27,
-    "PEPEEUR": 3.995e-06,
-    "LINKEUR": 8.9065,
-    "SUIEUR": 0.7193,
+    "XBTEUR": 61649.0,
+    "ETHEUR": 1740.5,
+    "SOLEUR": 70.32,
+    "XRPEUR": 0.90966,
+    "ZECEUR": 835.575,
+    "NEAREUR": 3.0856,
+    "HYPEEUR": 64.69,
+    "PEPEEUR": 3.985e-06,
+    "LINKEUR": 8.85705,
+    "SUIEUR": 0.7148,
     "XLMEUR": 0.133484,
-    "ADAEUR": 0.152184,
-    "AVAXEUR": 7.449,
-    "TAOEUR": 192.1201,
+    "ADAEUR": 0.151434,
+    "AVAXEUR": 7.405,
+    "TAOEUR": 192.3056,
     "XDCEUR": 0.02611,
-    "LTCEUR": 44.73,
-    "XDGEUR": 0.0584792,
-    "PUMPEUR": 0.003111,
+    "LTCEUR": 44.5,
+    "XDGEUR": 0.0579254,
+    "PUMPEUR": 0.003097,
     "ARBEUR": 0.1365,
     "ZROEUR": 1.406,
-    "UNIEUR": 5.202,
+    "UNIEUR": 5.1797,
     "TRXEUR": 0.283819,
     "AAVEEUR": 101.02,
-    "ENAEUR": 0.1209,
+    "ENAEUR": 0.1199,
     "XMREUR": 485.1,
-    "ONDOEUR": 0.30673,
+    "ONDOEUR": 0.30467,
     "HBAREUR": 0.05728,
-    "INJEUR": 7.254
+    "INJEUR": 7.249
   },
   "agentes": [
     {
@@ -50,26 +50,27 @@
     },
     {
       "nombre": "Cruce 5/20",
-      "efectivo": 0.0,
+      "efectivo": 4.9457382266978165,
       "posiciones": {
-        "XBTEUR": 8.022615172222411e-05,
         "ETHEUR": 0.002847693098831068
       },
       "apagado": false,
-      "operaciones": 2,
+      "operaciones": 3,
       "dia": 20770,
       "eq_dia": 10.0,
       "inicio": "2026-11-11T23:09:56+00:00",
       "precio_inicio": 66341.4,
       "entradas": {
-        "XBTEUR": 62074.52175,
         "ETHEUR": 1748.7839549999999
       },
       "compras": {
-        "XBTEUR": "2026-11-13T21:00+00:00",
         "ETHEUR": "2026-11-13T21:00+00:00"
       },
-      "costes": 0.04497751124437599
+      "costes": 0.06732395609700959,
+      "stops": {},
+      "ultima_venta": {
+        "XBTEUR": "2026-11-13T22:00+00:00"
+      }
     },
     {
       "nombre": "Momentum",
