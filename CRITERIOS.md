@@ -122,6 +122,24 @@ una simulación aparte para no romper el máximo de 9 agentes de la sección 3, 
   no ganaron a comprar y mantener a secas en el laboratorio. La v3, que operaba cualquier moneda, perdió el 25 % sobre todo
   por costes.
 
+### 7.1 Sala abierta con todas las monedas de la oficina (13-nov-2026, ANTES de cambiar el código)
+
+A petición del usuario, los agentes de la sala pueden comprar **todas las monedas de la oficina**: las 20 de mayor
+volumen contra el euro en Kraken (la misma lista que usa la oficina principal, más BTC y ETH siempre). La sala había
+empezado a las 09:14 UTC del mismo día sin ninguna operación, así que **se reinicia de cero** sin perder nada.
+
+- **Datos**: velas de **4 h de Kraken**. Kraken no da velas de 6 h y solo entrega las últimas 720 velas, así que 4 h es la
+  duración más cercana que deja las 200 velas que necesita el filtro. Esto es una **desviación declarada** respecto al
+  laboratorio, que validó las ideas con velas de 6 h y solo en 11 monedas: las 9 monedas nuevas y la vela de 4 h no
+  están probadas con datos históricos. El veredicto de la sala no puede usarse para decir que el laboratorio acertó.
+- **Monedas**: la lista se recalcula en cada ejecución por volumen, como en la oficina principal. Las monedas que un
+  agente ya tiene se siguen vigilando aunque salgan de la lista, para poder venderlas.
+- **Costes**: los de la oficina principal: comisión 0,40 %; deslizamiento 0,05 % si la moneda mueve al menos 100.000 € al
+  día y 0,3 % si mueve menos.
+- **Referencias**: mantener BTC y mantener las monedas de la lista inicial a partes iguales.
+- Todo lo demás de la sección 7 sigue igual (2 agentes, mismas reglas de señal, 2,50 € por compra, hasta 4 a la vez,
+  apagado bajo 7 €, juicio a los 90 días y 30 operaciones cerradas, exploratoria).
+
 ## Registro de resultados
 
 - **11-nov-2026, prueba histórica de H1: NO PASA** (`datos/backtest_h1.md`). Con datos de Coinbase desde el 2-sep-2017, H1 se apagó por su propia regla del −15 % el 30-dic-2017, a los 4 meses. Hasta ese día ganó un +65,4 %, frente al +72,4 % de la cesta al 50 %, y su caída máxima fue mayor (−19,3 % frente a −17,6 %). Las medias de 50, 150 y 200 días tampoco superan a la cesta. Sin la regla del −15 % (dato solo informativo) habría ganado un +328 %, frente al +525 % de la cesta al 50 %, aunque con menos caída (−43 % frente a −69 %). **Conforme a la sección 2, H1 queda descartada como hipótesis principal.** La v5 sigue en marcha como exploración. Una variante de H1 sin la regla del −15 % sería una hipótesis NUEVA y contaría como una comparación más.
