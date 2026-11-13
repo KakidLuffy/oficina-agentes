@@ -5,7 +5,7 @@ Diez agentes con **dinero ficticio** (10 € cada uno, 100 € en total) operan 
 - **Panel:** https://kakidluffy.github.io/oficina-agentes/
 - **Guía completa:** [LEEME.md](LEEME.md)
 - **Quién hace qué y qué está permitido:** [EQUIPO.md](EQUIPO.md)
-- **Sala abierta** (2 agentes aparte que pueden comprar cualquiera de 12 monedas): [datos_sala/resumen.md](datos_sala/resumen.md)
+- **Sala abierta** (2 agentes aparte que pueden comprar todas las monedas de la oficina; en el panel, botón «Sala abierta»): [datos_sala/resumen.md](datos_sala/resumen.md)
 - **Parte del director:** [datos/parte_director.md](datos/parte_director.md)
 
 No opera en ningún exchange, no usa claves y no garantiza beneficios. Un agente solo se considera evaluable con 3 semanas y 30 operaciones cerradas.

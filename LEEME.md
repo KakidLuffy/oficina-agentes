@@ -38,7 +38,7 @@ Los agentes deciden solo cuando se cierra una vela de 1 hora, así que pueden pa
 
 ## La Sala abierta (simulación aparte, desde el 13-nov-2026)
 
-Dos agentes más, separados de la oficina principal (que no cambia): «Sala: Cruce 10/80 + filtro» y «Sala: Ruptura 40/20 + filtro», las dos ideas «POSIBLE» del laboratorio v2. Usan velas de 6 h de Coinbase y pueden comprar **cualquiera de las 12 monedas del laboratorio** (2,50 € por compra, hasta 4 a la vez). Se comparan con mantener las 12 a partes iguales. Programa: `sala_abierta.py`; resultados en `datos_sala/resumen.md`; reglas en `CRITERIOS.md`, sección 7. No se juzgan antes de 90 días y 30 operaciones cerradas, y aunque ganen no pasan a ser agente principal.
+Dos agentes más, separados de la oficina principal (que no cambia): «Sala: Cruce 10/80 + filtro» y «Sala: Ruptura 40/20 + filtro», las dos ideas «POSIBLE» del laboratorio v2. Pueden comprar **todas las monedas de la oficina** (las 20 de mayor volumen contra el euro en Kraken), con velas de 4 h de Kraken (2,50 € por compra, hasta 4 a la vez). Se comparan con mantener BTC y con mantener la cesta inicial a partes iguales. Se ven en el panel con el botón **«Sala abierta»** de arriba. Programa: `sala_abierta.py`; resultados en `datos_sala/resumen.md`; reglas en `CRITERIOS.md`, secciones 7 y 7.1. No se juzgan antes de 90 días y 30 operaciones cerradas, y aunque ganen no pasan a ser agente principal.
 
 ## El laboratorio (analistas de estrategias)
 

@@ -28,6 +28,9 @@ header{display:flex;align-items:center;gap:28px;padding:14px 22px;border-bottom:
 .brand{line-height:1.05}
 .brand b{display:block;font-weight:800;font-size:21px;font-stretch:112%;letter-spacing:-.01em}
 .brand span{font-size:13px;color:var(--mute)}
+.salas{display:flex;gap:6px}
+.salas a{border:1px solid var(--line);border-radius:6px;padding:6px 12px;color:var(--mute);font-weight:600;text-decoration:none;font-size:13.5px}
+.salas a[aria-current="page"]{background:var(--panel2);border-color:var(--amber);color:var(--ink)}
 .kpis{display:flex;gap:30px;flex-wrap:wrap}
 .kpi small{display:block;font-size:12px;color:var(--mute)}
 .kpi strong{font-weight:700;font-size:22px;font-stretch:88%;white-space:nowrap}
@@ -211,7 +214,8 @@ header{display:flex;align-items:center;gap:28px;padding:14px 22px;border-bottom:
 </head>
 <body>
 <header>
-  <div class="brand"><b>Oficina de agentes</b><span>Sala de operaciones con dinero ficticio</span></div>
+  <div class="brand"><b>Oficina de agentes</b><span id="subtit">Sala de operaciones con dinero ficticio</span></div>
+  <nav class="salas" aria-label="Elegir sala"><a href="?" id="s-principal">Oficina principal</a><a href="?sala=abierta" id="s-abierta">Sala abierta</a></nav>
   <div class="kpis" id="kpis"></div>
   <div class="pills" id="pills"></div>
 </header>
@@ -253,8 +257,11 @@ header{display:flex;align-items:center;gap:28px;padding:14px 22px;border-bottom:
 "use strict";
 /* ===== configuración ===== */
 var REPO = "KakidLuffy/oficina-agentes";
-var BASE = (new URLSearchParams(location.search).get("base")) ||
-           "https://raw.githubusercontent.com/" + REPO + "/main/datos/";
+var RAIZ = "https://raw.githubusercontent.com/" + REPO + "/main/";
+var SALA_ABIERTA = new URLSearchParams(location.search).get("sala") === "abierta";   /* simulación aparte (CRITERIOS 7) */
+var CARPETA = SALA_ABIERTA ? "datos_sala" : "datos";
+var BASE = (new URLSearchParams(location.search).get("base")) || RAIZ + CARPETA + "/";
+var BASE_LAB = RAIZ + "datos/";            /* el laboratorio y el parte del director son de la oficina principal */
 var REFRESH_MS = 5 * 60 * 1000;
 var MIN_CERRADAS = 30, MIN_DIAS = 21, START = 50;
 var COLORES = ["#7fb4ff", "#c99bff", "#5fd3d0", "#f28fb3", "#e8c66a", "#ff9f6b", "#9fb0ff", "#8fdcb0", "#e3a6ff"];
@@ -306,7 +313,8 @@ function cargar(){
 
 /* ===== cálculos ===== */
 function preparar(estado, hist, ops){
-  START = +estado.capital_inicial || 50;   /* capital ficticio por agente (lo guarda la simulación; las versiones antiguas usaban 50) */
+  START = +estado.capital_inicial || 50;
+  MIN_DIAS = +estado.min_dias || 21; MIN_CERRADAS = +estado.min_cerradas || 30;   /* capital ficticio por agente (lo guarda la simulación; las versiones antiguas usaban 50) */
   var fee = estado.fee, slip = estado.slip, precios = estado.precios || {};
   var btc = precios.XBTEUR || (hist.length ? parseFloat(hist[hist.length - 1].precio_eur) : 0);
   var ahoraMs = Date.now();
@@ -375,7 +383,7 @@ function pintarCabecera(){
   if (pd) {
     pd.className = "parada" + (viejo && !DEMO ? " on" : "");
     pd.innerHTML = viejo && !DEMO ? '<div><b>La oficina lleva ' + hace(Date.now() - D.ultimaMs).replace("hace ", "") + ' sin trabajar.</b><br>GitHub no ha lanzado la última ronda. El vigilante la relanza solo cada hora; si quieres que trabaje ya, lánzala a mano.</div>' +
-      '<a href="https://github.com/' + REPO + '/actions/workflows/agentes.yml" target="_blank" rel="noopener">Lanzar ronda en GitHub</a>' : "";
+      '<a href="https://github.com/' + REPO + '/actions/workflows/' + (SALA_ABIERTA ? 'sala.yml' : 'agentes.yml') + '" target="_blank" rel="noopener">Lanzar ronda en GitHub</a>' : "";
   }
   var pills = "";
   if (DEMO) pills += '<span class="pill demo">Datos de ejemplo</span>';
@@ -438,12 +446,12 @@ function pintarControl(){
     '<span>Capital por agente</span><span>' + START + ' € (ficticios)</span>' +
     '<span>Comisión por operación</span><span>' + (D.fee * 100).toFixed(2).replace(".", ",") + ' %</span>' +
     '<span>Deslizamiento</span><span>' + (D.slip * 100).toFixed(2).replace(".", ",") + ' %</span>' +
-    '<span>Pérdida diaria máxima</span><span>' + eur(START * 0.04).replace(",00", ",0") + '</span>' +
+    '<span>Pérdida diaria máxima</span><span>' + (SALA_ABIERTA ? 'sin límite diario' : eur(START * 0.04).replace(",00", ",0")) + '</span>' +
     '<span>Apagado de seguridad</span><span>bajo ' + (START * 0.7).toFixed(0) + ' € (−30 %)</span>' +
     '<span>En marcha desde</span><span>' + esc((e.inicio || "").slice(0, 10)) + '</span></div>' +
     '<div style="padding:0 14px"><button class="btn" id="recargar">Actualizar ahora</button></div>' +
     '<div class="sec">Dónde está todo</div><p class="links"><a href="https://github.com/' + REPO + '/actions" target="_blank" rel="noopener">Ejecuciones (Actions)</a> · ' +
-    '<a href="https://github.com/' + REPO + '/blob/main/datos/resumen.md" target="_blank" rel="noopener">Resumen</a></p>' +
+    '<a href="https://github.com/' + REPO + '/blob/main/' + CARPETA + '/resumen.md" target="_blank" rel="noopener">Resumen</a></p>' +
     '<p class="note">La simulación corre sola en GitHub (aproximadamente cada hora; GitHub a veces se retrasa), aunque tengas el ordenador apagado. Esta página solo la muestra: se actualiza sola cada 5 minutos mientras esté abierta. No opera en ningún exchange.</p>';
   var b = $("recargar"); if (b) b.onclick = recargar;
 }
@@ -465,7 +473,7 @@ function pintarTab(){
 /* ===== laboratorio de estrategias ===== */
 var LAB = null;
 function cargarLab(){
-  var b = BASE.replace(/\/?$/, "/");
+  var b = BASE_LAB;
   return get(b + "laboratorio.json", "json").then(function(l){ LAB = l; }).catch(function(){ LAB = null; }).then(function(){ if (VIEW === "lab") pintarLab(); });
 }
 
@@ -473,6 +481,7 @@ function cargarLab(){
 var PARTE = null, PREVG = null;
 function cargarParte(){
   var b = BASE.replace(/\/?$/, "/");
+  if (SALA_ABIERTA) { PARTE = null; pintarParte(); return Promise.resolve(); }   /* el director solo revisa la oficina principal */
   return get(b + "parte_director.json", "json").then(function(p){ PARTE = p; }).catch(function(){ PARTE = null; }).then(pintarParte);
 }
 function pintarParte(){
@@ -945,6 +954,13 @@ document.getElementById("tabs").addEventListener("click", function(e){
   var b = e.target.closest(".tab"); if (!b) return; TAB = b.dataset.t; pintarTab();
   if (window.matchMedia && matchMedia("(max-width:760px)").matches) { var pn = $("p-" + TAB) || $("mktbox"); if (pn && pn.scrollIntoView) pn.scrollIntoView({behavior: "smooth", block: "start"}); }
 });
+(function(){
+  $(SALA_ABIERTA ? "s-abierta" : "s-principal").setAttribute("aria-current", "page");
+  if (SALA_ABIERTA) {
+    $("subtit").textContent = "Sala abierta: 2 agentes que pueden comprar todas las monedas (simulación aparte)";
+    document.title = "Sala abierta · Oficina de agentes";
+  }
+})();
 recargar();
 setInterval(recargar, REFRESH_MS);
 </script>
