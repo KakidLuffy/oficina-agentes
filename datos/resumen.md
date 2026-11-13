@@ -1,6 +1,6 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-12T23:47:43+00:00 UTC · Precio BTC/EUR: 64533 (Kraken)
+Ultima actualizacion: 2026-11-13T00:17:47+00:00 UTC · Precio BTC/EUR: 64470 (Kraken)
 En marcha desde: 2026-11-11T23:09:56+00:00 UTC (1.0 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 2 a la vez, 5.00 EUR en cada una · los agentes de senales solo compran XBT, ETH
 Sin agente principal: Tendencia H1 no paso la prueba historica (ver CRITERIOS.md y backtest_h1.md). Todos los agentes son exploratorios: que alguno gane puede ser casualidad.
@@ -8,22 +8,22 @@ Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Costes pagados (EUR) | Antes de costes (EUR) | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 10.00 | +0.00 | +0.00 % | +0.32 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Cruce 5/20 | 10.00 | +0.00 | +0.00 % | +0.32 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Momentum | 10.00 | +0.00 | +0.00 % | +0.32 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Rebote | 9.90 | -0.10 | -0.96 % | +0.22 | 2 | 0.04 | -0.05 | 2026-11-11 | Con ETH, XBT |
-| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +0.32 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Cruce 3/8 rapido | 10.00 | +0.00 | +0.00 % | +0.32 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Rebote rapido | 9.97 | -0.03 | -0.30 % | +0.29 | 1 | 0.02 | -0.01 | 2026-11-11 | Con XBT |
-| Rebalanceo semanal | 9.82 | -0.18 | -1.80 % | +0.14 | 5 | 0.04 | -0.13 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
-| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +0.32 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Comprar y mantener (solo BTC) | 9.68 | -0.32 | -3.16 % | 0.00 | 1 | 0.04 | -0.27 | 2026-11-11 | Referencia |
-| Comprar y mantener (cesta) | 9.77 | -0.23 | -2.29 % | +0.09 | 2 | 0.04 | -0.18 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
-| Mantener la cesta del Rebalanceo | 9.82 | -0.18 | -1.80 % | +0.14 | 5 | 0.04 | -0.13 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
+| Cruce 10/30 | 10.00 | +0.00 | +0.00 % | +0.33 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Cruce 5/20 | 10.00 | +0.00 | +0.00 % | +0.33 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Momentum | 10.00 | +0.00 | +0.00 % | +0.33 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Rebote | 9.90 | -0.10 | -1.03 % | +0.22 | 2 | 0.04 | -0.06 | 2026-11-11 | Con ETH, XBT |
+| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +0.33 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Cruce 3/8 rapido | 10.00 | +0.00 | +0.00 % | +0.33 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Rebote rapido | 9.97 | -0.03 | -0.35 % | +0.29 | 1 | 0.02 | -0.01 | 2026-11-11 | Con XBT |
+| Rebalanceo semanal | 9.83 | -0.17 | -1.72 % | +0.15 | 5 | 0.04 | -0.13 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
+| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +0.33 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Comprar y mantener (solo BTC) | 9.67 | -0.33 | -3.26 % | 0.00 | 1 | 0.04 | -0.28 | 2026-11-11 | Referencia |
+| Comprar y mantener (cesta) | 9.76 | -0.24 | -2.36 % | +0.09 | 2 | 0.04 | -0.19 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
+| Mantener la cesta del Rebalanceo | 9.83 | -0.17 | -1.72 % | +0.15 | 5 | 0.04 | -0.13 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
 
 Rebalanceo semanal frente a mantener sus mismas 5 monedas sin rebalancear: +0.00 EUR (la columna «Dif. vs Comprar y mantener» lo compara solo con BTC).
 
-Regla de Tendencia H1 (diaria) (ultimo cierre diario): ETH cierre del 2026-11-11 1851.17 frente a media de 100 dias 2084.47 (debajo: fuera); XBT cierre del 2026-11-11 66653.60 frente a media de 100 dias 68136.88 (debajo: fuera).
+Regla de Tendencia H1 (diaria) (ultimo cierre diario): ETH cierre del 2026-11-12 1826.33 frente a media de 100 dias 2086.53 (debajo: fuera); XBT cierre del 2026-11-12 64611.30 frente a media de 100 dias 68227.43 (debajo: fuera).
 
 Riesgo (calculado con el historial guardado):
 
@@ -38,7 +38,7 @@ Riesgo (calculado con el historial guardado):
 | Rebote rapido | -0.30 % | 0 | 0 |
 | Rebalanceo semanal | -2.70 % | 0 | 0 |
 | Tendencia H1 (diaria) | 0.00 % | 0 | 0 |
-| Comprar y mantener | -3.20 % | 0 | 0 |
+| Comprar y mantener | -3.30 % | 0 | 0 |
 
 Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una operacion cuenta cuando se cierra con su venta.
 
