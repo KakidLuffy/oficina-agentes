@@ -1,6 +1,6 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-14T02:47:46+00:00 UTC · Precio BTC/EUR: 61321 (Kraken)
+Ultima actualizacion: 2026-11-14T03:17:41+00:00 UTC · Precio BTC/EUR: 61061 (Kraken)
 En marcha desde: 2026-11-11T23:09:56+00:00 UTC (2.2 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 2 a la vez, 5.00 EUR en cada una · los agentes de senales solo compran XBT, ETH
 Sin agente principal: Tendencia H1 no paso la prueba historica (ver CRITERIOS.md y backtest_h1.md). Todos los agentes son exploratorios: que alguno gane puede ser casualidad.
@@ -8,18 +8,18 @@ Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Costes pagados (EUR) | Antes de costes (EUR) | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 10.00 | +0.00 | +0.00 % | +0.80 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Cruce 5/20 | 9.92 | -0.08 | -0.83 % | +0.72 | 4 | 0.09 | +0.01 | 2026-11-11 | En efectivo |
-| Momentum | 9.84 | -0.16 | -1.57 % | +0.64 | 4 | 0.09 | -0.07 | 2026-11-11 | En efectivo |
-| Rebote | 9.57 | -0.43 | -4.31 % | +0.37 | 4 | 0.09 | -0.34 | 2026-11-11 | En efectivo |
-| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +0.80 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Cruce 3/8 rapido | 10.00 | +0.00 | +0.00 % | +0.80 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Rebote rapido | 9.84 | -0.16 | -1.60 % | +0.64 | 4 | 0.09 | -0.07 | 2026-11-11 | En efectivo |
-| Rebalanceo semanal | 9.32 | -0.68 | -6.84 % | +0.11 | 5 | 0.04 | -0.64 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
-| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +0.80 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Comprar y mantener (solo BTC) | 9.20 | -0.80 | -7.98 % | 0.00 | 1 | 0.04 | -0.75 | 2026-11-11 | Referencia |
-| Comprar y mantener (cesta) | 9.28 | -0.72 | -7.23 % | +0.08 | 2 | 0.04 | -0.68 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
-| Mantener la cesta del Rebalanceo | 9.32 | -0.68 | -6.84 % | +0.11 | 5 | 0.04 | -0.64 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
+| Cruce 10/30 | 10.00 | +0.00 | +0.00 % | +0.84 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Cruce 5/20 | 9.92 | -0.08 | -0.83 % | +0.75 | 4 | 0.09 | +0.01 | 2026-11-11 | En efectivo |
+| Momentum | 9.84 | -0.16 | -1.57 % | +0.68 | 4 | 0.09 | -0.07 | 2026-11-11 | En efectivo |
+| Rebote | 9.57 | -0.43 | -4.31 % | +0.41 | 4 | 0.09 | -0.34 | 2026-11-11 | En efectivo |
+| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +0.84 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Cruce 3/8 rapido | 10.00 | +0.00 | +0.00 % | +0.84 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Rebote rapido | 9.84 | -0.16 | -1.60 % | +0.68 | 4 | 0.09 | -0.07 | 2026-11-11 | En efectivo |
+| Rebalanceo semanal | 9.29 | -0.71 | -7.07 % | +0.13 | 5 | 0.04 | -0.66 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
+| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +0.84 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Comprar y mantener (solo BTC) | 9.16 | -0.84 | -8.37 % | 0.00 | 1 | 0.04 | -0.79 | 2026-11-11 | Referencia |
+| Comprar y mantener (cesta) | 9.25 | -0.75 | -7.54 % | +0.08 | 2 | 0.04 | -0.71 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
+| Mantener la cesta del Rebalanceo | 9.29 | -0.71 | -7.07 % | +0.13 | 5 | 0.04 | -0.66 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
 
 Rebalanceo semanal frente a mantener sus mismas 5 monedas sin rebalancear: +0.00 EUR (la columna «Dif. vs Comprar y mantener» lo compara solo con BTC).
 
@@ -36,9 +36,9 @@ Riesgo (calculado con el historial guardado):
 | Cruce 10/30 + filtro | 0.00 % | 0 | 0 |
 | Cruce 3/8 rapido | 0.00 % | 0 | 0 |
 | Rebote rapido | -1.90 % | 0 | 2 |
-| Rebalanceo semanal | -6.80 % | 0 | 0 |
+| Rebalanceo semanal | -7.10 % | 0 | 0 |
 | Tendencia H1 (diaria) | 0.00 % | 0 | 0 |
-| Comprar y mantener | -8.00 % | 0 | 0 |
+| Comprar y mantener | -8.40 % | 0 | 0 |
 
 Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una operacion cuenta cuando se cierra con su venta.
 
