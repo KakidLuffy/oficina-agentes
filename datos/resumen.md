@@ -1,6 +1,6 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-17T12:47:48+00:00 UTC · Precio BTC/EUR: 59017 (Kraken)
+Ultima actualizacion: 2026-11-17T13:17:49+00:00 UTC · Precio BTC/EUR: 59138 (Kraken)
 En marcha desde: 2026-11-11T23:09:56+00:00 UTC (5.6 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 2 a la vez, 5.00 EUR en cada una · los agentes de senales solo compran XBT, ETH
 Sin agente principal: Tendencia H1 no paso la prueba historica (ver CRITERIOS.md y backtest_h1.md). Todos los agentes son exploratorios: que alguno gane puede ser casualidad.
@@ -8,18 +8,18 @@ Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Costes pagados (EUR) | Antes de costes (EUR) | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 9.72 | -0.28 | -2.85 % | +0.86 | 7 | 0.16 | -0.13 | 2026-11-11 | Con ETH |
-| Cruce 5/20 | 9.49 | -0.51 | -5.09 % | +0.64 | 14 | 0.31 | -0.20 | 2026-11-11 | En efectivo |
-| Momentum | 9.47 | -0.53 | -5.34 % | +0.61 | 12 | 0.26 | -0.27 | 2026-11-11 | En efectivo |
-| Rebote | 9.28 | -0.72 | -7.24 % | +0.42 | 10 | 0.22 | -0.51 | 2026-11-11 | En efectivo |
-| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +1.14 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Cruce 3/8 rapido | 9.88 | -0.12 | -1.20 % | +1.02 | 2 | 0.04 | -0.08 | 2026-11-11 | En efectivo |
-| Rebote rapido | 9.61 | -0.39 | -3.86 % | +0.76 | 14 | 0.31 | -0.07 | 2026-11-11 | En efectivo |
-| Rebalanceo semanal | 8.96 | -1.04 | -10.43 % | +0.10 | 5 | 0.04 | -1.00 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
-| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +1.14 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Comprar y mantener (solo BTC) | 8.86 | -1.14 | -11.44 % | 0.00 | 1 | 0.04 | -1.10 | 2026-11-11 | Referencia |
-| Comprar y mantener (cesta) | 8.90 | -1.10 | -11.02 % | +0.04 | 2 | 0.04 | -1.06 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
-| Mantener la cesta del Rebalanceo | 8.96 | -1.04 | -10.43 % | +0.10 | 5 | 0.04 | -1.00 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
+| Cruce 10/30 | 9.72 | -0.28 | -2.79 % | +0.85 | 7 | 0.16 | -0.12 | 2026-11-11 | Con ETH |
+| Cruce 5/20 | 9.49 | -0.51 | -5.09 % | +0.62 | 14 | 0.31 | -0.20 | 2026-11-11 | En efectivo |
+| Momentum | 9.47 | -0.53 | -5.34 % | +0.59 | 12 | 0.26 | -0.27 | 2026-11-11 | En efectivo |
+| Rebote | 9.28 | -0.72 | -7.24 % | +0.40 | 10 | 0.22 | -0.51 | 2026-11-11 | En efectivo |
+| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +1.13 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Cruce 3/8 rapido | 9.86 | -0.14 | -1.42 % | +0.98 | 3 | 0.07 | -0.08 | 2026-11-11 | Con XBT |
+| Rebote rapido | 9.61 | -0.39 | -3.86 % | +0.74 | 14 | 0.31 | -0.07 | 2026-11-11 | En efectivo |
+| Rebalanceo semanal | 8.99 | -1.01 | -10.15 % | +0.11 | 5 | 0.04 | -0.97 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
+| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +1.13 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Comprar y mantener (solo BTC) | 8.87 | -1.13 | -11.26 % | 0.00 | 1 | 0.04 | -1.08 | 2026-11-11 | Referencia |
+| Comprar y mantener (cesta) | 8.91 | -1.09 | -10.88 % | +0.04 | 2 | 0.04 | -1.04 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
+| Mantener la cesta del Rebalanceo | 8.99 | -1.01 | -10.15 % | +0.11 | 5 | 0.04 | -0.97 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
 
 Rebalanceo semanal frente a mantener sus mismas 5 monedas sin rebalancear: +0.00 EUR (la columna «Dif. vs Comprar y mantener» lo compara solo con BTC).
 
@@ -34,7 +34,7 @@ Riesgo (calculado con el historial guardado):
 | Momentum | -5.39 % | 0 | 6 |
 | Rebote | -11.70 % | 1 | 4 |
 | Cruce 10/30 + filtro | 0.00 % | 0 | 0 |
-| Cruce 3/8 rapido | -1.30 % | 0 | 1 |
+| Cruce 3/8 rapido | -1.40 % | 0 | 1 |
 | Rebote rapido | -4.30 % | 3 | 4 |
 | Rebalanceo semanal | -16.10 % | 0 | 0 |
 | Tendencia H1 (diaria) | 0.00 % | 0 | 0 |
