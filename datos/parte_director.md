@@ -1,14 +1,14 @@
 # Parte del director
 
-Actualizado: 2026-11-17T14:27:26Z
+Actualizado: 2026-11-17T14:56:35Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 86,33 € (-3,67 €).
-- Capital total 86,33 € (-3,67 €, -4,08 %).
-- Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,03 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener» (8,85 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,90 €).
+- Fondo de 90,00 € (10,00 € por agente): vale 86,25 € (-3,75 €).
+- Capital total 86,25 € (-3,75 €, -4,17 %).
+- Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,05 €).
+- 9 de 9 agentes van por encima de «Comprar y mantener» (8,86 €).
+- 9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,87 €).
 - Costes pagados entre todos: 1,39 €.
 - 3 con monedas, 6 en efectivo, 0 apagados.
 - Operaciones en las últimas 24 h: 17.
@@ -20,14 +20,14 @@ Avisos:
 Revisión de datos: sin errores.
 
 Progreso hacia la evaluación (21 días y 30 cierres):
-- Cruce 10/30: 5.6 días, 3 cierres
-- Cruce 5/20: 5.6 días, 7 cierres
-- Momentum: 5.6 días, 6 cierres
-- Rebote: 5.6 días, 5 cierres
-- Cruce 10/30 + filtro: 5.6 días, 0 cierres
-- Cruce 3/8 rapido: 5.6 días, 1 cierres
-- Rebote rapido: 5.6 días, 7 cierres
-- Rebalanceo semanal: 5.6 días, 0 cierres
-- Tendencia H1 (diaria): 5.6 días, 0 cierres
+- Cruce 10/30: 5.7 días, 3 cierres
+- Cruce 5/20: 5.7 días, 7 cierres
+- Momentum: 5.7 días, 6 cierres
+- Rebote: 5.7 días, 5 cierres
+- Cruce 10/30 + filtro: 5.7 días, 0 cierres
+- Cruce 3/8 rapido: 5.7 días, 1 cierres
+- Rebote rapido: 5.7 días, 7 cierres
+- Rebalanceo semanal: 5.7 días, 0 cierres
+- Tendencia H1 (diaria): 5.7 días, 0 cierres
 
 Laboratorio: POSIBLE (ver propuestas.md).
