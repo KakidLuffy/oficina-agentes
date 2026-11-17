@@ -1,25 +1,25 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-17T21:47:47+00:00 UTC · Precio BTC/EUR: 58444 (Kraken)
-En marcha desde: 2026-11-11T23:09:56+00:00 UTC (5.9 dias)
+Ultima actualizacion: 2026-11-17T22:17:55+00:00 UTC · Precio BTC/EUR: 58515 (Kraken)
+En marcha desde: 2026-11-11T23:09:56+00:00 UTC (6.0 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 2 a la vez, 5.00 EUR en cada una · los agentes de senales solo compran XBT, ETH
 Sin agente principal: Tendencia H1 no paso la prueba historica (ver CRITERIOS.md y backtest_h1.md). Todos los agentes son exploratorios: que alguno gane puede ser casualidad.
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Costes pagados (EUR) | Antes de costes (EUR) | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 9.60 | -0.40 | -4.04 % | +0.83 | 8 | 0.18 | -0.23 | 2026-11-11 | En efectivo |
-| Cruce 5/20 | 9.34 | -0.66 | -6.60 % | +0.57 | 16 | 0.35 | -0.31 | 2026-11-11 | En efectivo |
-| Momentum | 9.47 | -0.53 | -5.34 % | +0.70 | 12 | 0.26 | -0.27 | 2026-11-11 | En efectivo |
-| Rebote | 9.33 | -0.67 | -6.65 % | +0.56 | 12 | 0.26 | -0.41 | 2026-11-11 | Con ETH, XBT |
-| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +1.23 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Cruce 3/8 rapido | 9.60 | -0.40 | -4.03 % | +0.83 | 6 | 0.13 | -0.27 | 2026-11-11 | En efectivo |
-| Rebote rapido | 9.65 | -0.35 | -3.55 % | +0.88 | 15 | 0.33 | -0.02 | 2026-11-11 | Con XBT |
-| Rebalanceo semanal | 8.91 | -1.09 | -10.94 % | +0.14 | 5 | 0.04 | -1.05 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
-| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +1.23 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Comprar y mantener (solo BTC) | 8.77 | -1.23 | -12.30 % | 0.00 | 1 | 0.04 | -1.19 | 2026-11-11 | Referencia |
-| Comprar y mantener (cesta) | 8.82 | -1.18 | -11.84 % | +0.05 | 2 | 0.04 | -1.14 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
-| Mantener la cesta del Rebalanceo | 8.91 | -1.09 | -10.94 % | +0.14 | 5 | 0.04 | -1.05 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
+| Cruce 10/30 | 9.60 | -0.40 | -4.04 % | +0.82 | 8 | 0.18 | -0.23 | 2026-11-11 | En efectivo |
+| Cruce 5/20 | 9.34 | -0.66 | -6.60 % | +0.56 | 16 | 0.35 | -0.31 | 2026-11-11 | En efectivo |
+| Momentum | 9.47 | -0.53 | -5.34 % | +0.69 | 12 | 0.26 | -0.27 | 2026-11-11 | En efectivo |
+| Rebote | 9.34 | -0.66 | -6.64 % | +0.56 | 12 | 0.26 | -0.40 | 2026-11-11 | Con ETH, XBT |
+| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +1.22 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Cruce 3/8 rapido | 9.60 | -0.40 | -4.03 % | +0.82 | 6 | 0.13 | -0.27 | 2026-11-11 | En efectivo |
+| Rebote rapido | 9.62 | -0.38 | -3.75 % | +0.84 | 16 | 0.36 | -0.02 | 2026-11-11 | En efectivo |
+| Rebalanceo semanal | 8.90 | -1.10 | -10.96 % | +0.12 | 5 | 0.04 | -1.05 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
+| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +1.22 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Comprar y mantener (solo BTC) | 8.78 | -1.22 | -12.19 % | 0.00 | 1 | 0.04 | -1.17 | 2026-11-11 | Referencia |
+| Comprar y mantener (cesta) | 8.82 | -1.18 | -11.82 % | +0.04 | 2 | 0.04 | -1.14 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
+| Mantener la cesta del Rebalanceo | 8.90 | -1.10 | -10.96 % | +0.12 | 5 | 0.04 | -1.05 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
 
 Rebalanceo semanal frente a mantener sus mismas 5 monedas sin rebalancear: +0.00 EUR (la columna «Dif. vs Comprar y mantener» lo compara solo con BTC).
 
@@ -35,18 +35,18 @@ Riesgo (calculado con el historial guardado):
 | Rebote | -11.70 % | 1 | 4 |
 | Cruce 10/30 + filtro | 0.00 % | 0 | 0 |
 | Cruce 3/8 rapido | -4.30 % | 0 | 3 |
-| Rebote rapido | -4.30 % | 3 | 4 |
+| Rebote rapido | -4.30 % | 4 | 4 |
 | Rebalanceo semanal | -16.10 % | 0 | 0 |
 | Tendencia H1 (diaria) | 0.00 % | 0 | 0 |
 | Comprar y mantener | -15.00 % | 0 | 0 |
 
 Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una operacion cuenta cuando se cierra con su venta.
 
-⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (4 cerradas, 6 dias); Cruce 5/20 (8 cerradas, 6 dias); Momentum (6 cerradas, 6 dias); Rebote (5 cerradas, 6 dias); Cruce 10/30 + filtro (0 cerradas, 6 dias); Cruce 3/8 rapido (3 cerradas, 6 dias); Rebote rapido (7 cerradas, 6 dias); Rebalanceo semanal (0 cerradas, 6 dias); Tendencia H1 (diaria) (0 cerradas, 6 dias). Antes de eso, el resultado puede ser pura suerte. El 9-feb-2027 (90 dias) el que no llegue a 30 cerradas se declara «no evaluable con esta muestra» (CRITERIOS.md, seccion 5).
+⚠ Aun sin datos suficientes (se exigen 30 operaciones cerradas y 21 dias): Cruce 10/30 (4 cerradas, 6 dias); Cruce 5/20 (8 cerradas, 6 dias); Momentum (6 cerradas, 6 dias); Rebote (5 cerradas, 6 dias); Cruce 10/30 + filtro (0 cerradas, 6 dias); Cruce 3/8 rapido (3 cerradas, 6 dias); Rebote rapido (8 cerradas, 6 dias); Rebalanceo semanal (0 cerradas, 6 dias); Tendencia H1 (diaria) (0 cerradas, 6 dias). Antes de eso, el resultado puede ser pura suerte. El 9-feb-2027 (90 dias) el que no llegue a 30 cerradas se declara «no evaluable con esta muestra» (CRITERIOS.md, seccion 5).
 
 ![Evolucion del capital](grafico.svg)
 
-Aviso: solo hay 5.9 dias de datos; aun no hay base para concluir que una estrategia sea mejor.
+Aviso: solo hay 6.0 dias de datos; aun no hay base para concluir que una estrategia sea mejor.
 
 Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.
 Probar muchas monedas y estrategias aumenta la probabilidad de que alguna parezca buena solo por casualidad.
