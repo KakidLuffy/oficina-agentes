@@ -1,14 +1,14 @@
 # Parte del director
 
-Actualizado: 2026-11-17T04:30:04Z
+Actualizado: 2026-11-17T04:49:36Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 86,52 € (-3,48 €).
-- Capital total 86,52 € (-3,48 €, -3,86 %).
-- Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,09 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener» (8,85 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,91 €).
+- Fondo de 90,00 € (10,00 € por agente): vale 86,59 € (-3,41 €).
+- Capital total 86,59 € (-3,41 €, -3,79 %).
+- Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,07 €).
+- 9 de 9 agentes van por encima de «Comprar y mantener» (8,86 €).
+- 9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,93 €).
 - Costes pagados entre todos: 1,17 €.
 - 4 con monedas, 5 en efectivo, 0 apagados.
 - Operaciones en las últimas 24 h: 11.
