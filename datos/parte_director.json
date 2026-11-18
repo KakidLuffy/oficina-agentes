@@ -1,10 +1,10 @@
 {
- "generado": "2026-11-18T21:39:08Z",
+ "generado": "2026-11-18T21:59:10Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 84,48 € (-5,52 €).",
-  "Capital total 84,48 € (-5,52 €, -6,13 %).",
-  "Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,22 €).",
+  "Fondo de 90,00 € (10,00 € por agente): vale 84,46 € (-5,54 €).",
+  "Capital total 84,46 € (-5,54 €, -6,15 %).",
+  "Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,24 €).",
   "9 de 9 agentes van por encima de «Comprar y mantener» (8,52 €).",
   "9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,59 €).",
   "Costes pagados entre todos: 2,08 €.",
@@ -22,55 +22,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 6,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 10,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 8,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 7,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 5,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 9,
    "evaluable": false
   },
   {
    "nombre": "Rebalanceo semanal",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Tendencia H1 (diaria)",
-   "dias": 6.9,
+   "dias": 7.0,
    "cierres": 0,
    "evaluable": false
   }
