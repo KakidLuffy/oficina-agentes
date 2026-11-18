@@ -1,15 +1,15 @@
 {
- "generado": "2026-11-18T04:44:49Z",
+ "generado": "2026-11-18T13:30:54Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 85,70 € (-4,30 €).",
-  "Capital total 85,70 € (-4,30 €, -4,77 %).",
-  "Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,05 €).",
-  "9 de 9 agentes van por encima de «Comprar y mantener» (8,79 €).",
-  "9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,82 €).",
-  "Costes pagados entre todos: 1,72 €.",
-  "4 con monedas, 5 en efectivo, 0 apagados.",
-  "Operaciones en las últimas 24 h: 25."
+  "Fondo de 90,00 € (10,00 € por agente): vale 85,44 € (-4,56 €).",
+  "Capital total 85,44 € (-4,56 €, -5,07 %).",
+  "Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,04 €).",
+  "9 de 9 agentes van por encima de «Comprar y mantener» (8,76 €).",
+  "9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,80 €).",
+  "Costes pagados entre todos: 1,82 €.",
+  "5 con monedas, 4 en efectivo, 0 apagados.",
+  "Operaciones en las últimas 24 h: 20."
  ],
  "alertas": [
   "Rebote acumula una caída máxima del 11,7 %.",
@@ -22,55 +22,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 4,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 8,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 6,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 7,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 6.2,
-   "cierres": 3,
+   "dias": 6.6,
+   "cierres": 4,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 8,
    "evaluable": false
   },
   {
    "nombre": "Rebalanceo semanal",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Tendencia H1 (diaria)",
-   "dias": 6.2,
+   "dias": 6.6,
    "cierres": 0,
    "evaluable": false
   }
