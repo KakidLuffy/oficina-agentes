@@ -1,13 +1,13 @@
 # Sala abierta (dinero ficticio)
 
-Actualizado: 2026-11-18T02:36:34+00:00 UTC · en marcha desde 2026-11-13T09:32:32+00:00 (4.7 días) · reglas: CRITERIOS.md, secciones 7 y 7.1
+Actualizado: 2026-11-18T10:44:25+00:00 UTC · en marcha desde 2026-11-13T09:32:32+00:00 (5.0 días) · reglas: CRITERIOS.md, secciones 7 y 7.1
 Simulación aparte de la oficina principal. 2 agentes con las ideas «POSIBLE» del laboratorio v2 que pueden comprar todas las monedas de la oficina (31 con precio ahora), con velas de 4 h de Kraken; 2,50 € por compra, hasta 4 a la vez. Costes: comisión 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen). Se ve en el panel, botón «Sala abierta».
 
 | Agente | Capital (EUR) | Resultado | Dif. vs mantener la cesta | Operaciones (cerradas) | Estado |
 |---|---:|---:|---:|---:|---|
 | Sala: Cruce 10/80 + filtro | 9.68 | -3.19 % | +0.45 € | 2 (1) | En efectivo |
-| Sala: Ruptura 40/20 + filtro | 9.78 | -2.21 % | +0.55 € | 2 (1) | En efectivo |
-| Mantener la cesta inicial a partes iguales | 9.23 | -7.66 % | 0.00 € | 20 | Referencia |
+| Sala: Ruptura 40/20 + filtro | 9.71 | -2.92 % | +0.48 € | 3 (1) | Con XDC |
+| Mantener la cesta inicial a partes iguales | 9.23 | -7.67 % | 0.00 € | 20 | Referencia |
 | Mantener BTC | 9.35 | -6.53 % | +0.11 € | 1 | Referencia |
 
 ⚠ No se juzga a ningún agente antes de 90 días y 30 operaciones cerradas. Es exploratoria: aunque gane, no se convierte en agente principal ni justifica dinero real.

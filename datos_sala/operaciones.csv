@@ -3,3 +3,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-14T12:00+00:00,Sala: Ruptura 40/20 + filtro,NIGHTEUR,COMPRA,0.042841,2.5,señal compradora,0.01124
 2026-11-15T04:00+00:00,Sala: Cruce 10/80 + filtro,INJEUR,VENTA,6.33783,2.1808,señal vendedora,0.00985
 2026-11-16T20:00+00:00,Sala: Ruptura 40/20 + filtro,NIGHTEUR,VENTA,0.03937,2.2791,señal vendedora,0.0103
+2026-11-18T08:00+00:00,Sala: Ruptura 40/20 + filtro,XDCEUR,COMPRA,0.028394,2.5,señal compradora,0.01124
