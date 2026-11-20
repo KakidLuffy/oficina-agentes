@@ -6,3 +6,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-18T08:00+00:00,Sala: Ruptura 40/20 + filtro,XDCEUR,COMPRA,0.028394,2.5,señal compradora,0.01124
 2026-11-19T04:00+00:00,Sala: Ruptura 40/20 + filtro,VVVEUR,COMPRA,20.36918,2.5,señal compradora,0.01124
 2026-11-19T16:00+00:00,Sala: Ruptura 40/20 + filtro,XDCEUR,VENTA,0.026137,2.2829,señal vendedora,0.01031
+2026-11-20T12:00+00:00,Sala: Ruptura 40/20 + filtro,VVVEUR,VENTA,18.577101,2.2618,señal vendedora,0.01592
