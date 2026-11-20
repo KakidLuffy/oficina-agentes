@@ -118,3 +118,4 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-19T21:00+00:00,Cruce 10/30,ETHEUR,VENTA,1586.14653,4.79,senal vendedora,0.0217
 2026-11-19T21:00+00:00,Rebote rapido,XBTEUR,VENTA,56058.85655,4.86,stop de perdida (-1.9 %),0.022
 2026-11-19T21:00+00:00,Rebote rapido,ETHEUR,VENTA,1586.14653,4.36,stop de perdida (-1.5 %),0.0197
+2026-11-20T04:00+00:00,Rebote rapido,ETHEUR,COMPRA,1571.84553,5.0,senal compradora,0.0225
