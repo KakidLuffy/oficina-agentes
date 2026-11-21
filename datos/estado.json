@@ -2,44 +2,44 @@
   "version": 5,
   "capital_inicial": 10.0,
   "inicio": "2026-11-11T23:09:56+00:00",
-  "ultima_vela": 1795237200,
+  "ultima_vela": 1795240800,
   "precio_inicio": 66341.4,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 52526.7,
-    "ETHEUR": 1491.41,
-    "SOLEUR": 62.07,
-    "XRPEUR": 0.81684,
-    "ZECEUR": 664.26,
-    "NEAREUR": 2.4395,
-    "HYPEEUR": 53.46,
+    "XBTEUR": 53345.7,
+    "ETHEUR": 1497.08,
+    "SOLEUR": 62.09,
+    "XRPEUR": 0.81906,
+    "ZECEUR": 670.89,
+    "NEAREUR": 2.4609,
+    "HYPEEUR": 53.77,
     "PEPEEUR": 3.295e-06,
-    "LINKEUR": 7.63729,
-    "SUIEUR": 0.5653,
-    "XLMEUR": 0.113562,
-    "ADAEUR": 0.127587,
-    "AVAXEUR": 5.76,
-    "TAOEUR": 160.4328,
+    "LINKEUR": 7.65897,
+    "SUIEUR": 0.5702,
+    "XLMEUR": 0.113717,
+    "ADAEUR": 0.127437,
+    "AVAXEUR": 5.757,
+    "TAOEUR": 159.8818,
     "XDCEUR": 0.02563,
-    "LTCEUR": 35.54,
-    "XDGEUR": 0.0486749,
+    "LTCEUR": 35.57,
+    "XDGEUR": 0.0487708,
     "PUMPEUR": 0.002329,
     "ARBEUR": 0.1365,
-    "ZROEUR": 1.028,
+    "ZROEUR": 1.026,
     "UNIEUR": 4.0231,
-    "TRXEUR": 0.273218,
+    "TRXEUR": 0.276508,
     "AAVEEUR": 101.68,
     "ENAEUR": 0.1072,
     "XMREUR": 409.86,
     "ONDOEUR": 0.30006,
     "HBAREUR": 0.05402,
-    "INJEUR": 5.537,
+    "INJEUR": 5.559,
     "NIGHTEUR": 0.04169,
-    "VVVEUR": 19.648,
+    "VVVEUR": 19.798,
     "QNTEUR": 139.41,
     "ASTEREUR": 0.48492,
-    "PAXGEUR": 3210.77,
+    "PAXGEUR": 3218.76,
     "BCHEUR": 188.71,
     "SKYEUR": 0.03999,
     "JUPEUR": 0.20229
@@ -85,17 +85,23 @@
     },
     {
       "nombre": "Momentum",
-      "efectivo": 8.98924663420324,
-      "posiciones": {},
+      "efectivo": 3.9892466342032407,
+      "posiciones": {
+        "ETHEUR": 0.0033253017946753955
+      },
       "apagado": false,
-      "operaciones": 20,
+      "operaciones": 21,
       "dia": 20778,
       "eq_dia": 8.98924663420324,
       "inicio": "2026-11-11T23:09:56+00:00",
       "precio_inicio": 66341.4,
-      "entradas": {},
-      "compras": {},
-      "costes": 0.43018214501489904,
+      "entradas": {
+        "ETHEUR": 1497.6084299999998
+      },
+      "compras": {
+        "ETHEUR": "2026-11-21T06:00+00:00"
+      },
+      "costes": 0.45267090063708704,
       "stops": {},
       "ultima_venta": {
         "XBTEUR": "2026-11-19T16:00+00:00",
@@ -104,30 +110,27 @@
     },
     {
       "nombre": "Rebote",
-      "efectivo": 0.0,
+      "efectivo": 4.176016755364941,
       "posiciones": {
-        "XBTEUR": 9.199163981085732e-05,
-        "ETHEUR": 0.002802456709156332
+        "XBTEUR": 9.199163981085732e-05
       },
       "apagado": false,
-      "operaciones": 24,
+      "operaciones": 25,
       "dia": 20778,
       "eq_dia": 9.092779654824394,
       "inicio": "2026-11-11T23:09:56+00:00",
       "precio_inicio": 66341.4,
       "entradas": {
-        "XBTEUR": 54135.35415,
-        "ETHEUR": 1506.0226349999998
+        "XBTEUR": 54135.35415
       },
       "compras": {
-        "XBTEUR": "2026-11-20T15:00+00:00",
-        "ETHEUR": "2026-11-20T15:00+00:00"
+        "XBTEUR": "2026-11-20T15:00+00:00"
       },
-      "costes": 0.5115102031201086,
+      "costes": 0.5303787974229142,
       "stops": {},
       "ultima_venta": {
         "XBTEUR": "2026-11-20T10:00+00:00",
-        "ETHEUR": "2026-11-20T10:00+00:00"
+        "ETHEUR": "2026-11-21T06:00+00:00"
       }
     },
     {
@@ -162,27 +165,21 @@
     },
     {
       "nombre": "Rebote rapido",
-      "efectivo": 4.871784939384647,
-      "posiciones": {
-        "ETHEUR": 0.002770618038948533
-      },
+      "efectivo": 9.00035802868977,
+      "posiciones": {},
       "apagado": false,
-      "operaciones": 33,
+      "operaciones": 34,
       "dia": 20778,
       "eq_dia": 8.991016868459962,
       "inicio": "2026-11-11T23:09:56+00:00",
       "precio_inicio": 66341.4,
-      "entradas": {
-        "ETHEUR": 1434.7169999999999
-      },
-      "compras": {
-        "ETHEUR": "2026-11-21T03:00+00:00"
-      },
-      "costes": 0.7165946491025226,
+      "entradas": {},
+      "compras": {},
+      "costes": 0.7352488775778987,
       "stops": {},
       "ultima_venta": {
         "XBTEUR": "2026-11-21T05:00+00:00",
-        "ETHEUR": "2026-11-20T18:00+00:00"
+        "ETHEUR": "2026-11-21T06:00+00:00"
       }
     },
     {
