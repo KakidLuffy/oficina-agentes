@@ -1,14 +1,14 @@
 # Sala abierta (dinero ficticio)
 
-Actualizado: 2026-11-22T18:02:59+00:00 UTC · en marcha desde 2026-11-13T09:32:32+00:00 (9.4 días) · reglas: CRITERIOS.md, secciones 7 y 7.1
-Simulación aparte de la oficina principal. 2 agentes con las ideas «POSIBLE» del laboratorio v2 que pueden comprar todas las monedas de la oficina (33 con precio ahora), con velas de 4 h de Kraken; 2,50 € por compra, hasta 4 a la vez. Costes: comisión 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen). Se ve en el panel, botón «Sala abierta».
+Actualizado: 2026-11-22T23:50:30+00:00 UTC · en marcha desde 2026-11-13T09:32:32+00:00 (9.6 días) · reglas: CRITERIOS.md, secciones 7 y 7.1
+Simulación aparte de la oficina principal. 2 agentes con las ideas «POSIBLE» del laboratorio v2 que pueden comprar todas las monedas de la oficina (34 con precio ahora), con velas de 4 h de Kraken; 2,50 € por compra, hasta 4 a la vez. Costes: comisión 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen). Se ve en el panel, botón «Sala abierta».
 
 | Agente | Capital (EUR) | Resultado | Dif. vs mantener la cesta | Operaciones (cerradas) | Estado |
 |---|---:|---:|---:|---:|---|
-| Sala: Cruce 10/80 + filtro | 9.68 | -3.19 % | +1.04 € | 2 (1) | En efectivo |
-| Sala: Ruptura 40/20 + filtro | 9.55 | -4.45 % | +0.91 € | 7 (3) | Con VVV |
-| Mantener la cesta inicial a partes iguales | 8.64 | -13.60 % | 0.00 € | 20 | Referencia |
-| Mantener BTC | 8.84 | -11.57 % | +0.20 € | 1 | Referencia |
+| Sala: Cruce 10/80 + filtro | 9.68 | -3.19 % | +1.05 € | 2 (1) | En efectivo |
+| Sala: Ruptura 40/20 + filtro | 9.64 | -3.63 % | +1.01 € | 7 (3) | Con VVV |
+| Mantener la cesta inicial a partes iguales | 8.63 | -13.72 % | 0.00 € | 20 | Referencia |
+| Mantener BTC | 8.90 | -11.03 % | +0.27 € | 1 | Referencia |
 
 ⚠ No se juzga a ningún agente antes de 90 días y 30 operaciones cerradas. Es exploratoria: aunque gane, no se convierte en agente principal ni justifica dinero real.
 Estos resultados no garantizan beneficios futuros.
