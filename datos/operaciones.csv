@@ -148,3 +148,6 @@ fecha_utc,agente,moneda,tipo,precio_eur,importe_eur,motivo,coste_eur
 2026-11-22T08:00+00:00,Rebote rapido,XBTEUR,VENTA,54529.3217,5.03,senal vendedora,0.0227
 2026-11-22T09:00+00:00,Momentum,ETHEUR,COMPRA,1567.633425,5.0,senal compradora,0.0225
 2026-11-22T09:00+00:00,Cruce 3/8 rapido,XBTEUR,COMPRA,55767.76995,5.0,senal compradora,0.0225
+2026-11-22T10:00+00:00,Cruce 5/20,XBTEUR,COMPRA,55551.3618,5.0,senal compradora,0.0225
+2026-11-22T10:00+00:00,Cruce 5/20,ETHEUR,COMPRA,1560.51987,3.92,senal compradora,0.0176
+2026-11-22T10:00+00:00,Momentum,XBTEUR,COMPRA,55551.3618,3.92,senal compradora,0.0176
