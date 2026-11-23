@@ -1,17 +1,17 @@
 # Parte del director
 
-Actualizado: 2026-11-23T02:48:30Z
+Actualizado: 2026-11-23T08:19:20Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 82,39 € (-7,61 €).
-- Capital total 82,39 € (-7,61 €, -8,45 %).
-- Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,61 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener» (8,27 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,32 €).
-- Costes pagados entre todos: 3,21 €.
-- 4 con monedas, 5 en efectivo, 0 apagados.
-- Operaciones en las últimas 24 h: 10.
+- Fondo de 90,00 € (10,00 € por agente): vale 82,65 € (-7,35 €).
+- Capital total 82,65 € (-7,35 €, -8,17 %).
+- Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,46 €).
+- 9 de 9 agentes van por encima de «Comprar y mantener» (8,35 €).
+- 9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,40 €).
+- Costes pagados entre todos: 3,28 €.
+- 5 con monedas, 4 en efectivo, 0 apagados.
+- Operaciones en las últimas 24 h: 9.
 
 Avisos:
 - Cruce 10/30 acumula una caída máxima del 13,1 %.
@@ -24,14 +24,14 @@ Avisos:
 Revisión de datos: sin errores.
 
 Progreso hacia la evaluación (21 días y 30 cierres):
-- Cruce 10/30: 11.2 días, 8 cierres
-- Cruce 5/20: 11.2 días, 14 cierres
-- Momentum: 11.2 días, 12 cierres
-- Rebote: 11.2 días, 13 cierres
-- Cruce 10/30 + filtro: 11.2 días, 0 cierres
-- Cruce 3/8 rapido: 11.2 días, 6 cierres
-- Rebote rapido: 11.2 días, 18 cierres
-- Rebalanceo semanal: 11.2 días, 0 cierres
-- Tendencia H1 (diaria): 11.2 días, 0 cierres
+- Cruce 10/30: 11.4 días, 8 cierres
+- Cruce 5/20: 11.4 días, 15 cierres
+- Momentum: 11.4 días, 12 cierres
+- Rebote: 11.4 días, 13 cierres
+- Cruce 10/30 + filtro: 11.4 días, 0 cierres
+- Cruce 3/8 rapido: 11.4 días, 6 cierres
+- Rebote rapido: 11.4 días, 18 cierres
+- Rebalanceo semanal: 11.4 días, 0 cierres
+- Tendencia H1 (diaria): 11.4 días, 0 cierres
 
 Laboratorio: POSIBLE (ver propuestas.md).
