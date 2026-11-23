@@ -1,15 +1,15 @@
 {
- "generado": "2026-11-23T08:19:20Z",
+ "generado": "2026-11-23T12:46:34Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 82,65 € (-7,35 €).",
-  "Capital total 82,65 € (-7,35 €, -8,17 %).",
-  "Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,46 €).",
-  "9 de 9 agentes van por encima de «Comprar y mantener» (8,35 €).",
-  "9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,40 €).",
+  "Fondo de 90,00 € (10,00 € por agente): vale 82,82 € (-7,18 €).",
+  "Capital total 82,82 € (-7,18 €, -7,98 %).",
+  "Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,42 €).",
+  "9 de 9 agentes van por encima de «Comprar y mantener» (8,39 €).",
+  "9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,43 €).",
   "Costes pagados entre todos: 3,28 €.",
   "5 con monedas, 4 en efectivo, 0 apagados.",
-  "Operaciones en las últimas 24 h: 9."
+  "Operaciones en las últimas 24 h: 4."
  ],
  "alertas": [
   "Cruce 10/30 acumula una caída máxima del 13,1 %.",
@@ -26,55 +26,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 8,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 15,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 12,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 13,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 6,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 18,
    "evaluable": false
   },
   {
    "nombre": "Rebalanceo semanal",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Tendencia H1 (diaria)",
-   "dias": 11.4,
+   "dias": 11.6,
    "cierres": 0,
    "evaluable": false
   }
