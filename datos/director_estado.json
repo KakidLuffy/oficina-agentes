@@ -1,16 +1,16 @@
 {
  "apagados": [],
  "evaluables": [],
- "lab_generado": "2026-11-16T13:51:35Z",
+ "lab_generado": "2026-11-23T16:14:27Z",
  "semanas_candidatas": {
-  "Ruptura 40/20 + filtro (1 día)": 2,
-  "Cruce 10/80 + filtro (6 h)": 2,
-  "Ruptura 40/20 + filtro (6 h)": 2
+  "Ruptura 40/20 + filtro (1 día)": 3,
+  "Cruce 10/80 + filtro (6 h)": 3,
+  "Ruptura 40/20 + filtro (6 h)": 3
  },
  "estado_prop": {
   "Ruptura 40/20 + filtro (1 día)": "Pendiente",
   "Cruce 10/80 + filtro (6 h)": "Pendiente",
   "Ruptura 40/20 + filtro (6 h)": "Pendiente"
  },
- "actualizado": "2026-11-23T12:46:34Z"
+ "actualizado": "2026-11-23T16:14:43Z"
 }
