@@ -1,6 +1,6 @@
 {
  "version": 2,
- "generado": "2026-11-16T13:51:35Z",
+ "generado": "2026-11-23T16:14:27Z",
  "fuente": "Coinbase",
  "series": [
   "BTC 1 día",
@@ -31,7 +31,7 @@
   "TRX 6 h"
  ],
  "probadas": 202,
- "tasa_azar": 0.174,
+ "tasa_azar": 0.176,
  "veredicto": "posible",
  "texto": "Velas de 1 día: 1 candidata(s) en 8 años de examen (2019–2026), pero el azar ya daría unas 1.2. No se distingue de la casualidad: tomar solo como pista. Velas de 6 h: 2 candidatas (2 ideas distintas) en 8 años de examen (2019–2026), más del doble de las 0.2 que daría el azar. Son candidatas para registrar como hipótesis y probar en simulación.",
  "criterio": "examen año a año (se elige con el año anterior); una serie aprueba un año con ≥2 operaciones, superando a mantener con la misma exposición y sin caer más que mantener; aprueba el año con ≥60 % de las series; candidata si aprueba ≥60 % de los años y gana dinero de media. Velas de 1 día y de 6 h por separado",
@@ -60,9 +60,9 @@
     11,
     11
    ],
-   "tasa_azar": 0.204,
-   "candidatas_por_azar": 1.15,
-   "tasa_aprobado_elegidas": 0.188,
+   "tasa_azar": 0.208,
+   "candidatas_por_azar": 1.25,
+   "tasa_aprobado_elegidas": 0.198,
    "candidatas": 1,
    "ideas_distintas": 1
   },
@@ -90,9 +90,9 @@
     11,
     11
    ],
-   "tasa_azar": 0.144,
-   "candidatas_por_azar": 0.24,
-   "tasa_aprobado_elegidas": 0.135,
+   "tasa_azar": 0.145,
+   "candidatas_por_azar": 0.25,
+   "tasa_aprobado_elegidas": 0.146,
    "candidatas": 2,
    "ideas_distintas": 2
   }
@@ -132,86 +132,86 @@
  "familias": {
   "Analista de tendencia (1 día)": {
    "variantes": 35,
-   "dif_media_examen": -15.67,
-   "dif_media_misma_exposicion": -1.79,
+   "dif_media_examen": -15.41,
+   "dif_media_misma_exposicion": -1.73,
    "operaciones_medias_anio": 11.9,
    "aprueban": 0
   },
   "Analista de filtros (1 día)": {
    "variantes": 35,
-   "dif_media_examen": -24.97,
-   "dif_media_misma_exposicion": -5.03,
+   "dif_media_examen": -24.71,
+   "dif_media_misma_exposicion": -5.02,
    "operaciones_medias_anio": 6.6,
    "aprueban": 1
   },
   "Analista de rebote (1 día)": {
    "variantes": 9,
-   "dif_media_examen": -40.76,
-   "dif_media_misma_exposicion": -8.81,
+   "dif_media_examen": -40.59,
+   "dif_media_misma_exposicion": -8.86,
    "operaciones_medias_anio": 9.6,
    "aprueban": 0
   },
   "Analista de volatilidad (1 día)": {
    "variantes": 8,
-   "dif_media_examen": -20.47,
-   "dif_media_misma_exposicion": -4.62,
+   "dif_media_examen": -20.21,
+   "dif_media_misma_exposicion": -4.57,
    "operaciones_medias_anio": 11.1,
    "aprueban": 0
   },
   "Analista de salidas (1 día)": {
    "variantes": 8,
-   "dif_media_examen": -34.32,
-   "dif_media_misma_exposicion": -7.17,
+   "dif_media_examen": -34.07,
+   "dif_media_misma_exposicion": -7.13,
    "operaciones_medias_anio": 19.6,
    "aprueban": 0
   },
   "Analista de fuerza relativa (1 día)": {
    "variantes": 6,
-   "dif_media_examen": -34.8,
-   "dif_media_misma_exposicion": -10.94,
+   "dif_media_examen": -34.57,
+   "dif_media_misma_exposicion": -10.93,
    "operaciones_medias_anio": 14.5,
    "aprueban": 0
   },
   "Analista de tendencia (6 h)": {
    "variantes": 35,
-   "dif_media_examen": -27.21,
-   "dif_media_misma_exposicion": -13.45,
+   "dif_media_examen": -27.06,
+   "dif_media_misma_exposicion": -13.42,
    "operaciones_medias_anio": 43.0,
    "aprueban": 0
   },
   "Analista de filtros (6 h)": {
    "variantes": 35,
-   "dif_media_examen": -23.81,
-   "dif_media_misma_exposicion": -2.49,
+   "dif_media_examen": -23.66,
+   "dif_media_misma_exposicion": -2.47,
    "operaciones_medias_anio": 28.8,
    "aprueban": 2
   },
   "Analista de rebote (6 h)": {
    "variantes": 9,
-   "dif_media_examen": -47.7,
-   "dif_media_misma_exposicion": -15.78,
-   "operaciones_medias_anio": 29.0,
+   "dif_media_examen": -47.54,
+   "dif_media_misma_exposicion": -15.76,
+   "operaciones_medias_anio": 29.1,
    "aprueban": 0
   },
   "Analista de volatilidad (6 h)": {
    "variantes": 8,
-   "dif_media_examen": -34.16,
+   "dif_media_examen": -34.02,
    "dif_media_misma_exposicion": -16.52,
    "operaciones_medias_anio": 39.1,
    "aprueban": 0
   },
   "Analista de salidas (6 h)": {
    "variantes": 8,
-   "dif_media_examen": -44.29,
+   "dif_media_examen": -44.15,
    "dif_media_misma_exposicion": -15.82,
    "operaciones_medias_anio": 58.0,
    "aprueban": 0
   },
   "Analista de fuerza relativa (6 h)": {
    "variantes": 6,
-   "dif_media_examen": -42.49,
-   "dif_media_misma_exposicion": -15.04,
-   "operaciones_medias_anio": 43.6,
+   "dif_media_examen": -42.38,
+   "dif_media_misma_exposicion": -15.06,
+   "operaciones_medias_anio": 43.7,
    "aprueban": 0
   }
  },
@@ -221,11 +221,11 @@
    "nombre": "Ruptura 40/20 + filtro (1 día)",
    "train_dif": -10.35,
    "test_res": 20.84,
-   "test_dif": -16.22,
-   "test_dif_expo": 2.47,
+   "test_dif": -15.96,
+   "test_dif_expo": 2.5,
    "ops": 5.09,
    "dd": 41.72,
-   "dd_hold": 67.44,
+   "dd_hold": 67.74,
    "ok": 5,
    "total": 8,
    "elegida": 2,
@@ -297,7 +297,7 @@
      "ok": 7,
      "series": 11,
      "test_res": 0.62,
-     "test_dif_expo": 3.58
+     "test_dif_expo": 3.82
     }
    ]
   },
@@ -306,11 +306,11 @@
    "nombre": "Cruce 10/80 + filtro (6 h)",
    "train_dif": -10.34,
    "test_res": 25.28,
-   "test_dif": -12.11,
-   "test_dif_expo": 8.93,
+   "test_dif": -11.96,
+   "test_dif_expo": 8.95,
    "ops": 13.19,
    "dd": 38.03,
-   "dd_hold": 70.04,
+   "dd_hold": 70.43,
    "ok": 5,
    "total": 8,
    "elegida": 4,
@@ -382,7 +382,7 @@
      "ok": 9,
      "series": 11,
      "test_res": 0.62,
-     "test_dif_expo": 4.75
+     "test_dif_expo": 4.93
     }
    ]
   },
@@ -391,11 +391,11 @@
    "nombre": "Ruptura 40/20 + filtro (6 h)",
    "train_dif": -15.03,
    "test_res": 21.72,
-   "test_dif": -15.67,
-   "test_dif_expo": 5.09,
+   "test_dif": -15.51,
+   "test_dif_expo": 5.11,
    "ops": 21.74,
    "dd": 40.7,
-   "dd_hold": 71.58,
+   "dd_hold": 71.96,
    "ok": 5,
    "total": 8,
    "elegida": 2,
@@ -467,7 +467,7 @@
      "ok": 7,
      "series": 11,
      "test_res": -3.75,
-     "test_dif_expo": 0.53
+     "test_dif_expo": 0.72
     }
    ]
   }
@@ -478,8 +478,8 @@
    "nombre": "Momentum 24 velas ±0.8 % (1 día)",
    "train_dif": -0.2,
    "test_res": 31.92,
-   "test_dif": -5.14,
-   "test_dif_expo": 4.97,
+   "test_dif": -4.88,
+   "test_dif_expo": 5.05,
    "ops": 12.87,
    "dd": 50.65,
    "dd_hold": 68.49,
@@ -553,7 +553,7 @@
      "ok": 5,
      "series": 11,
      "test_res": -7.85,
-     "test_dif_expo": -1.49
+     "test_dif_expo": -0.86
     }
    ]
   },
@@ -562,8 +562,8 @@
    "nombre": "Cruce 15/20 (1 día)",
    "train_dif": -1.0,
    "test_res": 30.97,
-   "test_dif": -6.08,
-   "test_dif_expo": 8.9,
+   "test_dif": -5.83,
+   "test_dif_expo": 8.98,
    "ops": 16.79,
    "dd": 50.04,
    "dd_hold": 65.72,
@@ -637,7 +637,7 @@
      "ok": 6,
      "series": 11,
      "test_res": -4.52,
-     "test_dif_expo": 2.46
+     "test_dif_expo": 3.08
     }
    ]
   },
@@ -646,8 +646,8 @@
    "nombre": "Momentum 24 velas ±2.0 % (1 día)",
    "train_dif": -1.16,
    "test_res": 32.12,
-   "test_dif": -4.94,
-   "test_dif_expo": 4.47,
+   "test_dif": -4.68,
+   "test_dif_expo": 4.55,
    "ops": 7.47,
    "dd": 47.74,
    "dd_hold": 69.21,
@@ -718,10 +718,10 @@
     {
      "anio": 2026,
      "pasa": false,
-     "ok": 4,
+     "ok": 5,
      "series": 11,
      "test_res": -7.88,
-     "test_dif_expo": -1.44
+     "test_dif_expo": -0.79
     }
    ]
   },
@@ -730,8 +730,8 @@
    "nombre": "Cruce 3/30 (1 día)",
    "train_dif": -2.3,
    "test_res": 30.61,
-   "test_dif": -6.44,
-   "test_dif_expo": 4.83,
+   "test_dif": -6.19,
+   "test_dif_expo": 4.91,
    "ops": 15.6,
    "dd": 45.36,
    "dd_hold": 67.91,
@@ -805,7 +805,7 @@
      "ok": 6,
      "series": 11,
      "test_res": -6.43,
-     "test_dif_expo": 0.4
+     "test_dif_expo": 1.03
     }
    ]
   },
@@ -814,8 +814,8 @@
    "nombre": "Momentum 24 velas ±1.2 % (1 día)",
    "train_dif": -2.49,
    "test_res": 30.88,
-   "test_dif": -6.18,
-   "test_dif_expo": 4.31,
+   "test_dif": -5.92,
+   "test_dif_expo": 4.38,
    "ops": 10.02,
    "dd": 47.27,
    "dd_hold": 69.21,
@@ -889,7 +889,7 @@
      "ok": 3,
      "series": 11,
      "test_res": -8.79,
-     "test_dif_expo": -2.23
+     "test_dif_expo": -1.65
     }
    ]
   },
@@ -898,8 +898,8 @@
    "nombre": "Ruptura 40/20 (1 día)",
    "train_dif": -3.56,
    "test_res": 27.53,
-   "test_dif": -9.53,
-   "test_dif_expo": 4.85,
+   "test_dif": -9.27,
+   "test_dif_expo": 4.9,
    "ops": 6.08,
    "dd": 44.34,
    "dd_hold": 67.02,
@@ -973,7 +973,7 @@
      "ok": 2,
      "series": 11,
      "test_res": -10.11,
-     "test_dif_expo": -6.21
+     "test_dif_expo": -5.8
     }
    ]
   },
@@ -982,8 +982,8 @@
    "nombre": "Cruce 10/30 (1 día)",
    "train_dif": -4.5,
    "test_res": 26.88,
-   "test_dif": -10.18,
-   "test_dif_expo": 1.43,
+   "test_dif": -9.92,
+   "test_dif_expo": 1.49,
    "ops": 10.78,
    "dd": 48.46,
    "dd_hold": 67.5,
@@ -1057,7 +1057,7 @@
      "ok": 4,
      "series": 11,
      "test_res": -10.36,
-     "test_dif_expo": -5.52
+     "test_dif_expo": -5.04
     }
    ]
   },
@@ -1066,12 +1066,12 @@
    "nombre": "Cruce 3/20 (1 día)",
    "train_dif": -4.55,
    "test_res": 28.47,
-   "test_dif": -8.58,
-   "test_dif_expo": 2.58,
+   "test_dif": -8.33,
+   "test_dif_expo": 2.65,
    "ops": 21.03,
    "dd": 46.23,
-   "dd_hold": 67.63,
-   "ok": 2,
+   "dd_hold": 67.88,
+   "ok": 3,
    "total": 8,
    "elegida": 2,
    "ok_elegida": 0,
@@ -1137,11 +1137,11 @@
     },
     {
      "anio": 2026,
-     "pasa": false,
-     "ok": 6,
+     "pasa": true,
+     "ok": 7,
      "series": 11,
      "test_res": -5.55,
-     "test_dif_expo": 0.94
+     "test_dif_expo": 1.53
     }
    ]
   },
@@ -1150,8 +1150,8 @@
    "nombre": "Cruce 10/50 (1 día)",
    "train_dif": -5.11,
    "test_res": 26.58,
-   "test_dif": -10.47,
-   "test_dif_expo": 0.92,
+   "test_dif": -10.22,
+   "test_dif_expo": 0.98,
    "ops": 7.64,
    "dd": 48.34,
    "dd_hold": 68.66,
@@ -1225,7 +1225,7 @@
      "ok": 2,
      "series": 11,
      "test_res": -12.53,
-     "test_dif_expo": -7.74
+     "test_dif_expo": -7.3
     }
    ]
   },
@@ -1234,8 +1234,8 @@
    "nombre": "Cruce 8/50 (1 día)",
    "train_dif": -5.44,
    "test_res": 25.64,
-   "test_dif": -11.41,
-   "test_dif_expo": -0.08,
+   "test_dif": -11.16,
+   "test_dif_expo": -0.03,
    "ops": 8.17,
    "dd": 48.26,
    "dd_hold": 68.66,
@@ -1309,7 +1309,7 @@
      "ok": 2,
      "series": 11,
      "test_res": -12.3,
-     "test_dif_expo": -7.68
+     "test_dif_expo": -7.25
     }
    ]
   },
@@ -1318,8 +1318,8 @@
    "nombre": "Cruce 5/50 (1 día)",
    "train_dif": -5.5,
    "test_res": 25.87,
-   "test_dif": -11.18,
-   "test_dif_expo": -0.19,
+   "test_dif": -10.93,
+   "test_dif_expo": -0.15,
    "ops": 8.89,
    "dd": 45.51,
    "dd_hold": 67.65,
@@ -1393,7 +1393,7 @@
      "ok": 2,
      "series": 11,
      "test_res": -11.35,
-     "test_dif_expo": -7.77
+     "test_dif_expo": -7.41
     }
    ]
   },
@@ -1402,8 +1402,8 @@
    "nombre": "Cruce 3/50 (1 día)",
    "train_dif": -5.67,
    "test_res": 27.92,
-   "test_dif": -9.14,
-   "test_dif_expo": 1.98,
+   "test_dif": -8.88,
+   "test_dif_expo": 2.04,
    "ops": 11.4,
    "dd": 47.29,
    "dd_hold": 68.35,
@@ -1477,7 +1477,7 @@
      "ok": 3,
      "series": 11,
      "test_res": -11.16,
-     "test_dif_expo": -6.92
+     "test_dif_expo": -6.49
     }
    ]
   },
@@ -1486,8 +1486,8 @@
    "nombre": "Cruce 8/80 (6 h)",
    "train_dif": -3.96,
    "test_res": 28.86,
-   "test_dif": -8.53,
-   "test_dif_expo": 3.74,
+   "test_dif": -8.37,
+   "test_dif_expo": 3.77,
    "ops": 23.42,
    "dd": 47.12,
    "dd_hold": 68.27,
@@ -1561,7 +1561,7 @@
      "ok": 5,
      "series": 11,
      "test_res": -8.48,
-     "test_dif_expo": -3.25
+     "test_dif_expo": -2.98
     }
    ]
   },
@@ -1570,11 +1570,11 @@
    "nombre": "Cruce 10/80 (6 h)",
    "train_dif": -7.27,
    "test_res": 27.81,
-   "test_dif": -9.58,
-   "test_dif_expo": 2.76,
+   "test_dif": -9.42,
+   "test_dif_expo": 2.8,
    "ops": 21.92,
    "dd": 46.22,
-   "dd_hold": 68.56,
+   "dd_hold": 69.05,
    "ok": 2,
    "total": 8,
    "elegida": 2,
@@ -1642,10 +1642,10 @@
     {
      "anio": 2026,
      "pasa": false,
-     "ok": 5,
+     "ok": 6,
      "series": 11,
      "test_res": -6.64,
-     "test_dif_expo": -0.93
+     "test_dif_expo": -0.65
     }
    ]
   },
@@ -1654,11 +1654,11 @@
    "nombre": "Cruce 10/80 + filtro (6 h)",
    "train_dif": -10.34,
    "test_res": 25.28,
-   "test_dif": -12.11,
-   "test_dif_expo": 8.93,
+   "test_dif": -11.96,
+   "test_dif_expo": 8.95,
    "ops": 13.19,
    "dd": 38.03,
-   "dd_hold": 70.04,
+   "dd_hold": 70.43,
    "ok": 5,
    "total": 8,
    "elegida": 4,
@@ -1730,7 +1730,7 @@
      "ok": 9,
      "series": 11,
      "test_res": 0.62,
-     "test_dif_expo": 4.75
+     "test_dif_expo": 4.93
     }
    ]
   },
@@ -1739,8 +1739,8 @@
    "nombre": "Cruce 20/80 (6 h)",
    "train_dif": -10.56,
    "test_res": 24.07,
-   "test_dif": -13.32,
-   "test_dif_expo": -0.8,
+   "test_dif": -13.16,
+   "test_dif_expo": -0.76,
    "ops": 16.08,
    "dd": 48.83,
    "dd_hold": 69.5,
@@ -1814,7 +1814,7 @@
      "ok": 7,
      "series": 11,
      "test_res": -2.32,
-     "test_dif_expo": 4.07
+     "test_dif_expo": 4.38
     }
    ]
   },
@@ -1823,8 +1823,8 @@
    "nombre": "Cruce 15/80 (6 h)",
    "train_dif": -11.36,
    "test_res": 25.0,
-   "test_dif": -12.39,
-   "test_dif_expo": 1.44,
+   "test_dif": -12.24,
+   "test_dif_expo": 1.48,
    "ops": 17.66,
    "dd": 46.97,
    "dd_hold": 69.08,
@@ -1898,7 +1898,7 @@
      "ok": 6,
      "series": 11,
      "test_res": -2.79,
-     "test_dif_expo": 3.65
+     "test_dif_expo": 3.97
     }
    ]
   },
@@ -1907,8 +1907,8 @@
    "nombre": "Cruce 5/80 (6 h)",
    "train_dif": -12.28,
    "test_res": 21.78,
-   "test_dif": -15.61,
-   "test_dif_expo": -3.04,
+   "test_dif": -15.46,
+   "test_dif_expo": -3.0,
    "ops": 27.37,
    "dd": 48.64,
    "dd_hold": 68.36,
@@ -1982,7 +1982,7 @@
      "ok": 5,
      "series": 11,
      "test_res": -7.94,
-     "test_dif_expo": -2.87
+     "test_dif_expo": -2.59
     }
    ]
   },
@@ -1991,11 +1991,11 @@
    "nombre": "Momentum 24 velas ±1.2 % + filtro (6 h)",
    "train_dif": -12.29,
    "test_res": 21.68,
-   "test_dif": -15.71,
-   "test_dif_expo": 1.36,
+   "test_dif": -15.56,
+   "test_dif_expo": 1.39,
    "ops": 27.31,
    "dd": 41.66,
-   "dd_hold": 69.66,
+   "dd_hold": 70.15,
    "ok": 3,
    "total": 8,
    "elegida": 4,
@@ -2066,7 +2066,7 @@
      "ok": 5,
      "series": 11,
      "test_res": -7.02,
-     "test_dif_expo": -2.84
+     "test_dif_expo": -2.62
     }
    ]
   },
@@ -2075,11 +2075,11 @@
    "nombre": "Cruce 8/80 + filtro (6 h)",
    "train_dif": -12.39,
    "test_res": 21.17,
-   "test_dif": -16.22,
-   "test_dif_expo": 6.27,
+   "test_dif": -16.07,
+   "test_dif_expo": 6.29,
    "ops": 13.65,
    "dd": 40.06,
-   "dd_hold": 70.12,
+   "dd_hold": 70.51,
    "ok": 4,
    "total": 8,
    "elegida": 3,
@@ -2150,7 +2150,7 @@
      "ok": 8,
      "series": 11,
      "test_res": 3.57,
-     "test_dif_expo": 7.55
+     "test_dif_expo": 7.73
     }
    ]
   },
@@ -2159,8 +2159,8 @@
    "nombre": "Cruce 20/50 + filtro (6 h)",
    "train_dif": -12.93,
    "test_res": 23.37,
-   "test_dif": -14.02,
-   "test_dif_expo": 5.24,
+   "test_dif": -13.86,
+   "test_dif_expo": 5.26,
    "ops": 14.79,
    "dd": 39.74,
    "dd_hold": 71.32,
@@ -2234,7 +2234,7 @@
      "ok": 5,
      "series": 11,
      "test_res": -2.55,
-     "test_dif_expo": 0.93
+     "test_dif_expo": 1.11
     }
    ]
   },
@@ -2243,11 +2243,11 @@
    "nombre": "Momentum 24 velas ±0.8 % + filtro (6 h)",
    "train_dif": -13.63,
    "test_res": 19.59,
-   "test_dif": -17.8,
-   "test_dif_expo": -0.56,
+   "test_dif": -17.64,
+   "test_dif_expo": -0.54,
    "ops": 33.53,
    "dd": 43.77,
-   "dd_hold": 70.0,
+   "dd_hold": 70.49,
    "ok": 1,
    "total": 8,
    "elegida": 2,
@@ -2318,7 +2318,7 @@
      "ok": 5,
      "series": 11,
      "test_res": -5.89,
-     "test_dif_expo": -1.67
+     "test_dif_expo": -1.46
     }
    ]
   },
@@ -2327,8 +2327,8 @@
    "nombre": "Cruce 20/80 + filtro (6 h)",
    "train_dif": -13.83,
    "test_res": 21.25,
-   "test_dif": -16.14,
-   "test_dif_expo": 5.2,
+   "test_dif": -15.98,
+   "test_dif_expo": 5.22,
    "ops": 10.02,
    "dd": 39.52,
    "dd_hold": 71.08,
@@ -2402,7 +2402,7 @@
      "ok": 7,
      "series": 11,
      "test_res": -0.15,
-     "test_dif_expo": 3.57
+     "test_dif_expo": 3.76
     }
    ]
   },
@@ -2411,11 +2411,11 @@
    "nombre": "Cruce 15/80 + filtro (6 h)",
    "train_dif": -13.94,
    "test_res": 22.17,
-   "test_dif": -15.22,
-   "test_dif_expo": 8.19,
+   "test_dif": -15.07,
+   "test_dif_expo": 8.21,
    "ops": 10.37,
    "dd": 39.79,
-   "dd_hold": 70.04,
+   "dd_hold": 70.43,
    "ok": 4,
    "total": 8,
    "elegida": 3,
@@ -2486,7 +2486,7 @@
      "ok": 7,
      "series": 11,
      "test_res": 3.94,
-     "test_dif_expo": 8.23
+     "test_dif_expo": 8.41
     }
    ]
   }
