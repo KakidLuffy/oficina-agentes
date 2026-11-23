@@ -1,25 +1,25 @@
 # Oficina de agentes (dinero ficticio)
 
-Ultima actualizacion: 2026-11-23T19:17:46+00:00 UTC · Precio BTC/EUR: 56525 (Kraken)
-En marcha desde: 2026-11-11T23:09:56+00:00 UTC (11.8 dias)
+Ultima actualizacion: 2026-11-23T19:47:45+00:00 UTC · Precio BTC/EUR: 56046 (Kraken)
+En marcha desde: 2026-11-11T23:09:56+00:00 UTC (11.9 dias)
 Monedas vigiladas: las 20 de mayor volumen contra EUR (con datos en esta ejecucion: 20) · cada agente puede tener hasta 2 a la vez, 5.00 EUR en cada una · los agentes de senales solo compran XBT, ETH
 Sin agente principal: Tendencia H1 no paso la prueba historica (ver CRITERIOS.md y backtest_h1.md). Todos los agentes son exploratorios: que alguno gane puede ser casualidad.
 Costes simulados por operacion: comision 0.40 % + deslizamiento 0.05 % (0.3 % en monedas de poco volumen) · limite de perdida diaria: 0.40 EUR
 
 | Agente | Capital (EUR) | Resultado (EUR) | Resultado (%) | Dif. vs Comprar y mantener (EUR, desde su inicio) | Operaciones | Costes pagados (EUR) | Antes de costes (EUR) | Desde | Estado |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
-| Cruce 10/30 | 9.23 | -0.77 | -7.72 % | +0.75 | 18 | 0.38 | -0.39 | 2026-11-11 | Con ETH, XBT |
-| Cruce 5/20 | 8.99 | -1.01 | -10.07 % | +0.51 | 32 | 0.68 | -0.32 | 2026-11-11 | Con ETH, XBT |
-| Momentum | 9.05 | -0.95 | -9.49 % | +0.57 | 26 | 0.55 | -0.40 | 2026-11-11 | Con ETH, XBT |
-| Rebote | 9.04 | -0.96 | -9.58 % | +0.56 | 26 | 0.55 | -0.41 | 2026-11-11 | En efectivo |
-| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +1.52 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Cruce 3/8 rapido | 9.50 | -0.50 | -5.01 % | +1.02 | 14 | 0.31 | -0.19 | 2026-11-11 | En efectivo |
-| Rebote rapido | 9.03 | -0.97 | -9.68 % | +0.55 | 36 | 0.78 | -0.19 | 2026-11-11 | En efectivo |
-| Rebalanceo semanal | 8.77 | -1.23 | -12.34 % | +0.28 | 5 | 0.04 | -1.19 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
-| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +1.52 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
-| Comprar y mantener (solo BTC) | 8.48 | -1.52 | -15.18 % | 0.00 | 1 | 0.04 | -1.47 | 2026-11-11 | Referencia |
-| Comprar y mantener (cesta) | 8.56 | -1.44 | -14.41 % | +0.08 | 2 | 0.04 | -1.40 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
-| Mantener la cesta del Rebalanceo | 8.77 | -1.23 | -12.34 % | +0.28 | 5 | 0.04 | -1.19 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
+| Cruce 10/30 | 9.14 | -0.86 | -8.60 % | +0.73 | 18 | 0.38 | -0.47 | 2026-11-11 | Con ETH, XBT |
+| Cruce 5/20 | 8.91 | -1.09 | -10.90 % | +0.50 | 32 | 0.68 | -0.41 | 2026-11-11 | Con ETH, XBT |
+| Momentum | 8.97 | -1.03 | -10.35 % | +0.55 | 26 | 0.55 | -0.48 | 2026-11-11 | Con ETH, XBT |
+| Rebote | 9.04 | -0.96 | -9.58 % | +0.63 | 26 | 0.55 | -0.41 | 2026-11-11 | En efectivo |
+| Cruce 10/30 + filtro | 10.00 | +0.00 | +0.00 % | +1.59 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Cruce 3/8 rapido | 9.50 | -0.50 | -5.01 % | +1.09 | 14 | 0.31 | -0.19 | 2026-11-11 | En efectivo |
+| Rebote rapido | 9.03 | -0.97 | -9.68 % | +0.62 | 36 | 0.78 | -0.19 | 2026-11-11 | En efectivo |
+| Rebalanceo semanal | 8.68 | -1.32 | -13.18 % | +0.27 | 5 | 0.04 | -1.27 | 2026-11-11 | Con ADA, ETH, SOL, XBT, XRP |
+| Tendencia H1 (diaria) | 10.00 | +0.00 | +0.00 % | +1.59 | 0 | 0.00 | +0.00 | 2026-11-11 | En efectivo |
+| Comprar y mantener (solo BTC) | 8.41 | -1.59 | -15.90 % | 0.00 | 1 | 0.04 | -1.54 | 2026-11-11 | Referencia |
+| Comprar y mantener (cesta) | 8.48 | -1.52 | -15.22 % | +0.07 | 2 | 0.04 | -1.48 | 2026-11-11 | Referencia: 2 monedas del inicio a partes iguales |
+| Mantener la cesta del Rebalanceo | 8.68 | -1.32 | -13.18 % | +0.27 | 5 | 0.04 | -1.27 | 2026-11-11 | Referencia del Rebalanceo: sus 5 monedas sin rebalancear |
 
 Rebalanceo semanal frente a mantener sus mismas 5 monedas sin rebalancear: +0.00 EUR (la columna «Dif. vs Comprar y mantener» lo compara solo con BTC).
 
@@ -46,7 +46,7 @@ Caida maxima = lo que llego a perder cada agente desde su mejor momento. Una ope
 
 ![Evolucion del capital](grafico.svg)
 
-Aviso: solo hay 11.8 dias de datos; aun no hay base para concluir que una estrategia sea mejor.
+Aviso: solo hay 11.9 dias de datos; aun no hay base para concluir que una estrategia sea mejor.
 
 Una estrategia solo merece dinero real si supera de forma sostenida a 'Comprar y mantener' durante semanas.
 Probar muchas monedas y estrategias aumenta la probabilidad de que alguna parezca buena solo por casualidad.
