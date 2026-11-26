@@ -1,22 +1,22 @@
 {
- "generado": "2026-11-26T19:02:30Z",
+ "generado": "2026-11-26T22:38:46Z",
  "titular": "Hay avisos de riesgo.",
  "lineas": [
-  "Fondo de 90,00 € (10,00 € por agente): vale 82,39 € (-7,61 €).",
-  "Capital total 82,39 € (-7,61 €, -8,46 %).",
-  "Mejor agente: Cruce 10/30 + filtro (+0,00 €) (sin ninguna operación). Peor: Rebalanceo semanal (-1,41 €).",
+  "Fondo de 90,00 € (10,00 € por agente): vale 82,29 € (-7,71 €).",
+  "Capital total 82,29 € (-7,71 €, -8,56 %).",
+  "Mejor agente: Cruce 10/30 + filtro (+0,00 €) (sin ninguna operación). Peor: Rebalanceo semanal (-1,44 €).",
   "Ganan dinero 0 de 9 agentes; pierden 7; 2 están igual.",
-  "9 de 9 agentes pierden menos que «Comprar y mantener» (8,26 €). Ojo: con el mercado cayendo, eso se consigue solo con estar en efectivo; lo que dice si la señal sirve es su efecto (diagnostico.md).",
-  "9 de 9 agentes pierden menos que «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,31 €).",
+  "9 de 9 agentes pierden menos que «Comprar y mantener» (8,27 €). Ojo: con el mercado cayendo, eso se consigue solo con estar en efectivo; lo que dice si la señal sirve es su efecto (diagnostico.md).",
+  "9 de 9 agentes pierden menos que «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,30 €).",
   "Efecto de la señal, descontando el tiempo en efectivo (CRITERIOS §8): positivo en 0 de 6 agentes con operaciones. Mejor: Cruce 3/8 rapido (-0,40 €). Peor: Rebote rapido (-0,91 €).",
-  "Frente a 2000 agentes que entran al azar con las mismas operaciones: 4 de 6 lo hacen mejor que la mitad; el mejor es Cruce 5/20 (supera al 71 %). Orientativo hasta tener 30 cierres (ver diagnostico.md).",
-  "Costes pagados entre todos: 3,84 €.",
-  "3 con monedas, 6 en efectivo, 0 apagados.",
+  "Frente a 2000 agentes que entran al azar con las mismas operaciones: 4 de 6 lo hacen mejor que la mitad; el mejor es Cruce 5/20 (supera al 69 %). Orientativo hasta tener 30 cierres (ver diagnostico.md).",
+  "Costes pagados entre todos: 3,86 €.",
+  "4 con monedas, 5 en efectivo, 0 apagados.",
   "Operaciones en las últimas 24 h: 4."
  ],
  "alertas": [
   "Cruce 10/30 acumula una caída máxima del 13,1 %.",
-  "Cruce 5/20 acumula una caída máxima del 11,8 %.",
+  "Cruce 5/20 acumula una caída máxima del 11,9 %.",
   "Momentum acumula una caída máxima del 12,1 %.",
   "Rebote acumula una caída máxima del 14,3 %.",
   "Rebote rapido acumula una caída máxima del 12,7 %.",
@@ -29,55 +29,55 @@
  "progreso": [
   {
    "nombre": "Cruce 10/30",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 10,
    "evaluable": false
   },
   {
    "nombre": "Cruce 5/20",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 19,
    "evaluable": false
   },
   {
    "nombre": "Momentum",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 14,
    "evaluable": false
   },
   {
    "nombre": "Rebote",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 15,
    "evaluable": false
   },
   {
    "nombre": "Cruce 10/30 + filtro",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Cruce 3/8 rapido",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 7,
    "evaluable": false
   },
   {
    "nombre": "Rebote rapido",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 22,
    "evaluable": false
   },
   {
    "nombre": "Rebalanceo semanal",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 0,
    "evaluable": false
   },
   {
    "nombre": "Tendencia H1 (diaria)",
-   "dias": 14.8,
+   "dias": 15.0,
    "cierres": 0,
    "evaluable": false
   }
@@ -86,58 +86,58 @@
  "min_dias": 21,
  "min_cierres": 30,
  "diagnostico": {
-  "generado": "2026-11-26T19:02:30Z",
+  "generado": "2026-11-26T22:38:46Z",
   "agentes": [
    {
     "nombre": "Cruce 10/30",
-    "resultado": -1.0952,
-    "exposicion": 0.3376,
+    "resultado": -1.1053,
+    "exposicion": 0.3432,
     "operaciones": 12,
     "cerradas": 10,
-    "efecto_fuera": 1.1194,
-    "efecto_senal": -0.5247,
+    "efecto_fuera": 1.1166,
+    "efecto_senal": -0.5219,
     "azar": {
-     "resultado_recalculado": -1.1342,
-     "percentil": 0.465,
-     "mediana": -1.0918,
-     "p5": -1.8448,
-     "p95": -0.3461,
+     "resultado_recalculado": -1.1454,
+     "percentil": 0.4625,
+     "mediana": -1.1093,
+     "p5": -1.8443,
+     "p95": -0.3122,
      "operaciones_usadas": 12,
      "sin_precio": 0
     }
    },
    {
     "nombre": "Cruce 5/20",
-    "resultado": -1.1409,
-    "exposicion": 0.3398,
-    "operaciones": 19,
+    "resultado": -1.1922,
+    "exposicion": 0.34,
+    "operaciones": 20,
     "cerradas": 19,
-    "efecto_fuera": 1.1158,
-    "efecto_senal": -0.5667,
+    "efecto_fuera": 1.1219,
+    "efecto_senal": -0.6141,
     "azar": {
-     "resultado_recalculado": -1.1408,
-     "percentil": 0.712,
-     "mediana": -1.4088,
-     "p5": -2.219,
-     "p95": -0.5879,
-     "operaciones_usadas": 19,
+     "resultado_recalculado": -1.2143,
+     "percentil": 0.6855,
+     "mediana": -1.4415,
+     "p5": -2.2543,
+     "p95": -0.6169,
+     "operaciones_usadas": 20,
      "sin_precio": 0
     }
    },
    {
     "nombre": "Momentum",
-    "resultado": -1.0994,
-    "exposicion": 0.3685,
+    "resultado": -1.1057,
+    "exposicion": 0.3737,
     "operaciones": 16,
     "cerradas": 14,
-    "efecto_fuera": 1.0673,
-    "efecto_senal": -0.4767,
+    "efecto_fuera": 1.0648,
+    "efecto_senal": -0.4705,
     "azar": {
-     "resultado_recalculado": -1.1384,
-     "percentil": 0.6405,
-     "mediana": -1.3132,
-     "p5": -2.1185,
-     "p95": -0.4653,
+     "resultado_recalculado": -1.1462,
+     "percentil": 0.629,
+     "mediana": -1.319,
+     "p5": -2.1714,
+     "p95": -0.5062,
      "operaciones_usadas": 16,
      "sin_precio": 0
     }
@@ -145,17 +145,17 @@
    {
     "nombre": "Rebote",
     "resultado": -1.2088,
-    "exposicion": 0.3966,
+    "exposicion": 0.3926,
     "operaciones": 15,
     "cerradas": 15,
-    "efecto_fuera": 1.0198,
-    "efecto_senal": -0.5386,
+    "efecto_fuera": 1.0326,
+    "efecto_senal": -0.5414,
     "azar": {
      "resultado_recalculado": -1.2088,
-     "percentil": 0.578,
-     "mediana": -1.3212,
-     "p5": -2.1989,
-     "p95": -0.4753,
+     "percentil": 0.5685,
+     "mediana": -1.3081,
+     "p5": -2.1744,
+     "p95": -0.4644,
      "operaciones_usadas": 15,
      "sin_precio": 0
     }
@@ -166,23 +166,23 @@
     "exposicion": 0.0,
     "operaciones": 0,
     "cerradas": 0,
-    "efecto_fuera": 1.69,
+    "efecto_fuera": 1.7,
     "efecto_senal": 0.0
    },
    {
     "nombre": "Cruce 3/8 rapido",
     "resultado": -0.5005,
-    "exposicion": 0.0597,
+    "exposicion": 0.0591,
     "operaciones": 7,
     "cerradas": 7,
-    "efecto_fuera": 1.5892,
-    "efecto_senal": -0.3997,
+    "efecto_fuera": 1.5996,
+    "efecto_senal": -0.4001,
     "azar": {
      "resultado_recalculado": -0.5006,
-     "percentil": 0.319,
-     "mediana": -0.4096,
-     "p5": -0.7492,
-     "p95": -0.0468,
+     "percentil": 0.3435,
+     "mediana": -0.4173,
+     "p5": -0.768,
+     "p95": -0.0415,
      "operaciones_usadas": 7,
      "sin_precio": 0
     }
@@ -190,17 +190,17 @@
    {
     "nombre": "Rebote rapido",
     "resultado": -1.1542,
-    "exposicion": 0.1424,
+    "exposicion": 0.1409,
     "operaciones": 22,
     "cerradas": 22,
-    "efecto_fuera": 1.4494,
-    "efecto_senal": -0.9136,
+    "efecto_fuera": 1.4604,
+    "efecto_senal": -0.9146,
     "azar": {
      "resultado_recalculado": -1.154,
-     "percentil": 0.5345,
-     "mediana": -1.1804,
-     "p5": -1.7816,
-     "p95": -0.5934,
+     "percentil": 0.5325,
+     "mediana": -1.1811,
+     "p5": -1.8007,
+     "p95": -0.6159,
      "operaciones_usadas": 22,
      "sin_precio": 0
     }
@@ -211,7 +211,7 @@
     "exposicion": 0.0,
     "operaciones": 0,
     "cerradas": 0,
-    "efecto_fuera": 1.69,
+    "efecto_fuera": 1.7,
     "efecto_senal": 0.0
    }
   ]
