@@ -1,0 +1,139 @@
+{
+ "generado": "2026-11-26T11:46:51Z",
+ "criterios": "CRITERIOS.md §8",
+ "desde": "2026-11-11T23:09:56+00:00",
+ "dias": 14.5,
+ "n_azar": 2000,
+ "semilla": 20261126,
+ "mercado_cesta": -1.68,
+ "mercado_btc": -1.72,
+ "fallos_precios": [],
+ "agentes": [
+  {
+   "nombre": "Cruce 10/30",
+   "resultado": -1.0914,
+   "exposicion": 0.3261,
+   "operaciones": 12,
+   "cerradas": 10,
+   "efecto_fuera": 1.1321,
+   "efecto_senal": -0.5435,
+   "azar": {
+    "resultado_recalculado": -1.1172,
+    "percentil": 0.471,
+    "mediana": -1.0876,
+    "p5": -1.8201,
+    "p95": -0.3054,
+    "operaciones_usadas": 12,
+    "sin_precio": 0
+   }
+  },
+  {
+   "nombre": "Cruce 5/20",
+   "resultado": -1.0852,
+   "exposicion": 0.3336,
+   "operaciones": 19,
+   "cerradas": 17,
+   "efecto_fuera": 1.1196,
+   "efecto_senal": -0.5247,
+   "azar": {
+    "resultado_recalculado": -1.1108,
+    "percentil": 0.721,
+    "mediana": -1.3935,
+    "p5": -2.2266,
+    "p95": -0.5737,
+    "operaciones_usadas": 19,
+    "sin_precio": 0
+   }
+  },
+  {
+   "nombre": "Momentum",
+   "resultado": -1.092,
+   "exposicion": 0.3577,
+   "operaciones": 16,
+   "cerradas": 14,
+   "efecto_fuera": 1.079,
+   "efecto_senal": -0.491,
+   "azar": {
+    "resultado_recalculado": -1.118,
+    "percentil": 0.6265,
+    "mediana": -1.2923,
+    "p5": -2.13,
+    "p95": -0.4805,
+    "operaciones_usadas": 16,
+    "sin_precio": 0
+   }
+  },
+  {
+   "nombre": "Rebote",
+   "resultado": -1.2088,
+   "exposicion": 0.4048,
+   "operaciones": 15,
+   "cerradas": 15,
+   "efecto_fuera": 0.9999,
+   "efecto_senal": -0.5287,
+   "azar": {
+    "resultado_recalculado": -1.2088,
+    "percentil": 0.626,
+    "mediana": -1.3691,
+    "p5": -2.213,
+    "p95": -0.523,
+    "operaciones_usadas": 15,
+    "sin_precio": 0
+   }
+  },
+  {
+   "nombre": "Cruce 10/30 + filtro",
+   "resultado": 0.0,
+   "exposicion": 0.0,
+   "operaciones": 0,
+   "cerradas": 0,
+   "efecto_fuera": 1.68,
+   "efecto_senal": 0.0
+  },
+  {
+   "nombre": "Cruce 3/8 rapido",
+   "resultado": -0.5005,
+   "exposicion": 0.0609,
+   "operaciones": 7,
+   "cerradas": 7,
+   "efecto_fuera": 1.5777,
+   "efecto_senal": -0.3982,
+   "azar": {
+    "resultado_recalculado": -0.5006,
+    "percentil": 0.354,
+    "mediana": -0.417,
+    "p5": -0.7632,
+    "p95": -0.0448,
+    "operaciones_usadas": 7,
+    "sin_precio": 0
+   }
+  },
+  {
+   "nombre": "Rebote rapido",
+   "resultado": -1.1542,
+   "exposicion": 0.1453,
+   "operaciones": 22,
+   "cerradas": 22,
+   "efecto_fuera": 1.4359,
+   "efecto_senal": -0.9101,
+   "azar": {
+    "resultado_recalculado": -1.154,
+    "percentil": 0.5485,
+    "mediana": -1.1953,
+    "p5": -1.8007,
+    "p95": -0.6236,
+    "operaciones_usadas": 22,
+    "sin_precio": 0
+   }
+  },
+  {
+   "nombre": "Tendencia H1 (diaria)",
+   "resultado": 0.0,
+   "exposicion": 0.0,
+   "operaciones": 0,
+   "cerradas": 0,
+   "efecto_fuera": 1.68,
+   "efecto_senal": 0.0
+  }
+ ]
+}

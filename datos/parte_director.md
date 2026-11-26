@@ -1,14 +1,17 @@
 # Parte del director
 
-Actualizado: 2026-11-26T08:21:26Z
+Actualizado: 2026-11-26T11:46:51Z
 
 **Hay avisos de riesgo.**
 
-- Fondo de 90,00 € (10,00 € por agente): vale 82,38 € (-7,62 €).
-- Capital total 82,38 € (-7,62 €, -8,47 %).
-- Mejor agente: Cruce 10/30 + filtro (+0,00 €). Peor: Rebalanceo semanal (-1,45 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener» (8,29 €).
-- 9 de 9 agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,31 €).
+- Fondo de 90,00 € (10,00 € por agente): vale 82,41 € (-7,59 €).
+- Capital total 82,41 € (-7,59 €, -8,43 %).
+- Mejor agente: Cruce 10/30 + filtro (+0,00 €) (sin ninguna operación). Peor: Rebalanceo semanal (-1,45 €).
+- Ganan dinero 0 de 9 agentes; pierden 7; 2 están igual.
+- 9 de 9 agentes pierden menos que «Comprar y mantener» (8,28 €). Ojo: con el mercado cayendo, eso se consigue solo con estar en efectivo; lo que dice si la señal sirve es su efecto (diagnostico.md).
+- 9 de 9 agentes pierden menos que «Comprar y mantener (cesta)», las monedas del inicio a partes iguales (8,32 €).
+- Efecto de la señal, descontando el tiempo en efectivo (CRITERIOS §8): positivo en 0 de 6 agentes con operaciones. Mejor: Cruce 3/8 rapido (-0,40 €). Peor: Rebote rapido (-0,91 €).
+- Frente a 2000 agentes que entran al azar con las mismas operaciones: 4 de 6 lo hacen mejor que la mitad; el mejor es Cruce 5/20 (supera al 72 %). Orientativo hasta tener 30 cierres (ver diagnostico.md).
 - Costes pagados entre todos: 3,80 €.
 - 4 con monedas, 5 en efectivo, 0 apagados.
 - Operaciones en las últimas 24 h: 10.
@@ -24,14 +27,14 @@ Avisos:
 Revisión de datos: sin errores.
 
 Progreso hacia la evaluación (21 días y 30 cierres):
-- Cruce 10/30: 14.4 días, 10 cierres
-- Cruce 5/20: 14.4 días, 17 cierres
-- Momentum: 14.4 días, 14 cierres
-- Rebote: 14.4 días, 15 cierres
-- Cruce 10/30 + filtro: 14.4 días, 0 cierres
-- Cruce 3/8 rapido: 14.4 días, 7 cierres
-- Rebote rapido: 14.4 días, 22 cierres
-- Rebalanceo semanal: 14.4 días, 0 cierres
-- Tendencia H1 (diaria): 14.4 días, 0 cierres
+- Cruce 10/30: 14.5 días, 10 cierres
+- Cruce 5/20: 14.5 días, 17 cierres
+- Momentum: 14.5 días, 14 cierres
+- Rebote: 14.5 días, 15 cierres
+- Cruce 10/30 + filtro: 14.5 días, 0 cierres
+- Cruce 3/8 rapido: 14.5 días, 7 cierres
+- Rebote rapido: 14.5 días, 22 cierres
+- Rebalanceo semanal: 14.5 días, 0 cierres
+- Tendencia H1 (diaria): 14.5 días, 0 cierres
 
 Laboratorio: POSIBLE (ver propuestas.md).
