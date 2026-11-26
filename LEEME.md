@@ -16,6 +16,7 @@ Diez agentes de trading con **dinero ficticio** (10 € cada uno, 100 € en tot
 | `index.html` | El panel «Sala de trading», publicado con GitHub Pages. |
 | `manifest.webmanifest`, `icon-192.png`, `icon-512.png` | Permiten instalar el panel en la pantalla de inicio del móvil. |
 | `director.py` y `.github/workflows/director.yml` | El director: tras cada ejecución de los agentes o del laboratorio revisa los datos y escribe el parte, la memoria y las propuestas. |
+| `diagnostico.py` (lo lanza el workflow del director) | Diagnóstico de la señal (CRITERIOS.md §8): separa «estar en efectivo» de «la señal acierta» y compara cada agente con 2.000 agentes que hacen las mismas operaciones entrando al azar. Escribe `datos/diagnostico.md`. Solo mide, no opera. |
 | `EQUIPO.md` | Carta del equipo: quién hace qué, qué necesita tu aprobación y qué está prohibido. |
 | `datos/` | Resultados: `resumen.md`, `estado.json`, `historial_v2.csv`, `operaciones.csv`, `grafico.svg`, `laboratorio.json`, `laboratorio.md`, `parte_director.json` y `.md`, `memoria.jsonl` y `.md`, `propuestas.md` y `director_estado.json`. El `historial.csv` antiguo (4 agentes) se conserva sin tocar. |
 | `comparacion/` | Resultado del comparador (`comparacion.md` y `.csv`). |

@@ -101,6 +101,35 @@ def cierres_por_agente(ops):
     return c
 
 
+def diagnostico_fresco(diag, ref, horas=6):
+    """El diagnóstico (CRITERIOS §8) solo se usa si es reciente; si no, el parte lo avisa."""
+    if not diag:
+        return None
+    g = parse_fecha(diag.get("generado"))
+    return diag if g and (ref - g).total_seconds() <= horas * 3600 else None
+
+
+def lineas_diagnostico(diag):
+    """Resumen de datos/diagnostico.json para el parte: efecto de la señal y comparación con el azar."""
+    if not diag:
+        return []
+    con = [f for f in diag.get("agentes", []) if f.get("operaciones") and "efecto_senal" in f]
+    if not con:
+        return ["Efecto de la señal: aún ningún agente de señales ha operado."]
+    pos = [f for f in con if f["efecto_senal"] > 0.005]
+    mejor = max(con, key=lambda f: f["efecto_senal"])
+    peor = min(con, key=lambda f: f["efecto_senal"])
+    out = [f"Efecto de la señal, descontando el tiempo en efectivo (CRITERIOS §8): positivo en {len(pos)} de {len(con)} agentes con operaciones. "
+           f"Mejor: {mejor['nombre']} ({euros(mejor['efecto_senal'], True)}). Peor: {peor['nombre']} ({euros(peor['efecto_senal'], True)})."]
+    az = [f for f in con if (f.get("azar") or {}).get("percentil") is not None]
+    if az:
+        encima = [f for f in az if f["azar"]["percentil"] > 0.5]
+        top = max(az, key=lambda f: f["azar"]["percentil"])
+        out.append(f"Frente a {diag.get('n_azar', 0)} agentes que entran al azar con las mismas operaciones: {len(encima)} de {len(az)} lo hacen mejor que la mitad; "
+                   f"el mejor es {top['nombre']} (supera al {top['azar']['percentil'] * 100:.0f} %). Orientativo hasta tener 30 cierres (ver diagnostico.md).")
+    return out
+
+
 def revisar(estado, hist, ops, precios, ag, ref):
     """El revisor: devuelve una lista de problemas {nivel, texto}. Nivel: error | aviso."""
     p = []
@@ -188,6 +217,12 @@ def main():
         x["evaluable"] = x["dias"] >= MIN_DIAS and x["cierres"] >= MIN_CIERRES
 
     problemas = revisar(estado, hist, ops, precios, ag, ref)
+    diag_crudo = leer_json(os.path.join(carpeta, "diagnostico.json"))
+    diag = diagnostico_fresco(diag_crudo, ref)
+    if estado and not diag:
+        problemas.append({"nivel": "aviso", "texto": "El diagnóstico de la señal (diagnostico.json) falta o lleva más de 6 h sin actualizarse."})
+    elif diag and diag.get("fallos_precios"):
+        problemas.append({"nivel": "aviso", "texto": "El diagnóstico no pudo descargar precios nuevos de Kraken y usó los guardados."})
     errores = [p for p in problemas if p["nivel"] == "error"]
     conocidos = {e["texto"] for e in eventos[-30:] if e.get("tipo") == "revision"}
     for p in problemas:
@@ -202,14 +237,25 @@ def main():
         mejor, peor = max(ag, key=lambda x: x["res"]), min(ag, key=lambda x: x["res"])
         lineas.append("Fondo de " + euros(base) + " (" + euros(START) + " por agente): vale " + euros(total) + " (" + euros(res_total, True) + ").")
         lineas.append("Capital total " + euros(total) + " (" + euros(res_total, True) + ", " + f"{res_total / base * 100:+.2f}".replace(".", ",") + " %).")
-        lineas.append(f"Mejor agente: {mejor['nombre']} ({euros(mejor['res'], True)}). Peor: {peor['nombre']} ({euros(peor['res'], True)}).")
+        sin_ops = lambda x: " (sin ninguna operación)" if x["ops"] == 0 else ""
+        lineas.append(f"Mejor agente: {mejor['nombre']} ({euros(mejor['res'], True)}){sin_ops(mejor)}. Peor: {peor['nombre']} ({euros(peor['res'], True)}){sin_ops(peor)}.")
+        ganan = [x for x in ag if x["res"] > 0.005]
+        pierden = [x for x in ag if x["res"] < -0.005]
+        lineas.append(f"Ganan dinero {len(ganan)} de {len(ag)} agentes; pierden {len(pierden)}; {len(ag) - len(ganan) - len(pierden)} están igual.")
+        # CRITERIOS §8: en un mercado que cae, "ir por encima de mantener" se consigue solo con estar en efectivo
         if hold is not None:
             sup = [x for x in ag if x["vs_mantener"] is not None and x["vs_mantener"] > 0]
-            lineas.append(f"{len(sup)} de {len(ag)} agentes van por encima de «Comprar y mantener» ({euros(hold)}).")
+            if hold < START:
+                lineas.append(f"{len(sup)} de {len(ag)} agentes pierden menos que «Comprar y mantener» ({euros(hold)}). "
+                              "Ojo: con el mercado cayendo, eso se consigue solo con estar en efectivo; lo que dice si la señal sirve es su efecto (diagnostico.md).")
+            else:
+                lineas.append(f"{len(sup)} de {len(ag)} agentes van por encima de «Comprar y mantener» ({euros(hold)}).")
         cesta = num(ult.get("Comprar y mantener (cesta)"), None) if ult and ult.get("Comprar y mantener (cesta)") not in (None, "") else None
         if cesta is not None:
             sup_c = [x for x in ag if x["eq"] > cesta]
-            lineas.append(f"{len(sup_c)} de {len(ag)} agentes van por encima de «Comprar y mantener (cesta)», las monedas del inicio a partes iguales ({euros(cesta)}).")
+            verbo = "pierden menos que" if cesta < START else "van por encima de"
+            lineas.append(f"{len(sup_c)} de {len(ag)} agentes {verbo} «Comprar y mantener (cesta)», las monedas del inicio a partes iguales ({euros(cesta)}).")
+        lineas += lineas_diagnostico(diag)
         costes = sum(num(a["raw"].get("costes")) for a in ag)
         if costes:
             lineas.append("Costes pagados entre todos: " + euros(costes) + ".")
@@ -303,7 +349,8 @@ def main():
         titular = "Todo en orden."
     parte = {"generado": iso(ref), "titular": titular, "lineas": lineas, "alertas": alertas,
              "revision": {"ok": not errores, "problemas": problemas}, "progreso": progreso,
-             "laboratorio": veredicto, "min_dias": MIN_DIAS, "min_cierres": MIN_CIERRES}
+             "laboratorio": veredicto, "min_dias": MIN_DIAS, "min_cierres": MIN_CIERRES,
+             "diagnostico": ({"generado": diag.get("generado"), "agentes": diag.get("agentes", [])} if diag else None)}
     with open(os.path.join(carpeta, "parte_director.json"), "w", encoding="utf-8") as f:
         json.dump(parte, f, ensure_ascii=False, indent=1)
     pm = ["# Parte del director", "", f"Actualizado: {parte['generado']}", "", f"**{titular}**", ""]

@@ -27,6 +27,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Diagnóstico de la señal (CRITERIOS.md §8; si Kraken falla, usa los precios guardados)
+        run: python diagnostico.py --datos datos || echo "Diagnóstico no disponible esta vez"
+
       - name: El director revisa los datos y escribe el parte
         run: python director.py --datos datos
 
