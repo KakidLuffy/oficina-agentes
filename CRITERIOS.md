@@ -140,6 +140,36 @@ empezado a las 09:14 UTC del mismo día sin ninguna operación, así que **se re
 - Todo lo demás de la sección 7 sigue igual (2 agentes, mismas reglas de señal, 2,50 € por compra, hasta 4 a la vez,
   apagado bajo 7 €, juicio a los 90 días y 30 operaciones cerradas, exploratoria).
 
+## 8. Diagnóstico: ¿aporta algo la señal? (registrado el 26-nov-2026, ANTES de escribir su código)
+
+Es **solo una medida**: no cambia ninguna regla de trading, no reinicia la v5 (`VERSION` sigue igual) y no añade agentes.
+Motivo: el parte decía «9 de 9 agentes van por encima de Comprar y mantener» mientras todos perdían dinero. En un
+mercado que cae, estar en efectivo basta para eso; no dice nada de si la señal sirve.
+
+**8.1 Separar «estar fuera» de «la señal»** (agentes de señales; el Rebalanceo queda fuera porque tiene su propia
+referencia, sección 6):
+
+- **Exposición media (E)**: euros invertidos (al precio de compra) por horas, dividido entre capital inicial × horas
+  desde el inicio de la v5. Sale de `operaciones.csv`.
+- **Mercado (M)**: resultado en euros de «Comprar y mantener (cesta)», BTC y ETH a partes iguales, que son las dos
+  monedas que pueden comprar los agentes de señales.
+- **Efecto de estar fuera** = E × M − M. **Efecto de la señal** = resultado del agente − E × M.
+  Los dos suman la diferencia con la cesta. Es la misma idea que «mantener con la misma exposición» del laboratorio (§4).
+
+**8.2 Comparación con entradas al azar** (`diagnostico.py`):
+
+- Para cada agente se toman sus operaciones reales (compra → venta en la misma moneda; las abiertas, hasta ahora).
+- Se simulan **2.000 agentes al azar** con la semilla fija 20261126. Cada uno hace **las mismas operaciones**: misma
+  moneda, mismo importe y misma duración en horas, pero con la hora de entrada elegida al azar dentro del periodo de la
+  v5. Pagan los mismos costes (comisión y deslizamiento a la entrada y a la salida). Pueden solaparse entre sí.
+- Precios: cierres de velas de 1 h de Kraken, guardados en `datos/precios_1h.json` para no depender de las 720 velas que da
+  Kraken. El resultado del agente real se recalcula con esos mismos precios, para comparar igual con igual.
+- Se publica el **percentil**: qué parte de los agentes al azar lo hacen peor que el agente real.
+- **No es un criterio de aprobado.** Con menos de 30 operaciones cerradas es solo informativo. El umbral para decir que
+  una señal aporta algo, y qué resultado justificaría dinero real, lo decide el usuario y se registrará aquí **antes**
+  de que algún agente sea evaluable. Nota para ese momento: se comparan 8 agentes, así que un percentil del 95 % saldría
+  en alguno por pura suerte con bastante probabilidad.
+
 ## Registro de resultados
 
 - **11-nov-2026, prueba histórica de H1: NO PASA** (`datos/backtest_h1.md`). Con datos de Coinbase desde el 2-sep-2017, H1 se apagó por su propia regla del −15 % el 30-dic-2017, a los 4 meses. Hasta ese día ganó un +65,4 %, frente al +72,4 % de la cesta al 50 %, y su caída máxima fue mayor (−19,3 % frente a −17,6 %). Las medias de 50, 150 y 200 días tampoco superan a la cesta. Sin la regla del −15 % (dato solo informativo) habría ganado un +328 %, frente al +525 % de la cesta al 50 %, aunque con menos caída (−43 % frente a −69 %). **Conforme a la sección 2, H1 queda descartada como hipótesis principal.** La v5 sigue en marcha como exploración. Una variante de H1 sin la regla del −15 % sería una hipótesis NUEVA y contaría como una comparación más.
