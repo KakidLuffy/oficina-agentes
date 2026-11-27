@@ -1,19 +1,19 @@
 # Diagnóstico de la señal (dinero ficticio)
 
-Actualizado: 2026-11-26T22:38:46Z · 15.0 días desde el inicio de la v5 · reglas: CRITERIOS.md §8
+Actualizado: 2026-11-27T02:12:47Z · 15.1 días desde el inicio de la v5 · reglas: CRITERIOS.md §8
 
-Mercado («Comprar y mantener (cesta)», BTC y ETH a partes iguales): -1,70 €.
+Mercado («Comprar y mantener (cesta)», BTC y ETH a partes iguales): -1,59 €.
 
 | Agente | Resultado | Tiempo invertido | Efecto de estar fuera | Efecto de la señal | Mejor que el azar | Azar: típico (5 %–95 %) | Cerradas |
 |---|---:|---:|---:|---:|---:|---|---:|
-| Cruce 10/30 | -1,11 € | 34 % | +1,12 € | -0,52 € | 46 % | -1,11 € (-1,84 € a -0,31 €) | 10 |
-| Cruce 5/20 | -1,19 € | 34 % | +1,12 € | -0,61 € | 69 % | -1,44 € (-2,25 € a -0,62 €) | 19 |
-| Momentum | -1,11 € | 37 % | +1,06 € | -0,47 € | 63 % | -1,32 € (-2,17 € a -0,51 €) | 14 |
-| Rebote | -1,21 € | 39 % | +1,03 € | -0,54 € | 57 % | -1,31 € (-2,17 € a -0,46 €) | 15 |
-| Cruce 10/30 + filtro | +0,00 € | 0 % | +1,70 € | +0,00 € | — | — | 0 |
-| Cruce 3/8 rapido | -0,50 € | 6 % | +1,60 € | -0,40 € | 34 % | -0,42 € (-0,77 € a -0,04 €) | 7 |
-| Rebote rapido | -1,15 € | 14 % | +1,46 € | -0,91 € | 53 % | -1,18 € (-1,80 € a -0,62 €) | 22 |
-| Tendencia H1 (diaria) | +0,00 € | 0 % | +1,70 € | +0,00 € | — | — | 0 |
+| Cruce 10/30 | -0,99 € | 35 % | +1,04 € | -0,44 € | 58 % | -1,13 € (-1,88 € a -0,34 €) | 10 |
+| Cruce 5/20 | -1,11 € | 34 % | +1,04 € | -0,56 € | 74 % | -1,47 € (-2,33 € a -0,67 €) | 19 |
+| Momentum | -0,99 € | 38 % | +0,99 € | -0,39 € | 71 % | -1,32 € (-2,16 € a -0,46 €) | 14 |
+| Rebote | -1,21 € | 39 % | +0,97 € | -0,59 € | 55 % | -1,28 € (-2,15 € a -0,43 €) | 15 |
+| Cruce 10/30 + filtro | +0,00 € | 0 % | +1,59 € | +0,00 € | — | — | 0 |
+| Cruce 3/8 rapido | -0,50 € | 6 % | +1,50 € | -0,41 € | 32 % | -0,40 € (-0,76 € a -0,06 €) | 7 |
+| Rebote rapido | -1,15 € | 14 % | +1,37 € | -0,93 € | 54 % | -1,18 € (-1,77 € a -0,62 €) | 22 |
+| Tendencia H1 (diaria) | +0,00 € | 0 % | +1,59 € | +0,00 € | — | — | 0 |
 
 Cómo leerlo:
 - **Efecto de estar fuera**: lo que se ahorra (o se pierde) por no estar invertido todo el tiempo. En un mercado que cae es positivo aunque la señal no sirva.
