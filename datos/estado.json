@@ -2,33 +2,33 @@
   "version": 5,
   "capital_inicial": 10.0,
   "inicio": "2026-11-11T23:09:56+00:00",
-  "ultima_vela": 1795816800,
+  "ultima_vela": 1795820400,
   "precio_inicio": 66341.4,
   "fee": 0.004,
   "slip": 0.0005,
   "precios": {
-    "XBTEUR": 54692.9,
-    "ETHEUR": 1516.65,
-    "SOLEUR": 65.29,
-    "XRPEUR": 0.8664,
-    "ZECEUR": 668.118,
-    "NEAREUR": 2.7569,
-    "HYPEEUR": 57.75,
+    "XBTEUR": 54785.9,
+    "ETHEUR": 1521.24,
+    "SOLEUR": 65.57,
+    "XRPEUR": 0.86746,
+    "ZECEUR": 671.677,
+    "NEAREUR": 2.758,
+    "HYPEEUR": 58.23,
     "PEPEEUR": 3.063e-06,
-    "LINKEUR": 8.55554,
-    "SUIEUR": 0.6136,
-    "XLMEUR": 0.11571,
-    "ADAEUR": 0.13533,
-    "AVAXEUR": 6.033,
-    "TAOEUR": 170.4226,
+    "LINKEUR": 8.56041,
+    "SUIEUR": 0.6158,
+    "XLMEUR": 0.116486,
+    "ADAEUR": 0.135558,
+    "AVAXEUR": 6.056,
+    "TAOEUR": 170.9488,
     "XDCEUR": 0.02334,
-    "LTCEUR": 41.16,
-    "XDGEUR": 0.0525861,
+    "LTCEUR": 41.43,
+    "XDGEUR": 0.0528353,
     "PUMPEUR": 0.002286,
     "ARBEUR": 0.1365,
-    "ZROEUR": 0.991,
-    "UNIEUR": 4.3967,
-    "TRXEUR": 0.274799,
+    "ZROEUR": 0.992,
+    "UNIEUR": 4.4166,
+    "TRXEUR": 0.274764,
     "AAVEEUR": 87.95,
     "ENAEUR": 0.089,
     "XMREUR": 396.27,
@@ -165,29 +165,26 @@
     },
     {
       "nombre": "Rebote rapido",
-      "efectivo": 0.0,
+      "efectivo": 5.0196933677142095,
       "posiciones": {
-        "XBTEUR": 9.214763664529326e-05,
         "ETHEUR": 0.0025371325861223235
       },
       "apagado": false,
-      "operaciones": 46,
+      "operaciones": 47,
       "dia": 20784,
       "eq_dia": 8.845805175686035,
       "inicio": "2026-11-11T23:09:56+00:00",
       "precio_inicio": 66341.4,
       "entradas": {
-        "XBTEUR": 54043.70834999999,
         "ETHEUR": 1509.744495
       },
       "compras": {
-        "XBTEUR": "2026-11-27T14:00+00:00",
         "ETHEUR": "2026-11-27T14:00+00:00"
       },
-      "costes": 0.9910073097551613,
+      "costes": 1.0136879078533858,
       "stops": {},
       "ultima_venta": {
-        "XBTEUR": "2026-11-25T17:00+00:00",
+        "XBTEUR": "2026-11-27T23:00+00:00",
         "ETHEUR": "2026-11-24T21:00+00:00"
       }
     },
@@ -238,20 +235,20 @@
       "mes": "2026-11",
       "eq_mes": 10.0,
       "ultima_diaria": {
-        "XBTEUR": 1795651200,
-        "ETHEUR": 1795651200
+        "XBTEUR": 1795737600,
+        "ETHEUR": 1795737600
       },
       "h1_ultimo": {
         "XBTEUR": {
-          "dia": "2026-11-26",
-          "cierre": 55163.8,
-          "media100": 68439.26,
+          "dia": "2026-11-27",
+          "cierre": 54720.6,
+          "media100": 68393.0,
           "encima": false
         },
         "ETHEUR": {
-          "dia": "2026-11-26",
-          "cierre": 1538.65,
-          "media100": 2080.13,
+          "dia": "2026-11-27",
+          "cierre": 1518.25,
+          "media100": 2076.03,
           "encima": false
         }
       }
