@@ -1,18 +1,18 @@
 # Diagnóstico de la señal (dinero ficticio)
 
-Actualizado: 2026-11-28T11:49:04Z · 16.5 días desde el inicio de la v5 · reglas: CRITERIOS.md §8
+Actualizado: 2026-11-28T14:35:07Z · 16.6 días desde el inicio de la v5 · reglas: CRITERIOS.md §8
 
 Mercado («Comprar y mantener (cesta)», BTC y ETH a partes iguales): -1,87 €.
 
 | Agente | Resultado | Tiempo invertido | Efecto de estar fuera | Efecto de la señal | Mejor que el azar | Azar: típico (5 %–95 %) | Cerradas |
 |---|---:|---:|---:|---:|---:|---|---:|
-| Cruce 10/30 | -1,22 € | 35 % | +1,21 € | -0,56 € | 41 % | -1,11 € (-1,94 € a -0,26 €) | 12 |
-| Cruce 5/20 | -1,39 € | 34 % | +1,23 € | -0,75 € | 62 % | -1,54 € (-2,37 € a -0,71 €) | 21 |
-| Momentum | -1,41 € | 39 % | +1,15 € | -0,69 € | 47 % | -1,40 € (-2,29 € a -0,52 €) | 16 |
-| Rebote | -1,24 € | 40 % | +1,11 € | -0,49 € | 59 % | -1,41 € (-2,33 € a -0,57 €) | 15 |
+| Cruce 10/30 | -1,22 € | 35 % | +1,21 € | -0,57 € | 41 % | -1,11 € (-1,91 € a -0,28 €) | 12 |
+| Cruce 5/20 | -1,39 € | 34 % | +1,23 € | -0,75 € | 61 % | -1,53 € (-2,39 € a -0,70 €) | 21 |
+| Momentum | -1,45 € | 38 % | +1,15 € | -0,73 € | 46 % | -1,40 € (-2,30 € a -0,53 €) | 17 |
+| Rebote | -1,24 € | 41 % | +1,11 € | -0,48 € | 61 % | -1,44 € (-2,36 € a -0,59 €) | 15 |
 | Cruce 10/30 + filtro | +0,00 € | 0 % | +1,87 € | +0,00 € | — | — | 0 |
-| Cruce 3/8 rapido | -0,53 € | 8 % | +1,73 € | -0,39 € | 52 % | -0,54 € (-0,94 € a -0,12 €) | 9 |
-| Rebote rapido | -1,13 € | 15 % | +1,59 € | -0,85 € | 70 % | -1,30 € (-1,89 € a -0,72 €) | 24 |
+| Cruce 3/8 rapido | -0,53 € | 7 % | +1,73 € | -0,39 € | 53 % | -0,54 € (-0,94 € a -0,13 €) | 9 |
+| Rebote rapido | -1,13 € | 15 % | +1,59 € | -0,85 € | 70 % | -1,31 € (-1,91 € a -0,72 €) | 24 |
 | Tendencia H1 (diaria) | +0,00 € | 0 % | +1,87 € | +0,00 € | — | — | 0 |
 
 Cómo leerlo:
