@@ -1,28 +1,28 @@
 {
- "generado": "2026-11-28T14:35:07Z",
+ "generado": "2026-11-28T20:06:09Z",
  "criterios": "CRITERIOS.md §8",
  "desde": "2026-11-11T23:09:56+00:00",
- "dias": 16.6,
+ "dias": 16.9,
  "n_azar": 2000,
  "semilla": 20261126,
- "mercado_cesta": -1.87,
- "mercado_btc": -1.86,
+ "mercado_cesta": -1.86,
+ "mercado_btc": -1.85,
  "fallos_precios": [],
  "agentes": [
   {
    "nombre": "Cruce 10/30",
    "resultado": -1.2247,
-   "exposicion": 0.3507,
+   "exposicion": 0.3459,
    "operaciones": 12,
    "cerradas": 12,
-   "efecto_fuera": 1.2142,
-   "efecto_senal": -0.5689,
+   "efecto_fuera": 1.2166,
+   "efecto_senal": -0.5813,
    "azar": {
     "resultado_recalculado": -1.2247,
-    "percentil": 0.412,
-    "mediana": -1.1067,
-    "p5": -1.9125,
-    "p95": -0.2804,
+    "percentil": 0.4215,
+    "mediana": -1.1271,
+    "p5": -1.8966,
+    "p95": -0.2936,
     "operaciones_usadas": 12,
     "sin_precio": 0
    }
@@ -30,17 +30,17 @@
   {
    "nombre": "Cruce 5/20",
    "resultado": -1.3859,
-   "exposicion": 0.3398,
+   "exposicion": 0.3351,
    "operaciones": 21,
    "cerradas": 21,
-   "efecto_fuera": 1.2347,
-   "efecto_senal": -0.7505,
+   "efecto_fuera": 1.2367,
+   "efecto_senal": -0.7625,
    "azar": {
     "resultado_recalculado": -1.3857,
-    "percentil": 0.6105,
-    "mediana": -1.5345,
-    "p5": -2.3857,
-    "p95": -0.696,
+    "percentil": 0.6085,
+    "mediana": -1.519,
+    "p5": -2.3854,
+    "p95": -0.7274,
     "operaciones_usadas": 21,
     "sin_precio": 0
    }
@@ -48,35 +48,35 @@
   {
    "nombre": "Momentum",
    "resultado": -1.4454,
-   "exposicion": 0.3841,
+   "exposicion": 0.3789,
    "operaciones": 17,
    "cerradas": 17,
-   "efecto_fuera": 1.1518,
-   "efecto_senal": -0.7271,
+   "efecto_fuera": 1.1553,
+   "efecto_senal": -0.7407,
    "azar": {
     "resultado_recalculado": -1.4457,
-    "percentil": 0.46,
-    "mediana": -1.3984,
-    "p5": -2.297,
-    "p95": -0.5296,
+    "percentil": 0.4765,
+    "mediana": -1.4138,
+    "p5": -2.2846,
+    "p95": -0.5561,
     "operaciones_usadas": 17,
     "sin_precio": 0
    }
   },
   {
    "nombre": "Rebote",
-   "resultado": -1.238,
-   "exposicion": 0.4074,
+   "resultado": -1.2322,
+   "exposicion": 0.4139,
    "operaciones": 17,
    "cerradas": 15,
-   "efecto_fuera": 1.1081,
-   "efecto_senal": -0.4761,
+   "efecto_fuera": 1.0902,
+   "efecto_senal": -0.4624,
    "azar": {
-    "resultado_recalculado": -1.2774,
-    "percentil": 0.6095,
-    "mediana": -1.4427,
-    "p5": -2.3602,
-    "p95": -0.5943,
+    "resultado_recalculado": -1.2726,
+    "percentil": 0.6375,
+    "mediana": -1.4631,
+    "p5": -2.3853,
+    "p95": -0.6184,
     "operaciones_usadas": 17,
     "sin_precio": 0
    }
@@ -87,23 +87,23 @@
    "exposicion": 0.0,
    "operaciones": 0,
    "cerradas": 0,
-   "efecto_fuera": 1.87,
+   "efecto_fuera": 1.86,
    "efecto_senal": 0.0
   },
   {
    "nombre": "Cruce 3/8 rapido",
    "resultado": -0.5258,
-   "exposicion": 0.0747,
+   "exposicion": 0.0737,
    "operaciones": 9,
    "cerradas": 9,
-   "efecto_fuera": 1.7303,
-   "efecto_senal": -0.3861,
+   "efecto_fuera": 1.723,
+   "efecto_senal": -0.3887,
    "azar": {
     "resultado_recalculado": -0.5258,
-    "percentil": 0.5325,
-    "mediana": -0.5447,
-    "p5": -0.9404,
-    "p95": -0.1289,
+    "percentil": 0.5205,
+    "mediana": -0.5376,
+    "p5": -0.94,
+    "p95": -0.1288,
     "operaciones_usadas": 9,
     "sin_precio": 0
    }
@@ -111,17 +111,17 @@
   {
    "nombre": "Rebote rapido",
    "resultado": -1.1276,
-   "exposicion": 0.1487,
+   "exposicion": 0.1467,
    "operaciones": 24,
    "cerradas": 24,
-   "efecto_fuera": 1.5919,
-   "efecto_senal": -0.8495,
+   "efecto_fuera": 1.5872,
+   "efecto_senal": -0.8547,
    "azar": {
     "resultado_recalculado": -1.1274,
-    "percentil": 0.698,
-    "mediana": -1.3097,
-    "p5": -1.9082,
-    "p95": -0.7201,
+    "percentil": 0.686,
+    "mediana": -1.3225,
+    "p5": -1.8992,
+    "p95": -0.7061,
     "operaciones_usadas": 24,
     "sin_precio": 0
    }
@@ -132,7 +132,7 @@
    "exposicion": 0.0,
    "operaciones": 0,
    "cerradas": 0,
-   "efecto_fuera": 1.87,
+   "efecto_fuera": 1.86,
    "efecto_senal": 0.0
   }
  ]
